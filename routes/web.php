@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::get('/comp/status', 'statusController@index');
 Route::post('/comp/status/getStatus', 'statusController@getStatus');
+Route::get('/comp/status/getStatus', 'statusController@getStatus');
