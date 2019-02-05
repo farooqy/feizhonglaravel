@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/comp/status', 'statusController@index');
+Route::post('/comp/status/getStatus', 'statusController@getStatus');
+Route::get('/comp/status/getStatus', 'statusController@getStatus');
+Route::get('/comp/status/setStatus', 'statusController@setStatus');
+Route::post('/comp/status/setStatus', 'statusController@setStatus');
