@@ -24,7 +24,7 @@ class statusController extends Controller
     	return $statusData;
 
     }
-    public funciton setFiles(Request $fileForm)
+    public function setFiles(Request $fileForm)
     {
         return $fileForm;
     }
