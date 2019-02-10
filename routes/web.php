@@ -19,4 +19,4 @@ Route::get('/comp/status', 'statusController@index');
 Route::post('/comp/status/getStatus', 'statusController@getStatus');
 Route::get('/comp/status/getStatus', 'statusController@getStatus');
 Route::get('/comp/status/setFiles', 'statusController@setFiles');
-Route::get('/comp/status/setStatus', 'statusController@setStatus');
+Route::post('/comp/status/setStatus', 'statusController@setStatus');
