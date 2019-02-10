@@ -15,7 +15,6 @@ class CreateStatusFilesTable extends Migration
     {
         Schema::create('status_files', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('status_id');
             $table->string('status_file_type',10)->default('image');
             $table->string('status_file_mime');
             $table->string('status_file_token')->default(hash('MD5', time()));

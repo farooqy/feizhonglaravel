@@ -9,9 +9,9 @@ class compStatusModel extends Model
     //
 
     protected $table = 'company_status';
-    public function status_files()
+    public function status_files() 
     {
-    	return $this->hasMany('App\models\companyStatusFilesModel', 'comp_id');
+    	return $this->hasMany('App\models\companyStatusFilesModel', 'status_id');
     }
     public function companyData()
     {
