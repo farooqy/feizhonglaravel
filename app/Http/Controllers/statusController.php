@@ -129,7 +129,7 @@ class statusController extends Controller
         {
             $error = json_encode(array(
                 'statusFiles' => array(
-                    'Error: '.$exception->errorInfo
+                    'Error in query: '.$exception->errorInfo
                 ),
             ));
             return $error;
