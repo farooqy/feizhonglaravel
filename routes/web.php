@@ -20,3 +20,8 @@ Route::post('/comp/status/getStatus', 'statusController@getStatus');
 Route::get('/comp/status/getStatus', 'statusController@getStatus');
 Route::get('/comp/status/setFiles', 'statusController@setFiles');
 Route::post('/comp/status/setStatus', 'statusController@setStatus');
+
+//messages
+
+Route::post('/messages/history', 'chatController@getMessages');
+Route::get('message/history', 'chatController@getHistory');

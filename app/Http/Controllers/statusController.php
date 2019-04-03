@@ -30,9 +30,9 @@ class statusController extends Controller
     }
     public function setStatus (Request $statusForm)
     {
-        $statusForm->validate([
-            'comp_id' => "required|"
-        ]);
+        // $statusForm->validate([
+        //     'comp_id' => "required|"
+        // ]);
 
         $rules = [
             "comp_id" => "required|integer|min:1",
@@ -42,6 +42,7 @@ class statusController extends Controller
             "num_files" => "required|integer|min:0|max:10",
             // "files" => "mimes:jpg, jpeg, png, avi, web, mp4"
             "statusFiles" => "string",
+            "status_type" => "required|string|in:status,product"
         ];
         $messages = [
             "required" => "The :attribute field is required",
@@ -56,7 +57,10 @@ class statusController extends Controller
             return $validation->errors()->toJson();
         else if($statusForm->num_files > 0)
         {
-            $filesCount = explode('|', $statusForm->statusFiles);
+            if($statusForm->num_files > 1)
+                $filesCount = explode('|', $statusForm->statusFiles);
+            else
+                $filesCount = [$statusForm->statusFiles];
             if(!is_array($filesCount))
             {
                 $error = json_encode(array(
@@ -120,7 +124,7 @@ class statusController extends Controller
             // companyStatusFilesModel::insert($statusFilesObject);
             $success = json_encode(array(
                 "isSuccess" => true,
-                "successMessage" => "success ".$statusForm->num_files." ".count($filesCount)
+                "successMessage" => "success "
             ));
 
             return $success;

@@ -12,4 +12,8 @@ class companydata_model extends Model
     {
     	return $this->hasMany('App\models\compStatusModel', 'comp_id', 'comp_id');
     }
+    public function companyMessages()
+    {
+        return $this->belongsTo('App\models\chatModel', 'message_host', 'comp_token');
+    }
 }

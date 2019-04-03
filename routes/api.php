@@ -22,3 +22,7 @@ Route::post('/comp/status/getStatus', 'statusController@getStatus');
 Route::get('/comp/status/getStatus', 'statusController@getStatus');
 Route::get('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/setStatus', 'statusController@setStatus');
+
+
+Route::post('message/history', 'chatController@getHistory');
+Route::get('message/history', 'chatController@getHistory');
