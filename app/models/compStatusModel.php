@@ -9,9 +9,9 @@ class compStatusModel extends Model
     //
 
     protected $table = 'company_status';
-    public function status_files() 
+    public function Status_Files() 
     {
-    	return $this->hasMany('App\models\companyStatusFilesModel', 'status_id');
+    	return $this->hasMany('App\models\uploadedFilesModel', 'file_generated_token','status_generated_token');
     }
     public function companyData()
     {
