@@ -22,6 +22,8 @@ Route::post('/comp/status/getStatus', 'statusController@getStatus');
 Route::get('/comp/status/getStatus', 'statusController@getStatus');
 Route::get('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/setStatus', 'statusController@setStatus');
+Route::post('/comp/status/addFile', 'statusController@uploadFile');
+Route::post('/comp/status/getToken', 'Status_TokenGeneratorModelController@generate_Token');
 
 
 Route::post('message/history', 'chatController@getHistory');
