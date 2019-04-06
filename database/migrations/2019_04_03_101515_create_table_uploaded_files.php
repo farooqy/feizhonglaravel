@@ -13,12 +13,13 @@ class CreateTableUploadedFiles extends Migration
      */
     public function up()
     {
-        Schema::create('table_uploaded_files', function (Blueprint $table) {
+        Schema::create('uploaded_files', function (Blueprint $table) {
             $table->increments('id');
             $table->string('file_url');
             $table->boolean('file_is_active')->default(true);
             $table->biginteger('file_uploaded_by_id');
             $table->string('file_uploaded_by_who')->default('company');
+            $table->string('file_generated_token');
             $table->timestamps();
         });
     }
