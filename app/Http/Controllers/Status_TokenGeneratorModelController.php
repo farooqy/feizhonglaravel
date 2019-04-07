@@ -46,7 +46,7 @@ class Status_TokenGeneratorModelController extends Controller
     		$isValidHost = companydata_model::where([
     			['comp_id', '=' ,$request->host_id],
     			['comp_token', '=', $request->host_token]])->get();
-    	if($isValidHost === null)
+    	if($isValidHost === null || $isValidHost->count() <= 0)
     		return json_encode(array(
     			"error_message" => [
     				"The provided host id and host token do not match",
