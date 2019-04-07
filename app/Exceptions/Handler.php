@@ -46,6 +46,35 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof \Illuminate\Http\Exceptions\PostTooLargeException) 
+        {
+            return response(json_encode(array(
+                "error_message" => "The post contains content larger than allowed",
+                "error_description" => $exception->getMessage(),
+                "error_status" => true,
+                "error_code" => 422
+            )), 422);
+        }
+        if($exception instanceof \Symfony\Component\Debug\Exception\FatalThrowableError)
+        {
+            return response(json_encode(array(
+                "error_message" => "Syntax error",
+                "error_description" => $exception->getMessage(),
+                "error_line" => $exception->getLine(),
+                "error_file" => $exception->getFile(),
+                "error_status" => true,
+                "error_code" => 500
+            )), 500);
+        }
+        if($exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException)
+        {
+            return response(json_encode(array(
+                "error_message" => "Fatal Exception error",
+                "error_description" => $exception->getMessage(),
+                "error_status" => true,
+                "error_code" => 500
+            )), 500);        
+        }
         return parent::render($request, $exception);
     }
 }
