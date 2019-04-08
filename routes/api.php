@@ -30,5 +30,12 @@ Route::post('/comp/product/addProduct', 'products\productController@newProduct')
 Route::post('/comp/product/addImage', 'products\productController@addProductImage');
 Route::post('/comp/product/genToken', 'Status_TokenGeneratorModelController@generate_Token');
 
+Route::post('/comp/featureCompany', 'companies\featuredCompaniesController@requestToBeFeatured');
+Route::post('/comp/getFeaturedImages', 'companies\featuredCompaniesController@getFeaturedCompanies');
+Route::post('/comp/allowFeatureCompany', 'companies\featuredCompaniesController@approveFeatureCompany');
+
+Route::post('/favorites/doFavorite', 'favoritesController@favoriteCompany');
+Route::post('/favorites/getFavorites', 'favoritesController@getFavorites');
+
 Route::post('message/history', 'chatController@getHistory');
 Route::get('message/history', 'chatController@getHistory');
