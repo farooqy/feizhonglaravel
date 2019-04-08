@@ -16,4 +16,9 @@ class companydata_model extends Model
     {
         return $this->belongsTo('App\models\chatModel', 'message_host', 'comp_token');
     }
+
+    public function favoritedby()
+    {
+        return $this->hasMany('App\models\favoritesModel', 'comp_id', 'favorited_comp_id');
+    }
 }
