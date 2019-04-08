@@ -71,6 +71,8 @@ class Handler extends ExceptionHandler
             return response(json_encode(array(
                 "error_message" => "Fatal Exception error",
                 "error_description" => $exception->getMessage(),
+                "error_line" => $exception->getLine(),
+                "error_file" => $exception->getFile(),
                 "error_status" => true,
                 "error_code" => 500
             )), 500);        
