@@ -27,7 +27,17 @@ class Status_TokenGeneratorModelController extends Controller
     	];
     	$isValid = Validator::make($request->all(), $rules, $message);
     	if($isValid->fails())
-    		return $isValid->errors()->toJson();
+    	{
+            $errors = $isValid->errors();
+            $errors_list = [];
+            foreach($errors->all() as $error)
+                array_push($errors_list, $error);
+            return json_encode(array(
+                "errorMessage" => $errors_list,
+                "isSuccess" => false,
+                "successMessage" => null,
+            ));
+        }	
     	//ensure there is no unused token
     	$existing_token = tokenStatusGeneratorModel::where([
     		['generated_for_token', '=', $request->host_token],
@@ -48,10 +58,9 @@ class Status_TokenGeneratorModelController extends Controller
     			['comp_token', '=', $request->host_token]])->get();
     	if($isValidHost === null || $isValidHost->count() <= 0)
     		return json_encode(array(
-    			"error_message" => [
-    				"The provided host id and host token do not match",
-    			],
-    			"error_status" => true
+                "errorMessage" =>["The provided host id and host token do not match",],
+                "isSuccess" => false,
+                "successMessage" => null,
     			));
 
     	$lastToken = tokenStatusGeneratorModel::get()->last();
@@ -68,7 +77,11 @@ class Status_TokenGeneratorModelController extends Controller
     	$generatorModel->generated_for_type = $request->host_type;
 
     	$generatorModel->save();
-
-    	return json_encode(array("success" => true, "data" => ["generated_token" => $generated_Token]));
+        return json_encode(array(
+                "errorMessage" =>null,
+                "isSuccess" => true,
+                "successMessage" => "success",
+                "data" => ["generated_token" => $generated_Token]
+                ));
     }
 }

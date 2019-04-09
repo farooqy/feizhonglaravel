@@ -33,8 +33,9 @@ class favoritesController extends Controller
     		foreach($errors->all() as $error)
     			array_push($errors_list, $error);
     		return json_encode(array(
-    			"error_message" => $errors_list,
-    			"error_status" => true
+                "errorMessage" => $list_errors,
+                "isSuccess" => false,
+                "successMessage" => null,
     		));
     	}
 
@@ -56,8 +57,9 @@ class favoritesController extends Controller
     	if($valid_host == null || $valid_host->count() <= 0)
     	{
     		return json_encode([
-    			"error_message" => ["The id and token for host do not match"],
-    			"error_status" => true,
+    			"errorMessage" => ["The id and token for host do not match"],
+                "isSuccess" => false,
+                "successMessage" => null,
     		]);
     	}
 
@@ -70,7 +72,12 @@ class favoritesController extends Controller
     	foreach($favorited_companies as $favorite)
     		array_push($favorites_list, ["favorite" => $favorite, "favorite_comp_data" => $favorite->companydata]);
 
-    	return $favorited_companies;
+    	return json_encode([
+                "errorMessage" => null,
+                "isSuccess" => true,
+                "successMessage" => "success",
+                "data" => $favorited_companies
+            ]);
 
 	}
     public function favoriteCompany(Request $request)
@@ -96,8 +103,9 @@ class favoritesController extends Controller
     		foreach($errors->all() as $error)
     			array_push($errors_list, $error);
     		return json_encode(array(
-    			"error_message" => $errors_list,
-    			"error_status" => true
+                "errorMessage" => $errors_list,
+                "isSuccess" => false,
+                "successMessage" => null,
     		));
     	}
 
@@ -119,8 +127,9 @@ class favoritesController extends Controller
     	if($valid_host == null || $valid_host->count() <= 0)
     	{
     		return json_encode([
-    			"error_message" => ["The id and token for host do not match"],
-    			"error_status" => true,
+                "errorMessage" => ["The id and token for host do not match"],
+                "isSuccess" => false,
+                "successMessage" => null,
     		]);
     	}
 
@@ -129,8 +138,9 @@ class favoritesController extends Controller
     	if($valid_company == null || $valid_company->count() <= 0)
     	{
     		return json_encode([
-    			"error_message" => ["The company being favorited doesn't exist is suspended"],
-    			"error_status" => true,
+    			"errorMessage" => ["The company being favorited doesn't exist is suspended"],
+                "isSuccess" => false,
+                "successMessage" => null,
     		]);
     	}
 
@@ -145,24 +155,28 @@ class favoritesController extends Controller
     		$favoritesModel->save();
 
     		return json_encode([
-    			"success" => true,
     			"data" => []
+                "errorMessage" => null,
+                "isSuccess" => true,
+                "successMessage" => "success",
     		]);
     	}
     	catch(\Illuminate\Database\QueryException $exception)
         {
             $error = json_encode(array(
-                'error_message' => array($exception->errorInfo),
-                "error_status" => true
+                'errorMessage' => array($exception->errorInfo),
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
             return $error;
 
     	}
     	catch(Exception $exception)
     	{
-    		$error = json_encode(array(
-                'error_message' => array($exception->errorInfo),
-                "error_status" => true
+            $error = json_encode(array(
+                'errorMessage' => array($exception->errorInfo),
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
             return $error;
     	}

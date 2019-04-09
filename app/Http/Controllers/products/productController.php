@@ -23,7 +23,13 @@ class productController extends Controller
     	$product_list = [];
     	foreach($products as $product)
     		array_push($product_list, ["product"=>$product, "product_files" => $product->Product_Files]);
-    	return $products;
+
+        return json_encode([
+            "data" => $products,
+            "isSuccess" => true,
+            "errorMessage" => null,
+            "successMessage" => "success"
+        ]);
     }
     public function addProductImage(Request $request)
     {
@@ -52,8 +58,9 @@ class productController extends Controller
     			array_push($list_errors, $error);
     		}
     		return json_encode(array(
-    			"error_message" => $list_errors,
-    			"error_status" => true
+    			"errorMessage" => $list_errors,
+                "isSuccess" => false,
+                "successMessage" => null,
     		));
     	}
 
@@ -70,8 +77,9 @@ class productController extends Controller
     	if($is_valid_host == null || $is_valid_host->count() <= 0)
     	{
     		return json_encode(array(
-    			"error_message" => "The host id and token do not match",
-    			"error_status" => true
+                "errorMessage" => ["The host id and token do not match"],
+                "isSuccess" => false,
+                "successMessage" => null,
     		));
     	}
     	$path = public_path("uploads/comp/".$request->host_token."/products");
@@ -80,8 +88,9 @@ class productController extends Controller
     		if(!mkdir($path, 0765, true))
     		{
     			return json_encode(array(
-    				"error_message" => "Faild to create company product directory. Please contact support",
-    				"error_status" => true
+                    "errorMessage" => ["Faild to create company product directory. Please contact support"],
+                    "isSuccess" => false,
+                    "successMessage" => null,
     			));
     		}
     	}
@@ -103,15 +112,18 @@ class productController extends Controller
     			['file_url', env('APP_URL')."uploads/comp/".$request->host_token.'/products'.$fileurl]
     		])->get()[0]->id;
     		return json_encode(array(
-    			"success" => true,
-    			"file_id" => $product_file_id
+    			"data" => ["product_file_id" => $product_file_id],
+                "errorMessage" => null,
+                "isSuccess" => true,
+                "successMessage" => "success",
     		));
     	}
     	catch(\Illuminate\Database\QueryException $exception)
         {
             $error = json_encode(array(
-                'error_message' => array($exception->errorInfo),
-                "error_status" => true
+                "errorMessage" => array($exception->errorInfo),
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
             return $error;
 
@@ -119,8 +131,9 @@ class productController extends Controller
     	catch(Exception $exception)
     	{
     		$error = json_encode(array(
-                'error_message' => array($exception->errorInfo),
-                "error_status" => true
+                "errorMessage" => array($exception->errorInfo),
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
             return $error;
     	}
@@ -159,8 +172,9 @@ class productController extends Controller
     			array_push($list_errors, $error);
     		}
     		return json_encode(array(
-    			"error_message" => $list_errors,
-    			"error_status" => true
+                "errorMessage" => $list_errors,
+                "isSuccess" => false,
+                "successMessage" => null,
     		));
     	}
 
@@ -176,8 +190,9 @@ class productController extends Controller
     	if($is_valid_host == null || $is_valid_host->count() <= 0)
     	{
     		return json_encode(array(
-    			"error_message" => "The host id and token do not match",
-    			"error_status" => true
+    			"errorMessage" => ["The host id and token do not match"],
+                "isSuccess" => false,
+                "successMessage" => null,
     		));
     	}
 
@@ -201,16 +216,20 @@ class productController extends Controller
     		])->update(['generated_completed'=>true]);
 
     		return json_encode(array(
-    			"success" => true,
     			"data" => []
+                "errorMessage" => null,
+                "isSuccess" => true,
+                "successMessage" => "success",
     		));
     	}
 
     	catch(\Illuminate\Database\QueryException $exception)
         {
             $error = json_encode(array(
-                'error_message' => array($exception->errorInfo),
+                'errorMessage' => array($exception->errorInfo),
                 "error_status" => true
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
             return $error;
 
@@ -218,8 +237,9 @@ class productController extends Controller
     	catch(Exception $exception)
     	{
     		$error = json_encode(array(
-                'error_message' => array($exception->errorInfo),
-                "error_status" => true
+                'errorMessage' => array($exception->errorInfo),
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
             return $error;
     	}
@@ -239,8 +259,9 @@ class productController extends Controller
             return [
                 false,
                 json_encode(array(
-                "error_message" => ["The provided status token is not valid",],
-                "error_status" => true
+                "errorMessage" => ["The provided status token is not valid",],
+                "isSuccess" => false,
+                "successMessage" => null,
             ))
             ];
         }
@@ -249,8 +270,9 @@ class productController extends Controller
             return[
                 false,
                 json_encode(array(
-                    "error_message" => ["The status token has expired. "],
-                    "error_status" => true
+                    "errorMessage" => ["The status token has expired. "],
+                    "isSuccess" => false,
+                    "successMessage" => null,
                 ))
          ];
         }

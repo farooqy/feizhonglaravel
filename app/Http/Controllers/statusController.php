@@ -60,7 +60,11 @@ class statusController extends Controller
             $listerrors = [];
             foreach($errors->all() as $error)
                 array_push($listerrors, $error);
-            return json_encode(array("error_message" => $listerrors, "error_status" => true));
+            return json_encode([
+                'errorMessage' => $listerrors, 
+                'isSuccess' => false, 
+                'successMessage' => null
+            ]);
         }    
 
         //check generated token
@@ -86,8 +90,9 @@ class statusController extends Controller
         if($isExisting === null)
         {
             $errors = json_encode([
-                "comp_id" => "The company id and company token do not match",
-                "comp_token" => "The company token and company id do not match",
+                'errorMessage' => ["The company id and company token do not match"],
+                'isSuccess' => false, 
+                'successMessage' => null
             ]);
             return $errors;
         }
@@ -96,7 +101,11 @@ class statusController extends Controller
             if(!is_dir(public_path('uploads/comp/'.$fileForm->host_token)))
             {
                 if(!mkdir(public_path('uploads/comp/'.$fileForm->host_token), 0765, true))
-                    return json_encode($errors = array('file_value' => 'Failed to create directory for the user' ));
+                    return json_encode([
+                        'errorMessage' => ["Failed to create directory for the status file"],
+                        'isSuccess' => false, 
+                        'successMessage' => null
+                    ]);
             }
             $fileUrl = 'uploads/comp/'.$fileForm->host_token.'/status_image_'.hash('md5', time()).'.'.$fileForm->file_value->getClientOriginalExtension();
             $filepath = public_path($fileUrl);
@@ -110,7 +119,12 @@ class statusController extends Controller
             $fileModel->save();
             $fileId = $fileModel::where('file_url', env('APP_URL').$fileUrl)->get()[0]->id;
 
-            return json_encode(array('success'=>true, 'file_id' => $fileId));
+            return json_encode([
+                'errorMessage' => null,
+                'isSuccess' => true, 
+                'successMessage' => "success",
+                "data" => ["file_id" => $fileId]
+            ]);
         }
         return $fileForm;
     }
@@ -144,17 +158,22 @@ class statusController extends Controller
         $statusFilesObject = [];
         if($validation->fails())
         {
-            $errors =$validation->errors();
-            $listerrors = [];
+            $errors = $validation->errors();
+            $errors_list = [];
             foreach($errors->all() as $error)
-                array_push($listerrors, $error);
-            return json_encode(array("error_message" => $listerrors, "error_status" => true));
+                array_push($errors_list, $error);
+            return json_encode(array(
+                "errorMessage" => $list_errors,
+                "isSuccess" => false,
+                "successMessage" => null,
+            ));
         }
         else if($statusForm->num_files <= 0)
         {
             return json_encode(array(
-                "error_message" => ["An image/video must be uplaoded"],
-                "error_status" => true
+                "errorMessage" => ["An image/video must be uplaoded"],
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
         }
         // end validation form
@@ -189,8 +208,9 @@ class statusController extends Controller
         if($validHost === null)
         {
             return json_encode(array(
-                "error_message" => ["The host id and token do not match "],
-                "error_status" => true
+                "errorMessage" => ["The host id and token do not match "],
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
         }
         // end check host 
@@ -201,8 +221,9 @@ class statusController extends Controller
         if(count($fileIds) !== (integer)$statusForm->num_files)
         {
             return json_encode(array(
-                "error_message" => "The file list and given files, do not match",
-                "error_status" => true
+                "errorMessage" => "The file list and given files, do not match",
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
         }
         else 
@@ -218,8 +239,9 @@ class statusController extends Controller
                 if($is_valid_file == null || $is_valid_file->count() <= 0)
                 {
                     return json_encode(array(
-                        "error_message" => "The files you are trying to add to the status don't exist. Please retry again",
-                        "error_status"  => true
+                        "errorMessage" => "The files you are trying to add to the status don't exist. Please retry again",
+                        "isSuccess" => false,
+                        "successMessage" => null,
                     ));
                 }
             }
@@ -245,7 +267,8 @@ class statusController extends Controller
             // companyStatusFilesModel::insert($statusFilesObject);
             $success = json_encode(array(
                 "isSuccess" => true,
-                "successMessage" => "success "
+                "successMessage" => "success",
+                "errorMessage" => null
             ));
 
             return $success;
@@ -253,8 +276,9 @@ class statusController extends Controller
         catch(\Illuminate\Database\QueryException $exception)
         {
             $error = json_encode(array(
-                'error_message' => array($exception->errorInfo),
-                "error_status" => true
+                'errorMessage' => array($exception->errorInfo),
+                "isSuccess" => false,
+                "successMessage" => null,
             ));
             return $error;
         }  
@@ -274,8 +298,9 @@ class statusController extends Controller
             return [
                 false,
                 json_encode(array(
-                "error_message" => ["The provided status token is not valid",],
-                "error_status" => true
+                "errorMessage" => ["The provided status token is not valid",],
+                "isSuccess" => false,
+                "successMessage" => null,
             ))
             ];
         }
@@ -284,8 +309,9 @@ class statusController extends Controller
             return[
                 false,
                 json_encode(array(
-                    "error_message" => ["The status token has expired. "],
-                    "error_status" => true
+                    "errorMessage" => ["The status token has expired. "],
+                    "isSuccess" => false,
+                    "successMessage" => null,
                 ))
          ];
         }
