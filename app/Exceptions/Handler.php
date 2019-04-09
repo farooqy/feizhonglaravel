@@ -77,6 +77,15 @@ class Handler extends ExceptionHandler
                 "error_code" => 500
             )), 500);        
         }
+        if($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException)
+        {
+            return response(json_encode(array(
+                "error_message" => "Method Not Allowed",
+                "error_description" => $exception->getMessage(),
+                "error_status" => true,
+                "error_code" => 500
+            )), 500);        
+        }
         return parent::render($request, $exception);
     }
 }
