@@ -46,7 +46,12 @@ class Status_TokenGeneratorModelController extends Controller
     		['generated_for_id', '=', $request->host_id],
     	])->get();
     	if($existing_token->count() >= 1)
-    		return json_encode(array("success" => true, "data" => ["generated_token" => $existing_token[0]->generated_token]));
+            return json_encode(array(
+                "errorMessage" =>null,
+                "isSuccess" => true,
+                "successMessage" => "success",
+                "data" => ["generated_token" => $existing_token[0]->generated_token]
+                ));
     	
     	if($request->host_type === "normal")
     		$isValidHost = normalUsersModel::where([
