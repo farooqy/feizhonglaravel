@@ -36,7 +36,7 @@ class featuredCompaniesController extends Controller
     		foreach($errors->all() as $error)
     			array_push($errors_list, $error);
     		return json_encode(array(
-    			"$errorMessage" => $errors_list,
+    			"errorMessage" => $errors_list,
     			"error_status" => true,
                 "isSuccess" => false,
                 "successMessage" => null
@@ -47,7 +47,7 @@ class featuredCompaniesController extends Controller
     	if($is_already_featured !== null && $is_already_featured->count() > 0)
     	{
     		return json_encode(array(
-    			"$errorMessage" => "The company is already featured, cannot be featured more than once",
+    			"errorMessage" => "The company is already featured, cannot be featured more than once",
     			"error_status" => true,
                 "isSuccess" => false,
                 "successMessage" => null
@@ -62,7 +62,7 @@ class featuredCompaniesController extends Controller
     	if($is_valid_company == null || $is_valid_company->count() <= 0)
     	{
     		return json_encode(array(
-    			"$errorMessage" => "The company id and token do not match",
+    			"errorMessage" => "The company id and token do not match",
     			"error_status" => true,
                 "isSuccess" => false,
                 "successMessage" => null
@@ -77,7 +77,7 @@ class featuredCompaniesController extends Controller
     		if(!mkdir($file_path, 0765, true))
     		{
     			return json_encode([
-    				"$errorMessage" => ["Failed to create featured file directory for the company, Contact support"],
+    				"errorMessage" => ["Failed to create featured file directory for the company, Contact support"],
     				"error_status" => true,
                     "isSuccess" => false,
                     "successMessage" => null
@@ -107,7 +107,7 @@ class featuredCompaniesController extends Controller
     	catch(\Illuminate\Database\QueryException $exception)
         {
             $error = json_encode(array(
-                '$errorMessage' => array($exception->errorInfo),
+                'errorMessage' => array($exception->errorInfo),
                 "error_status" => true,
                 "isSuccess" => false,
                 "successMessage" => null
@@ -118,7 +118,7 @@ class featuredCompaniesController extends Controller
     	catch(Exception $exception)
     	{
     		$error = json_encode(array(
-                '$errorMessage' => array($exception->errorInfo),
+                'errorMessage' => array($exception->errorInfo),
                 "error_status" => true,
                 "isSuccess" => false,
                 "successMessage" => null
@@ -158,7 +158,7 @@ class featuredCompaniesController extends Controller
     		}
 
     		return json_encode([
-    			"$errorMessage" => $errors_list,
+    			"errorMessage" => $errors_list,
     			"error_status" => true,
                 "isSuccess" => false,
                 "successMessage" => null
@@ -172,7 +172,7 @@ class featuredCompaniesController extends Controller
     	if($has_request == null || $has_request->count() <= 0)
     	{
     		return json_encode([
-    			"$errorMessage" => ["The company doesn't have any feature request waiting for approval"],
+    			"errorMessage" => ["The company doesn't have any feature request waiting for approval"],
     			"error_status" => true,
                 "isSuccess" => false,
                 "successMessage" => null
