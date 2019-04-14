@@ -55,6 +55,15 @@ class Handler extends ExceptionHandler
                 "error_code" => 422
             )), 422);
         }
+        if ($exception instanceof ErrorException) 
+        {
+            return response(json_encode(array(
+                "error_message" => "The post contains content larger than allowed",
+                "error_description" => $exception->getMessage(),
+                "error_status" => true,
+                "error_code" => 422
+            )), 422);
+        }
         if($exception instanceof \Symfony\Component\Debug\Exception\FatalThrowableError)
         {
             return response(json_encode(array(
