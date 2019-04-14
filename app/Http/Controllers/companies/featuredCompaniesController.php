@@ -18,7 +18,7 @@ class featuredCompaniesController extends Controller
     	$rules = [
     		"host_id" => "required|integer",
     		"host_token" => "required|string",
-    		"featured_file" => "required|max:5000000|mimes:jpeg,png,jpg,mp4,mpeg4",
+    		"featured_file" => "required",
     	];
 
     	$messages =[
@@ -69,12 +69,10 @@ class featuredCompaniesController extends Controller
     		));
     	}
 
-    	$file_name = "featured_image_".hash('md5', time()).".".$request->featured_file->getClientOriginalExtension();
-    	$file_directory = "uploads/comp/".$request->host_token."featured_files";
-    	$file_path = public_path($file_directory);
-    	if(!is_dir($file_path))
+        $filepath = "uploads/comp/".$request->host_token.'/feature_files';
+    	if(!is_dir($filepath))
     	{
-    		if(!mkdir($file_path, 0765, true))
+    		if(!mkdir($filepath, 0765, true))
     		{
     			return json_encode([
     				"errorMessage" => ["Failed to create featured file directory for the company, Contact support"],
@@ -84,15 +82,33 @@ class featuredCompaniesController extends Controller
     			]);
     		}
     	}
-
+        
+        $allowed_file_types = ["image/jpeg", "image/png", "image/jpg", "video/mp4"];
+        $file_extension = ["jpeg", "png", "jpg", "mp4"];
+        $file_type =  substr($request->featured_file,(strpos($request->featured_file, "data:")+5),
+         (strpos($request->featured_file, ";")-5));
+        if(($type_key = array_search($file_type, $allowed_file_types)) === false)
+        {
+            return json_encode([
+                'errorMessage' => "The file type provided is not valid",
+                'isSuccess' => false, 
+                'successMessage' =>null
+            ]);
+        }
+        else
+            $extenstion = $file_extension[$type_key];
+        $fileUrl = 'uploads/comp/'.$request->host_token.'/feature_files/feature_image_decoded_'.hash('md5', time()).'.'.$extenstion;
+        $filepath = public_path($fileUrl);
+        $request->featured_file = str_replace("data:".$file_type.";base64", '', $request->featured_file);
+        $request->featured_file = base64_decode($request->featured_file);
     	try
     	{
-    		Image::make($request->featured_file)->save($file_path."/".$file_name);
-
+    		// Image::make($request->featured_file)->save($file_path."/".$file_name);
+            \File::put($filepath, $request->featured_file);
     		$featuredCompaniesModel = new featuredCompaniesModel;
     		$featuredCompaniesModel->featured_for_id = $request->host_id;
-    		$featuredCompaniesModel->feature_file_url = env('APP_URL').$file_directory."/".$file_name;
-    		$featuredCompaniesModel->feature_file_type = $request->featured_file->getClientOriginalExtension();
+    		$featuredCompaniesModel->feature_file_url = env('APP_URL').$fileUrl;
+    		$featuredCompaniesModel->feature_file_type = $extenstion;
 
     		$featuredCompaniesModel->save();
 
