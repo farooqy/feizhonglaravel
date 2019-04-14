@@ -38,14 +38,13 @@ class productController extends Controller
     		"host_id" => "required|integer",
     		"host_token" => "required|string",
     		"product_gen_token" => "required|string",
-    		"product_file" => "required|max:5000000|mimes:jpeg, png, jpg, mp4, mpeg4"
+    		"product_file" => "required|string"
     	];
     	$message = [
     		"required" => "The :attribute is required",
     		"integer" => "The :attribute must be integer",
     		"string" => "The :attribute must be string",
     		"in" => "The selected :attribute is not valid",
-    		"mimes" => "The :attribute type is not valid, only, jpeg, png, jpg, mp4 and mpeg4 are allowed"
     	];
 
     	$is_valid = Validator::make($request->all(), $rules, $message);
@@ -93,23 +92,44 @@ class productController extends Controller
                     "successMessage" => null,
     			));
     		}
+        
+            // Image::make($fileForm->file('product_file'))->save($filepath);
+            
     	}
-    	$fileurl = "/product_".hash('md5',time())."_".$request->product_file->getClientOriginalExtension();
-    	$filename = $path.$fileurl;
+        $allowed_file_types = ["image/jpeg", "image/png", "image/jpg", "video/mp4"];
+        $file_extension = ["jpeg", "png", "jpg", "mp4"];
+        $file_type =  substr($request->product_file,(strpos($request->product_file, "data:")+5),
+         (strpos($request->product_file, ";")-5));
+        if(($type_key = array_search($file_type, $allowed_file_types)) === false)
+        {
+            return json_encode([
+                'errorMessage' => "The file type provided is not valid",
+                'isSuccess' => false, 
+                'successMessage' =>null
+            ]);
+        }
+        else
+            $extenstion = $file_extension[$type_key];
+        $request->product_file = str_replace("data:".$file_type.";base64", '', $request->product_file);
+        $request->product_file = base64_decode($request->product_file);
+        $fileUrl = 'uploads/comp/products/'.$request->host_token.'/product_image_decoded_'.hash('md5', time()).'.'.$extenstion;
+        $filepath = public_path($fileUrl);
+    	// $fileurl = "/product_".hash('md5',time())."_".$request->product_file->getClientOriginalExtension();
+    	// $filename = $path.$fileurl;
     	try
     	{
-    		Image::make($request->file('product_file'))->save($filename);
+    		\File::put($filepath, $request->product_file);
     		$productFilesModel = new productFilesModel;
     		$productFilesModel->file_uploaded_by_id = $request->host_id;
     		$productFilesModel->product_gen_token = $request->product_gen_token;
-    		$productFilesModel->file_url = env('APP_URL')."uploads/comp/".$request->host_token.'/products'.$fileurl;
-    		$productFilesModel->file_type = $request->product_file->getClientOriginalExtension();
+    		$productFilesModel->file_url = env('APP_URL').$fileUrl;
+    		$productFilesModel->file_type = $extenstion;
     		$productFilesModel->save();
 
     		$product_file_id = $productFilesModel::where([
     			['file_uploaded_by_id', $request->host_id],
     			['product_gen_token', $request->product_gen_token],
-    			['file_url', env('APP_URL')."uploads/comp/".$request->host_token.'/products'.$fileurl]
+    			['file_url', env('APP_URL').$fileUrl]
     		])->get()[0]->id;
     		return json_encode(array(
     			"data" => ["product_file_id" => $product_file_id],
@@ -216,7 +236,7 @@ class productController extends Controller
     		])->update(['generated_completed'=>true]);
 
     		return json_encode(array(
-    			"data" => []
+    			"data" => [],
                 "errorMessage" => null,
                 "isSuccess" => true,
                 "successMessage" => "success",
@@ -227,7 +247,7 @@ class productController extends Controller
         {
             $error = json_encode(array(
                 'errorMessage' => array($exception->errorInfo),
-                "error_status" => true
+                "error_status" => true,
                 "isSuccess" => false,
                 "successMessage" => null,
             ));
