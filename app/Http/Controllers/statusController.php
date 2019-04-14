@@ -42,14 +42,13 @@ class statusController extends Controller
     public function uploadFile(Request $fileForm)
     {
         $rules = [
-            "file_value" => 'required|mimes:jpg,jpeg,png,avi,web,mp4',
+            "file_value" => 'required|string',
             'host_id' => 'required|integer',
             'host_token' => 'required|string',
             'host_type' => 'required|in:normal,comp',
             "generated_token" => "required|string"
         ];
         $messages = [
-            "mimes" => "The :attribute type is not valid",
             "required" => "The :attribute is required"
         ];
         $validation = Validator::make($fileForm->all(), $rules, $messages);
@@ -107,9 +106,26 @@ class statusController extends Controller
                         'successMessage' => null
                     ]);
             }
-            $fileUrl = 'uploads/comp/'.$fileForm->host_token.'/status_image_'.hash('md5', time()).'.'.$fileForm->file_value->getClientOriginalExtension();
+            $allowed_file_types = ["image/jpeg", "image/png", "image/jpg", "video/mp4"];
+            $file_extension = ["jpeg", "png", "jpg", "mp4"];
+            $file_type =  substr($fileForm->file_value,(strpos($fileForm->file_value, "data:")+5),
+             (strpos($fileForm->file_value, ";")-5));
+            if(($type_key = array_search($file_type, $allowed_file_types)) === false)
+            {
+                return json_encode([
+                    'errorMessage' => "The file type provided is not valid",
+                    'isSuccess' => false, 
+                    'successMessage' =>null
+                ]);
+            }
+            else
+                $extenstion = $file_extension[$type_key];
+            $fileForm->file_value = str_replace("data:".$file_type.";base64", '', $fileForm->file_value);
+            $fileForm->file_value = base64_decode($fileForm->file_value);
+            $fileUrl = 'uploads/comp/'.$fileForm->host_token.'/status_image_decoded_'.hash('md5', time()).'.'.$extenstion;
             $filepath = public_path($fileUrl);
-            Image::make($fileForm->file('file_value'))->save($filepath);
+            // Image::make($fileForm->file('file_value'))->save($filepath);
+            \File::put($filepath, $fileForm->file_value);
             $fileModel = new uploadedFilesModel;
             $fileModel->file_url = env('APP_URL').$fileUrl;
             $fileModel->file_uploaded_by_id = $fileForm->host_id;
