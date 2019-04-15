@@ -31,6 +31,6 @@ class CreateTableUploadedFiles extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_uploaded_files');
+        Schema::dropIfExists('uploaded_files');
     }
 }
