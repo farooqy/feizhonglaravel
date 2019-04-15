@@ -70,7 +70,7 @@ class featuredCompaniesController extends Controller
     	}
 
         $filepath = "uploads/comp/".$request->host_token.'/feature_files';
-    	if(!is_dir($filepath))
+    	if(!is_dir(public_path($filepath)))
     	{
     		if(!mkdir($filepath, 0765, true))
     		{
