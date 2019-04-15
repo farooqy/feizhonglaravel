@@ -72,7 +72,7 @@ class featuredCompaniesController extends Controller
         $filepath = "uploads/comp/".$request->host_token.'/feature_files';
     	if(!is_dir(public_path($filepath)))
     	{
-    		if(!mkdir($filepath, 0765, true))
+    		if(!mkdir(public_path($filepath), 0765, true))
     		{
     			return json_encode([
     				"errorMessage" => ["Failed to create featured file directory for the company, Contact support"],
