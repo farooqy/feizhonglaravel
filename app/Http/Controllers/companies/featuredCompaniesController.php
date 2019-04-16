@@ -151,7 +151,12 @@ class featuredCompaniesController extends Controller
     		['feature_status', 'approved']
     	])->get();
 
-    	return json_encode($featured_companies);
+    	return json_encode(array(
+                'errorMessage' => null,
+                "isSuccess" => true,
+                "successMessage" => "success",
+                "data" => $featured_companies
+            ));;
     }
 
     public function approveFeatureCompany(Request $request)
