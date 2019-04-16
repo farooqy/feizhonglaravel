@@ -36,7 +36,8 @@ class statusController extends Controller
                 "files" => $eachStatus->Status_Files
             );
         }
-    	return $statusData;
+    	return json_encode(["isSuccess"=> true, "errorMessage"=> null,
+         "successMessage"=>"success", "data"=>$statusData]);
 
     }
     public function uploadFile(Request $fileForm)
