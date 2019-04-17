@@ -25,6 +25,8 @@ Route::get('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/addFile', 'statusController@uploadFile');
 Route::post('/comp/status/getToken', 'Status_TokenGeneratorModelController@generate_Token');
+Route::post('/comp/status/comment', 'statusController@writeComment');
+Route::post('/comp/status/like', 'statusController@likeStatus');
 
 Route::post('/comp/products', 'products\productController@getProducts');
 Route::post('/comp/product/addProduct', 'products\productController@newProduct');

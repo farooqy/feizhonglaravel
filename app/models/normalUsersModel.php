@@ -36,4 +36,12 @@ class normalUsersModel extends Model
 		return $chatHistory;
 
 	}
+	public function statusComments()
+	{
+		return $this->hasMany('App\models\status\commentsModel', 'host_id', 'user_id');
+	}
+	public function statusLikes()
+	{
+		return $this->hasMany('App\models\status\likesModel', 'host_id', 'user_id');
+	}
 }

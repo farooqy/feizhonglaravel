@@ -9,6 +9,8 @@ use App\models\compStatusModel;
 use App\models\companyStatusFilesModel;
 use App\models\uploadedFilesModel;
 use App\models\tokenStatusGeneratorModel;
+use App\models\status\commentsModel;
+use App\models\status\likesModel;
 
 use Illuminate\Support\Facades\Validator;
 // use Intervention\Image\Facades\Image as Image;
@@ -29,12 +31,30 @@ class statusController extends Controller
     {
     	$statusData = compStatusModel::where([['status_status' ,'=', 'active']])->get();
         $status = [];
-        foreach($statusData as $eachStatus)
+        foreach($statusData as $key => $eachStatus)
         {
             $status = array(
                 "status" => $eachStatus,
-                "files" => $eachStatus->Status_Files
+                "files" => $eachStatus->Status_Files,
+                
+                "num_comments" => $eachStatus->comments->count(),
+                
+                "num_likes" => $eachStatus->likes->count(),
             );
+            $comments = $eachStatus->comments;
+            $likes = $eachStatus->likes;
+            foreach($comments as $comment)
+            {
+                $status["comments"] = ["comment"=>$comment, "details"=> $comment->personProfile];
+            }   
+            foreach( $likes as  $like)
+            {
+                $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
+            }
+
+            $statusData[$key]["num_comments"] = $comments->count();
+            $statusData[$key]["num_likes"] = $likes->count();
+
         }
     	return json_encode(["isSuccess"=> true, "errorMessage"=> null,
          "successMessage"=>"success", "data"=>$statusData]);
@@ -334,6 +354,114 @@ class statusController extends Controller
         }
         else
             return [true, null];
+    }
+
+    public function writeComment(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_type" => "required|in:comp,normal",
+            "status_id" => "required|integer",
+            "comment_text" => "required|string|min:2"
+        ];
+        $messages = [
+            "min" => "The :attribute value provided is less than 2 characters",
+            "in" => "The :attribute value given is not valid"
+        ];
+
+        $is_valid_request = Validator::make($request->all(), $rules, $messages);
+        if($is_valid_request->fails())
+        {
+            $error_list = [];
+            $errors = $is_valid_request->errors();
+            foreach($errors->all() as $error)
+                array_push($error_list, $error);
+
+            $json = json_encode(array(
+                'errorMessage' => $error_list, 
+                'isSuccess' => false, 
+                'successMessage' => null));
+            return $json;
+        }
+        //is valid status
+        $status_valid = compStatusModel::where('id', $request->status_id)->get();
+        if($status_valid === null || $status_valid->count() <= 0)
+            return json_encode([
+                "errorMessage" => ["The target status is not valid or doesn't exist"],
+                "isSuccess" => false,
+                "successMessage" => null,
+                "data" => []
+            ]);
+        //is it valid host
+        if($request->host_type === "normal")
+        {
+            $host_is_valid = normalUsersModel::where('user_id', $request->host_id)->get();
+        }
+        else
+            $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
+
+        if($host_is_valid === null || $host_is_valid->count() <= 0)
+            return json_encode([
+                "errorMessage" => ["The host provided is not valid or doesn't exist"],
+                "isSuccess" => false,
+                "successMessage" => null,
+                "data" => []
+            ]);
+        return commentsModel::saveComment($request->status_id,
+            $request->host_id,$request->host_type, $request->comment_text);
+    }
+    public function likeStatus(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_type" => "required|in:comp,normal",
+            "status_id" => "required|integer",
+        ];
+        $messages = [
+            "min" => "The :attribute value provided is less than 2 characters",
+            "in" => "The :attribute value given is not valid"
+        ];
+
+        $is_valid_request = Validator::make($request->all(), $rules, $messages);
+        if($is_valid_request->fails())
+        {
+            $error_list = [];
+            $errors = $is_valid_request->errors();
+            foreach($errors->all() as $error)
+                array_push($error_list, $error);
+
+            $json = json_encode(array(
+                'errorMessage' => $error_list, 
+                'isSuccess' => false, 
+                'successMessage' => null));
+            return $json;
+        }
+        //is valid status
+        $status_valid = compStatusModel::where('id', $request->status_id)->get();
+        if($status_valid === null || $status_valid->count() <= 0)
+            return json_encode([
+                "errorMessage" => ["The target status is not valid or doesn't exist"],
+                "isSuccess" => false,
+                "successMessage" => null,
+                "data" => []
+            ]);
+        //is it valid host
+        if($request->host_type === "normal")
+        {
+            $host_is_valid = normalUsersModel::where('user_id', $request->host_id)->get();
+        }
+        else
+            $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
+
+        if($host_is_valid === null || $host_is_valid->count() <= 0)
+            return json_encode([
+                "errorMessage" => ["The host provided is not valid or doesn't exist"],
+                "isSuccess" => false,
+                "successMessage" => null,
+                "data" => []
+            ]);
+        return likesModel::saveLike($request->status_id,
+            $request->host_id,$request->host_type);
     }
 
 }
