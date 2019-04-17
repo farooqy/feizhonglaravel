@@ -8,6 +8,7 @@ class companydata_model extends Model
 {
     //
     protected $table = 'companydata';
+    protected $hidden = ["comp_pass"];
     public function companyStatus ()
     {
     	return $this->hasMany('App\models\compStatusModel', 'comp_id', 'comp_id');
