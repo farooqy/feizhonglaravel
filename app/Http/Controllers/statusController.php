@@ -36,9 +36,8 @@ class statusController extends Controller
             $status = array(
                 "status" => $eachStatus,
                 "files" => $eachStatus->Status_Files,
-                
+                "companyProfile" => $eachStatus->companyData,
                 "num_comments" => $eachStatus->comments->count(),
-                
                 "num_likes" => $eachStatus->likes->count(),
             );
             $comments = $eachStatus->comments;
