@@ -334,7 +334,7 @@ class accountController extends Controller
     	catch(TwilioException $e)
     	{
     		return json_encode([
-    			"errorMessage" => [$e],
+    			"errorMessage" => [$e,"Twilio failed to send code"],
     			"successMessage" => null,
     			"isSuccess" => false,
     			"data" => [],
