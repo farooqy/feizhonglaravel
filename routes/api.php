@@ -17,6 +17,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/user/login', 'user\accountController@login');
+Route::post('/user/register', 'user\accountController@register');
+
+Route::post('/comp/login', 'comp\accountController@companyLogin');
+Route::post('/comp/register/basicInfo', 'comp\accountController@basicInfoRegister');
+Route::post('/comp/register/address', 'comp\accountController@addressRegistration');
+Route::post('/comp/register/type', 'comp\accountController@companyTypeRegistration');
+Route::post('/comp/verifyComp', 'comp\accountController@sendConfirmationText');
+
+
 Route::get('/comp/status', 'statusController@index');
 
 Route::post('/comp/status/getStatus', 'statusController@getStatus');
