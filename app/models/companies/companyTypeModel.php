@@ -14,6 +14,6 @@ class companyTypeModel extends Model
     ];
     public function companydata()
     {
-    	return $this->belongsTo('App\models\companies\companydataModel', 'comp_id');
+    	return $this->belongsTo('App\models\companies\companydataModel', 'comp_id', 'comp_id');
     }
 }

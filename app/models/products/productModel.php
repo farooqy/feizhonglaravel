@@ -12,4 +12,8 @@ class productModel extends Model
     {
     	return $this->hasMany('App\models\products\productFilesModel', 'product_gen_token','product_gen_token');
     }
+    public function companydata()
+    {
+    	return $this->belongsTo('App\models\companydata_model', 'product_for_id', 'comp_id');
+    }
 }

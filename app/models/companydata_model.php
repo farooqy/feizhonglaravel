@@ -30,4 +30,8 @@ class companydata_model extends Model
     {
         return $this->hasMany('App\models\status\commentsModel', 'host_id');
     }
+    public function products()
+    {
+        return $this->hasMany('App\models\products\productModel', 'product_for_id', 'comp_id');
+    }
 }
