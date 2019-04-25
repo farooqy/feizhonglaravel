@@ -25,3 +25,4 @@ Route::post('/comp/status/setStatus', 'statusController@setStatus');
 
 Route::post('/messages/history', 'chatController@getMessages');
 Route::get('message/history', 'chatController@getHistory');
+Route::get('/quote', 'generalController@showQuote');

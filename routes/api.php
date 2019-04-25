@@ -16,22 +16,20 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::put('*', 'generalController@notAllowedMethod');
 Route::post('/user/login', 'user\accountController@login');
 Route::post('/user/register', 'user\accountController@register');
 
-Route::post('/comp/login', 'comp\accountController@companyLogin');
-Route::post('/comp/register/basicInfo', 'comp\accountController@basicInfoRegister');
-Route::post('/comp/register/address', 'comp\accountController@addressRegistration');
-Route::post('/comp/register/type', 'comp\accountController@companyTypeRegistration');
-Route::post('/comp/verifyComp', 'comp\accountController@sendConfirmationText');
+Route::post('/comp/login', 'companies\accountController@companyLogin');
+Route::post('/comp/register/basicInfo', 'companies\accountController@basicInfoRegister');
+Route::post('/comp/register/address', 'companies\accountController@addressRegistration');
+Route::post('/comp/register/type', 'companies\accountController@companyTypeRegistration');
+Route::post('/comp/verifyComp', 'companies\accountController@sendConfirmationText');
 
 
-Route::get('/comp/status', 'statusController@index');
+Route::post('/comp/status', 'statusController@index');
 
 Route::post('/comp/status/getStatus', 'statusController@getStatus');
-Route::get('/comp/status/getStatus', 'statusController@getStatus');
-Route::get('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/addFile', 'statusController@uploadFile');
 Route::post('/comp/status/getToken', 'Status_TokenGeneratorModelController@generate_Token');
@@ -47,8 +45,15 @@ Route::post('/comp/featureCompany', 'companies\featuredCompaniesController@reque
 Route::post('/comp/getFeaturedImages', 'companies\featuredCompaniesController@getFeaturedCompanies');
 Route::post('/comp/allowFeatureCompany', 'companies\featuredCompaniesController@approveFeatureCompany');
 
+Route::post('/comp/quotation/generate', 'companies\quotationController@generateQuotation');
+
 Route::post('/favorites/doFavorite', 'favoritesController@favoriteCompany');
 Route::post('/favorites/getFavorites', 'favoritesController@getFavorites');
 
 Route::post('message/history', 'chatController@getHistory');
-Route::get('message/history', 'chatController@getHistory');
+Route::post('message/history', 'chatController@getHistory');
+
+Route::post('/list/companies', 'generalController@listCompanies');
+
+
+Route::get('/quote', 'generalController@showQuote');
