@@ -198,7 +198,6 @@ class accountController extends Controller
     	//isvalid code
     	$verification_code = phoneVerificationModel::where([
     		['target_phone', $request->company_phone],
-    		['verification_code', $request->verification_code]
     	])->get();
     	if($verification_code === null || $verification_code->count() <= 0)
     	{
@@ -209,10 +208,18 @@ class accountController extends Controller
     	{
     		//collsion verification code
     		$existing = phoneVerificationModel::where('target_phone', $request->company_phone);
-            $existing->delete();
+            foreach($existing as $excode)
+                $excode->delete();
+            // $existing->delete();
     		$this->setError(['Please verify your phone again before continuing']);
     		return $this->error;
     	}
+        else if($verification_code[0]->verification_code !== $request->verification_code)
+        {
+
+            $this->setError(['The verification code is not valid']);
+            return $this->error;
+        }
     	try
     	{
     		$comp_token = hash('md5', time());
