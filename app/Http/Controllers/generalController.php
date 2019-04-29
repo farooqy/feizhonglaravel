@@ -53,7 +53,7 @@ class generalController extends Controller
     	$image = base64_encode(file_get_contents($request->image_url));
     	if($image)
     	{
-    		$this->Error->setSuccess(["image_base64" => $image]);
+    		$this->Error->setSuccess(["image_base64" => "I am an image"]);
     		return $this->Error->getSuccess();
     	}
     	else
