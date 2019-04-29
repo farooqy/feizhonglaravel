@@ -208,7 +208,8 @@ class accountController extends Controller
     	else if($verification_code->count() > 1)
     	{
     		//collsion verification code
-    		phoneVerificationModel::where('target_phone', $request->company_phone)->delete();
+    		$existing = phoneVerificationModel::where('target_phone', $request->company_phone);
+            $existing->delete();
     		$this->setError(['Please verify your phone again before continuing']);
     		return $this->error;
     	}
