@@ -154,7 +154,7 @@ class statusController extends Controller
             $fileModel->file_generated_token = $fileForm->generated_token;
 
             $fileModel->save();
-            $fileId = $fileModel::where('file_url', env('APP_URL').$fileUrl)->get()[0]->id;
+            $fileId = $fileModel::where('file_url', env('APP_URL').'feizhonglaravel/public/uploads/'.$fileForm->host_token.'/'.$filename)->get()[0]->id;
 
             return json_encode([
                 'errorMessage' => null,
