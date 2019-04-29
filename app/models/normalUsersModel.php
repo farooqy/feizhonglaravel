@@ -9,7 +9,7 @@ class normalUsersModel extends Model
     //
 
 	protected $table = "normal_user";
-    protected $hidden = ["comp_pass"];
+    protected $hidden = ["user_password"];
 
 	public function messages($userToken)
 	{

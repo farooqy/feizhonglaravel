@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::put('*', 'generalController@notAllowedMethod');
-Route::post('/user/login', 'user\accountController@login');
+Route::post('/user/login', 'user\accountController@userLogin');
 Route::post('/user/register', 'user\accountController@register');
 
 Route::post('/comp/login', 'companies\accountController@companyLogin');
