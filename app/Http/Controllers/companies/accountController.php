@@ -236,7 +236,8 @@ class accountController extends Controller
             else
                 $extenstion = $file_extension[$type_key];
             $request->company_logo = base64_decode(str_replace("data:".$file_type.";base64", '', $request->company_logo));
-            $logo_url = $publicpath.'/profile_'.hash('md5',time()).'_pic.'.$extenstion;
+            $filename = 'profile_'.hash('md5',time()).'_pic.'.$extenstion;
+            $logo_url = $publicpath.'/'.$filename;
 
     		File::put($logo_url, $request->company_logo);
 
@@ -246,7 +247,7 @@ class accountController extends Controller
     			"comp_phone" => $request->company_phone,
     			"comp_token" => $comp_token,
     			"comp_pass" => Hash::make($request->company_password),
-    			"comp_logo" => env('APP_URL').'uploads/comp/'.$comp_token.'/profile'.'/profile_'.hash('md5',time()).'_pic.'.$extenstion,
+    			"comp_logo" => env('APP_URL').'feizhonglaravel/uploads/comp/'.$comp_token.'/profile'.'/'.$filename,
     		]);
     		registrationTrackerModel::create(["comp_token"=>$comp_token, "stage" => 'basicinfo']);
     		phoneVerificationModel::where([

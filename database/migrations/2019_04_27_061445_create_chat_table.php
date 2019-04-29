@@ -19,6 +19,7 @@ class CreateChatTable extends Migration
             $table->text('message');
             $table->string('message_type')->default('text');
             $table->string('message_status');
+            $table->timestamps();
         });
     }
 

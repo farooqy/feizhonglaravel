@@ -45,4 +45,9 @@ class normalUsersModel extends Model
 	{
 		return $this->hasMany('App\models\status\likesModel', 'host_id', 'user_id');
 	}
+
+	public function chats()
+	{
+		return $this->hasMany('App\models\chats\chatUserModel', 'comp_id', ['chat_destination_id', 'chat_destination_id'])->orWhere('chat_origin_id', $this->chat_origin_id);
+	}
 }

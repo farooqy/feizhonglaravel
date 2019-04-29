@@ -107,18 +107,33 @@ class chatController extends Controller
         }
         try 
         {
-            $chat_token = hash('md5', time()).time();//used for geeting chat id
-            chatUserModel::create([
-                "chat_origin_id" => $request->host_id,
-                "chat_destination_id" => $request->target_id,
-                "chat_token" => $chat_token,
-            ]);
-            $chat_id = chatUserModel::where('chat_token', $chat_token)->get();
-            if($chat_id === null || $chat_id->count() <= 0)
+            //check if previous chat existed
+            $previousChat = chatUserModel::where([
+                ['chat_origin_id', $request->host_id],
+                ['chat_destination_id', $request->target_id]
+            ])->orwhere([
+                ['chat_origin_id', $request->target_id],
+                ['chat_destination_id', $request->host_id]
+            ])->skip(0)->take(1)->get();
+            if($previousChat === null || $previousChat->count() <= 0)
             {
-                $this->Error->setError(['saved chat id could not be retrieved']);
-                return $this->Error->getError();
+                $chat_token = hash('md5', time()).time();//used for geeting chat id
+                chatUserModel::create([
+                    "chat_origin_id" => $request->host_id,
+                    "chat_destination_id" => $request->target_id,
+                    "chat_token" => $chat_token,
+                ]);
+                $chat_id = chatUserModel::where('chat_token', $chat_token)->get();
+                if($chat_id === null || $chat_id->count() <= 0)
+                {
+                    $this->Error->setError(['saved chat id could not be retrieved']);
+                    return $this->Error->getError();
+                }
             }
+            else
+                $chat_id = $previousChat;
+            
+                
             chatModel::create([
                 "chat_id" => $chat_id[0]->chat_id,
                 "message" => $request->message,

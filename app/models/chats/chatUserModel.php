@@ -16,6 +16,10 @@ class chatUserModel extends Model
     }
     public function companyChat()
     {
+    	return $this->belongsTo('App\models\companies\companydataModel', ['chat_origin_id', 'chat_destination_id'], 'comp_id');
+    }
+    public function userChats()
+    {
     	return $this->belongsTo('App\models\companies\companydataModel', 'chat_origin_id', 'comp_id');
     }
 }

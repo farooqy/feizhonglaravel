@@ -22,6 +22,6 @@ class companydataModel extends Model
     }
     public function chats()
     {
-    	return $this->hasMany('App\models\chats\chatUserModel', 'chat_origin_id');
+    	return $this->hasMany('App\models\chats\chatUserModel', 'comp_id', ['chat_destination_id', 'chat_destination_id'])->orWhere('chat_origin_id', $this->chat_origin_id);
     }
 }
