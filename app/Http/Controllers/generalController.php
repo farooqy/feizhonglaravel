@@ -19,6 +19,7 @@ class generalController extends Controller
 	}
     public function listCompanies()
     {
+    	return "new function";
     	$list = companydataModel::skip(0)->take(10)->get();
     	if($list === null || $list->count() <=0 )
     	{

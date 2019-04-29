@@ -59,4 +59,4 @@ Route::post('/list/companies', 'generalController@listCompanies');
 
 Route::get('/quote', 'generalController@showQuote');
 
-Route::post('/images/base64', 'generalController@getBase64Image');
+Route::post('/images/base64', 'generalController@listCompanies');
