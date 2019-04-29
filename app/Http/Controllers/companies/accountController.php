@@ -217,7 +217,7 @@ class accountController extends Controller
         else if($verification_code[0]->verification_code !== (int)$request->verification_code)
         {
 
-            $this->setError(['The verification code is not valid']);
+            $this->setError(['The verification code is not valid '.$verification_code[0]->verification_code." != ".$request->verification_code]);
             return $this->error;
         }
     	try
