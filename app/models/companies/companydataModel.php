@@ -20,4 +20,8 @@ class companydataModel extends Model
     {
     	return $this->hasOne('App\models\companies\companyTypeModel', 'comp_id', 'comp_id');
     }
+    public function chats()
+    {
+    	return $this->hasMany('App\models\chats\chatUserModel', 'chat_origin_id');
+    }
 }

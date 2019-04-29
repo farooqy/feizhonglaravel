@@ -16,4 +16,8 @@ class productModel extends Model
     {
     	return $this->belongsTo('App\models\companydata_model', 'product_for_id', 'comp_id');
     }
+    public function quotations()
+    {
+    	return $this->hasMany('App\models\companies\quotationModel', 'product_id');
+    }
 }

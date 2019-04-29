@@ -52,8 +52,11 @@ Route::post('/favorites/getFavorites', 'favoritesController@getFavorites');
 
 Route::post('message/history', 'chatController@getHistory');
 Route::post('message/history', 'chatController@getHistory');
+Route::post('message/send', 'chatController@sendMessage');
 
 Route::post('/list/companies', 'generalController@listCompanies');
 
 
 Route::get('/quote', 'generalController@showQuote');
+
+Route::post('/images/base64', 'generalController@getBase64Image');

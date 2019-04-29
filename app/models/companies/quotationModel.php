@@ -13,7 +13,7 @@ class quotationModel extends Model
 
     public function products()
     {
-    	return $this->belongsTo('App\models\products\productModel', 'company')
+    	return $this->belongsTo('App\models\products\productModel', 'product_id');
     }
 
 }
