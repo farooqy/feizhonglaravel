@@ -19,7 +19,6 @@ class generalController extends Controller
 	}
     public function listCompanies()
     {
-    	return "new function";
     	$list = companydataModel::skip(0)->take(10)->get();
     	if($list === null || $list->count() <=0 )
     	{
@@ -47,7 +46,6 @@ class generalController extends Controller
     }
     public function getBase64Image(Request $request)
     {
-    	return "YOu are reaching me";
     	$rules = ["image_url" => "required|url"];
     	$is_not_valid_request = $this->custom_validator->isNotValidRequest(Validator::make($request->all(), $rules, []));
     	if($is_not_valid_request)
@@ -55,7 +53,7 @@ class generalController extends Controller
     	$image = base64_encode(file_get_contents($request->image_url));
     	if($image)
     	{
-    		$this->Error->setSuccess(["image_base64" => "I am an image"]);
+    		$this->Error->setSuccess(["image_base64" => $image]);
     		return $this->Error->getSuccess();
     	}
     	else
