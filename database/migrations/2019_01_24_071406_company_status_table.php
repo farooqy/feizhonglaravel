@@ -15,6 +15,7 @@ class CompanyStatusTable extends Migration
     {
         Schema::create('company_status', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('status_generated_token', 330);
             $table->bigInteger('comp_id');
             $table->string('comp_token',300);
             $table->text('status_content',1001)->nullable();
