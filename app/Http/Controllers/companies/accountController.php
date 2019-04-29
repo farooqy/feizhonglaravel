@@ -214,7 +214,7 @@ class accountController extends Controller
     		$this->setError(['Please verify your phone again before continuing']);
     		return $this->error;
     	}
-        else if($verification_code[0]->verification_code !== $request->verification_code)
+        else if($verification_code[0]->verification_code !== (int)$request->verification_code)
         {
 
             $this->setError(['The verification code is not valid']);
