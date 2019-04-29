@@ -148,13 +148,13 @@ class statusController extends Controller
             // Image::make($fileForm->file('file_value'))->save($filepath);
             \File::put($filepath, $fileForm->file_value);
             $fileModel = new uploadedFilesModel;
-            $fileModel->file_url = env('APP_URL').'feizhonglaravel/public/uploads/'.$fileForm->host_token.'/'.$filename;
+            $fileModel->file_url = env('APP_URL').'feizhonglaravel/public/uploads/comp/'.$fileForm->host_token.'/'.$filename;
             $fileModel->file_uploaded_by_id = $fileForm->host_id;
             $fileModel->file_uploaded_by_who = $fileForm->host_type;
             $fileModel->file_generated_token = $fileForm->generated_token;
 
             $fileModel->save();
-            $fileId = $fileModel::where('file_url', env('APP_URL').'feizhonglaravel/public/uploads/'.$fileForm->host_token.'/'.$filename)->get()[0]->id;
+            $fileId = $fileModel::where('file_url', env('APP_URL').'feizhonglaravel/public/uploads/comp/'.$fileForm->host_token.'/'.$filename)->get()[0]->id;
 
             return json_encode([
                 'errorMessage' => null,
