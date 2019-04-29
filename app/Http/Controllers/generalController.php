@@ -46,6 +46,7 @@ class generalController extends Controller
     }
     public function getBase64Image(Request $request)
     {
+    	return "YOu are reaching me";
     	$rules = ["image_url" => "required|url"];
     	$is_not_valid_request = $this->custom_validator->isNotValidRequest(Validator::make($request->all(), $rules, []));
     	if($is_not_valid_request)
