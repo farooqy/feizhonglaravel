@@ -142,12 +142,13 @@ class statusController extends Controller
                 $extenstion = $file_extension[$type_key];
             $fileForm->file_value = str_replace("data:".$file_type.";base64", '', $fileForm->file_value);
             $fileForm->file_value = base64_decode($fileForm->file_value);
-            $fileUrl = 'feizhonglaravel/public/uploads/comp/'.$fileForm->host_token.'/status_image_decoded_'.hash('md5', time()).'.'.$extenstion;
+            $filename = 'status_image_decoded_'.hash('md5', time()).'.'.$extenstion;
+            $fileUrl = 'uploads/comp/'.$fileForm->host_token.'/'.$filename;
             $filepath = public_path($fileUrl);
             // Image::make($fileForm->file('file_value'))->save($filepath);
             \File::put($filepath, $fileForm->file_value);
             $fileModel = new uploadedFilesModel;
-            $fileModel->file_url = env('APP_URL').$fileUrl;
+            $fileModel->file_url = env('APP_URL').'feizhonglaravel/public/uploads/'.$fileForm->host_token.'/'.$filename;
             $fileModel->file_uploaded_by_id = $fileForm->host_id;
             $fileModel->file_uploaded_by_who = $fileForm->host_type;
             $fileModel->file_generated_token = $fileForm->generated_token;
