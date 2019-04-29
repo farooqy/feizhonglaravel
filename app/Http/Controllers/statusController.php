@@ -199,7 +199,7 @@ class statusController extends Controller
             foreach($errors->all() as $error)
                 array_push($errors_list, $error);
             return json_encode(array(
-                "errorMessage" => $list_errors,
+                "errorMessage" => $errors_list,
                 "isSuccess" => false,
                 "successMessage" => null,
             ));
