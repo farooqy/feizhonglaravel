@@ -9,10 +9,6 @@ class companydata_model extends Model
     //
     protected $table = 'companydata';
     protected $hidden = ["comp_pass"];
-    public function companyStatus ()
-    {
-    	return $this->hasMany('App\models\compStatusModel', 'comp_id', 'comp_id');
-    }
     public function companyMessages()
     {
         return $this->belongsTo('App\models\chatModel', 'message_host', 'comp_token');
@@ -29,9 +25,5 @@ class companydata_model extends Model
     public function commentedStatuses()
     {
         return $this->hasMany('App\models\status\commentsModel', 'host_id');
-    }
-    public function products()
-    {
-        return $this->hasMany('App\models\products\productModel', 'product_for_id', 'comp_id');
     }
 }
