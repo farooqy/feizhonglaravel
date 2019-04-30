@@ -25,20 +25,45 @@ class chatController extends Controller
         $this->customValidator = new CustomRequestValidator();
         $this->FileUploader = new FileUploader();
     }
-    public function getHistory(Request $reqForm)
+    public function getHistory(Request $request)
     {
-    	$validation = $reqForm->validate([
-    		'given_token' => 'required|string',
-    		'given_type' => 'required|in:company,user'
-    	]);
-    	if($validation->fails)
-    	{
-    		return $validation->errors()->toJson();
-    	}
-    	else
-    	{
-    		return json_encode(array('success', 'wagwan'));
-    	}
+    	$rules = [
+    		'host_id' => 'required|string',
+            'host_token' => 'required|string',
+    		'host_type' => 'required|in:comp,normal'
+    	];
+        $is_not_valid_request =  $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []));
+        if($is_not_valid_request)
+            return $is_not_valid_request;
+        if($request->host_type === "comp")
+        {
+            $is_valid_host = companydataModel::where([
+                ['comp_id', $request->host_id],
+                ['comp_token', $request->host_token]
+            ])->get();
+        }
+        else
+        {
+            $is_valid_host = normalUsersModel::where([
+                ['user_id', $request->host_id],
+                ['user_token', $request->host_token]
+            ])->get();
+        }
+        if($is_valid_host === null || $is_valid_host->count() <= 0)
+        {
+            $this->Error->setError(['The host id and token do not exist']);
+            return $this->Error->getError();
+        }
+        $chats = chatUserModel::where('chat_origin_id', $request->host_id)->
+        orWhere('chat_destination_id', $request->host_id)->get();
+        foreach($chats as $chat)
+        {
+            $chat_company = $chat->companyChat;
+            $chat_user = $chat->userChat;
+            $chat_messages = $chat->chats;
+        }
+        $this->Error->setSuccess($chats);
+        return $this->Error->getSuccess();
     }
     public function sendMessage(Request $request)
     {
@@ -123,6 +148,7 @@ class chatController extends Controller
                     "chat_destination_id" => $request->target_id,
                     "chat_token" => $chat_token,
                 ]);
+                
                 $chat_id = chatUserModel::where('chat_token', $chat_token)->get();
                 if($chat_id === null || $chat_id->count() <= 0)
                 {
@@ -136,6 +162,7 @@ class chatController extends Controller
                 
             chatModel::create([
                 "chat_id" => $chat_id[0]->chat_id,
+                "message_target" => $request->target_id,
                 "message" => $request->message,
                 "message_type" => $request->message_type,
                 "message_status" => "sent",
