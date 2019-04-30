@@ -46,6 +46,8 @@ class accountController extends Controller
 		{
             $data[0]->address;
             $data[0]->type;
+            $data[0]->products;
+            $data[0]->companyStatus;
 			$this->setSucces($data);
 			return $this->success;
 		}
