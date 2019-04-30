@@ -44,6 +44,8 @@ class accountController extends Controller
 		}
 		else if(Hash::check($request->company_password,$data[0]->comp_pass))
 		{
+            $data[0]->address;
+            $data[0]->type;
 			$this->setSucces($data);
 			return $this->success;
 		}
