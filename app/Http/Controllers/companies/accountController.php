@@ -95,7 +95,7 @@ class accountController extends Controller
 
 			registrationTrackerModel::where('comp_token', $request->company_token)->update(["stage" => "complete"]);
 
-			$this->setSucces(["comp_token" => $request->company_token]);
+			$this->setSucces(["comp_token" => $request->company_token, "process" => "final"]);
 			return $this->success;
 		}
     	catch(\Illuminate\Database\QueryException $exception)
@@ -151,7 +151,7 @@ class accountController extends Controller
 
 			registrationTrackerModel::where('comp_token', $request->company_token)->update(["stage" => "address"]);
 
-			$this->setSucces(["comp_token" => $request->company_token]);
+			$this->setSucces(["comp_token" => $request->company_token, "process" => "page3"]);
 			return $this->success;
 		}
     	catch(\Illuminate\Database\QueryException $exception)
@@ -262,7 +262,7 @@ class accountController extends Controller
     			['target_phone', $request->company_phone],
     			['verification_code', $request->verification_code]
     		])->update(['is_verified' => true]);
-    		$this->setSucces(["company_token" => $comp_token]);
+    		$this->setSucces(["company_token" => $comp_token, "process" => "page2"]);
     		return $this->success;
     	}
     	catch(\Illuminate\Database\QueryException $exception)
