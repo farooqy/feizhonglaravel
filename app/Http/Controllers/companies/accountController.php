@@ -262,7 +262,7 @@ class accountController extends Controller
     			['target_phone', $request->company_phone],
     			['verification_code', $request->verification_code]
     		])->update(['is_verified' => true]);
-    		$this->setSucces(["company_token" => $comp_token, "process" => "page2"]);
+    		$this->setSucces(["comp_token" => $comp_token, "process" => "page2"]);
     		return $this->success;
     	}
     	catch(\Illuminate\Database\QueryException $exception)
