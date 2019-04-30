@@ -255,7 +255,7 @@ class accountController extends Controller
     			"comp_phone" => $request->company_phone,
     			"comp_token" => $comp_token,
     			"comp_pass" => Hash::make($request->company_password),
-    			"comp_logo" => env('APP_URL').'feizhonglaravel/uploads/comp/'.$comp_token.'/profile'.'/'.$filename,
+    			"comp_logo" => env('APP_URL').'feizhonglaravel/public/uploads/comp/'.$comp_token.'/profile'.'/'.$filename,
     		]);
     		registrationTrackerModel::create(["comp_token"=>$comp_token, "stage" => 'basicinfo']);
     		phoneVerificationModel::where([
