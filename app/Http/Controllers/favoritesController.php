@@ -155,7 +155,7 @@ class favoritesController extends Controller
     		$favoritesModel->save();
 
     		return json_encode([
-    			"data" => []
+    			"data" => [],
                 "errorMessage" => null,
                 "isSuccess" => true,
                 "successMessage" => "success",
