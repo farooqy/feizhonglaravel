@@ -29,7 +29,9 @@ class generalController extends Controller
     	{
     		$comp_list = [];
     		foreach($list as $company)
+    		{
     			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type]);
+    		}	
     		$this->Error->setSuccess($list);
     		return $this->Error->getSuccess();
     	}
