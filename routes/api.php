@@ -47,6 +47,17 @@ Route::post('/comp/allowFeatureCompany', 'companies\featuredCompaniesController@
 
 Route::post('/comp/quotation/generate', 'companies\quotationController@generateQuotation');
 
+Route::post('/comp/edit/name', 'companies\accountController@updateCompName');
+Route::post('/comp/edit/profile', 'companies\accountController@updateCompProfile');
+Route::post('/comp/edit/password', 'companies\accountController@updateCompPassword');
+Route::post('/comp/edit/phone', 'companies\accountController@updateCompPhone');
+Route::post('/comp/edit/addressOne', 'companies\accountController@updateCompAddressOne');
+Route::post('/comp/edit/addressTwo', 'companies\accountController@updateCompAddressTwo');
+Route::post('/comp/edit/city', 'companies\accountController@updateCompCity');
+Route::post('/comp/edit/province', 'companies\accountController@updateCompProvince');
+Route::post('/comp/edit/email', 'companies\accountController@updateCompEmail');
+Route::post('/comp/edit/description', 'companies\accountController@updateCompDescription');
+
 Route::post('/favorites/doFavorite', 'favoritesController@favoriteCompany');
 Route::post('/favorites/getFavorites', 'favoritesController@getFavorites');
 
