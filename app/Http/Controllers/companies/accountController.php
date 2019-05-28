@@ -11,14 +11,24 @@ use App\models\companies\phoneVerificationModel;
 use App\models\companies\companydataModel;
 use App\models\companies\companyAddressModel;
 use App\models\companies\companyTypeModel;
+use App\models\companies\companyChangesModel;
 use App\models\registrationTrackerModel;
 
+use App\customClass\Error;
+use App\customClass\CustomRequestValidator;
 use Log, File, Hash;
 class accountController extends Controller
 {
     //
 	public $error = null;
 	public $success = null;
+    protected $Error;
+    protected $custom_validator;
+    public function __construct()
+    {
+        $this->Error = new Error();
+        $this->custom_validator = new CustomRequestValidator();
+    }
 
 	public function companyLogin(Request $request)
 	{
@@ -329,7 +339,7 @@ class accountController extends Controller
     		);
     		$TwilioClient->messages->create(
     			$request->telephone,[
-    				"body" => "Your verification code for your AtoC account is ".$new_code,
+    				"body" => "[AtoC] ".$new_code." is your verification code. This code will expire in 5 minutes. Please do not disclose it for security purposes.",
     				"from" => env('TWILIO_NUMBER'),
     			]);
     		Log::info(
@@ -419,5 +429,147 @@ class accountController extends Controller
 			return false;
 		}
 		return true;
+    }
+    protected function doCheckAndUpdate($targetField, $request, $model)
+    {
+        $is_valid_request = $this->checkUpdateFields($request, $targetField);
+        if($is_valid_request)
+        {
+            
+            $is_updated = $this->updateField($targetField, $request, $model);
+            if($is_updated)
+            {
+                return $this->Error->getSuccess();
+            }
+            else
+                return $this->Error->getError();
+        }
+        else
+            return $this->Error->getError();
+    }
+    public function updateCompName(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_name", $request, new companydataModel);
+        
+    }//done
+    public function updateCompProfile(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_profile", $request, new companydataModel);//different
+    }
+    public function updateCompPassword(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_pass", $request, new companydataModel);
+    }//done
+    public function updateCompPhone(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_phone", $request, new companydataModel);
+    }//done
+    public function updateCompAddressOne(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_addr_one", $request, new companyAddressModel);
+    }//done
+    public function updateCompAddressTwo(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_addr_two", $request,new companyAddressModel);
+    }//done
+    public function updateCompCity(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_city", $request,new  companyAddressModel);
+    }//done
+    public function updateCompProvince(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_province", $request, new companyAddressModel);
+    }//done 
+    public function updateCompEmail(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_email", $request, new companydataModel);//different...needs to verify email
+    }
+    public function updateCompDescription(Request $request)
+    {
+        return $this->doCheckAndUpdate("comp_description", $request, new companyTypeModel);//different...needs to verify email
+    }
+    protected function checkUpdateFields($request, $targetField='')
+    {
+        $rules = [
+            "company_token" => "string|required|max:330|min:20",
+            "company_target_change" => "required|string|min:6",
+            "company_password" => "required|string"
+        ];
+        $valid_request = Validator::make($request->all(), $rules, []);
+        if($notValid= $this->custom_validator->isNotValidRequest($valid_request))
+        {
+            $this->Error->setError($notValid);
+            return false;
+        }    
+        if($targetField==="comp_phone")
+        {
+            $new_value = phoneVerificationModel::where('verification_code', $request->company_target_change)->get();
+            if($new_value == null || $new_value->count() <= 0)
+            {
+                $this->Error->setError(["The verification code provided is not valid"]);
+                return false;
+            }
+            $request->company_target_change = $new_value[0]->target_phone;
+        }
+        $data = companydataModel::where('comp_token', $request->company_token)->get();
+        if($data == null || $data->count() <= 0)
+        {
+            $this->Error->setError(["The company token is not valid "]);
+            return false;
+        }
+        else if(Hash::check($request->company_password,$data[0]->comp_pass))
+        {
+            return true;
+        }
+        else
+        {
+            $this->Error->setError(["The company password and token do not match "]);
+            return false;
+        }
+    }
+    protected function updateField($targetField, $request, $model)
+    {
+        try
+        {
+            $current_data = $model::where('comp_token', $request->company_token)->get();
+            if($current_data == null || $current_data->count() <= 0)
+            {
+                $this->Error->setError(["Failed to get the current value for the target change"]);
+                return false;
+            }
+            $current_value = $current_data[0][$targetField];
+            if($current_value === $request->company_target_change)
+            {
+                $this->Error->setError(['Please provide a different value than the existing']);
+                return false;
+            }
+            $new_value = $request->company_target_change;
+            if($targetField === "comp_pass")
+                $new_value = Hash::make($new_value);
+            $model::where('comp_token', $request->company_token)->
+            update([$targetField => $new_value]);
+            if($targetField === "comp_phone")
+                phoneVerificationModel::where('target_phone', $new_value)->update(['is_verified' => true]);
+            companyChangesModel::create([
+                "comp_token" => $request->company_token,
+                "change_field" => $targetField,
+                "changed_from" => $current_value,
+                "changed_to" => $new_value
+            ]);
+            $this->Error->setSuccess(['success']);
+            return true;
+        }
+
+        catch(\Illuminate\Database\QueryException $exception)
+        {
+            $this->Error->setError([$exception->errorInfo]);
+            return false;
+        }
+        catch(Exception $exception)
+        {
+            $this->Error->setError([$exception->errorInfo]);
+            return false;
+        }
+            
     }
 }
