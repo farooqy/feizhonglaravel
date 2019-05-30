@@ -32,4 +32,8 @@ class companydataModel extends Model
     {
         return $this->hasMany('App\models\products\productModel', 'product_for_id', 'comp_id');
     }
+    public function registrationStatus()
+    {
+    	return $this->hasMany('App\models\registrationTrackerModel', 'comp_token', 'comp_token');
+    }
 }

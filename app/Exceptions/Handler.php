@@ -111,9 +111,19 @@ class Handler extends ExceptionHandler
             return response(json_encode(array(
                 "error_message" => "Could not find your request",
                 "error_description" => $exception->getMessage(),
+                "error_line" => $exception->getLine(),
                 "error_status" => true,
-                "error_code" => 404
-            )), 404);        
+                "error_code" => 422
+            )), 422);        
+        }
+        if ($exception instanceof \Illuminate\Database\QueryException)
+        {
+            return response(json_encode(array(
+                "error_message" => "Uncaught Query Error",
+                "error_description" => $exception->getMessage(),
+                "error_status" => true,
+                "error_code" => 500
+            )), 500);        
         }
         return parent::render($request, $exception);
     }

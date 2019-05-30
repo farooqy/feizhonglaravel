@@ -7,6 +7,7 @@ use App\models\companies\companydataModel;
 use Illuminate\Support\Facades\Validator;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
+use App\models\registrationTrackerModel;
 class generalController extends Controller
 {
     //
@@ -19,7 +20,13 @@ class generalController extends Controller
 	}
     public function listCompanies()
     {
-    	$list = companydataModel::skip(0)->take(10)->get();
+    	// $query = companydataModel::with("registration_tracker", "registration_tracker.stage");
+    	// $registrationData = new registrationTrackerModel;
+    	// $list = companydataModel::with("registration_tracker", "registration_tracker.stage")->where("registration_tracker.stage", function($q)  {
+    	// 	$query = $q::where("registrration_tracker.stage", "completed")->get();
+    	// })->get();
+    	// $list = companydataModel::with("registration_tracker", "registration_tracker.stage")->where('registration_tracker.stage', "completed")->skip(0)->take(10)->get();
+    	$list = companydataModel::get();
     	if($list === null || $list->count() <=0 )
     	{
     		$this->Error->setError(["Failed to get the list. Empty database could be the reason"]);
@@ -30,7 +37,7 @@ class generalController extends Controller
     		$comp_list = [];
     		foreach($list as $company)
     		{
-    			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type]);
+    			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type, "registrationStatus" => $company->registrationStatus]);
     		}	
     		$this->Error->setSuccess($list);
     		return $this->Error->getSuccess();
