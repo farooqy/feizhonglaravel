@@ -1,7 +1,7 @@
 <?php
 namespace  App\customClass;
 require_once 'Error.php'; 
-
+use File;
 class FileUploader {
 
 	protected $Error;
@@ -37,7 +37,7 @@ class FileUploader {
             return false;
         }
         else
-            $extenstion = $file_extension[$type_key];
+            $extenstion = $this->file_extension[$type_key];
         $filedata = base64_decode(str_replace("data:".$file_type.";base64", '', $filedata));
         $logo_url = $this->publicpath.$this->filename.$extenstion;
         try
@@ -78,6 +78,16 @@ class FileUploader {
 			return false;
 		}
 		$this->allowed_file_types = $type;
+	}
+	public function setFileDirectory($dir)
+	{
+		if(empty($dir))
+		{
+			$this->Error->setError(['The filename should not be empty']);
+			return false;
+		}
+		else
+			$this->directory = $dir;
 	}
 	public function setFileExtension($extension)
 	{
