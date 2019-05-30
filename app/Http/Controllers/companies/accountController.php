@@ -16,6 +16,7 @@ use App\models\registrationTrackerModel;
 
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
+use App\customClass\FileUploader;
 use Log, File, Hash;
 class accountController extends Controller
 {
@@ -24,10 +25,12 @@ class accountController extends Controller
 	public $success = null;
     protected $Error;
     protected $custom_validator;
+    protected $FileUploader ;
     public function __construct()
     {
         $this->Error = new Error();
         $this->custom_validator = new CustomRequestValidator();
+        $this->FileUploader = new FileUploader();
     }
 
 	public function companyLogin(Request $request)
@@ -430,12 +433,42 @@ class accountController extends Controller
 		}
 		return true;
     }
+    protected function uploadCompProfile($request, $model)
+    {
+        $comp_token = $request->company_token;
+        $dir = 'uploads/comp/'.$comp_token.'/profile/';
+        $publicpath = public_path($dir);//full path
+        $this->FileUploader->setFilePath($publicpath);
+        $this->FileUploader->setFileDirectory($dir);//path with url
+        $this->FileUploader->setFileName($filename = 'profile_'.hash('md5',time()).'_pic.');
+
+        $file_url = $this->FileUploader->uplaodJsonFile($request->company_target_change);
+        if($file_url === false)
+        {
+            $this->Error->setError($this->FileUploader->getError());
+            return false;  
+        } 
+        else
+        {
+            return $file_url;
+        }
+    }
     protected function doCheckAndUpdate($targetField, $request, $model)
     {
         $is_valid_request = $this->checkUpdateFields($request, $targetField);
         if($is_valid_request)
         {
-            
+            if($targetField === "comp_profile")
+            {
+                $file_url =  $this->uploadCompProfile($request, $model);
+                if($file_url === false)
+                    return $this->Error->getError();
+                else
+                {
+                    $targetField = "comp_logo";
+                    $request->company_target_change = $file_url;
+                }
+            }
             $is_updated = $this->updateField($targetField, $request, $model);
             if($is_updated)
             {
