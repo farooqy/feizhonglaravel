@@ -55,11 +55,13 @@ class Handler extends ExceptionHandler
                 "error_code" => 422
             )), 422);
         }
-        if ($exception instanceof ErrorException) 
+        if ($exception instanceof \ErrorException) 
         {
             return response(json_encode(array(
-                "error_message" => "The post contains content larger than allowed",
+                "error_message" => "Error Exception",
                 "error_description" => $exception->getMessage(),
+                "error_line" => $exception->getLine(),
+                "error_file" => $exception->getFile(),
                 "error_status" => true,
                 "error_code" => 422
             )), 422);
@@ -96,6 +98,15 @@ class Handler extends ExceptionHandler
             )), 500);        
         }
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
+        {
+            return response(json_encode(array(
+                "error_message" => "Could not find your request",
+                "error_description" => $exception->getMessage(),
+                "error_status" => true,
+                "error_code" => 404
+            )), 404);        
+        }
+        if ($exception instanceof \UnexpectedValueException)
         {
             return response(json_encode(array(
                 "error_message" => "Could not find your request",
