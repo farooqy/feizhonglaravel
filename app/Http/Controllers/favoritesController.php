@@ -7,9 +7,20 @@ use App\models\companydata_model;
 use App\models\normalUsersModel;
 use App\models\favoritesModel;
 use Illuminate\Support\Facades\Validator;
+
+use App\customClass\customRequestValidator;
+use App\customClass\Error;
 class favoritesController extends Controller
 {
     //
+
+    protected $Error;
+    protected $custom_validator;
+    public function __construct()
+    {
+        $this->Error = new Error();
+        $this->custom_validator = new CustomRequestValidator();
+    }
 
 	public function getFavorites(Request $request)
 	{
@@ -144,24 +155,77 @@ class favoritesController extends Controller
     		]);
     	}
 
-    	try
-    	{
-    		$favoritesModel = new favoritesModel;
-    		$favoritesModel->favorite_host_id = $request->host_id;
-    		$favoritesModel->favorite_host_token = $request->host_token;
-    		$favoritesModel->favorite_host_type = $request->host_type;
-    		$favoritesModel->favorited_comp_id = $request->favorite_target_id;
+    	return $this->doTryAndCatchQuery($request, "favoriteCompany");
 
-    		$favoritesModel->save();
 
-    		return json_encode([
-    			"data" => [],
-                "errorMessage" => null,
-                "isSuccess" => true,
-                "successMessage" => "success",
-    		]);
-    	}
-    	catch(\Illuminate\Database\QueryException $exception)
+    }
+
+    public function removeFavorite(Request $request)
+    {
+        $rules = [
+            "host_token" => "required|string|min:20",
+            "host_type" => "required|string|in:normal,comp",
+            "target_id" => "required|integer",
+        ];
+        
+        $valid_request = Validator::make($request->all(), $rules, []);
+        if($notValid= $this->custom_validator->isNotValidRequest($valid_request))
+        {
+            $this->Error->setError($notValid);
+            return $this->Error->getError();
+        }
+        $is_favorite = favoritesModel::where([
+            ["favorite_host_type", $request->host_type],
+            ["favorite_host_token", $request->host_token],
+            ["favorited_comp_id", $request->target_id]
+        ])->get();
+        if($is_favorite === null || $is_favorite->count() <= 0)
+        {
+            $this->Error->setError('You have not favorited this company before');
+            return $this->Error->getError();
+        }
+        else
+        {
+            return $this->doTryAndCatchQuery($request, "removeFavorite");
+        }
+    }
+
+    protected function doTryAndCatchQuery($request, $queryType = "favoriteCompany")
+    {
+        try
+        {
+            if($queryType === "removeFavorite")
+            {
+                $favorite = favoritesModel::where([
+                    ["favorite_host_type", $request->host_type],
+                    ["favorite_host_token", $request->host_token],
+                    ["favorited_comp_id", $request->target_id]
+                ])->get();
+                $favorite[0]->delete();
+
+                $this->Error->setSuccess(['success']);
+                return $this->Error->getSuccess();
+            }
+            else
+            {
+                $favoritesModel = new favoritesModel;
+                $favoritesModel->favorite_host_id = $request->host_id;
+                $favoritesModel->favorite_host_token = $request->host_token;
+                $favoritesModel->favorite_host_type = $request->host_type;
+                $favoritesModel->favorited_comp_id = $request->favorite_target_id;
+
+                $favoritesModel->save();
+
+                return json_encode([
+                    "data" => [],
+                    "errorMessage" => null,
+                    "isSuccess" => true,
+                    "successMessage" => "success",
+                ]);
+            }
+                
+        }
+        catch(\Illuminate\Database\QueryException $exception)
         {
             $error = json_encode(array(
                 'errorMessage' => array($exception->errorInfo),
@@ -170,17 +234,15 @@ class favoritesController extends Controller
             ));
             return $error;
 
-    	}
-    	catch(Exception $exception)
-    	{
+        }
+        catch(Exception $exception)
+        {
             $error = json_encode(array(
                 'errorMessage' => array($exception->errorInfo),
                 "isSuccess" => false,
                 "successMessage" => null,
             ));
             return $error;
-    	}
-
-
+        }
     }
 }
