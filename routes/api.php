@@ -60,6 +60,7 @@ Route::post('/comp/edit/description', 'companies\accountController@updateCompDes
 
 Route::post('/favorites/doFavorite', 'favoritesController@favoriteCompany');
 Route::post('/favorites/getFavorites', 'favoritesController@getFavorites');
+Route::post('/favorites/unFavorite', 'favoritesController@removeFavorite');
 
 Route::post('message/history', 'chatController@getHistory');
 Route::post('message/history', 'chatController@getHistory');
