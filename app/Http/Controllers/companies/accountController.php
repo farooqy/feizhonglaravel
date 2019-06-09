@@ -98,6 +98,19 @@ class accountController extends Controller
 			$this->setError(["The multiple companies retrieved. Please contact support for assistance"]);
 			return $this->error;
 		}
+        if($request->company_type === "Other")
+        {
+            if(!$request::exists('comp_customType') || !$request::exits('comp_customSubType'))
+            {
+                $this->Error->setError(["The company custom type or subtype is not provided"]);
+                return $this->Error->getError();
+            }
+            else
+            {
+                $request->company_type = $request->comp_customType;
+                $request->company_subtype = $request->comp_customSubType;
+            }
+        }
 
 		try
 		{
