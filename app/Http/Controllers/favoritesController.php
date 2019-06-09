@@ -19,7 +19,7 @@ class favoritesController extends Controller
     public function __construct()
     {
         $this->Error = new Error();
-        $this->custom_validator = new CustomRequestValidator();
+        $this->custom_validator = new customRequestValidator();
     }
 
 	public function getFavorites(Request $request)
