@@ -8,7 +8,7 @@ use App\models\normalUsersModel;
 use App\models\favoritesModel;
 use Illuminate\Support\Facades\Validator;
 
-use App\customClass\customRequestValidator;
+use App\customClass\CustomRequestValidator;
 use App\customClass\Error;
 class favoritesController extends Controller
 {
@@ -19,7 +19,7 @@ class favoritesController extends Controller
     public function __construct()
     {
         $this->Error = new Error();
-        $this->custom_validator = new customRequestValidator();
+        $this->custom_validator = new CustomRequestValidator();
     }
 
 	public function getFavorites(Request $request)
