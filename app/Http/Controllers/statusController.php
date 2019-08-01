@@ -11,6 +11,8 @@ use App\models\uploadedFilesModel;
 use App\models\tokenStatusGeneratorModel;
 use App\models\status\commentsModel;
 use App\models\status\likesModel;
+use App\customClass\Error;
+use App\customClass\CustomRequestValidator;
 
 use Illuminate\Support\Facades\Validator;
 // use Intervention\Image\Facades\Image as Image;
@@ -18,6 +20,12 @@ use Image;
 class statusController extends Controller
 {
     //
+
+    public function __construct()
+    {
+        $this->Error = new Error();
+        $this->customValidator = new CustomRequestValidator();
+    }
 
     public function index()
     {
@@ -462,6 +470,93 @@ class statusController extends Controller
             ]);
         return likesModel::saveLike($request->status_id,
             $request->host_id,$request->host_type);
+    }
+
+    public function unlikeStatus(Request $request)
+    {
+        $rules = [
+            "status_id" => "required|integer",
+            "host_id" => "required|integer",
+            "host_type" => "required|in:normal,comp"
+        ];
+        $messages [];
+
+        $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+
+        $status_valid = compStatusModel::where('id', $request->status_id)->get();
+        if($status_valid === null || $status_valid->count() <= 0)
+            return json_encode([
+                "errorMessage" => ["The target status is not valid or doesn't exist"],
+                "isSuccess" => false,
+                "successMessage" => null,
+                "data" => []
+            ]);
+        //is it valid host
+        if($request->host_type === "normal")
+        {
+            $host_is_valid = normalUsersModel::where('user_id', $request->host_id)->get();
+        }
+        else
+            $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
+
+        if($host_is_valid === null || $host_is_valid->count() <= 0)
+            return json_encode([
+                "errorMessage" => ["The host provided is not valid or doesn't exist"],
+                "isSuccess" => false,
+                "successMessage" => null,
+                "data" => []
+            ]);
+        return likesModel::unlikeStatus($request->status_id,
+            $request->host_id,$request->host_type);
+
+
+    }
+    public function deleteComment(Request $request)
+    {
+        $rules = [
+            "status_id" => "required|integer",
+            "host_id" => "required|integer",
+            "host_type" => "required|in:normal,comp"
+        ];
+        $messages [];
+
+        $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+
+        $status_valid = compStatusModel::where('id', $request->status_id)->get();
+        if($status_valid === null || $status_valid->count() <= 0)
+            return json_encode([
+                "errorMessage" => ["The target status is not valid or doesn't exist"],
+                "isSuccess" => false,
+                "successMessage" => null,
+                "data" => []
+            ]);
+        //is it valid host
+        if($request->host_type === "normal")
+        {
+            $host_is_valid = normalUsersModel::where('user_id', $request->host_id)->get();
+        }
+        else
+            $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
+
+        if($host_is_valid === null || $host_is_valid->count() <= 0)
+            return json_encode([
+                "errorMessage" => ["The host provided is not valid or doesn't exist"],
+                "isSuccess" => false,
+                "successMessage" => null,
+                "data" => []
+            ]);
+        return commentsModel::deleteComment($request->status_id,
+            $request->host_id,$request->host_type);
+
+    }
+
+    public function removePost(Request $request)
+    {
+        
     }
 
 }

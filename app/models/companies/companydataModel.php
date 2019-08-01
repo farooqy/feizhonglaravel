@@ -36,4 +36,58 @@ class companydataModel extends Model
     {
     	return $this->hasMany('App\models\registrationTrackerModel', 'comp_token', 'comp_token');
     }
+    
+
+    public function favoritedby()
+    {
+        return $this->hasMany('App\models\favoritesModel', 'comp_id', 'favorited_comp_id');
+    }
+    public function likedStatuses()
+    {
+        return $this->hasMany('App\models\status\likesModel', 'host_id');
+    }
+    public function commentedStatuses()
+    {
+        return $this->hasMany('App\models\status\commentsModel', 'host_id');
+    }
+    public function isCompany($comp_id)
+    {
+        $comp = companydataModel::where("comp_id", $comp_id)->get();
+        if($comp !== null && $comp->count() > 0)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+    public function searchCompanies($keywords)
+    {
+        $items = companydataModel::with("type", "address")->where("comp_name", "LIKE","%".$keywords."%")->orWhere([
+            ["comp_phone", "LIKE", "%".$keywords."%"],
+        ])->orWhere([
+            ["comp_email", "LIKE", "%".$keywords."%"],
+        ])->whereHas("type",function($q) use($keywords){
+             $q->where("comp_description" , "LIKE" , "%".$keywords."%");
+         })
+        // ->orWhere("type", function($q) use($keywords){
+        //     $q->where("comp_description" , "LIKE" , "%".$keywords."%");
+        // })
+        
+        // ->orWhere("address", function($q) use($keywords){
+        //     $q->where("comp_addr_one", "LIKE" , "%".$keywords."%")->orWhere([
+        //         ["comp_addr_two", "LIKE" , "%".$keywords."%"],
+        //         ["comp_city", "LIKE" , "%".$keywords."%"],
+        //         ["comp_province", "LIKE" , "%".$keywords."%"],
+        //     ]);
+        // })
+        ->get();
+        return $items;
+
+        if($items === null || $items->count() <= 0)
+            return [];
+        else
+        {
+            return $items;
+        }
+    }
 }

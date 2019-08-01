@@ -101,7 +101,7 @@
 
 <body>
     <div class="invoice-box">
-      @if(isset($targetProduct) && isset($targetCompany) && isset($targetUser))
+      @if(isset($productDetails) )
         <table cellpadding="0" cellspacing="0">
             <tr class="top">
                 <td colspan="2">
@@ -112,9 +112,11 @@
                             </td>
                             
                             <td>
-                                Quotation #: {{'123'}}<br>
-                                Created: {{'January 1, 2015'}}<br>
-                                Due: {{'February 1, 2015'}}
+                                Quotation #: {{$productDetails["quotation_id"]}}<br>
+                                Created: {{$productDetails["create_date"]}}<br>
+                                Due: {{$productDetails["due_date"]}}<br><br>
+
+                                Product Name: {{$productDetails["product_name"]}}
                             </td>
                         </tr>
                     </table>
@@ -126,15 +128,14 @@
                     <table>
                         <tr>
                             <td>
-                                {{'Sparksuite, Inc.'}}<br>
-                                {{"12345 Sunny Road"}}<br>
-                                {{"Sunnyville, CA 12345"}}
+                                {{$productDetails["company_name"]}}<br>
+                                {{$productDetails["company_address"]}}<br>
+                                {{$productDetails["company_city"]}}
                             </td>
                             
                             <td>
-                                {{"Acme Corp."}}<br>
-                                {{"John Doe"}}<br>
-                                {{"john@example.com"}}
+                                {{$productDetails["customer_name"]}}<br>
+                                {{$productDetails["customer_email"]}}
                             </td>
                         </tr>
                     </table>
@@ -143,21 +144,30 @@
             
             <tr class="heading">
                 <td>
-                    Payment Method
+                    Details
                 </td>
                 
                 <td>
-                    Check #
+                    Detail No
                 </td>
             </tr>
             
             <tr class="details">
                 <td>
-                    Check
+                    Payment method: {{"Check"}}
                 </td>
                 
                 <td>
                     {{"216526"}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    Original Price
+                </td>
+                
+                <td>
+                    {{$productDetails["product_price"]}}
                 </td>
             </tr>
             
@@ -167,37 +177,18 @@
                 </td>
                 
                 <td>
-                    Price
+                    Customer Price
                 </td>
             </tr>
             
-            <tr class="item">
-                <td>
-                    Website design
-                </td>
-                
-                <td>
-                    $300.00
-                </td>
-            </tr>
-            
-            <tr class="item">
-                <td>
-                    Hosting (3 months)
-                </td>
-                
-                <td>
-                    $75.00
-                </td>
-            </tr>
             
             <tr class="item last">
                 <td>
-                    Domain name (1 year)
+                    {{$productDetails["product_name"]}}
                 </td>
                 
                 <td>
-                    $10.00
+                    {{$productDetails["product_customer_price"]}}
                 </td>
             </tr>
             
@@ -205,7 +196,7 @@
                 <td></td>
                 
                 <td>
-                   Total: $385.00
+                   Price Difference: {{$productDetails["product_price"] - $productDetails["product_customer_price"]}} 
                 </td>
             </tr>
         </table>

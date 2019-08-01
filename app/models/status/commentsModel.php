@@ -4,9 +4,14 @@ namespace App\models\status;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\customClass\Error;
 class commentsModel extends Model
 {
     //
+    public function __construct()
+    {
+        $this->Error = new Error();
+    }
     protected $table = "status_comments";
     protected $fillable = ["status_id", "host_id", "host_type", "comment_text"];
     public function status()
@@ -33,23 +38,40 @@ class commentsModel extends Model
 	    		"comment_text" => $comment_text,
 	    		]);
 
-    		return json_encode([
-                'errorMessage' => null,
-                "isSuccess" => true,
-                "successMessage" => "success",
-    		]);
+            $this->Error->setSuccess(["success"]);
+            return $this->Error->getSuccess();
     	}
     	catch(\Illuminate\Database\QueryException $exception)
     	{
 
-            $error = json_encode(array(
-                'errorMessage' => array($exception->errorInfo),
-                "isSuccess" => false,
-                "successMessage" => null,
-            ));
-            return $error;
+            $this->Error->setError([$exception->errorInfo]);
+            return $this->Error->getError();
     	}
 
 	    	
+    }
+    public static function deleteComment($status_id, $host_id, $host_type, $comment_text)
+    {
+        try
+        {
+            $comment = commentsModel::where([
+                ["status_id" => $status_id],
+                ["host_type" => $host_type],
+                ["host_id" => $host_id]
+            ])->get();
+            foreach ($comment as $c) {
+                $c->delete();
+            }
+            $this->Error->setSuccess(["success"]);
+            return $this->Error->getSuccess();
+        }
+        catch(\Illuminate\Database\QueryException $exception)
+        {
+
+            $this->Error->setError([$exception->errorInfo]);
+            return $this->Error->getError();
+        }
+
+            
     }
 }

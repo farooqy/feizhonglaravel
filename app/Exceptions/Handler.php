@@ -46,6 +46,27 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        
+        if ($exception instanceof \Illuminate\Database\Eloquent\RelationNotFoundException) 
+        {
+            return response(json_encode(array(
+                "error_message" => "RelationNotFoundException ",
+                "error_description" => $exception->getMessage(),
+                "error_status" => true,
+                "error_file" => $exception->getFile(),
+                "error_line" => $exception->getLine(),
+            )), 500);
+        }
+        if ($exception instanceof \BadMethodCallException) 
+        {
+            return response(json_encode(array(
+                "error_message" => "Bad method call exception",
+                "error_description" => $exception->getMessage(),
+                "error_status" => true,
+                "error_file" => $exception->getFile(),
+                "error_line" => $exception->getLine(),
+            )), 500);
+        }
         if ($exception instanceof \Illuminate\Http\Exceptions\PostTooLargeException) 
         {
             return response(json_encode(array(
@@ -94,6 +115,7 @@ class Handler extends ExceptionHandler
                 "error_message" => "Method Not Allowed",
                 "error_description" => $exception->getMessage(),
                 "error_status" => true,
+                "error_file" => $exception->getFile(),
                 "error_code" => 500
             )), 500);        
         }
@@ -109,9 +131,10 @@ class Handler extends ExceptionHandler
         if ($exception instanceof \UnexpectedValueException)
         {
             return response(json_encode(array(
-                "error_message" => "Could not find your request",
+                "error_message" => "Could not find your request UnexpectedValueException",
                 "error_description" => $exception->getMessage(),
                 "error_line" => $exception->getLine(),
+                "error_file" => $exception->getFile(),
                 "error_status" => true,
                 "error_code" => 422
             )), 422);        
@@ -121,6 +144,17 @@ class Handler extends ExceptionHandler
             return response(json_encode(array(
                 "error_message" => "Uncaught Query Error",
                 "error_description" => $exception->getMessage(),
+                "error_file" => $exception->getFile(),
+                "error_status" => true,
+                "error_code" => 500
+            )), 500);        
+        }
+        if ($exception instanceof \Exception)
+        {
+            return response(json_encode(array(
+                "error_message" => "Uncaught Exception",
+                "error_description" => $exception->getMessage(),
+                "error_file" => $exception->getFile(),
                 "error_status" => true,
                 "error_code" => 500
             )), 500);        

@@ -35,6 +35,9 @@ Route::post('/comp/status/addFile', 'statusController@uploadFile');
 Route::post('/comp/status/getToken', 'Status_TokenGeneratorModelController@generate_Token');
 Route::post('/comp/status/comment', 'statusController@writeComment');
 Route::post('/comp/status/like', 'statusController@likeStatus');
+Route::post('/comp/status/removePost', 'statusController@removePost');
+Route::post('/comp/status/deleteComment', 'statusController@deleteComment');
+Route::post('/comp/status/unlikeStatus', 'statusController@unlikeStatus');
 
 Route::post('/comp/products', 'products\productController@getProducts');
 Route::post('/comp/product/addProduct', 'products\productController@newProduct');
@@ -61,12 +64,15 @@ Route::post('/comp/edit/description', 'companies\accountController@updateCompDes
 Route::post('/favorites/doFavorite', 'favoritesController@favoriteCompany');
 Route::post('/favorites/getFavorites', 'favoritesController@getFavorites');
 Route::post('/favorites/unFavorite', 'favoritesController@removeFavorite');
+Route::post('/favorites/isMyFavorite', 'favoritesController@isMyFavorite');
 
 Route::post('message/history', 'chatController@getHistory');
 Route::post('message/history', 'chatController@getHistory');
 Route::post('message/send', 'chatController@sendMessage');
 
 Route::post('/list/companies', 'generalController@listCompanies');
+Route::post("/search/companies", "generalController@getSearchItem");
+Route::post("/search/users", "generalController@getSearchItem");
 
 
 Route::get('/quote', 'generalController@showQuote');

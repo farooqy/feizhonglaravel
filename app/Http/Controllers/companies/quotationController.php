@@ -11,6 +11,8 @@ use App\models\products\productModel;
 use App\models\normalUsersModel;
 use App\models\companies\quotationModel;
 use Illuminate\Support\Facades\Validator;
+use App\models\companies\companydataModel;
+use \App\models\companies\companyAddressModel;
 class quotationController extends Controller
 {
     //
@@ -56,8 +58,22 @@ class quotationController extends Controller
     		$request->demanded_quantity = $targetProduct[0]->product_price;
     	try
     	{
+            $companyAddress = companyAddressModel::where("comp_id", $request->company_id)->get();
+            $productDetails = [
+                "company_name" => companydataModel::where("comp_id", $request->company_id)->get()[0]->name,
+                "create_date" => gmdate("M d, Y", time()),
+                "due_date" => gmdate("M d, Y", (time()+2073600)),//24 days
+                "company_address" =>$companyAddress[0]->comp_addr_one,
+                "company_city" => $companyAddress[0]->comp_city,
+                "customer_name" => $user_is_valid[0]->user_fname." ".$user_is_valid[0]->user_sname,
+                "customer_email" => $user_is_valid[0]->user_email,
+                "product_name" => $targetProduct[0]->product_name,
+                "product_price" => $targetProduct[0]->product_price,
+                "product_customer_price" => $request->demanded_price,
+                "quotation_id" => quotationModel::get()->count()+1
+            ];
     		$mpdf = new \Mpdf\Mpdf(['tempDir' => public_path('/uploads/temppdf/')]);
-	    	$mpdf->WriteHTML($html = view('quotation.quotation', compact('targetProduct'))->render());
+	    	$mpdf->WriteHTML(($html = view('quotation.quotation', compact('productDetails'))->render()));
 	    	$filename = 'quotation_'.time().'_.pdf';
 	    	if(env('APP_ENV') === "production")
 	    		$filepath = public_path('/feizhonglaravel/uploads/temppdf/').$filename;
@@ -69,7 +85,7 @@ class quotationController extends Controller
     			"user_id" => $request->user_id,
     			"product_id" => $request->product_id,
     			"quantity" => $request->demanded_quantity,
-    			"demanded_price" => $request->demanded_price,
+    			"demand_price" => $request->demanded_price,
     			"who_initiated" => $request->host_type,
     			"quotation_file" => $pdfile
     		]);

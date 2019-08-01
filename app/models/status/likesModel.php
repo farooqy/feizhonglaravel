@@ -3,10 +3,15 @@
 namespace App\models\status;
 
 use Illuminate\Database\Eloquent\Model;
+use App\customClass\Error;
 
 class likesModel extends Model
 {
     //
+    public function __construct()
+    {
+        $this->Error = new Error();
+    }
     protected $table = "status_likes";
     protected $fillable = ["status_id", "host_id", "host_type"];
     public function status()
@@ -32,21 +37,40 @@ class likesModel extends Model
 	    		"host_type" => $host_type,
 	    		]);
 
-    		return json_encode([
-                'errorMessage' => null,
-                "isSuccess" => true,
-                "successMessage" => "success",
-    		]);
+            $this->Error->setSuccess(["success"]);
+            return $this->Error->getSuccess();
+
     	}
     	catch(\Illuminate\Database\QueryException $exception)
     	{
 
-            $error = json_encode(array(
-                'errorMessage' => array($exception->errorInfo),
-                "isSuccess" => false,
-                "successMessage" => null,
-            ));
-            return $error;
+
+            $this->Error->setError([$exception->errorInfo]);
+            return $this->Error->getError();
     	}
+    }
+    public function unlikeStatus($status_id, $host_id, $host_type)
+    {
+        try
+        {
+            $status = likesModel::where([
+                ["status_id" => $status_id],
+                ["host_id" => $host_id],
+                ["host_type" => $host_type]
+            ])->get();
+            foreach ($status as $s) {
+                $s->delete();
+            }
+
+            $this->Error->setSuccess(["success"]);
+            return $this->Error->getSuccess();
+        }
+        catch(\Illuminate\Database\QueryException $exception)
+        {
+
+            $this->Error->setError([$exception->errorInfo]);
+            return $this->Error->getError();
+        }
+
     }
 }

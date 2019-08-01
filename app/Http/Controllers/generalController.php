@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\models\registrationTrackerModel;
+
+use App\models\normalUsersModel;
 class generalController extends Controller
 {
     //
@@ -42,6 +44,39 @@ class generalController extends Controller
     		$this->Error->setSuccess($list);
     		return $this->Error->getSuccess();
     	}
+
+    }
+    public function getSearchItem(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_type" => "required|in:normal,comp",
+            "search_key" => "required|string|min:4",
+            "search_type" => "required|in:normal,comp"
+        ];
+        $messages = [];
+        $isNotValid = $this->custom_validator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
+        if($isNotValid)
+            return $isNotValid;
+        $compModel = new companydataModel;
+        $normModel = new normalUsersModel;
+        if($request->host_type === "comp")
+            $isValidHost = $compModel->isCompany($request->host_id);
+        else
+            $isValidHost = $normModel->isNormal($request->host_id);
+        if(!$isValidHost)
+        {
+            $this->Error->setError(["Is not valid host"]);
+            return $this->Error->getError();
+
+        }
+        if($request->search_type === "comp")
+            $items = $compModel->searchCompanies($request->search_key);
+        else
+            $items = $normModel->searchUsers($request->search_key);
+        $this->Error->setSuccess($items);
+
+        return $this->Error->getSuccess();
 
     }
     public function notAllowedMethod()

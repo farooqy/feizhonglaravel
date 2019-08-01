@@ -50,4 +50,24 @@ class normalUsersModel extends Model
 	{
 		return $this->hasMany('App\models\chats\chatUserModel', 'comp_id', ['chat_destination_id', 'chat_destination_id'])->orWhere('chat_origin_id', $this->chat_origin_id);
 	}
+	public function isNormal($user_id)
+	{
+		$isNormal = normalUsersModel::where("user_id", $user_id)->get();
+		if($isNormal !== null && $isNormal->count() > 0)
+			return true;
+		else
+			return false;
+
+	}
+
+	public function searchUsers($keywords)
+	{
+		$items = normalUsersModel::where("user_fname", "LIKE","%$keywords%")->orWhere([
+			["user_sname", "LIKE", "%keywords%"],
+			["user_phone", "LIKE", "%keywords%"],
+			["user_email", "LIKE", "%keywords%"],
+		])->get();
+		
+		return $items;	
+	}
 }

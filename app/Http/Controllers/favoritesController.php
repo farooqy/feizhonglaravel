@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\models\companydata_model;
+use App\models\companies\companydataModel;
 use App\models\normalUsersModel;
 use App\models\favoritesModel;
 use Illuminate\Support\Facades\Validator;
@@ -20,6 +20,50 @@ class favoritesController extends Controller
     {
         $this->Error = new Error();
         $this->custom_validator = new CustomRequestValidator();
+    }
+
+    public function isMyFavorite(Request $request)
+    {
+        $rules =[
+            "host_id" => "required|integer",
+            "host_type" => "required|in:normal,comp",
+            "comp_id" => "required|integer"
+        ];
+        $messages = [];
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest(Validator::make(
+            $request->all(), $rules, $messages
+        ));
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $UserModel = new normalUsersModel;
+        $CompModel = new companydataModel;
+        $isValidHost = $UserModel->isNormal($request->host_id);
+        if(!$isValidHost)
+        {
+            $this->Error->setError(["The host id is not valid"]);
+            return $this->Error->getError();
+        }
+        else if(!$CompModel->isCompany($request->comp_id))
+        {
+            $this->Error->setError(["The company id is not valid"]);
+            return $this->Error->getError();
+        }
+        $favoriteComp = favoritesModel::where([
+            ["favorite_host_id", $request->host_id],
+            ["favorited_comp_id", $request->comp_id]
+        ])->get();
+
+        if($favoriteComp !== null && $favoriteComp->count() > 0)
+        {
+            $this->Error->setSuccess(["isFavorite" => true]);
+            return $this->Error->getSuccess();
+        }
+        else
+        {
+            $this->Error->setSuccess(["isFavorite" => false]);
+            return $this->Error->getSuccess();
+        }
+
     }
 
 	public function getFavorites(Request $request)
@@ -59,7 +103,7 @@ class favoritesController extends Controller
     	}
     	else
     	{
-    		$valid_host = companydata_model::where([
+    		$valid_host = companydataModel::where([
     			['comp_id', $request->host_id],
     			['comp_token', $request->host_token]
     		])->get();
@@ -129,7 +173,7 @@ class favoritesController extends Controller
     	}
     	else
     	{
-    		$valid_host = companydata_model::where([
+    		$valid_host = companydataModel::where([
     			['comp_id', $request->host_id],
     			['comp_token', $request->host_token]
     		])->get();
@@ -145,7 +189,7 @@ class favoritesController extends Controller
     	}
 
     	//is the company to be favorited also valid?
-    	$valid_company = companydata_model::where('comp_id', $request->favorite_target_id)->get();
+    	$valid_company = companydataModel::where('comp_id', $request->favorite_target_id)->get();
     	if($valid_company == null || $valid_company->count() <= 0)
     	{
     		return json_encode([
