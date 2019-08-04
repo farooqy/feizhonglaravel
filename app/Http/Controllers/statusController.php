@@ -479,7 +479,7 @@ class statusController extends Controller
             "host_id" => "required|integer",
             "host_type" => "required|in:normal,comp"
         ];
-        $messages [];
+        $messages = [];
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
         if($isNotValidRequest)
