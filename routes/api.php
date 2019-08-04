@@ -67,7 +67,7 @@ Route::post('/favorites/unFavorite', 'favoritesController@removeFavorite');
 Route::post('/favorites/isMyFavorite', 'favoritesController@isMyFavorite');
 
 Route::post('message/history', 'chatController@getHistory');
-Route::post('message/history', 'chatController@getHistory');
+Route::post('message/chatConversation', 'chatController@getChatConversation');
 Route::post('message/send', 'chatController@sendMessage');
 
 Route::post('/list/companies', 'generalController@listCompanies');

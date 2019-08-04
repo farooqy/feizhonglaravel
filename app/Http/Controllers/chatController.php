@@ -25,6 +25,30 @@ class chatController extends Controller
         $this->customValidator = new CustomRequestValidator();
         $this->FileUploader = new FileUploader();
     }
+    public function getChatConversation(Request $request)
+    {
+        $rules = [
+            'host_id' => 'required|string',
+            'host_token' => 'required|string',
+            'host_type' => 'required|in:comp,normal',
+            "chat_id" => "required|integer",
+        ];
+        $message = [];
+
+        $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []));
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        //is valid host
+        if($this->isNotValidHost($request))
+            return $this->Error->getError();
+        $chats = chatUserModel::where('chat_id', $request->chat_id)->get();
+        foreach($chats as $chat)
+        {
+            $conversation = $chat->chats;
+        }
+        $this->Error->setSuccess($chats);
+        return $this->Error->getSuccess();
+    }
     public function getHistory(Request $request)
     {
     	$rules = [
@@ -32,35 +56,17 @@ class chatController extends Controller
             'host_token' => 'required|string',
     		'host_type' => 'required|in:comp,normal'
     	];
-        $is_not_valid_request =  $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []));
+        $is_not_valid_request = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []));
         if($is_not_valid_request)
             return $is_not_valid_request;
-        if($request->host_type === "comp")
-        {
-            $is_valid_host = companydataModel::where([
-                ['comp_id', $request->host_id],
-                ['comp_token', $request->host_token]
-            ])->get();
-        }
-        else
-        {
-            $is_valid_host = normalUsersModel::where([
-                ['user_id', $request->host_id],
-                ['user_token', $request->host_token]
-            ])->get();
-        }
-        if($is_valid_host === null || $is_valid_host->count() <= 0)
-        {
-            $this->Error->setError(['The host id and token do not exist']);
+        if($this->isNotValidHost($request))
             return $this->Error->getError();
-        }
         $chats = chatUserModel::where('chat_origin_id', $request->host_id)->
         orWhere('chat_destination_id', $request->host_id)->get();
         foreach($chats as $chat)
         {
             $chat_company = $chat->companyChat;
             $chat_user = $chat->userChat;
-            $chat_messages = $chat->chats;
         }
         $this->Error->setSuccess($chats);
         return $this->Error->getSuccess();
@@ -181,5 +187,31 @@ class chatController extends Controller
             $this->Error->setError(['Failed to send  message db error',$exception->errorInfo]);
             return $this->Error->getError();
         }
+    }
+
+    protected function isNotValidHost($request)
+    {
+        if($request->host_type === "comp")
+        {
+            $is_valid_host = companydataModel::where([
+                ['comp_id', $request->host_id],
+                ['comp_token', $request->host_token]
+            ])->get();
+        }
+        else
+        {
+            $is_valid_host = normalUsersModel::where([
+                ['user_id', $request->host_id],
+                ['user_token', $request->host_token]
+            ])->get();
+        }
+        if($is_valid_host === null || $is_valid_host->count() <= 0)
+        {
+            $this->Error->setError(['The host id and token do not exist']);
+            
+            return true;
+        }
+        else 
+            return false;
     }
 }
