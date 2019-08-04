@@ -520,7 +520,7 @@ class statusController extends Controller
             "host_id" => "required|integer",
             "host_type" => "required|in:normal,comp"
         ];
-        $messages [];
+        $messages = [];
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
         if($isNotValidRequest)
@@ -556,7 +556,7 @@ class statusController extends Controller
 
     public function removePost(Request $request)
     {
-        
+        return $this->Error->getError();
     }
 
 }
