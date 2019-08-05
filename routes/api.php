@@ -71,10 +71,12 @@ Route::post('message/chatConversation', 'chatController@getChatConversation');
 Route::post('message/send', 'chatController@sendMessage');
 
 Route::post('/list/companies', 'generalController@listCompanies');
-Route::post("/search/companies", "generalController@getSearchItem");
-Route::post("/search/users", "generalController@getSearchItem");
+Route::post('/search/companies', 'generalController@getSearchItem');
+Route::post('/search/users', 'generalController@getSearchItem');
 
 
 Route::get('/quote', 'generalController@showQuote');
 
 Route::post('/images/base64', 'generalController@getBase64Image');
+
+Route::post('/version_code', 'generalController@getVersion');

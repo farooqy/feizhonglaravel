@@ -106,4 +106,10 @@ class generalController extends Controller
     		return $this->Error->getError();
     	}
     }
+
+    public function getVersion()
+    {
+        $this->Error->setSuccess(["version_number" => 7]);
+        return $this->Error->getSuccess();
+    }
 }

@@ -57,7 +57,7 @@ class favoritesController extends Controller
 
         if($favoriteComp !== null && $favoriteComp->count() > 0)
         {
-            $this->Error->setSuccess(["isFavorite" => true, "comp" => $favoriteComp]);
+            $this->Error->setSuccess(["isFavorite" => true]);
             return $this->Error->getSuccess();
         }
         else
