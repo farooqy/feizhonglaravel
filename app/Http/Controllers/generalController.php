@@ -46,11 +46,13 @@ class generalController extends Controller
                 {    
                     unset($list[$ckey]);
                     // array_splice(($s =$list->toArray()), $ckey, 1);
-                    $list = array_values(array_filter($list->toArray()));
+                    
                     continue; 
                 }
     			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type, "registrationStatus" => $company->registrationStatus]);
+
     		}	
+            $list = array_values(array_filter($list->toArray()));
     		$this->Error->setSuccess($list);
     		return $this->Error->getSuccess();
     	}
