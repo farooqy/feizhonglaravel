@@ -245,7 +245,11 @@ class favoritesController extends Controller
                     ["favorite_host_token", $request->host_token],
                     ["favorited_comp_id", $request->target_id]
                 ])->get();
-                $favorite[0]->delete();
+                foreach ($favorite as $fav) {
+                    # code...
+                    $fav->delete();
+                }
+                // $favorite[0]->delete();
 
                 $this->Error->setSuccess(['success']);
                 return $this->Error->getSuccess();
