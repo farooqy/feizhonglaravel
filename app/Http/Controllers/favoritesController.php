@@ -27,6 +27,7 @@ class favoritesController extends Controller
         $rules =[
             "host_id" => "required|integer",
             "host_type" => "required|in:normal,comp",
+            "host_token" => "required|string",
             "comp_id" => "required|integer"
         ];
         $messages = [];
@@ -50,7 +51,8 @@ class favoritesController extends Controller
         }
         $favoriteComp = favoritesModel::where([
             ["favorite_host_id", $request->host_id],
-            ["favorited_comp_id", $request->comp_id]
+            ["favorite_host_token", $request->host_token],
+            ["favorited_comp_id", $request->comp_id],
         ])->get();
 
         if($favoriteComp !== null && $favoriteComp->count() > 0)
