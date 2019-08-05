@@ -28,6 +28,9 @@ class generalController extends Controller
     	// 	$query = $q::where("registrration_tracker.stage", "completed")->get();
     	// })->get();
     	// $list = companydataModel::with("registration_tracker", "registration_tracker.stage")->where('registration_tracker.stage', "completed")->skip(0)->take(10)->get();
+        $list = companydataModel::whereHas("registrationStatus", function($q) {
+            $q->where("stage","complete");
+        })->get();
     	$list = companydataModel::get();
     	if($list === null || $list->count() <=0 )
     	{
@@ -37,8 +40,10 @@ class generalController extends Controller
     	else
     	{
     		$comp_list = [];
-    		foreach($list as $company)
+    		foreach($list as $ckey => $company)
     		{
+                if($company->address === null)
+                    unset($list[$ckey]);
     			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type, "registrationStatus" => $company->registrationStatus]);
     		}	
     		$this->Error->setSuccess($list);
