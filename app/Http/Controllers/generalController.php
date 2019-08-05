@@ -43,7 +43,10 @@ class generalController extends Controller
     		foreach($list as $ckey => $company)
     		{
                 if($company->address === null)
+                {    
                     unset($list[$ckey]);
+                    continue; 
+                }
     			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type, "registrationStatus" => $company->registrationStatus]);
     		}	
     		$this->Error->setSuccess($list);
