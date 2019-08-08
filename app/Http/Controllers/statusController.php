@@ -14,7 +14,7 @@ use App\models\status\likesModel;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validato  r;
 // use Intervention\Image\Facades\Image as Image;
 use Image;
 class statusController extends Controller
