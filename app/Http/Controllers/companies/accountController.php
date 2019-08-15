@@ -60,6 +60,7 @@ class accountController extends Controller
             {
                 $this->setError(["The company registration is not complete"]);
                 $data[0]->delete();
+                return $this->error;
             }
             $data[0]->address;
             $data[0]->type;
