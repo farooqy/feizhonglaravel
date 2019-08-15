@@ -118,7 +118,7 @@ class accountController extends Controller
 			$this->setError(["The multiple companies retrieved. Please contact support for assistance"]);
 			return $this->error;
 		}
-        if($request->company_type === "Other")
+        if($request->company_type === "other")
         {
             if(!$request::exists('comp_customType') || !$request::exits('comp_customSubType'))
             {
