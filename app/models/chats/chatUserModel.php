@@ -14,6 +14,10 @@ class chatUserModel extends Model
     {
     	return $this->hasMany('App\models\chats\chatModel', 'chat_id', 'chat_id');
     }
+    public function lastMessage()
+    {
+        return $this->hasOne('App\models\chats\chatModel', 'chat_id', 'chat_id')->latest();
+    }
     public function companySent()
     {
     	return $this->belongsTo('App\models\companies\companydataModel', 'chat_origin_id', 'comp_id');

@@ -67,6 +67,7 @@ class chatController extends Controller
         {
             $chat_company = $chat->companyChat;
             $chat_user = $chat->userChat;
+            $c = $chat->lastMessage;
         }
         $this->Error->setSuccess($chats);
         return $this->Error->getSuccess();
