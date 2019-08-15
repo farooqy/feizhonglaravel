@@ -38,7 +38,10 @@ class favoritesController extends Controller
             return $isNotValidRequest;
         $UserModel = new normalUsersModel;
         $CompModel = new companydataModel;
-        $isValidHost = $UserModel->isNormal($request->host_id);
+        if($request->host_type === "comp")
+            $isValidHost = $CompModel->isCompany($request->host_id);
+        else
+            $isValidHost = $UserModel->isNormal($request->host_id);
         if(!$isValidHost)
         {
             $this->Error->setError(["The host id is not valid"]);
@@ -200,7 +203,18 @@ class favoritesController extends Controller
                 "successMessage" => null,
     		]);
     	}
-
+        $isAlreadyFavorite = favoritesModel::where([
+            ["favorite_host_id", "=", $request->host_id],
+            ["favorite_host_token", "=", $request->host_token],
+            ["favorite_host_type", "=", $request->host_type],
+            ["favorited_comp_id", "=", $request->favorite_target_id],
+        ])->get();
+        if($isAlreadyFavorite->count() > 0)
+        {
+            $this->Error->setError(["You have already favorited this company"]);
+            return $this->Error->getError();
+        }
+        // return $isAlreadyFavorite;
     	return $this->doTryAndCatchQuery($request, "favoriteCompany");
 
 

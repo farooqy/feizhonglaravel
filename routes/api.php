@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 Route::put('*', 'generalController@notAllowedMethod');
 Route::post('/user/login', 'user\accountController@userLogin');
 Route::post('/user/register', 'user\accountController@register');
