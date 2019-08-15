@@ -586,7 +586,7 @@ class accountController extends Controller
             $current_value = $current_data[0][$targetField];
             if($current_value === $request->company_target_change)
             {
-                $this->Error->setError(['Please provide a different value than the existing']);
+                $this->Error->setError(['Please provide a different value than the existing '.$current_value." == ".$request->company_target_change]);
                 return false;
             }
             $new_value = $request->company_target_change;
