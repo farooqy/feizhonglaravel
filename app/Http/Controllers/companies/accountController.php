@@ -1,7 +1,8 @@
 <?php
 namespace App\Http\Controllers\companies;
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+use Request;
 use App\Http\Controllers\Controller;
 use Twilio\Rest\Client;
 use Twilio\Exceptions\TwilioException;
