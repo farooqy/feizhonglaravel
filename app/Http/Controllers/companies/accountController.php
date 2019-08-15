@@ -601,7 +601,9 @@ class accountController extends Controller
                 "changed_from" => $current_value,
                 "changed_to" => $new_value
             ]);
-            $this->Error->setSuccess(['success']);
+            if($targetField === "comp_pass")
+                $new_value = "sensitive";
+            $this->Error->setSuccess(["change_value" => $new_value]);
             return true;
         }
 
