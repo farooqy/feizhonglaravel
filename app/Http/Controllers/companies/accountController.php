@@ -56,6 +56,11 @@ class accountController extends Controller
 		}
 		else if(Hash::check($request->company_password,$data[0]->comp_pass))
 		{
+            if($data[0]->type === null)
+            {
+                $this->setError(["The company registration is not complete"]);
+                $data[0]->delete();
+            }
             $data[0]->address;
             $data[0]->type;
             $data[0]->products;
