@@ -450,9 +450,10 @@ class accountController extends Controller
         $comp_token = $request->company_token;
         $dir = 'uploads/comp/'.$comp_token.'/profile/';
         $publicpath = public_path($dir);//full path
+        $filename = 'profile_'.hash('md5',time()).'_pic.';
         $this->FileUploader->setFilePath($publicpath);
         $this->FileUploader->setFileDirectory($dir);//path with url
-        $this->FileUploader->setFileName($filename = 'profile_'.hash('md5',time()).'_pic.');
+        $this->FileUploader->setFileName($filename);
 
         $file_url = $this->FileUploader->uplaodJsonFile($request->company_target_change);
         if($file_url === false)
