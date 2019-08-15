@@ -1,8 +1,7 @@
 <?php
 namespace App\Http\Controllers\companies;
 
-// use Illuminate\Http\Request;
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Twilio\Rest\Client;
 use Twilio\Exceptions\TwilioException;
@@ -121,7 +120,7 @@ class accountController extends Controller
 		}
         if($request->company_type === "other")
         {
-            if(!$request::exists('comp_customType') || !$request::exits('comp_customSubType'))
+            if(!$request::has('comp_customType') || !$request::has('comp_customSubType'))
             {
                 $this->Error->setError(["The company custom type or subtype is not provided"]);
                 return $this->Error->getError();
