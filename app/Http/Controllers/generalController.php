@@ -42,7 +42,7 @@ class generalController extends Controller
     		$comp_list = [];
     		foreach($list as $ckey => $company)
     		{
-                if($company->address === null)
+                if($company->address === null || $company->type === null)
                 {    
                     unset($list[$ckey]);
                     // array_splice(($s =$list->toArray()), $ckey, 1);
