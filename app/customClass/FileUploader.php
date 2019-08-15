@@ -23,6 +23,7 @@ class FileUploader {
 	}
 	public function uplaodJsonFile($filedata)
 	{
+		return $this->publicpath;
 		if(!is_dir($this->publicpath))
 		{
 			if(!mkdir($this->publicpath, 0765, true))
