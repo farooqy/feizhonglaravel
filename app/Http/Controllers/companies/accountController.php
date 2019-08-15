@@ -59,7 +59,22 @@ class accountController extends Controller
             if($data[0]->type === null || $data[0]->address=== null)
             {
                 $this->setError(["The company registration is not complete"]);
+                $id = $data[0]->comp_id;
                 $data[0]->delete();
+                $phone = phoneVerificationModel::where("target_phone", $request->company_phone);
+                if($phone->count() !== 0)
+                    $phone[0]->delete();
+                if($data[0]->type !== null)
+                {
+                    $type = companyTypeModel::where("comp_id", $id)->get();
+                    $type[0]->delete();
+                }
+                if($data[0]->address !== null)
+                {
+                    $address = companyTypeModel::where("comp_id", $id)->get();
+                    $address[0]->delete();
+                }
+
                 return $this->error;
             }
             $data[0]->address;
