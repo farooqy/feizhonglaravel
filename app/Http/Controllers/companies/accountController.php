@@ -449,7 +449,11 @@ class accountController extends Controller
     {
         $comp_token = $request->company_token;
         $dir = 'uploads/comp/'.$comp_token.'/profile/';
-        $publicpath = public_path($dir);//full path
+        if(env("APP_ENV") === "local")
+            $publicpath = public_path($dir);//full path
+        else
+            $publicpath = env("APP_ROOT").$dir;
+        
         $filename = 'profile_'.hash('md5',time()).'_pic.';
         $this->FileUploader->setFilePath($publicpath);
         $this->FileUploader->setFileDirectory($dir);//path with url

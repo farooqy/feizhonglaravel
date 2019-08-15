@@ -13,10 +13,8 @@ class FileUploader {
 	{
 		$this->Error = new Error();
 		$this->directory = 'uploads/file_uploader/';
-		if(env("APP_ENV") === "local")
-			$this->publicpath = public_path($this->directory);
-		else
-			$this->publicpath = env("APP_ROOT").$this->directory;
+		$this->publicpath = public_path($this->directory);
+		
 		$this->filename = "chunk_".time()."_.";
 		$this->allowed_file_types = ["image/jpeg", "image/png", "image/jpg"];
         $this->file_extension = ["jpeg", "png", "jpg"];
