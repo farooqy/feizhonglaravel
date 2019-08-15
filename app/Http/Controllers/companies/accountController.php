@@ -120,7 +120,8 @@ class accountController extends Controller
 		}
         if($request->company_type === "other")
         {
-            if(!$request::has('comp_customType') || !$request::has('comp_customSubType'))
+            $input = $request->all();
+            if(!input::has('comp_customType') || !$input::has('comp_customSubType'))
             {
                 $this->Error->setError(["The company custom type or subtype is not provided"]);
                 return $this->Error->getError();
