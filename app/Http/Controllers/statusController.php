@@ -37,7 +37,7 @@ class statusController extends Controller
     }
     public function getStatus (Request $request)
     {
-    	$statusData = compStatusModel::where([['status_status' ,'=', 'active']])->get();
+    	$statusData = compStatusModel::where([['status_status' ,'=', 'active']])->latest()->get();
         $status = [];
         foreach($statusData as $key => $eachStatus)
         {
