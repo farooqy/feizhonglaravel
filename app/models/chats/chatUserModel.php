@@ -12,7 +12,7 @@ class chatUserModel extends Model
 
     public function chats()
     {
-    	return $this->hasMany('App\models\chats\chatModel', 'chat_id', 'chat_id');
+    	return $this->hasMany('App\models\chats\chatModel', 'chat_id', 'chat_id')->latest();
     }
     public function lastMessage()
     {
