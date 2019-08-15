@@ -41,7 +41,14 @@ class chatController extends Controller
         //is valid host
         if($this->isNotValidHost($request))
             return $this->Error->getError();
-        $chats = chatUserModel::where('chat_id', $request->chat_id)->latest()->get();
+
+        $chats = chatUserModel::where([
+            ['chat_id', $request->chat_id],
+            ["chat_origin_id", $request->host_id]
+        ])->orWhere([
+            ['chat_id', $request->chat_id],
+            ["chat_destination_id", $request->host_id]
+        ])->latest()->get();
         foreach($chats as $chat)
         {
             $conversation = $chat->chats;
