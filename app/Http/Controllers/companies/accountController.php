@@ -113,6 +113,11 @@ class accountController extends Controller
 		if($is_tracked_well === false)
 			return $this->error;
 		$company_id = companydataModel::where('comp_token', $request->company_token)->get();
+        if($company_id->count() === 0)
+        {
+            $this->setError(["Invalid company type is being added"]);
+            return $this->error;
+        }
 		if($company_id === null || $company_id->count() !== 1)
 		{
 			$this->setError(["The multiple companies retrieved. Please contact support for assistance"]);
