@@ -14,6 +14,10 @@ class chatUserModel extends Model
     {
     	return $this->hasMany('App\models\chats\chatModel', 'chat_id', 'chat_id')->latest();
     }
+    public function unreadMessages()
+    {
+        return $this->hasMany('App\models\chats\chatModel', 'chat_id', 'chat_id')->where("message_status", "sent")->latest();
+    }
     public function lastMessage()
     {
         return $this->hasOne('App\models\chats\chatModel', 'chat_id', 'chat_id')->latest();

@@ -16,7 +16,9 @@ class CreateChatUsersTable extends Migration
         Schema::create('chat_users', function (Blueprint $table) {
             $table->increments('chat_id');
             $table->bigInteger('chat_origin_id');
+            $table->bigInteger('chat_origin_token');
             $table->bigInteger('chat_destination_id');
+            $table->bigInteger('chat_destination_token');
             $table->string('chat_token', 330);
             $table->timestamps();
         });

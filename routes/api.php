@@ -69,6 +69,8 @@ Route::post('/favorites/isMyFavorite', 'favoritesController@isMyFavorite');
 Route::post('message/history', 'chatController@getHistory');
 Route::post('message/chatConversation', 'chatController@getChatConversation');
 Route::post('message/send', 'chatController@sendMessage');
+Route::post('message/getSpecificChat', 'chatController@getSpecificChat');
+Route::post('message/markasread', 'chatController@MarkMessageStatusRead');
 
 Route::post('/list/companies', 'generalController@listCompanies');
 Route::post('/search/companies', 'generalController@getSearchItem');
