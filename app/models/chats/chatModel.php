@@ -8,7 +8,7 @@ class chatModel extends Model
 {
     //
     protected $table = "chat";
-    public $fillable = ["chat_id", "message", "message_type", "message_status", "message_target"];
+    public $fillable = ["chat_id", "message", "message_type", "message_status", "message_target_id", "message_target_token"];
 
     public function chatUsers()
     {

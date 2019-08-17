@@ -8,7 +8,7 @@ class chatUserModel extends Model
 {
     //
     protected $table = "chat_users";
-    public $fillable = ["chat_origin_id", "chat_destination_id", "chat_token"];
+    public $fillable = ["chat_origin_id", "chat_destination_id", "chat_token", "chat_origin_token", "chat_destination_token", "chat_token"];
 
     public function chats()
     {

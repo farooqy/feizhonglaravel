@@ -34,14 +34,14 @@ class chatController extends Controller
             "message_target_token" => "required|string",
         ];
 
-        if($isNotValidRequest= $this->customValidator->isNotValidRequest($request->all(), $rules, []))
+        if($isNotValidRequest= $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, [])))
             return $isNotValidRequest;
 
         chatModel::where([
             ["chat_id", $request->chat_id],
-            ["message_id", $request->message_id],
+            ["id", $request->message_id],
             ["message_target_id", $request->message_target_id],
-            ["message_target_id", $request->message_target_token],
+            ["message_target_token", $request->message_target_token],
         ])->update(["message_status" => "read"]);
 
         $this->Error->setSuccess(["success"]);
@@ -55,11 +55,11 @@ class chatController extends Controller
             "host_type" => "required|in:normal,comp",
             "target_id" => "required|integer",
             "target_token" => "required|string|min:20",
+            "target_type" => "required|in:normal,comp"
         ];
-        if($isNotValidRequest = $this->customValidator->isNotValidRequest($request->all(), $rules
-    ), [])
+        if($isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, [])))
         {
-            return $this->isNotValidRequest;
+            return $isNotValidRequest;
         }
 
         $isNotValidHost = $this->isNotValidHost($request);
@@ -75,7 +75,7 @@ class chatController extends Controller
                 ["user_id", $request->target_id],
                 ["user_token", $request->target_token],
             ])->get();
-        if($isValidTarget === null || $isValidTarget->count() )
+        if($isValidTarget === null || $isValidTarget->count() === 0)
         {
             $this->Error->setError(["Invalid target for chat"]);
             return $this->Error->getError();
@@ -101,6 +101,7 @@ class chatController extends Controller
             $conversation = chatModel::where([
                 ["chat_id", $chat_id[0]->chat_id]
             ])->get();
+            return $conversation;
         }
 
 
@@ -124,11 +125,11 @@ class chatController extends Controller
 
         $chats = chatUserModel::where([
             ['chat_id', $request->chat_id],
-            ["chat_origin_id", $request->host_id]
+            ["chat_origin_id", $request->host_id],
             ["chat_origin_token", $request->host_token]
         ])->orWhere([
             ['chat_id', $request->chat_id],
-            ["chat_destination_id", $request->host_id]
+            ["chat_destination_id", $request->host_id],
             ["chat_destination_token", $request->host_token]
         ])->latest()->get();
         foreach($chats as $chat)
@@ -250,7 +251,9 @@ class chatController extends Controller
                 $chat_token = hash('md5', time()).time();//used for geeting chat id
                 chatUserModel::create([
                     "chat_origin_id" => $request->host_id,
+                    "chat_origin_token" => $request->host_token,
                     "chat_destination_id" => $request->target_id,
+                    "chat_destination_token" => $request->target_token,
                     "chat_token" => $chat_token,
                 ]);
                 
