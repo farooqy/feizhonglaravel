@@ -84,4 +84,5 @@ Route::post('/images/base64', 'generalController@getBase64Image');
 Route::post('/version_code', 'generalController@getVersion');
 
 Route::post('/statistics/profileVisits', 'statisticsController@profileVisit');
+Route::post('/statistics/visitedProfiles', 'statisticsController@visitedProfiles');
 Route::post('/statistics/productVisits', 'statisticsController@productSet');

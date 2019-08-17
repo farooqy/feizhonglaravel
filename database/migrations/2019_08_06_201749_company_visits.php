@@ -21,6 +21,7 @@ class CompanyVisits extends Migration
             $table->integer('host_id');
             $table->string('host_token');
             $table->string('host_type');
+            $table->integer("visit_count");
             $table->timestamps();
         });
     }

@@ -22,6 +22,7 @@ class ProductStats extends Migration
             $table->string('host_token');
             $table->string('host_type');
             $table->string('visit_type');
+            $table->integer("visit_count");
             $table->timestamps();
         });
     }
