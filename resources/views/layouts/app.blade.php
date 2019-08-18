@@ -75,7 +75,11 @@
 				<div class="header-outer">
 					<div class="header-inner">
 						<div class="header-top row">
-							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><a href="." class="logo"></a></div>
+							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+								<a href="." class=""> 
+									<img src="/img/logo.jpg" height="50px" style="margin-top: 20px;"/> 
+								</a>
+							</div>
 							<div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">
 								<i class="fa fa-bars mobileMenuNav whiteTxtColor"></i>
 								<nav class="nav-container customBgColor">
