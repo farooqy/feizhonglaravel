@@ -357,7 +357,7 @@
 			<div class="wrapper">
 				<div class="screenshotsTitBox row">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 clearfix">
-						<h3 class="sectionTitle text-center ralewayLight balck">AppBox Screenshots</h3>
+						<h3 class="sectionTitle text-center ralewayLight balck">AtoC App Screenshots</h3>
 					</div>
 				</div>
 			</div>
@@ -696,38 +696,38 @@
 								<div class="member-ava circleBox center-block wow rotateIn" data-wow-delay="0.3s">
 									<img src="media/124x124/1.png" alt="Member">
 								</div>
-								<div class="member-name robotoCondensed whiteTxtColor text-center">Oscar Mendis</div>
-								<div class="member-specialty roboto whiteTxtColor text-center">AppBox CEO</div>
+								<div class="member-name robotoCondensed whiteTxtColor text-center">Neud Tesfay</div>
+								<div class="member-specialty roboto whiteTxtColor text-center">Co-Founder & AtoC CEO</div>
 							</div>
 							<div class="member-item center-block">
 								<div class="member-ava circleBox center-block wow rotateIn" data-wow-delay="0.3s">
 									<img src="media/124x124/2.png" alt="Member">
 								</div>
-								<div class="member-name robotoCondensed whiteTxtColor text-center">Thomas Hill</div>
-								<div class="member-specialty roboto whiteTxtColor text-center">UX UI Designer</div>
+								<div class="member-name robotoCondensed whiteTxtColor text-center">Noor Abdi</div>
+								<div class="member-specialty roboto whiteTxtColor text-center">Co-Founder & AtoC CTO</div>
 							</div>
 							<div class="member-item center-block">
 								<div class="member-ava circleBox center-block wow rotateIn" data-wow-delay="0.3s">
 									<img src="media/124x124/3.png" alt="Member">
 								</div>
-								<div class="member-name robotoCondensed whiteTxtColor text-center">John Adam</div>
-								<div class="member-specialty roboto whiteTxtColor text-center">Developer</div>
+								<div class="member-name robotoCondensed whiteTxtColor text-center">Rose Hwang</div>
+								<div class="member-specialty roboto whiteTxtColor text-center">China COO</div>
 							</div>
 							<div class="member-item center-block">
 								<div class="member-ava circleBox center-block wow rotateIn" data-wow-delay="0.3s">
 									<img src="media/124x124/4.png" alt="Member">
 								</div>
-								<div class="member-name robotoCondensed whiteTxtColor text-center">Olivia Jason</div>
-								<div class="member-specialty roboto whiteTxtColor text-center">Javascript</div>
+								<div class="member-name robotoCondensed whiteTxtColor text-center">Maya Bethelhem</div>
+								<div class="member-specialty roboto whiteTxtColor text-center">Ethiopia COO</div>
 							</div>
 							<div class="member-item center-block">
 								<div class="member-ava circleBox center-block wow rotateIn" data-wow-delay="0.3s">
 									<img src="media/124x124/5.png" alt="Member">
 								</div>
-								<div class="member-name robotoCondensed whiteTxtColor text-center">Tom Hasman</div>
-								<div class="member-specialty roboto whiteTxtColor text-center">Beta Tester</div>
+								<div class="member-name robotoCondensed whiteTxtColor text-center">Lisa Queen</div>
+								<div class="member-specialty roboto whiteTxtColor text-center">Tanzania COO</div>
 							</div>
-							<div class="member-item center-block">
+							<!-- <div class="member-item center-block">
 								<div class="member-ava circleBox center-block wow rotateIn" data-wow-delay="0.3s">
 									<img src="media/124x124/6.png" alt="Member">
 								</div>
@@ -740,7 +740,7 @@
 								</div>
 								<div class="member-name robotoCondensed whiteTxtColor text-center">Oscar Mendis</div>
 								<div class="member-specialty roboto whiteTxtColor text-center">Developer</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
