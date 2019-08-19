@@ -11,6 +11,8 @@ use App\models\uploadedFilesModel;
 use App\models\tokenStatusGeneratorModel;
 use App\models\status\commentsModel;
 use App\models\status\likesModel;
+use App\models\companies\companyLicenseModel;
+use App\models\products\productModel;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 
@@ -38,33 +40,56 @@ class statusController extends Controller
     public function getStatus (Request $request)
     {
     	$statusData = compStatusModel::where([['status_status' ,'=', 'active']])->latest()->get();
-        $status = [];
-        foreach($statusData as $key => $eachStatus)
-        {
-            $status = array(
-                "status" => $eachStatus,
-                "files" => $eachStatus->Status_Files,
-                "companyProfile" => $eachStatus->companyData,
-                "num_comments" => $eachStatus->comments->count(),
-                "num_likes" => $eachStatus->likes->count(),
-            );
-            $comments = $eachStatus->comments;
-            $likes = $eachStatus->likes;
-            foreach($comments as $comment)
-            {
-                $status["comments"] = ["comment"=>$comment, "details"=> $comment->personProfile];
-            }   
-            foreach( $likes as  $like)
-            {
-                $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
-            }
 
-            $statusData[$key]["num_comments"] = $comments->count();
-            $statusData[$key]["num_likes"] = $likes->count();
+        $products = productModel::get();
+        $listProducts = $statusData->merge($products);
+        $listProducts = array_reverse(array_sort($listProducts, function ($value) {
+          return $value['created_at'];
+        }));
+        $status = [];
+        $statusCount = 0;
+        foreach($listProducts as $key => $eachStatus)
+        {
+            // return $eachStatus;
+            if($eachStatus->product_gen_token)
+            {
+                $listProducts[$key]->type = "product";
+
+                $eachStatus->companydata;
+                
+            }    
+            else
+            {
+                $listProducts[$key]->type = "status";
+
+                    $status = array(
+                    "status" => $eachStatus,
+                    "files" => $eachStatus->Status_Files,
+                    "companyProfile" => $eachStatus->companyData,
+                    "num_comments" => $eachStatus->comments->count(),
+                    "num_likes" => $eachStatus->likes->count(),
+                );
+                $comments = $eachStatus->comments;
+                $likes = $eachStatus->likes;
+                foreach($comments as $comment)
+                {
+                    $status["comments"] = ["comment"=>$comment, "details"=> $comment->personProfile];
+                }   
+                foreach( $likes as  $like)
+                {
+                    $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
+                }
+
+                $statusData[$statusCount]["num_comments"] = $comments->count();
+                $statusData[$statusCount]["num_likes"] = $likes->count();
+            }    
+            
 
         }
-    	return json_encode(["isSuccess"=> true, "errorMessage"=> null,
-         "successMessage"=>"success", "data"=>$statusData]);
+    	// return json_encode(["isSuccess"=> true, "errorMessage"=> null,
+     //     "successMessage"=>"success", "data"=>$statusData]);
+        $this->Error->setSuccess($listProducts);
+        return $this->Error->getSuccess();
 
     }
     public function uploadFile(Request $fileForm)
@@ -87,13 +112,21 @@ class statusController extends Controller
             $listerrors = [];
             foreach($errors->all() as $error)
                 array_push($listerrors, $error);
-            return json_encode([
-                'errorMessage' => $listerrors, 
-                'isSuccess' => false, 
-                'successMessage' => null
-            ]);
-        }    
+            // return json_encode([
+            //     'errorMessage' => $listerrors, 
+            //     'isSuccess' => false, 
+            //     'successMessage' => null
+            // ]);
+            $this->Error->setError($listerrors);
+            return $this->Error->getError();
 
+        }    
+        //check if has uplaoded license
+        if(!$this->hasUploadedLicense($fileForm->host_id, $fileForm->host_token))
+        {
+            $this->Error->setError(["Your company is not verified. Please upload license to be verified"]);
+            return $this->Error->getError();
+        }
         //check generated token
         $isvalid_token = $this->is_valid_generated_token($fileForm->generated_token,
             $fileForm->host_id,$fileForm->host_token, $fileForm->host_type);
@@ -116,23 +149,28 @@ class statusController extends Controller
         }
         if($isExisting === null)
         {
-            $errors = json_encode([
-                'errorMessage' => ["The company id and company token do not match"],
-                'isSuccess' => false, 
-                'successMessage' => null
-            ]);
-            return $errors;
+            // $errors = json_encode([
+            //     'errorMessage' => ["The company id and company token do not match"],
+            //     'isSuccess' => false, 
+            //     'successMessage' => null
+            // ]);
+            // return $errors;
+            $this->Error->setError(["The company id and company token do not match"]);
+            return $this->Error->getError();
         }
         else
         {
             if(!is_dir(public_path('uploads/comp/'.$fileForm->host_token)))
             {
                 if(!mkdir(public_path('uploads/comp/'.$fileForm->host_token), 0765, true))
-                    return json_encode([
-                        'errorMessage' => ["Failed to create directory for the status file"],
-                        'isSuccess' => false, 
-                        'successMessage' => null
-                    ]);
+                {    // return json_encode([
+                    //     'errorMessage' => ["Failed to create directory for the status file"],
+                    //     'isSuccess' => false, 
+                    //     'successMessage' => null
+                    // ]);
+                    $this->Error->setError(["Failed to create directory for the status file"]);
+                    return $this->Error->getError();
+                }
             }
             $allowed_file_types = ["image/jpeg", "image/png", "image/jpg", "video/mp4"];
             $file_extension = ["jpeg", "png", "jpg", "mp4"];
@@ -140,11 +178,13 @@ class statusController extends Controller
              (strpos($fileForm->file_value, ";")-5));
             if(($type_key = array_search($file_type, $allowed_file_types)) === false)
             {
-                return json_encode([
-                    'errorMessage' => "The file type provided is not valid",
-                    'isSuccess' => false, 
-                    'successMessage' =>null
-                ]);
+                // return json_encode([
+                //     'errorMessage' => "The file type provided is not valid",
+                //     'isSuccess' => false, 
+                //     'successMessage' =>null
+                // ]);
+                $this->Error->setError(["The file type provided is not valid"]);
+                return $this->Error->getError();
             }
             else
                 $extenstion = $file_extension[$type_key];
@@ -164,14 +204,15 @@ class statusController extends Controller
             $fileModel->save();
             $fileId = $fileModel::where('file_url', env('APP_URL').'feizhonglaravel/public/uploads/comp/'.$fileForm->host_token.'/'.$filename)->get()[0]->id;
 
-            return json_encode([
-                'errorMessage' => null,
-                'isSuccess' => true, 
-                'successMessage' => "success",
-                "data" => ["file_id" => $fileId]
-            ]);
+            // return json_encode([
+            //     'errorMessage' => null,
+            //     'isSuccess' => true, 
+            //     'successMessage' => "success",
+            //     "data" => ["file_id" => $fileId]
+            // ]);
+            $this->Error->setSuccess(["file_id" => $fileId]);
+            return $this->Error->getSuccess();
         }
-        return $fileForm;
     }
     public function setStatus (Request $statusForm)
     {
@@ -220,6 +261,11 @@ class statusController extends Controller
                 "isSuccess" => false,
                 "successMessage" => null,
             ));
+        }
+        if(!$this->hasUploadedLicense($fileForm->host_id, $fileForm->host_token))
+        {
+            $this->Error->setError(["Your company is not verified. Please upload license to be verified"]);
+            return $this->Error->getError();
         }
         // end validation form
 
@@ -557,6 +603,15 @@ class statusController extends Controller
     public function removePost(Request $request)
     {
         return $this->Error->getError();
+    }
+
+    public function hasUploadedLicense($comp_id, $comp_token)
+    {
+        return companyLicenseModel::where([
+            ["comp_id" => $comp_id],
+            ["comp_token" => $comp_token],
+            ["is_expired" => false],
+        ])->exists();
     }
 
 }

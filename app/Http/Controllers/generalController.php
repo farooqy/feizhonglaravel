@@ -49,7 +49,12 @@ class generalController extends Controller
                     
                     continue; 
                 }
-    			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type, "registrationStatus" => $company->registrationStatus]);
+                if($company->license === null)
+                    $list[$ckey]->hasLicense=false;
+                else
+                    $list[$ckey]->hasLicense=true;
+
+    			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type, "registrationStatus" => $company->registrationStatus, "license" => $company->license]);
 
     		}	
             $list = array_values(array_filter($list->toArray()));

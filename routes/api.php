@@ -19,16 +19,21 @@ use Illuminate\Http\Request;
 Route::put('*', 'generalController@notAllowedMethod');
 Route::post('/user/login', 'user\accountController@userLogin');
 Route::post('/user/register', 'user\accountController@register');
+Route::post('/user/emailConfirmation', 'user\accountController@emailConfirmation');
+Route::post('/user/confirmUser', 'user\accountController@verifyUser');
+Route::post('/user/update', 'user\accountController@updateUserInfo');
+Route::post('/user/resetPassword', 'user\accountController@resetPassword');
 
 Route::post('/comp/login', 'companies\accountController@companyLogin');
 Route::post('/comp/register/basicInfo', 'companies\accountController@basicInfoRegister');
 Route::post('/comp/register/address', 'companies\accountController@addressRegistration');
 Route::post('/comp/register/type', 'companies\accountController@companyTypeRegistration');
 Route::post('/comp/verifyComp', 'companies\accountController@sendConfirmationText');
-
+Route::post("/comp/myposts", "companies\accountController@getMyPosts");
+Route::post("/comp/addLicense", "companies\companyLicenseController@addCompanyLicense");
+Route::post("/comp/getLicense", "companies\companyLicenseController@getCompanyLicense");
 
 Route::post('/comp/status', 'statusController@index');
-
 Route::post('/comp/status/getStatus', 'statusController@getStatus');
 Route::post('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/addFile', 'statusController@uploadFile');

@@ -10,6 +10,7 @@ class normalUsersModel extends Model
 
 	protected $table = "normal_user";
     protected $hidden = ["user_password"];
+    protected $fillable = ["user_fname", "user_sname","user_email", "user_password", "user_phone", "user_token"];
 
 	public function messages($userToken)
 	{

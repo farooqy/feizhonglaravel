@@ -20,4 +20,5 @@ class productModel extends Model
     {
     	return $this->hasMany('App\models\companies\quotationModel', 'product_id');
     }
+    
 }

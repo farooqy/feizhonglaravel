@@ -12,7 +12,7 @@ use App\models\companies\companyAddressModel;
 use App\models\companies\companyTypeModel;
 use App\models\companies\companyChangesModel;
 use App\models\registrationTrackerModel;
-
+use App\models\compStatusModel;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\customClass\FileUploader;
@@ -335,8 +335,6 @@ class accountController extends Controller
 
     }
 
-
-
     public function sendConfirmationText(Request $request)
     {
     	$rules = [
@@ -650,5 +648,49 @@ class accountController extends Controller
             return false;
         }
             
+    }
+
+    public function getMyPosts(Request $request)
+    {
+        $rules = [
+            "comp_id" => "required|integer",
+            "comp_token" => "required|string",
+            "from" => "required|integer"
+        ];
+
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest(Validator::make($request->all(), $rules, []));
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $statusData = compStatusModel::where([
+            ["comp_id", $request->comp_id],
+            ["comp_token", $request->comp_token],
+        ])->get();
+
+        foreach($statusData as $key => $eachStatus)
+        {
+            $status = array(
+                "status" => $eachStatus,
+                "files" => $eachStatus->Status_Files,
+                "companyProfile" => $eachStatus->companyData,
+                "num_comments" => $eachStatus->comments->count(),
+                "num_likes" => $eachStatus->likes->count(),
+            );
+            $comments = $eachStatus->comments;
+            $likes = $eachStatus->likes;
+            foreach($comments as $comment)
+            {
+                $status["comments"] = ["comment"=>$comment, "details"=> $comment->personProfile];
+            }   
+            foreach( $likes as  $like)
+            {
+                $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
+            }
+
+            $statusData[$key]["num_comments"] = $comments->count();
+            $statusData[$key]["num_likes"] = $likes->count();
+
+        }
+        $this->Error->setSuccess($statusData);
+        return $this->Error->getSuccess();
     }
 }

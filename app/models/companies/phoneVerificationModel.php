@@ -14,7 +14,7 @@ class phoneVerificationModel extends Model
 
     public static function generateVerifCode()
     {
-    	$new_code = $number = mt_rand(100000, 99999999);
+    	$new_code =  mt_rand(100000, 99999999);
     	if(phoneVerificationModel::code_exists($new_code))
     		generateVerifCode();
     	return $new_code;

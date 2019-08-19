@@ -51,6 +51,10 @@ class companydataModel extends Model
     {
         return $this->hasMany('App\models\status\commentsModel', 'host_id');
     }
+    public function License()
+    {
+        return $this->hasOne("App\models\companies\companyLicenseModel", "comp_id", "comp_id")->latest();
+    }
     public function isCompany($comp_id)
     {
         $comp = companydataModel::where("comp_id", $comp_id)->get();
