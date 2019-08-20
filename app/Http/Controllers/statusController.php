@@ -262,7 +262,7 @@ class statusController extends Controller
                 "successMessage" => null,
             ));
         }
-        if(!$this->hasUploadedLicense($fileForm->host_id, $fileForm->host_token))
+        if(!$this->hasUploadedLicense($statusForm->host_id, $statusForm->host_token))
         {
             $this->Error->setError(["Your company is not verified. Please upload license to be verified"]);
             return $this->Error->getError();
@@ -608,9 +608,9 @@ class statusController extends Controller
     public function hasUploadedLicense($comp_id, $comp_token)
     {
         return companyLicenseModel::where([
-            ["comp_id" => $comp_id],
-            ["comp_token" => $comp_token],
-            ["is_expired" => false],
+            ["comp_id", $comp_id],
+            ["comp_token", $comp_token],
+            ["is_expired", false],
         ])->exists();
     }
 
