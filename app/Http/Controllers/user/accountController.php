@@ -299,7 +299,7 @@ class accountController extends Controller
 		if($VerifierModel->save())
 		{
 			Mail::to($userEmail)->send(new userVerificationMail($verification_code, $isValidUser[0]->user_fname));
-			$this->Error->setSuccess([]);
+			$this->Error->setSuccess($isValidUser);
 			return $this->Error->getSuccess();
 		}
 		else
