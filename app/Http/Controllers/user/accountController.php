@@ -476,5 +476,42 @@ class accountController extends Controller
 		])->get();
 	}
 
+	public function setUserInterest(Request $request)
+	{
+		$rules = [
+			"user_token" => "required|string",
+			"user_id" => "required|integer",
+			"user_interests" => "required|string"
+		];
+
+		$isvalid = Validator::make(request->all(), $rules, []);
+		$isNotValidRequest = $this->custom_validator->isNotValidRequest($isvalid);
+		if($isNotValidRequest)
+			return $isNotValidRequest;
+		$isValidUser = normalUsersModel::where([
+			["user_id", $request->user_id],
+			["user_token", $request->user_token],
+		])->exists();
+		if(!$isValidUser)
+		{
+			$this->Error->setError(['The user is not yet registered, or details are not valid']);
+			return $this->Error->getError();
+		}
+
+		$intereset = explode(",", $request->user_interests);
+		$subInterest = explode("|", $intereset);
+
+		if($intereset === false)
+		{
+			$this->Error->setError(["The interest data format is not valid"]);
+			return $this->Error->getError();
+		}
+		else if($subInterest === false)
+		{
+			$this->Error->setError(["The sub-interest data format is not valid"]);
+			return $this->Error->getError();
+		} 
+	}
+
 		
 }
