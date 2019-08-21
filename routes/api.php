@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 Route::put('*', 'generalController@notAllowedMethod');
 Route::post('/user/login', 'user\accountController@userLogin');
 Route::post('/user/register', 'user\accountController@register');
+Route::post('/user/setInterest', 'user\accountController@setUserInterest');
 Route::post('/user/emailConfirmation', 'user\accountController@emailConfirmation');
 Route::post('/user/confirmUser', 'user\accountController@verifyUser');
 Route::post('/user/update', 'user\accountController@updateUserInfo');

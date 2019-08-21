@@ -9,6 +9,7 @@ use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\models\normalUsersModel;
 use App\models\emailVerificationModel;
+use App\models\userInterestModel;
 use App\Mail\userVerificationMail;
 use App\Mail\generalMailHandler;
 use Hash, Mail;
@@ -484,7 +485,7 @@ class accountController extends Controller
 			"user_interests" => "required|string"
 		];
 
-		$isvalid = Validator::make(request->all(), $rules, []);
+		$isvalid = Validator::make($request->all(), $rules, []);
 		$isNotValidRequest = $this->custom_validator->isNotValidRequest($isvalid);
 		if($isNotValidRequest)
 			return $isNotValidRequest;
@@ -498,19 +499,48 @@ class accountController extends Controller
 			return $this->Error->getError();
 		}
 
-		$intereset = explode(",", $request->user_interests);
-		$subInterest = explode("|", $intereset);
+		$interests = explode(",", $request->user_interests);
+		// $subInterest = explode("|", $intereset);
 
-		if($intereset === false)
+		if($interests === false)
 		{
 			$this->Error->setError(["The interest data format is not valid"]);
 			return $this->Error->getError();
 		}
-		else if($subInterest === false)
+		foreach ($interests as $interest) 
 		{
-			$this->Error->setError(["The sub-interest data format is not valid"]);
-			return $this->Error->getError();
-		} 
+			$subInterest = explode("|", $interest);
+			if($subInterest === false)
+			{
+				$this->Error->setError(["The sub-interest data format is not valid"]);
+				return $this->Error->getError();
+			} 
+			foreach ($subInterest as $skey => $subInt) 
+			{
+				if($skey === 0)
+					continue;//the first one is the interest category and is saved as the category
+				$interestExist = userInterestModel::where([
+
+					["interest_user_id", $request->user_id],
+					["interest_user_token" , $request->user_token],
+					["interest_cat", $subInterest[0]],
+					["interest_value" , $subInt],
+				])->exists();
+				if($interestExist)
+					continue;
+				userInterestModel::create([
+					"interest_user_id" => $request->user_id,
+					"interest_user_token" => $request->user_token,
+					"interest_cat" => $subInterest[0],
+					"interest_value" => $subInt,
+				]);
+			}
+		}
+			
+		$this->Error->setSuccess([]);
+		return $this->Error->getSuccess();
+
+
 	}
 
 		
