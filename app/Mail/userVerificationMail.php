@@ -34,6 +34,6 @@ class userVerificationMail extends Mailable
     {
         $code = $this->verifCode;
         $name = $this->userName;
-        return $this->view('layouts.userMailVerification', compact("code", "name"));
+        return $this->subject("Welcome to AtoC")->view('layouts.userMailVerification', compact("code", "name"));
     }
 }
