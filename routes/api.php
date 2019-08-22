@@ -79,6 +79,7 @@ Route::post('message/getSpecificChat', 'chatController@getSpecificChat');
 Route::post('message/markasread', 'chatController@MarkMessageStatusRead');
 
 Route::post('/list/companies', 'generalController@listCompanies');
+Route::post('/list/getCompanyData', 'generalController@getCompanyData');
 Route::post('/search/companies', 'generalController@getSearchItem');
 Route::post('/search/users', 'generalController@getSearchItem');
 

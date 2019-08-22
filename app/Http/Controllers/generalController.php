@@ -20,6 +20,30 @@ class generalController extends Controller
     	$this->Error = new Error();
     	$this->custom_validator = new CustomRequestValidator();
 	}
+    public function getCompanyData(Request $request)
+    {
+        $rules = [
+            "comp_id" => "required|integer",
+            "comp_token" => ""
+        ];
+        $validity = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($validity);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $isValidCompany = companydataModel::where([
+            ["comp_id", $request->comp_id],
+            ["comp_token", $request->comp_token],
+        ])->get();
+        if($isValidCompany === null || $isValidCompany->count() !== 1)
+        {
+            $this->Error->setError(["The company you are viewing is doesn't exit or has been suspended"]);
+            return $this->Error->getError();
+        }
+        $isValidCompany[0]->company->address;
+        $isValidCompany[0]->company->type;
+        $this->Error->setSuccess($isValidCompany);
+        return $this->Error->getSuccess();
+    }
     public function listCompanies()
     {
     	// $query = companydataModel::with("registration_tracker", "registration_tracker.stage");
