@@ -24,7 +24,7 @@ class generalController extends Controller
     {
         $rules = [
             "comp_id" => "required|integer",
-            "comp_token" => ""
+            "comp_token" => "required|string"
         ];
         $validity = Validator::make($request->all(), $rules, []);
         $isNotValidRequest = $this->custom_validator->isNotValidRequest($validity);
@@ -39,8 +39,8 @@ class generalController extends Controller
             $this->Error->setError(["The company you are viewing is doesn't exit or has been suspended"]);
             return $this->Error->getError();
         }
-        $isValidCompany[0]->company->address;
-        $isValidCompany[0]->company->type;
+        $isValidCompany[0]->address;
+        $isValidCompany[0]->type;
         $this->Error->setSuccess($isValidCompany);
         return $this->Error->getSuccess();
     }
