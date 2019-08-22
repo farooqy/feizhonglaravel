@@ -46,15 +46,6 @@ class generalController extends Controller
     }
     public function listCompanies()
     {
-    	// $query = companydataModel::with("registration_tracker", "registration_tracker.stage");
-    	// $registrationData = new registrationTrackerModel;
-    	// $list = companydataModel::with("registration_tracker", "registration_tracker.stage")->where("registration_tracker.stage", function($q)  {
-    	// 	$query = $q::where("registrration_tracker.stage", "completed")->get();
-    	// })->get();
-    	// $list = companydataModel::with("registration_tracker", "registration_tracker.stage")->where('registration_tracker.stage', "completed")->skip(0)->take(10)->get();
-        // $list = companydataModel::whereHas("registrationStatus", function($q) {
-        //     $q->where("stage","complete");
-        // })->get();
     	$list = companydataModel::get();
     	if($list === null || $list->count() <=0 )
     	{
@@ -66,26 +57,30 @@ class generalController extends Controller
     		$comp_list = [];
     		foreach($list as $ckey => $company)
     		{
-                if($company->address === null || $company->type === null)
+                if($company->address === null || $company->type === null )
                 {    
                     unset($list[$ckey]);
-                    // array_splice(($s =$list->toArray()), $ckey, 1);
                     
                     continue; 
                 }
+                array_push($comp_list, $company);
                 if($company->license === null)
+                {
                     $list[$ckey]->hasLicense=false;
+                    unset($company->license);
+                }    
                 else
                     $list[$ckey]->hasLicense=true;
+                $company->address = null;
+                $company->type = null;
+                unset($company->address);
+                unset($company->type);
 
-    			array_push($comp_list, ["data" => $company, "address" => $company->address, "type" => $company->type, "registrationStatus" => $company->registrationStatus, "license" => $company->license]);
-
-    		}	
-            $list = array_values(array_filter($list->toArray()));
-    		$this->Error->setSuccess($list);
+    		}
+            // $list = array_values(array_filter($list->toArray()));
+    		$this->Error->setSuccess($comp_list);
     		return $this->Error->getSuccess();
     	}
-
     }
     public function getSearchItem(Request $request)
     {

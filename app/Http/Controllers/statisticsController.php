@@ -11,6 +11,9 @@ use App\models\companies\companydataModel;
 use App\models\normalUsersModel;
 use App\models\statisticsModel;
 use App\models\products\productModel;
+use App\models\apiKeyModel;
+
+use App\customClass\ApiKeyManager;
 class statisticsController extends Controller
 {
     //
@@ -18,6 +21,9 @@ class statisticsController extends Controller
     {
     	$this->Error = new Error();
     	$this->customValidator = new CustomRequestValidator();
+        $this->ApiKey = new ApiKeyManager();
+        $this->ip_address = \Request::ip();
+        $this->requestUrl = url()->current();
     }
     public function profileVisit(Request $request)
     {
@@ -183,6 +189,84 @@ class statisticsController extends Controller
         ])->get();
 
         $this->Error->setSuccess($profiles);
+        return $this->Error->getSuccess();
+    }
+
+    public function getApiKey(Request $request)
+    {
+        $rules = [
+            "api_host_id" => "required|integer",
+            "api_host_token" => "required|string",
+            "api_host_type" => "required|string|in:normal,comp,guest",
+            "phone_serial_number" => "required|string",
+            "phone_model_number" => "required|string",
+            "phone_id_number" => "required|string",
+            "phone_manufacture" => "required|string",
+            "phone_brand" => "required|string",
+            "phone_type" => "required|string",
+            "phone_user" => "required|string",
+            "phone_base" => "required|string",
+            "phone_sdk_version" => "required|string",
+            "phone_host" => "required|string",
+            "phone_fingerprint" => "required|string",
+            "phone_release" => "required|string",
+            "phone_ip_address" => "required|string",
+            "phone_mac_address" => "required|string",
+        ];
+        $validity = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->customValidator->isNotValidRequest($validity);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        
+        $this->ApiKey->setPhoneDetails($request);
+
+        if($request->api_host_type === "comp")
+            $isValidHost = companydataModel::where([
+                ["comp_id",$request->api_host_id],
+                ["comp_token",$request->api_host_token],
+            ])->exists();
+        else if($request->api_host_type === "normal")
+            $isValidHost = companydataModel::where([
+                ["user_id",$request->api_host_id],
+                ["user_token",$request->api_host_token],
+            ])->exists();
+        else
+            $isValidHost = true;
+
+        if(!$isValidHost)
+        {
+            $this->Error->setError(["The host id or token is not valid"]);
+            return $this->Error->getError();
+        }
+        if($this->ApiKey->HasApiKey($request->api_host_id, $request->api_host_token))
+        {
+            $keyDetails = $this->ApiKey->getKeyDetails($request->api_host_id, $request->api_host_token);
+            $this->ApiKey->setRequest($keyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
+            $this->Error->setSuccess(["api_key" => $keyDetails[0]->api_key ]);
+            $this->ApiKey->successFullRequest();
+            return $this->Error->getSuccess();
+        }
+        $apikey = $this->ApiKey->Generate_New_Api();
+        if(!$apikey)
+            return $this->ApiKey->Get_Message();
+        $this->Error->setSuccess(["api_key" => $apikey]);
+
+        $keyid = apiKeyModel::where([
+            ["api_key", $apikey],
+            ["api_host_id", $request->api_host_id]
+        ])->get()[0]->api_id;
+        $this->ApiKey->setRequest($keyid, $this->ip_address, $this->requestUrl);
+        $this->Error->setSuccess(["api_key" => $apikey ]);
+        $this->ApiKey->successFullRequest();    
+        return $this->Error->getSuccess();
+    }
+
+    public function generateIdAndToken(Request $request)
+    {
+        $id = random_int(100000,1000000000);
+        $token = bin2hex(random_bytes(64));
+
+        $this->Error->setSuccess(["guest_id" => $id, "guest_token" => $token]);
         return $this->Error->getSuccess();
     }
 
