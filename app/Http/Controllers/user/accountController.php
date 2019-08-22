@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
+use App\customClass\ApiKeyManager;
 use App\models\normalUsersModel;
 use App\models\emailVerificationModel;
 use App\models\userInterestModel;
@@ -18,15 +19,32 @@ class accountController extends Controller
     //
 	protected $Error;
 	protected $custom_validator;
+	protected $ApiKey;
+	protected $ip_address;
+	protected $requestUrl;
 	public function __construct()
 	{
     	$this->Error = new Error();
     	$this->custom_validator = new CustomRequestValidator();
-	}
+    	$this->ApiKey = new ApiKeyManager();
+    	$this->ip_address = \Request::ip();
+    	$this->requestUrl = url()->current();
 
+	}
+	public function apiHandleSet($user_id, $user_token)
+	{
+		$userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
+		if(!$userOwnsKey)
+		{
+			$this->Error->setError(["The access key is not valid"], -1);
+			return $this->Error->getError();
+		}
+		$apiKeyDetails = $this->ApiKey->getKeyDetails($user_id, $user_token);
+		$this->ApiKey->setRequest($apiKeyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
+		return true;
+	}
 	public function resetPassword(Request $request)
 	{
-
 		$rules = [
 			"host_email" =>"required|email",
 		];
@@ -52,6 +70,10 @@ class accountController extends Controller
 				$this->Error->setSuccess($account);
 				return $this->Error->getSuccess();
 			}
+			$apiset = $this->apiHandleSet($user_id, $user_token);
+			if($apiset !== true)
+				return $apiset;
+
 			$VerifierModel = new emailVerificationModel;
 			$verification_code = $VerifierModel->generateVerifCode($user_id, $user_token);
 			
@@ -65,6 +87,7 @@ class accountController extends Controller
 				$data = ["reset_code" =>$verification_code];
 				Mail::to($userEmail)->send(new generalMailHandler("passwordReset", $data));
 				$this->Error->setSuccess($account);
+				$this->ApiKey->successFullRequest();
 				return $this->Error->getSuccess();
 			}
 			else
@@ -130,7 +153,9 @@ class accountController extends Controller
 			$this->Error->setError(["The user account is not valid"]);
 			return $this->Error->getError();
 		}
-
+		$apiset = $this->apiHandleSet($request->host_id, $request->host_token);
+			if($apiset !== true)
+				return $apiset;
 		if($request->verification_type === "confirm")
 		{
 			if($user[0]->is_verified)
@@ -152,6 +177,7 @@ class accountController extends Controller
 			])->update(["is_expired" => true]);
 
 			$this->Error->setSuccess([]);
+			$this->ApiKey->successFullRequest();
 			return $this->Error->getSuccess();
 		}
 		else
@@ -166,17 +192,26 @@ class accountController extends Controller
 	{
 		$rules = [
 			"user_email" => "required|email",
-			"user_password" => "required|string"
+			"user_password" => "required|string",
+			"guest_id" => "required|integer",//api key purpose
+			"guest_token" => "required|string"//api key purpose,
 		];
-
 		$messages = [
 			"required" => "The :attribute is required",
 		];
 		// $hashpass = hash('md5', $request->user_password);
+
 		$hashpass = Hash::make($request->user_password);
 		$valid_request = Validator::make($request->all(), $rules, $messages);
 		if($notValid= $this->custom_validator->isNotValidRequest($valid_request))
 			return $notValid;
+
+		//once user logs in his api_id and api_token will be overwritten
+		//with user api_id and api_token
+		$apiset = $this->apiHandleSet($request->guest_id, $request->guest_token);
+			if($apiset !== true)
+				return $apiset;
+
 		$data = normalUsersModel::where([
 			["user_email", "=",$request->user_email]
 		])->get();
@@ -188,6 +223,8 @@ class accountController extends Controller
 		else if(Hash::check($request->user_password,$data[0]->user_password))
 		{
 			$this->Error->setSuccess($data);
+			$this->ApiKey->successFullRequest();
+			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token);
 			return $this->Error->getSuccess();
 		}
 		else
@@ -205,6 +242,8 @@ class accountController extends Controller
 			"user_email" => "required|email|unique:normal_user",
 			"user_phone" => "required|unique:normal_user",
 			"password" => "required|confirmed|min:8",
+			"guest_id" =>"required|integer",
+			"guest_token"=> "required|string"
 		];
 
 		$messages = [];
@@ -215,6 +254,9 @@ class accountController extends Controller
 		{
 			return $isNotValidRequest;
 		}
+		$apiset = $this->apiHandleSet($request->guest_id, $request->guest_token);
+			if($apiset !== true)
+				return $apiset;
 		$normalUsersModel = new normalUsersModel;
 		$normalUsersModel->user_fname = $request->user_firstName;
 		$normalUsersModel->user_sname = $request->user_lastName;
@@ -226,6 +268,8 @@ class accountController extends Controller
 		if($normalUsersModel->save())
 		{
 			$data = normalUsersModel::where("user_email", $request->user_email)->get();
+			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token);
+			$this->ApiKey->successFullRequest();
 			return $this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal");
 			// $this->Error->setSuccess($data[0]);
 			// return $this->Error->getSuccess();
@@ -250,9 +294,11 @@ class accountController extends Controller
 		$isNotValidRequest = $this->custom_validator->isNotValidRequest(Validator::make($request->all(),$rules, []));
 		if($isNotValidRequest)
 			return $isNotValidRequest;
+		$apiset = $this->apiHandleSet($request->host_id, $request->host_token);
+			if($apiset !== true)
+				return $apiset;
 		return $this->sendConfirmationEmail($request->host_email, $request->host_id, $request->host_token, $request->host_type);
 	}
-
 
 	public function sendConfirmationEmail($userEmail, $user_id, $user_token, $user_type)
 	{
@@ -300,6 +346,7 @@ class accountController extends Controller
 		if($VerifierModel->save())
 		{
 			Mail::to($userEmail)->send(new userVerificationMail($verification_code, $isValidUser[0]->user_fname));
+			$this->ApiKey->successFullRequest();
 			$this->Error->setSuccess($isValidUser);
 			return $this->Error->getSuccess();
 		}
@@ -322,7 +369,9 @@ class accountController extends Controller
 		$isNotValidRequest = $this->custom_validator->isNotValidRequest(Validator::make($request->all(), $rules, []));
 		if($isNotValidRequest)
 			return $isNotValidRequest;
-
+		$apiset = $this->apiHandleSet($request->userId, $request->userToken);
+			if($apiset !== true)
+				return $apiset;
 		switch ($request->updateField) 
 		{
 			case "userFirstName":
@@ -359,7 +408,7 @@ class accountController extends Controller
 				["user_id" , $request->userId],
 				["user_token", $request->userToken]
 			])->update(["user_fname" => $request->updateValue]);
-
+			$this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -384,7 +433,7 @@ class accountController extends Controller
 				["user_id" , $request->userId],
 				["user_token", $request->userToken]
 			])->update(["user_sname" => $request->updateValue]);
-
+			$this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -410,7 +459,7 @@ class accountController extends Controller
 				["user_id" , $request->userId],
 				["user_token", $request->userToken]
 			])->update(["user_email" => $request->updateValue, "is_verified" => false]);
-
+			$this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -435,7 +484,7 @@ class accountController extends Controller
 				["user_id" , $request->userId],
 				["user_token", $request->userToken]
 			])->update(["user_phone" => $request->updateValue]);
-
+			$this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -463,6 +512,7 @@ class accountController extends Controller
 			])->update(["user_password" => $hashpass]);
 			$data = ["name" => $user[0]->user_fname];
 			Mail::to($user[0]->user_email)->send(new generalMailHandler("passwordChanged", $data));
+			$this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -498,6 +548,9 @@ class accountController extends Controller
 			$this->Error->setError(['The user is not yet registered, or details are not valid']);
 			return $this->Error->getError();
 		}
+		$apiset = $this->apiHandleSet($request->user_id, $request->user_token);
+			if($apiset !== true)
+				return $apiset;
 
 		$interests = explode(",", $request->user_interests);
 		// $subInterest = explode("|", $intereset);
@@ -536,7 +589,7 @@ class accountController extends Controller
 				]);
 			}
 		}
-			
+		$this->ApiKey->successFullRequest();
 		$this->Error->setSuccess([]);
 		return $this->Error->getSuccess();
 
