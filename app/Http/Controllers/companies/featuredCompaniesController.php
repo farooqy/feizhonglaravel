@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\models\companydata_model;
 use App\models\companies\featuredCompaniesModel;
 use Illuminate\Support\Facades\Validator;
+use App\customClass\Error;
+use App\customClass\CustomRequestValidator;
 use App\customClass\ApiKeyManager;
 
 use Image;
@@ -144,7 +146,7 @@ class featuredCompaniesController extends Controller
             "host_token" => "required|string",
             "host_type" => "required|string|in:normal,comp,guest",
         ];
-        $validity = Validator::make($request->al(), $rules, []);
+        $validity = Validator::make($request->all(), $rules, []);
         $isNotValidRequest = $this->custom_validator->isNotValidRequest($validity);
         if($isNotValidRequest)
             return $isNotValidRequest;
@@ -188,7 +190,7 @@ class featuredCompaniesController extends Controller
     	featuredCompaniesModel::where([
     		['featured_for_id', $request->company_id]
     	])->update(['feature_approved' => true, 'feature_status' => 'approved']);
-        
+
         $this->Error->setSuccess($featured_companies);
         return $this->Error->getSuccess();
     }
