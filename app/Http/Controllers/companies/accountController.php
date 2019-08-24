@@ -646,12 +646,16 @@ class accountController extends Controller
         $valid_request = Validator::make($request->all(), $rules, []);
         if($notValid= $this->custom_validator->isNotValidRequest($valid_request))
         {
-            $this->Error->setError($notValid);
+            $this->Error->setError(json_decode($notValid)->errorMessage);
             return false;
         }
+
         $apiset = $this->apiHandleSet($request->company_id, $request->company_token, $request->api_key);
         if($apiset !== true)
-            return $apiset;    
+        {
+            $this->Error->setError(json_decode($apiset)->errorMessage);
+            return false;
+        }        
         if($targetField==="comp_phone")
         {
             $new_value = phoneVerificationModel::where('verification_code', $request->company_target_change)->get();
