@@ -106,7 +106,7 @@ class ApiKeyManager
         ]);
         return true;
     }
-    public function updateKeys($old_id, $old_token, $host_id, $host_token)
+    public function updateKeys($old_id, $old_token, $host_id, $host_token, $host_type = "guest")
     {
 
         //some update might come from a user who is registered and is logging in
@@ -124,7 +124,7 @@ class ApiKeyManager
         apiKeyModel::where([
             ["api_host_id", $old_id],
             ["api_host_token", $old_token],
-        ])->update(["api_host_id" => $host_id, "api_host_token" => $host_token]);
+        ])->update(["api_host_id" => $host_id, "api_host_token" => $host_token,"api_host_type" => $host_type]);
     }
     public function stopApiKey($api_key)
     {
@@ -164,7 +164,7 @@ class ApiKeyManager
     }
     public function getKeyDetails($host_id, $host_token)
     {
-        $apiDetails =  apiKeyModel::where([["api_host_id", $host_id], ["api_host_token", $host_token]])->get();
+        $apiDetails =  apiKeyModel::where([["api_host_id", $host_id], ["api_host_token", $host_token], ["is_expired", false]])->get();
         $this->api_id = $apiDetails[0]->api_id;
         return $apiDetails;
     }

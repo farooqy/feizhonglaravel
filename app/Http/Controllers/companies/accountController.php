@@ -116,7 +116,7 @@ class accountController extends Controller
                 $data[0]->hasLicense = true;
             else
                 $data[0]->hasLicense = false;
-            $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token);
+            $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token, "comp");
 
             $this->ApiKey->successFullRequest();
 			$this->setSucces($data);
@@ -375,7 +375,7 @@ class accountController extends Controller
     			['verification_code', $request->verification_code]
     		])->update(['is_verified' => true]);
     		$this->setSucces(["comp_token" => $comp_token, "process" => "page2"]);
-            $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token);
+            $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token, "comp");
             $this->ApiKey->successFullRequest();
     		return $this->success;
     	}

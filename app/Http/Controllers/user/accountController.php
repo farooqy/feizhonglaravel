@@ -235,7 +235,7 @@ class accountController extends Controller
 		{
 			$this->Error->setSuccess($data);
 			$this->ApiKey->successFullRequest();
-			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token);
+			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token, "normal");
 			return $this->Error->getSuccess();
 		}
 		else
@@ -280,7 +280,7 @@ class accountController extends Controller
 		if($normalUsersModel->save())
 		{
 			$data = normalUsersModel::where("user_email", $request->user_email)->get();
-			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token);
+			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token, "normal");
 			$this->ApiKey->successFullRequest();
 			return $this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal");
 			// $this->Error->setSuccess($data[0]);
