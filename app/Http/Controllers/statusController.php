@@ -69,6 +69,8 @@ class statusController extends Controller
         ];
         $validity = Validator::make($request->all(), $rules, []);
         $isNotValidRequest = $this->customValidator->isNotValidRequest($validity);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
         $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;
