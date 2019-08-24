@@ -17,6 +17,9 @@ use App\customClass\ApiKeyManager;
 class statisticsController extends Controller
 {
     //
+    protected $ApiKey;
+    protected $ip_address;
+    protected $requestUrl;
     public function __construct()
     {
     	$this->Error = new Error();
@@ -24,6 +27,23 @@ class statisticsController extends Controller
         $this->ApiKey = new ApiKeyManager();
         $this->ip_address = \Request::ip();
         $this->requestUrl = url()->current();
+    }
+    public function apiHandleSet($user_id, $user_token, $api_key)
+    {
+        $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
+        if(!$userOwnsKey)
+        {
+            $this->Error->setError(["The access key is not valid"], -1);
+            return $this->Error->getError();
+        }
+        $apiKeyDetails = $this->ApiKey->getKeyDetails($user_id, $user_token);
+        if($apiKeyDetails[0]->api_key !== $api_key)
+        {
+            $this->Error->setError(['Invalid api key']);
+            return $this->Error->getError();
+        }
+        $this->ApiKey->setRequest($apiKeyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
+        return true;
     }
     public function profileVisit(Request $request)
     {
@@ -33,12 +53,16 @@ class statisticsController extends Controller
             "host_type" => "required|in:normal",
             "host_id" => "required|integer",
             "host_token" => "required|string",
+            "api_key" => "required|string",
         ];
         $messages = [];
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
         if($isNotValidRequest)
             return $isNotValidRequest;
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
         $isValidComp = companydataModel::where([
             ["comp_id", "=",$request->comp_id],
             ["comp_token","=", $request->comp_token]
@@ -94,6 +118,7 @@ class statisticsController extends Controller
 
         
         $this->Error->setSuccess(["success"]);
+        $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
             
     }
@@ -106,12 +131,16 @@ class statisticsController extends Controller
     		"host_id" => "required|integer",
     		"host_token" => "required|string",
     		"visit_type" => "required|in:like,click",
+            "api_key" => "required|string"
     	];
     	$messages = [];
 
     	$isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
     	if($isNotValidRequest)
     		return $isNotValidRequest;
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
     	$isValidProduct = productModel::where([
     		["id", "=",$request->product_id],
     		["product_gen_token","=", $request->product_gen_token]
@@ -165,7 +194,7 @@ class statisticsController extends Controller
                 return $this->Error->getError();
             }
         }
-
+        $this->ApiKey->successFullRequest();
         $this->Error->setSuccess(["success"]);
         return $this->Error->getSuccess();
         	
@@ -176,12 +205,16 @@ class statisticsController extends Controller
         $rules = [
             "host_id" => "required|integer",
             "host_token" => "required|string",
-            "host_type" => "required|in:normal,comp"
+            "host_type" => "required|in:normal,comp",
+            "api_key" => "required|string",
         ];
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []));
         if($isNotValidRequest)
             return $isNotValidRequest;
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
         $profiles = statisticsModel::where([
             ["host_token", $request->host_token],
             ["host_type", $request->host_type],
@@ -189,6 +222,7 @@ class statisticsController extends Controller
         ])->get();
 
         $this->Error->setSuccess($profiles);
+        $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
     }
 

@@ -23,6 +23,8 @@ use Image;
 class statusController extends Controller
 {
     //
+    protected $Error;
+    protected $customValidator;
     protected $ApiKey;
     protected $ip_address;
     protected $requestUrl;

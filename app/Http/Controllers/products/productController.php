@@ -11,12 +11,28 @@ use App\models\tokenStatusGeneratorModel;
 use App\models\companydata_model;
 use App\models\products\productFilesModel;
 use App\models\products\productModel;
+use App\customClass\Error;
+use App\customClass\CustomRequestValidator;
+use App\customClass\ApiKeyManager;
 
 use Image;
 class productController extends Controller
 {
     //
-
+    
+    protected $Error;
+    protected $customValidator;
+    protected $ApiKey;
+    protected $ip_address;
+    protected $requestUrl;
+    public function __construct()
+    {
+        $this->Error = new Error();
+        $this->customValidator = new CustomRequestValidator();
+        $this->ApiKey = new ApiKeyManager;
+        $this->ip_address = \Request::ip();
+        $this->requestUrl = url()->current();
+    }
     public function getProducts()
     {
     	$products = productModel::get();
