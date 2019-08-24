@@ -167,14 +167,13 @@ class chatController extends Controller
             $c = $chat->lastMessage;
             $unread = $chat->unreadMessages;
 
-            if($chat->companySent !== null && $chat->companyReceived !== null)
-            {
-                return $chat->companyReceived;
-                if($request->host_id === $chat->companySent->comp_id && $request->host_token === $chat->companySent->comp_token)
-                    $chats[$ckey]->companyChat = $chat->companyReceived;
-                else
-                    $chats[$ckey]->companyChat = $chat->companySent;
-            }
+            // if($chat->companySent !== null && $chat->companyReceived !== null)
+            // {
+            //     if($request->host_id === $chat->companySent->comp_id && $request->host_token === $chat->companySent->comp_token)
+            //         $chats[$ckey]->companyChat = $chat->companyReceived;
+            //     else
+            //         $chats[$ckey]->companyChat = $chat->companySent;
+            // }
         }
         $this->Error->setSuccess($chats);
         return $this->Error->getSuccess();

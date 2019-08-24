@@ -34,6 +34,8 @@ class chatUserModel extends Model
     {
     	if($this->companySent === null)
     		return $this->companyReceived();
+        else if($this->companyReceived !== null && $this->companySent !== null)//comp to comp
+            return $this->companyReceived();
     	else
     		return $this->companySent();
     }
