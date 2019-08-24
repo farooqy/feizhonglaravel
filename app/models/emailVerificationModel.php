@@ -13,7 +13,7 @@ class emailVerificationModel extends Model
 
     public function generateVerifCode($user_id, $user_token)
     {
-    	$new_code = mt_rand(100000, 99999999);
+    	$new_code = mt_rand(100000, 999999);
     	if(emailVerificationModel::code_exists($new_code, $user_id, $user_token))
     		generateVerifCode();
     	return $new_code;
