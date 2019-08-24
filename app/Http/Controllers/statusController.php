@@ -24,11 +24,15 @@ class statusController extends Controller
 {
     //
     protected $ApiKey;
+    protected $ip_address;
+    protected $requestUrl;
     public function __construct()
     {
         $this->Error = new Error();
         $this->customValidator = new CustomRequestValidator();
-        $this->ApiKey = new 
+        $this->ApiKey = new ApiKeyManager;
+        $this->ip_address = \Request::ip();
+        $this->requestUrl = url()->current();
     }
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
