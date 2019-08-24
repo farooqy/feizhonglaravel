@@ -187,6 +187,9 @@ class chatController extends Controller
             unset($chats[$ckey]->companyChat);
             unset($chats[$ckey]->companySent);
             unset($chats[$ckey]->userSent);
+            unset($chats[$ckey]->companyChat);
+            unset($chats[$ckey]->companyReceived);
+            unset($chats[$ckey]->userChat);
             unset($chats[$ckey]->userReceived);
             // if($chat->companySent !== null && $chat->companyReceived !== null)
             // {
