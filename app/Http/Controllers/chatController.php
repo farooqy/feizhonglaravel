@@ -184,6 +184,10 @@ class chatController extends Controller
                 $chats[$ckey]->sender = $chat->companySent;
                 $chats[$ckey]->receiver = $chat->userReceived;
             }
+            unset($chats[$ckey]->companyChat);
+            unset($chats[$ckey]->companySent);
+            unset($chats[$ckey]->userSent);
+            unset($chats[$ckey]->userReceived);
             // if($chat->companySent !== null && $chat->companyReceived !== null)
             // {
             //     if($request->host_id === $chat->companySent->comp_id && $request->host_token === $chat->companySent->comp_token)
