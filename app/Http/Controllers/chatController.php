@@ -160,7 +160,7 @@ class chatController extends Controller
             ['chat_destination_id', $request->host_id],
             ['chat_destination_token', $request->host_token],
         ])->get();
-        foreach($chats as $chat)
+        foreach($chats as $ckey => $chat)
         {
             $chat_company = $chat->companyChat;
             $chat_user = $chat->userChat;
