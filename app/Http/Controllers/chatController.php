@@ -169,6 +169,7 @@ class chatController extends Controller
 
             if($chat->companySent !== null && $chat->companyReceived !== null)
             {
+                return $chat->companyReceived;
                 if($request->host_id === $chat->companySent->comp_id && $request->host_token === $chat->companySent->comp_token)
                     $chats[$ckey]->companyChat = $chat->companyReceived;
                 else
