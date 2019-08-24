@@ -72,6 +72,7 @@ class generalController extends Controller
                 else
                     $list[$ckey]->hasLicense=true;
                 $company->address = null;
+                $list[$ckey]->comp_type = $company->type->comp_type;
                 $company->type = null;
                 unset($company->address);
                 unset($company->type);

@@ -8,12 +8,13 @@ use App\customClass\Error;
 class likesModel extends Model
 {
     //
+    protected $table = "status_likes";
+    public $fillable = ["status_id", "host_id", "host_type"];
+    protected $Error;
     public function __construct()
     {
         $this->Error = new Error();
     }
-    protected $table = "status_likes";
-    protected $fillable = ["status_id", "host_id", "host_type"];
     public function status()
     {
     	return $this->belonsTo('App\models\compStatusModel', 'id');
@@ -28,49 +29,29 @@ class likesModel extends Model
     }
     public static function saveLike($status_id, $host_id, $host_type)
     {
+        likesModel::create([
+    		"status_id" =>  $status_id,
+    		"host_id" => $host_id,
+    		"host_type" => $host_type,
+	    ]);
 
-    	try
-    	{
-    		likesModel::create([
-	    		"status_id" =>  $status_id,
-	    		"host_id" => $host_id,
-	    		"host_type" => $host_type,
-	    		]);
-
-            $this->Error->setSuccess(["success"]);
-            return $this->Error->getSuccess();
-
-    	}
-    	catch(\Illuminate\Database\QueryException $exception)
-    	{
-
-
-            $this->Error->setError([$exception->errorInfo]);
-            return $this->Error->getError();
-    	}
+        $this->Error->setSuccess(["success"]);
+        return $this->Error->getSuccess();
     }
     public function unlikeStatus($status_id, $host_id, $host_type)
     {
-        try
-        {
-            $status = likesModel::where([
-                ["status_id" => $status_id],
-                ["host_id" => $host_id],
-                ["host_type" => $host_type]
-            ])->get();
-            foreach ($status as $s) {
-                $s->delete();
-            }
-
-            $this->Error->setSuccess(["success"]);
-            return $this->Error->getSuccess();
+        $status = likesModel::where([
+            ["status_id" => $status_id],
+            ["host_id" => $host_id],
+            ["host_type" => $host_type]
+        ])->get();
+        foreach ($status as $s) {
+            $s->delete();
         }
-        catch(\Illuminate\Database\QueryException $exception)
-        {
 
-            $this->Error->setError([$exception->errorInfo]);
-            return $this->Error->getError();
-        }
+        $this->Error->setSuccess(["success"]);
+        return $this->Error->getSuccess();
+    
 
     }
 }

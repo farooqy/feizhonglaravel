@@ -477,28 +477,38 @@ class statusController extends Controller
         ];
 
         $is_valid_request = Validator::make($request->all(), $rules, $messages);
-        if($is_valid_request->fails())
-        {
-            $error_list = [];
-            $errors = $is_valid_request->errors();
-            foreach($errors->all() as $error)
-                array_push($error_list, $error);
+        $isNotValidRequest = $this->customValidator->isNotValidRequest($is_valid_request);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
 
-            $json = json_encode(array(
-                'errorMessage' => $error_list, 
-                'isSuccess' => false, 
-                'successMessage' => null));
-            return $json;
-        }
+        // if($is_valid_request->fails())
+        // {
+        //     $error_list = [];
+        //     $errors = $is_valid_request->errors();
+        //     foreach($errors->all() as $error)
+        //         array_push($error_list, $error);
+
+            // $json = json_encode(array(
+            //     'errorMessage' => $error_list, 
+            //     'isSuccess' => false, 
+            //     'successMessage' => null));
+            // // return $json;
+            // $this->Error->setError($error_list);
+            // return $this->Error->getError();
+        // }
         //is valid status
         $status_valid = compStatusModel::where('id', $request->status_id)->get();
         if($status_valid === null || $status_valid->count() <= 0)
-            return json_encode([
-                "errorMessage" => ["The target status is not valid or doesn't exist"],
-                "isSuccess" => false,
-                "successMessage" => null,
-                "data" => []
-            ]);
+        {    
+            // return json_encode([
+        //         "errorMessage" => ["The target status is not valid or doesn't exist"],
+        //         "isSuccess" => false,
+        //         "successMessage" => null,
+        //         "data" => []
+        //     ]);
+            $this->Error->setError(["The target status is not valid or doesn't exist"]);
+            return $this->Error->getError();
+        }
         //is it valid host
         if($request->host_type === "normal")
         {
@@ -508,14 +518,35 @@ class statusController extends Controller
             $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
 
         if($host_is_valid === null || $host_is_valid->count() <= 0)
-            return json_encode([
-                "errorMessage" => ["The host provided is not valid or doesn't exist"],
-                "isSuccess" => false,
-                "successMessage" => null,
-                "data" => []
-            ]);
-        return likesModel::saveLike($request->status_id,
-            $request->host_id,$request->host_type);
+        {    
+            // return json_encode([
+            //     "errorMessage" => ["The host provided is not valid or doesn't exist"],
+            //     "isSuccess" => false,
+            //     "successMessage" => null,
+            //     "data" => []
+            // ]);
+            $this->Error->setError(["The host provided is not valid or doesn't exist"]);
+            return $this->Error->getError();
+        }
+        // return likesModel::saveLike($request->status_id,
+        //     $request->host_id,$request->host_type);
+        // likesModel::create([
+        //     "status_id" =>  $request->status_id,
+        //     "host_id" => $request->host_id,
+        //     "host_type" => $request->host_type,
+        // ]);
+        $lModel = new likesModel;
+        $lModel->status_id = $request->status_id;
+        $lModel->host_id = $request->host_id;
+        $lModel->host_type = $request->host_type;
+
+        if(!$lModel->save())
+        {
+            $this->Error->setError(["Failed to set the like for the status "]);
+            return $this->Error->getError();
+        }
+        $this->Error->setSuccess([]);
+        return $this->Error->getSuccess();
     }
 
     public function unlikeStatus(Request $request)

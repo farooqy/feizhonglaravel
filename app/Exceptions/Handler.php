@@ -84,8 +84,8 @@ class Handler extends ExceptionHandler
                 "error_line" => $exception->getLine(),
                 "error_file" => $exception->getFile(),
                 "error_status" => true,
-                "error_code" => 422
-            )), 422);
+                "error_code" => 500
+            )), 500);
         }
         if($exception instanceof \Symfony\Component\Debug\Exception\FatalThrowableError)
         {

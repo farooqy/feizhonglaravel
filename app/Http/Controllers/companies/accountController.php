@@ -368,7 +368,26 @@ class accountController extends Controller
     			"successMessage" => null,
     			"data" => [],
     			"extra" => "I am cause 2"
-    		]);
+    	]);
+
+        $codeExist = phoneVerificationModel::where([
+            ["target_phone" => $request->telephone],
+            ["is_verified" => false],
+        ])->exists();
+        if($codeExist)
+        {
+            $TwilioClient->messages->create(
+                $request->telephone,[
+                    "body" => "[AtoC] ".$new_code." is your verification code. This code will expire in 5 minutes. Please do not disclose it for security purposes.",
+                    "from" => env('TWILIO_NUMBER'),
+                ]);
+            Log::info(
+                "message_sent_to: ".$request->telephone
+            );
+
+            $this->Error->setSucces([]);
+            return $this->Error->getSuccess();
+        }
 
     	$TwilioClient = new Client(env('TWILIO_SID'), env('TWILIO_AUTH'));
     	try
