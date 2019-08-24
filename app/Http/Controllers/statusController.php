@@ -38,6 +38,7 @@ class statusController extends Controller
     }
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
+        return true;
         $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
         if(!$userOwnsKey)
         {
@@ -125,7 +126,7 @@ class statusController extends Controller
         }
     	// return json_encode(["isSuccess"=> true, "errorMessage"=> null,
      //     "successMessage"=>"success", "data"=>$statusData]);
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess($listProducts);
         return $this->Error->getSuccess();
 
@@ -241,7 +242,7 @@ class statusController extends Controller
             //     'successMessage' => "success",
             //     "data" => ["file_id" => $fileId]
             // ]);
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
             $this->Error->setSuccess(["file_id" => $fileId]);
             return $this->Error->getSuccess();
         }
@@ -389,7 +390,7 @@ class statusController extends Controller
                 "successMessage" => "success",
                 "errorMessage" => null
             ));
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
 
             return $success;
         }
@@ -502,7 +503,7 @@ class statusController extends Controller
         $cModel->comment_text = $request->comment_text;
         if($cModel->save())
         {
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
             $this->Error->setSuccess(["success"]);
             return $this->Error->getSuccess();
         }
@@ -575,7 +576,7 @@ class statusController extends Controller
             $this->Error->setError(["Failed to set the like for the status "]);
             return $this->Error->getError();
         }
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess([]);
         return $this->Error->getSuccess();
     }
@@ -625,7 +626,7 @@ class statusController extends Controller
         foreach ($status as $s) {
             $s->delete();
         }
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess([]);
         return $this->Error->getSuccess();
 
@@ -682,7 +683,7 @@ class statusController extends Controller
             $c->delete();
         }
         $this->Error->setSuccess(["success"]);
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
 
     }
@@ -720,7 +721,7 @@ class statusController extends Controller
 
         //is it valid host
         $this->Error->setSuccess([]);
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
     }
 

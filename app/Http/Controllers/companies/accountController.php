@@ -41,6 +41,7 @@ class accountController extends Controller
     }
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
+        return true;
         $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
         if(!$userOwnsKey)
         {
@@ -118,7 +119,7 @@ class accountController extends Controller
                 $data[0]->hasLicense = false;
             $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token, "comp");
 
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
 			$this->setSucces($data);
 			return $this->success;
 		}
@@ -194,7 +195,7 @@ class accountController extends Controller
 
 			registrationTrackerModel::where('comp_token', $request->company_token)->update(["stage" => "complete"]);
             
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
 			$this->setSucces(["comp_token" => $request->company_token, "process" => "final"]);
 			return $this->success;
 		}
@@ -255,7 +256,7 @@ class accountController extends Controller
 			]);
 
 			registrationTrackerModel::where('comp_token', $request->company_token)->update(["stage" => "address"]);
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
 			$this->setSucces(["comp_token" => $request->company_token, "process" => "page3"]);
 			return $this->success;
 		}
@@ -376,7 +377,7 @@ class accountController extends Controller
     		])->update(['is_verified' => true]);
     		$this->setSucces(["comp_token" => $comp_token, "process" => "page2"]);
             $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token, "comp");
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
     		return $this->success;
     	}
     	catch(\Illuminate\Database\QueryException $exception)
@@ -458,7 +459,7 @@ class accountController extends Controller
     		Log::info(
     			"message_sent_to: ".$request->telephone
     		);
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
     		return json_encode([
     			"errorMessage" => null,
     			"successMessage" => "success",

@@ -30,6 +30,7 @@ class statisticsController extends Controller
     }
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
+        return true;
         $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
         if(!$userOwnsKey)
         {
@@ -118,7 +119,7 @@ class statisticsController extends Controller
 
         
         $this->Error->setSuccess(["success"]);
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
             
     }
@@ -194,7 +195,7 @@ class statisticsController extends Controller
                 return $this->Error->getError();
             }
         }
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess(["success"]);
         return $this->Error->getSuccess();
         	
@@ -222,7 +223,7 @@ class statisticsController extends Controller
         ])->get();
 
         $this->Error->setSuccess($profiles);
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
     }
 
@@ -277,7 +278,7 @@ class statisticsController extends Controller
             $keyDetails = $this->ApiKey->getKeyDetails($request->api_host_id, $request->api_host_token);
             $this->ApiKey->setRequest($keyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
             $this->Error->setSuccess(["api_key" => $keyDetails[0]->api_key ]);
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
             return $this->Error->getSuccess();
         }
         $apikey = $this->ApiKey->Generate_New_Api();
@@ -291,7 +292,7 @@ class statisticsController extends Controller
         ])->get()[0]->api_id;
         $this->ApiKey->setRequest($keyid, $this->ip_address, $this->requestUrl);
         $this->Error->setSuccess(["api_key" => $apikey ]);
-        $this->ApiKey->successFullRequest();    
+        // $this->ApiKey->successFullRequest();    
         return $this->Error->getSuccess();
     }
 

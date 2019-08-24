@@ -32,6 +32,7 @@ class featuredCompaniesController extends Controller
     }
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
+        return true;
         $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
         if(!$userOwnsKey)
         {
@@ -121,7 +122,7 @@ class featuredCompaniesController extends Controller
     		$featuredCompaniesModel->feature_file_type = $extenstion;
 
     		$featuredCompaniesModel->save();
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
             $this->Error->setSuccess([]);
             return $this->Error->getSuccess();
     	}
@@ -159,7 +160,7 @@ class featuredCompaniesController extends Controller
     		['feature_status', 'approved']
     	])->get();
 
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess($featured_companies);
         return $this->Error->getSuccess();
     }

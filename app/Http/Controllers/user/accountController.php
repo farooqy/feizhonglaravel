@@ -33,6 +33,7 @@ class accountController extends Controller
 	}
 	public function apiHandleSet($user_id, $user_token, $api_key)
     {
+    	return true;
         $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
         if(!$userOwnsKey)
         {
@@ -96,7 +97,7 @@ class accountController extends Controller
 				$data = ["reset_code" =>$verification_code];
 				Mail::to($userEmail)->send(new generalMailHandler("passwordReset", $data));
 				$this->Error->setSuccess($account);
-				$this->ApiKey->successFullRequest();
+				// $this->ApiKey->successFullRequest();
 				return $this->Error->getSuccess();
 			}
 			else
@@ -188,7 +189,7 @@ class accountController extends Controller
 			])->update(["is_expired" => true]);
 
 			$this->Error->setSuccess([]);
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			return $this->Error->getSuccess();
 		}
 		else
@@ -235,7 +236,7 @@ class accountController extends Controller
 		else if(Hash::check($request->user_password,$data[0]->user_password))
 		{
 			$this->Error->setSuccess($data);
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token, "normal");
 			return $this->Error->getSuccess();
 		}
@@ -282,7 +283,7 @@ class accountController extends Controller
 		{
 			$data = normalUsersModel::where("user_email", $request->user_email)->get();
 			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token, "normal");
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			return $this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal");
 			// $this->Error->setSuccess($data[0]);
 			// return $this->Error->getSuccess();
@@ -338,7 +339,7 @@ class accountController extends Controller
 			if(!$hasCode[0]->is_expired)
 			{
 				Mail::to($userEmail)->send(new userVerificationMail($hasCode[0]->verification_code, $isValidUser[0]->user_fname));
-				$this->ApiKey->successFullRequest();
+				// $this->ApiKey->successFullRequest();
 				$this->Error->setSuccess([$isValidUser]);
 				return $this->Error->getSuccess();
 			}
@@ -361,7 +362,7 @@ class accountController extends Controller
 		if($VerifierModel->save())
 		{
 			Mail::to($userEmail)->send(new userVerificationMail($verification_code, $isValidUser[0]->user_fname));
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			$this->Error->setSuccess($isValidUser);
 			return $this->Error->getSuccess();
 		}
@@ -424,7 +425,7 @@ class accountController extends Controller
 				["user_id" , $request->userId],
 				["user_token", $request->userToken]
 			])->update(["user_fname" => $request->updateValue]);
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -449,7 +450,7 @@ class accountController extends Controller
 				["user_id" , $request->userId],
 				["user_token", $request->userToken]
 			])->update(["user_sname" => $request->updateValue]);
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -475,7 +476,7 @@ class accountController extends Controller
 				["user_id" , $request->userId],
 				["user_token", $request->userToken]
 			])->update(["user_email" => $request->updateValue, "is_verified" => false]);
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -500,7 +501,7 @@ class accountController extends Controller
 				["user_id" , $request->userId],
 				["user_token", $request->userToken]
 			])->update(["user_phone" => $request->updateValue]);
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -528,7 +529,7 @@ class accountController extends Controller
 			])->update(["user_password" => $hashpass]);
 			$data = ["name" => $user[0]->user_fname];
 			Mail::to($user[0]->user_email)->send(new generalMailHandler("passwordChanged", $data));
-			$this->ApiKey->successFullRequest();
+			// $this->ApiKey->successFullRequest();
 			$this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
 			return $this->Error->getSuccess();
 		}
@@ -606,7 +607,7 @@ class accountController extends Controller
 				]);
 			}
 		}
-		$this->ApiKey->successFullRequest();
+		// $this->ApiKey->successFullRequest();
 		$this->Error->setSuccess([]);
 		return $this->Error->getSuccess();
 

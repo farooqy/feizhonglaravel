@@ -29,6 +29,7 @@ class generalController extends Controller
 	}
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
+        return true;
         $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
         if(!$userOwnsKey)
         {
@@ -69,7 +70,7 @@ class generalController extends Controller
         }
         $isValidCompany[0]->address;
         $isValidCompany[0]->type;
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess($isValidCompany);
         return $this->Error->getSuccess();
     }
@@ -121,7 +122,7 @@ class generalController extends Controller
 
     		}
             // $list = array_values(array_filter($list->toArray()));
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
     		$this->Error->setSuccess($comp_list);
     		return $this->Error->getSuccess();
     	}
@@ -160,7 +161,7 @@ class generalController extends Controller
         else
             $items = $normModel->searchUsers($request->search_key);
         $this->Error->setSuccess($items);
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
 
     }
@@ -191,7 +192,7 @@ class generalController extends Controller
     	$image = base64_encode(file_get_contents($request->image_url));
     	if($image)
     	{
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
     		$this->Error->setSuccess(["image_base64" => $image]);
     		return $this->Error->getSuccess();
     	}
@@ -204,7 +205,7 @@ class generalController extends Controller
 
     public function getVersion()
     {
-        $this->Error->setSuccess(["version_number" => 6]);
+        $this->Error->setSuccess(["version_number" => 7]);
         return $this->Error->getSuccess();
     }
 }

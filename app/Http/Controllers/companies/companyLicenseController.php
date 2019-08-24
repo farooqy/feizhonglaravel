@@ -35,6 +35,7 @@ class companyLicenseController extends Controller
 
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
+        return true;
         $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
         if(!$userOwnsKey)
         {
@@ -112,7 +113,7 @@ class companyLicenseController extends Controller
 
         if($licenseModel->save())
         {
-            $this->ApiKey->successFullRequest();
+            // $this->ApiKey->successFullRequest();
         	$this->Error->setSuccess([]);
         	return $this->Error->getSuccess();
         }
@@ -146,7 +147,7 @@ class companyLicenseController extends Controller
     		["comp_id", $request->comp_id],
     		["comp_token", $request->comp_token],
     	])->latest()->get();
-        $this->ApiKey->successFullRequest();
+        // $this->ApiKey->successFullRequest();
     	$this->Error->setSuccess($hasValidLicense);
     	return $this->Error->getSuccess();
 	}
