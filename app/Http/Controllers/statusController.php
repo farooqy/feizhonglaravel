@@ -68,7 +68,7 @@ class statusController extends Controller
             "api_key" => "required|string"
         ];
         $validity = Validator::make($request->all(), $rules, []);
-        $isNotValidRequest = $this->CustomRequestValidato->isNotValidRequest($validity);
+        $isNotValidRequest = $this->customValidator->isNotValidRequest($validity);
         $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;
@@ -141,21 +141,10 @@ class statusController extends Controller
         ];
         $validation = Validator::make($fileForm->all(), $rules, $messages);
 
-        if($validation->fails())
-        {
-            $errors =$validation->errors();
-            $listerrors = [];
-            foreach($errors->all() as $error)
-                array_push($listerrors, $error);
-            // return json_encode([
-            //     'errorMessage' => $listerrors, 
-            //     'isSuccess' => false, 
-            //     'successMessage' => null
-            // ]);
-            $this->Error->setError($listerrors);
-            return $this->Error->getError();
+        $isNotValidRequest = $this->customValidator->isNotValidRequest($validation);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
 
-        } 
         $apiset = $this->apiHandleSet($$request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;   
@@ -282,18 +271,10 @@ class statusController extends Controller
         // validation form
         $validation = Validator::make($statusForm->all(), $rules, $messages);
         $statusFilesObject = [];
-        if($validation->fails())
-        {
-            $errors = $validation->errors();
-            $errors_list = [];
-            foreach($errors->all() as $error)
-                array_push($errors_list, $error);
-            return json_encode(array(
-                "errorMessage" => $errors_list,
-                "isSuccess" => false,
-                "successMessage" => null,
-            ));
-        }
+        
+        $isNotValidRequest = $this->customValidator->isNotValidRequest($validation);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
         $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;
