@@ -112,6 +112,10 @@ class accountController extends Controller
             $data[0]->type;
             $data[0]->products;
             $data[0]->companyStatus;
+            if($data[0]->license !== null)
+                $data[0]->hasLicense = true;
+            else
+                $data[0]->hasLicense = false;
             $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token);
 
             $this->ApiKey->successFullRequest();
