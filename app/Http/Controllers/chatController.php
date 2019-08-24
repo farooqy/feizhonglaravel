@@ -132,15 +132,15 @@ class chatController extends Controller
             ["chat_destination_id", $request->host_id],
             ["chat_destination_token", $request->host_token]
         ])->latest()->get();
-        foreach($chats as $chat)
+        foreach($chats as $ckey => $chat)
         {
             $conversation = $chat->chats;
             if($chat->companySent !== null && $chat->companyReceived !== null)
             {
                 if($request->host_id === $chat->companySent->comp_id && $request->host_token === $chat->companySent->comp_token)
-                    $chat->companyChat = $chat->companyReceived;
+                    $chats[$ckey]->companyChat = $chat->companyReceived;
                 else
-                    $chat->companyChat = $chat->companySent;
+                    $chats[$ckey]->companyChat = $chat->companySent;
             }
         }
         $this->Error->setSuccess($chats);
