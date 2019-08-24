@@ -16,6 +16,7 @@ use App\models\compStatusModel;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\customClass\FileUploader;
+use App\customClass\ApiKeyManager;
 use Log, File, Hash;
 class accountController extends Controller
 {
@@ -25,18 +26,45 @@ class accountController extends Controller
     protected $Error;
     protected $custom_validator;
     protected $FileUploader ;
+    protected $ApiKey;
+    protected $ip_address;
+    protected $requestUrl;
     public function __construct()
     {
         $this->Error = new Error();
         $this->custom_validator = new CustomRequestValidator();
         $this->FileUploader = new FileUploader();
+        $this->ApiKey = new ApiKeyManager();
+        $this->ip_address = \Request::ip();
+        $this->requestUrl = url()->current();
+
+    }
+    public function apiHandleSet($user_id, $user_token, $api_key)
+    {
+        $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
+        if(!$userOwnsKey)
+        {
+            $this->Error->setError(["The access key is not valid"], -1);
+            return $this->Error->getError();
+        }
+        $apiKeyDetails = $this->ApiKey->getKeyDetails($user_id, $user_token);
+        if($apiKeyDetails[0]->api_key !== $api_key)
+        {
+            $this->Error->setError(['Invalid api key']);
+            return $this->Error->getError();
+        }
+        $this->ApiKey->setRequest($apiKeyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
+        return true;
     }
 
 	public function companyLogin(Request $request)
 	{
 		$rules = [
 			"company_phone" => "required|string",
-			"company_password" => "required|string"
+			"company_password" => "required|string",
+            "guest_id" => "required|integer",
+            "guest_token" => "required|string",
+            "api_key" => "required|string",
 		];
 
 		$messages = [
@@ -46,6 +74,9 @@ class accountController extends Controller
 		$valid_request = Validator::make($request->all(), $rules, $messages);
 		if($notValid= $this->isNotValidRequest($valid_request))
 			return $notValid;
+        $apiset = $this->apiHandleSet($request->guest_id, $request->guest_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
 		$data = companydataModel::where([
 			["comp_phone", "=",$request->company_phone]
 		])->get();
@@ -81,6 +112,9 @@ class accountController extends Controller
             $data[0]->type;
             $data[0]->products;
             $data[0]->companyStatus;
+            $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token);
+
+            $this->ApiKey->successFullRequest();
 			$this->setSucces($data);
 			return $this->success;
 		}
@@ -98,6 +132,8 @@ class accountController extends Controller
 			"company_subtype" => "required|string|max:50",
 			"company_description" => "required|string|min:45",
 			"company_token" => "required|string|max:330", 
+            "api_key" => "required|string",
+            "company_id" => "required|integer",
 		];
 		$messages =[
 			"required" => "The :attribute is required",
@@ -112,6 +148,9 @@ class accountController extends Controller
 		$is_tracked_well = $this->registrationCheckTrack($request, "address");
 		if($is_tracked_well === false)
 			return $this->error;
+        $apiset = $this->apiHandleSet($request->company_id, $request->company_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
 		$company_id = companydataModel::where('comp_token', $request->company_token)->get();
         if($company_id->count() === 0)
         {
@@ -150,7 +189,8 @@ class accountController extends Controller
 			]);
 
 			registrationTrackerModel::where('comp_token', $request->company_token)->update(["stage" => "complete"]);
-
+            
+            $this->ApiKey->successFullRequest();
 			$this->setSucces(["comp_token" => $request->company_token, "process" => "final"]);
 			return $this->success;
 		}
@@ -172,7 +212,9 @@ class accountController extends Controller
 			"company_address_one" => "required|string|max:75",
 			"company_province" => "required|string|max:50",
 			"company_city" => "required|string|max:45",
-			"company_token" => "required|string|max:330", 
+            "company_token" => "required|string|max:330", 
+			"company_id" => "required|integer", 
+            "api_key" => "required|string",
 		];
 		$messages =[
 			"required" => "The :attribute is required",
@@ -186,6 +228,9 @@ class accountController extends Controller
 		$is_tracked_well = $this->registrationCheckTrack($request);
 		if($is_tracked_well === false)
 			return $this->error;
+        $apiset = $this->apiHandleSet($request->company_id, $request->company_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
 		$company_id = companydataModel::where('comp_token', $request->company_token)->get();
 		if($company_id === null || $company_id->count() !== 1)
 		{
@@ -206,7 +251,7 @@ class accountController extends Controller
 			]);
 
 			registrationTrackerModel::where('comp_token', $request->company_token)->update(["stage" => "address"]);
-
+            $this->ApiKey->successFullRequest();
 			$this->setSucces(["comp_token" => $request->company_token, "process" => "page3"]);
 			return $this->success;
 		}
@@ -230,7 +275,11 @@ class accountController extends Controller
     		"company_phone" => "required|string",
     		"company_password" => "required|string|min:8",
     		"company_email" => "required|email",
-    		"verification_code" => "required|integer"
+    		"verification_code" => "required|integer",
+            "guest_id" => "required|integer",
+            "guest_token" => "required|string",
+            "api_key" => "required|string",
+
     	];
     	$messages = [
     		"required" => "The :attribute is required",
@@ -240,6 +289,9 @@ class accountController extends Controller
     	$is_valid_request = Validator::make($request->all(), $rules, $messages);
     	if(($notValid = $this->isNotValidRequest($is_valid_request)))
     		return $notValid;
+        $apiset = $this->apiHandleSet($request->guest_id, $request->guest_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
     	if($this->phone_exists($request->company_phone))
     	{
     		$this->setError(["The given company telephone cannot be used for registration"]);
@@ -319,6 +371,8 @@ class accountController extends Controller
     			['verification_code', $request->verification_code]
     		])->update(['is_verified' => true]);
     		$this->setSucces(["comp_token" => $comp_token, "process" => "page2"]);
+            $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token);
+            $this->ApiKey->successFullRequest();
     		return $this->success;
     	}
     	catch(\Illuminate\Database\QueryException $exception)
@@ -339,6 +393,9 @@ class accountController extends Controller
     {
     	$rules = [
     		"telephone" => "required|string|max:14",
+            "guest_id" => "required|integer",
+            "guest_token" => "required|string",
+            "api_key" => "required|string"
     	];
     	$messages = [
     		"required" => "The :attribute is required"
@@ -361,6 +418,9 @@ class accountController extends Controller
     			"extra" => "I am cause 1"
     		));
     	}
+        $apiset = $this->apiHandleSet($request->guest_id, $request->guest_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
     	if($this->phone_exists($request->telephone))
     		return json_encode([
     			"errorMessage" => ["The phone number cannot be used for registration of new user"],
@@ -371,22 +431,14 @@ class accountController extends Controller
     	]);
 
         $codeExist = phoneVerificationModel::where([
-            ["target_phone" => $request->telephone],
-            ["is_verified" => false],
-        ])->exists();
-        if($codeExist)
-        {
-            $TwilioClient->messages->create(
-                $request->telephone,[
-                    "body" => "[AtoC] ".$new_code." is your verification code. This code will expire in 5 minutes. Please do not disclose it for security purposes.",
-                    "from" => env('TWILIO_NUMBER'),
-                ]);
-            Log::info(
-                "message_sent_to: ".$request->telephone
-            );
+            ["target_phone" => $request->telephone]
+        ])->get();
 
-            $this->Error->setSucces([]);
-            return $this->Error->getSuccess();
+        if($codeExist !== null && $codeExist->count() > 0)
+        {
+            foreach ($codeExist as $key => $code) {
+                $code->delete();
+            }
         }
 
     	$TwilioClient = new Client(env('TWILIO_SID'), env('TWILIO_AUTH'));
@@ -404,7 +456,7 @@ class accountController extends Controller
     		Log::info(
     			"message_sent_to: ".$request->telephone
     		);
-
+            $this->ApiKey->successFullRequest();
     		return json_encode([
     			"errorMessage" => null,
     			"successMessage" => "success",
@@ -585,16 +637,21 @@ class accountController extends Controller
     protected function checkUpdateFields($request, $targetField='')
     {
         $rules = [
-            "company_token" => "string|required|max:330|min:20",
+            "company_id" => "required|string",
+            "company_token" => "required|string|max:330|min:20",
             "company_target_change" => "required|string|min:6",
-            "company_password" => "required|string"
+            "company_password" => "required|string",
+            "api_key" => "required|string",
         ];
         $valid_request = Validator::make($request->all(), $rules, []);
         if($notValid= $this->custom_validator->isNotValidRequest($valid_request))
         {
             $this->Error->setError($notValid);
             return false;
-        }    
+        }
+        $apiset = $this->apiHandleSet($request->company_id, $request->company_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;    
         if($targetField==="comp_phone")
         {
             $new_value = phoneVerificationModel::where('verification_code', $request->company_target_change)->get();

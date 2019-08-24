@@ -93,6 +93,5 @@ Route::post('/version_code', 'generalController@getVersion');
 Route::post('/statistics/profileVisits', 'statisticsController@profileVisit');
 Route::post('/statistics/visitedProfiles', 'statisticsController@visitedProfiles');
 Route::post('/statistics/productVisits', 'statisticsController@productSet');
-Route::post('/statistics/requestTracker', 'statisticsController@requestTracker');
 Route::post('/statistics/getApiKey', 'statisticsController@getApiKey');
 Route::post('/statistics/generateIdAndToken', 'statisticsController@generateIdAndToken');

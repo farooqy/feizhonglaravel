@@ -119,7 +119,7 @@ class ApiKeyManager
         if($possibleOldApiKey !== null && $possibleOldApiKey->count() > 0)
             foreach ($possibleOldApiKey as $key => $oldApiKey) 
             {
-                stopApiKey($oldApiKey->api_key);
+                $this->stopApiKey($oldApiKey->api_key);
             }
         apiKeyModel::where([
             ["api_host_id", $old_id],
