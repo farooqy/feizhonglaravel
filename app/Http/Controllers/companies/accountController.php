@@ -422,16 +422,14 @@ class accountController extends Controller
         if($apiset !== true)
             return $apiset;
     	if($this->phone_exists($request->telephone))
-    		return json_encode([
-    			"errorMessage" => ["The phone number cannot be used for registration of new user"],
-    			"isSuccess" => false,
-    			"successMessage" => null,
-    			"data" => [],
-    			"extra" => "I am cause 2"
-    	]);
+    		
+        {
+            $this->Error->setError(["The phone number cannot be used for registration of new user"]);
+            return $this->Error->getError();
+        }
 
         $codeExist = phoneVerificationModel::where([
-            ["target_phone" => $request->telephone]
+            ["target_phone", $request->telephone]
         ])->get();
 
         if($codeExist !== null && $codeExist->count() > 0)

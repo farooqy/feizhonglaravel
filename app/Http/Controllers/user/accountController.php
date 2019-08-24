@@ -204,7 +204,7 @@ class accountController extends Controller
 			"user_email" => "required|email",
 			"user_password" => "required|string",
 			"guest_id" => "required|integer",//api key purpose
-			"guest_token" => "required|string"//api key purpose,
+			"guest_token" => "required|string",//api key purpose,
 			"api_key" => "required|string"
 		];
 		$messages = [

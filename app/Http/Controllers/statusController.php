@@ -147,7 +147,7 @@ class statusController extends Controller
         if($isNotValidRequest)
             return $isNotValidRequest;
 
-        $apiset = $this->apiHandleSet($$request->host_id, $request->host_token, $request->api_key);
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;   
         //check if has uplaoded license
@@ -466,7 +466,7 @@ class statusController extends Controller
                 'successMessage' => null));
             return $json;
         }
-        $apiset = $this->apiHandleSet($$request->host_id, $request->host_token, $request->api_key);
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;
         //is valid status
