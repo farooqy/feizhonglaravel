@@ -46,7 +46,7 @@ class generalController extends Controller
     }
     public function listCompanies()
     {
-    	$list = companydataModel::get();
+    	$list = companydataModel::latest()->get();
     	if($list === null || $list->count() <=0 )
     	{
     		$this->Error->setError(["Failed to get the list. Empty database could be the reason"]);
@@ -87,7 +87,7 @@ class generalController extends Controller
     {
         $rules = [
             "host_id" => "required|integer",
-            "host_type" => "required|in:normal,comp",
+            "host_type" => "required|in:normal,comp|guest",
             "search_key" => "required|string|min:4",
             "search_type" => "required|in:normal,comp"
         ];

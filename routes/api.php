@@ -80,8 +80,7 @@ Route::post('message/markasread', 'chatController@MarkMessageStatusRead');
 
 Route::post('/list/companies', 'generalController@listCompanies');
 Route::post('/list/getCompanyData', 'generalController@getCompanyData');
-Route::post('/search/companies', 'generalController@getSearchItem');
-Route::post('/search/users', 'generalController@getSearchItem');
+Route::post('/search', 'generalController@getSearchItem');
 
 
 Route::get('/quote', 'generalController@showQuote');

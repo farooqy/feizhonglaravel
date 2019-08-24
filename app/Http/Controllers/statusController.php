@@ -15,6 +15,7 @@ use App\models\companies\companyLicenseModel;
 use App\models\products\productModel;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
+use App\customClass\ApiKeyManager;
 
 use Illuminate\Support\Facades\Validator;
 // use Intervention\Image\Facades\Image as Image;
@@ -22,13 +23,30 @@ use Image;
 class statusController extends Controller
 {
     //
-
+    protected $ApiKey;
     public function __construct()
     {
         $this->Error = new Error();
         $this->customValidator = new CustomRequestValidator();
+        $this->ApiKey = new 
     }
-
+    public function apiHandleSet($user_id, $user_token, $api_key)
+    {
+        $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
+        if(!$userOwnsKey)
+        {
+            $this->Error->setError(["The access key is not valid"], -1);
+            return $this->Error->getError();
+        }
+        $apiKeyDetails = $this->ApiKey->getKeyDetails($user_id, $user_token);
+        if($apiKeyDetails[0]->api_key !== $api_key)
+        {
+            $this->Error->setError(['Invalid api key']);
+            return $this->Error->getError();
+        }
+        $this->ApiKey->setRequest($apiKeyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
+        return true;
+    }
     public function index()
     {
     	$json = json_encode(array(
@@ -39,6 +57,17 @@ class statusController extends Controller
     }
     public function getStatus (Request $request)
     {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "host_type" => "required|string|in:normal,comp",
+            "api_key" => "required|string"
+        ];
+        $validity = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->CustomRequestValidato->isNotValidRequest($validity);
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
     	$statusData = compStatusModel::where([['status_status' ,'=', 'active']])->latest()->get();
 
         $products = productModel::get();
@@ -88,6 +117,7 @@ class statusController extends Controller
         }
     	// return json_encode(["isSuccess"=> true, "errorMessage"=> null,
      //     "successMessage"=>"success", "data"=>$statusData]);
+        $this->ApiKey->successFullRequest();
         $this->Error->setSuccess($listProducts);
         return $this->Error->getSuccess();
 
@@ -99,7 +129,8 @@ class statusController extends Controller
             'host_id' => 'required|integer',
             'host_token' => 'required|string',
             'host_type' => 'required|in:normal,comp',
-            "generated_token" => "required|string"
+            "generated_token" => "required|string",
+            "api_key" => "required|string"
         ];
         $messages = [
             "required" => "The :attribute is required"
@@ -120,7 +151,10 @@ class statusController extends Controller
             $this->Error->setError($listerrors);
             return $this->Error->getError();
 
-        }    
+        } 
+        $apiset = $this->apiHandleSet($$request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;   
         //check if has uplaoded license
         if(!$this->hasUploadedLicense($fileForm->host_id, $fileForm->host_token))
         {
@@ -210,6 +244,7 @@ class statusController extends Controller
             //     'successMessage' => "success",
             //     "data" => ["file_id" => $fileId]
             // ]);
+            $this->ApiKey->successFullRequest();
             $this->Error->setSuccess(["file_id" => $fileId]);
             return $this->Error->getSuccess();
         }
@@ -230,7 +265,8 @@ class statusController extends Controller
             "statusFiles" => "required|string",
             "status_type" => "required|string|in:status,product",
             "status_generated_token" => "required|string",
-            "host_type" => "required|in:normal,comp"
+            "host_type" => "required|in:normal,comp",
+            "api_key" => "required|string"
         ];
         $messages = [
             "required" => "The :attribute field is required",
@@ -254,6 +290,9 @@ class statusController extends Controller
                 "successMessage" => null,
             ));
         }
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
         else if($statusForm->num_files <= 0)
         {
             return json_encode(array(
@@ -361,6 +400,7 @@ class statusController extends Controller
                 "successMessage" => "success",
                 "errorMessage" => null
             ));
+            $this->ApiKey->successFullRequest();
 
             return $success;
         }
@@ -414,9 +454,11 @@ class statusController extends Controller
     {
         $rules = [
             "host_id" => "required|integer",
+            "host_token" => "required|string",
             "host_type" => "required|in:comp,normal",
             "status_id" => "required|integer",
-            "comment_text" => "required|string|min:2"
+            "comment_text" => "required|string|min:2",
+            "api_key" => "required|string"
         ];
         $messages = [
             "min" => "The :attribute value provided is less than 2 characters",
@@ -437,6 +479,9 @@ class statusController extends Controller
                 'successMessage' => null));
             return $json;
         }
+        $apiset = $this->apiHandleSet($$request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
         //is valid status
         $status_valid = compStatusModel::where('id', $request->status_id)->get();
         if($status_valid === null || $status_valid->count() <= 0)
@@ -461,15 +506,31 @@ class statusController extends Controller
                 "successMessage" => null,
                 "data" => []
             ]);
-        return commentsModel::saveComment($request->status_id,
-            $request->host_id,$request->host_type, $request->comment_text);
+        $cModel = new commentsModel;
+        $cModel->status_id = $request->status_id;
+        $cModel->host_id = $request->host_id;
+        $cModel->host_type = $request->host_type;
+        $cModel->comment_text = $request->comment_text;
+        if($cModel->save())
+        {
+            $this->ApiKey->successFullRequest();
+            $this->Error->setSuccess(["success"]);
+            return $this->Error->getSuccess();
+        }
+        else
+        {
+            $this->Error->setError(["Failed to send the comment"]);
+            return $this->Error->getError();
+        }
     }
     public function likeStatus(Request $request)
     {
         $rules = [
             "host_id" => "required|integer",
+            "host_token" => "required|string",
             "host_type" => "required|in:comp,normal",
             "status_id" => "required|integer",
+            "api_key" => "required|string"
         ];
         $messages = [
             "min" => "The :attribute value provided is less than 2 characters",
@@ -480,32 +541,14 @@ class statusController extends Controller
         $isNotValidRequest = $this->customValidator->isNotValidRequest($is_valid_request);
         if($isNotValidRequest)
             return $isNotValidRequest;
-
-        // if($is_valid_request->fails())
-        // {
-        //     $error_list = [];
-        //     $errors = $is_valid_request->errors();
-        //     foreach($errors->all() as $error)
-        //         array_push($error_list, $error);
-
-            // $json = json_encode(array(
-            //     'errorMessage' => $error_list, 
-            //     'isSuccess' => false, 
-            //     'successMessage' => null));
-            // // return $json;
-            // $this->Error->setError($error_list);
-            // return $this->Error->getError();
-        // }
-        //is valid status
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
+        
         $status_valid = compStatusModel::where('id', $request->status_id)->get();
         if($status_valid === null || $status_valid->count() <= 0)
         {    
-            // return json_encode([
-        //         "errorMessage" => ["The target status is not valid or doesn't exist"],
-        //         "isSuccess" => false,
-        //         "successMessage" => null,
-        //         "data" => []
-        //     ]);
+            
             $this->Error->setError(["The target status is not valid or doesn't exist"]);
             return $this->Error->getError();
         }
@@ -519,22 +562,11 @@ class statusController extends Controller
 
         if($host_is_valid === null || $host_is_valid->count() <= 0)
         {    
-            // return json_encode([
-            //     "errorMessage" => ["The host provided is not valid or doesn't exist"],
-            //     "isSuccess" => false,
-            //     "successMessage" => null,
-            //     "data" => []
-            // ]);
+            
             $this->Error->setError(["The host provided is not valid or doesn't exist"]);
             return $this->Error->getError();
         }
-        // return likesModel::saveLike($request->status_id,
-        //     $request->host_id,$request->host_type);
-        // likesModel::create([
-        //     "status_id" =>  $request->status_id,
-        //     "host_id" => $request->host_id,
-        //     "host_type" => $request->host_type,
-        // ]);
+        
         $lModel = new likesModel;
         $lModel->status_id = $request->status_id;
         $lModel->host_id = $request->host_id;
@@ -545,6 +577,7 @@ class statusController extends Controller
             $this->Error->setError(["Failed to set the like for the status "]);
             return $this->Error->getError();
         }
+        $this->Error->successFullRequest();
         $this->Error->setSuccess([]);
         return $this->Error->getSuccess();
     }
@@ -554,14 +587,18 @@ class statusController extends Controller
         $rules = [
             "status_id" => "required|integer",
             "host_id" => "required|integer",
-            "host_type" => "required|in:normal,comp"
+            "host_token" => "required|string",
+            "host_type" => "required|in:normal,comp",
+            "api_key" => "required|string"
         ];
         $messages = [];
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
         if($isNotValidRequest)
             return $isNotValidRequest;
-
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
         $status_valid = compStatusModel::where('id', $request->status_id)->get();
         if($status_valid === null || $status_valid->count() <= 0)
             return json_encode([
@@ -585,8 +622,17 @@ class statusController extends Controller
                 "successMessage" => null,
                 "data" => []
             ]);
-        return likesModel::unlikeStatus($request->status_id,
-            $request->host_id,$request->host_type);
+        $status = likesModel::where([
+            ["status_id" => $status_id],
+            ["host_id" => $host_id],
+            ["host_type" => $host_type]
+        ])->get();
+        foreach ($status as $s) {
+            $s->delete();
+        }
+        $this->ApiKey->successFullRequest();
+        $this->Error->setSuccess([]);
+        return $this->Error->getError();
 
 
     }
@@ -595,14 +641,18 @@ class statusController extends Controller
         $rules = [
             "status_id" => "required|integer",
             "host_id" => "required|integer",
-            "host_type" => "required|in:normal,comp"
+            "host_token" => "required|string",
+            "host_type" => "required|in:normal,comp",
+            "api_key" => "required|string"
         ];
         $messages = [];
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
         if($isNotValidRequest)
             return $isNotValidRequest;
-
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
         $status_valid = compStatusModel::where('id', $request->status_id)->get();
         if($status_valid === null || $status_valid->count() <= 0)
             return json_encode([
@@ -626,14 +676,55 @@ class statusController extends Controller
                 "successMessage" => null,
                 "data" => []
             ]);
-        return commentsModel::deleteComment($request->status_id,
-            $request->host_id,$request->host_type);
+        $comment = commentsModel::where([
+            ["status_id" => $status_id],
+            ["host_type" => $host_type],
+            ["host_id" => $host_id]
+        ])->get();
+        foreach ($comment as $c) {
+            $c->delete();
+        }
+        $this->Error->setSuccess(["success"]);
+        $this->ApiKey->successFullRequest();
+        return $this->Error->getSuccess();
 
     }
 
     public function removePost(Request $request)
     {
-        return $this->Error->getError();
+        $rules = [
+            "status_id" => "required|integer",
+            "status_generated_token" => "required|string",
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "host_type" => "required|in:comp",
+            "api_key" => "required|string",
+        ];
+        $validity = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->CustomRequestValidator->isNotValidRequest($validity);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
+        $status_valid = compStatusModel::where([
+            ['id', $request->status_id],
+            ["comp_id", $request->host_id],
+            ["comp_token", $request->host_token],
+            ["status_generated_token", $request->status_generated_token],
+            ["status_status", "active"],
+        ])->get();
+        if($status_valid === null || $status_valid->count() <= 0)
+        {
+            $this->Error->setError(["The target status is not valid or doesn't exist"]);
+            return $this->Error->getError();
+        }
+        $status_valid[0]->delete();
+
+        //is it valid host
+        $this->Error->setSuccess([]);
+        $this->ApiKey->successFullRequest();
+        return $this->Error->getSuccess();
     }
 
     public function hasUploadedLicense($comp_id, $comp_token)

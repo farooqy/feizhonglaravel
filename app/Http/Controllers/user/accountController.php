@@ -60,6 +60,9 @@ class accountController extends Controller
 		$isNotValidRequest = $this->custom_validator->isNotValidRequest(Validator::make($request->all(),$rules, []));
 		if($isNotValidRequest)
 			return $isNotValidRequest;
+		$apiset = $this->apiHandleSet($user_id, $user_token, $request->api_key);
+		if($apiset !== true)
+			return $apiset;
 		if(normalUsersModel::where("user_email", $request->host_email)->exists())
 		{
 			$account = normalUsersModel::where("user_email", $request->host_email)->latest()->get();
@@ -78,9 +81,7 @@ class accountController extends Controller
 				$this->Error->setSuccess($account);
 				return $this->Error->getSuccess();
 			}
-			$apiset = $this->apiHandleSet($user_id, $user_token, $request->api_key);
-			if($apiset !== true)
-				return $apiset;
+		
 
 			$VerifierModel = new emailVerificationModel;
 			$verification_code = $VerifierModel->generateVerifCode($user_id, $user_token);
