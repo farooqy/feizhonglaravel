@@ -625,7 +625,7 @@ class statusController extends Controller
         }
         $this->ApiKey->successFullRequest();
         $this->Error->setSuccess([]);
-        return $this->Error->getError();
+        return $this->Error->getSuccess();
 
 
     }
