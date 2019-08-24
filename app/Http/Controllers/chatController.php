@@ -172,17 +172,20 @@ class chatController extends Controller
             { 
                 $chats[$ckey]->sender = $chat->companySent;
                 $chats[$ckey]->receiver = $chat->companyReceived;
+                $chats[$ckey]->recieverType = "comp";
             }
             else if($chat->companyChat === null && $chat->userSent !== null)
             {
                 $chats[$ckey]->sender = $chat->userSent;
                 $chats[$ckey]->receiver = $chat->companyReceived;
+                $chats[$ckey]->recieverType = "comp";
             }
             else //($chat->companyChat !== null && $chat->userReceived !== null)
             {
 
                 $chats[$ckey]->sender = $chat->companySent;
                 $chats[$ckey]->receiver = $chat->userReceived;
+                $chats[$ckey]->recieverType = "normal";
             }
             unset($chats[$ckey]->companyChat);
             unset($chats[$ckey]->companySent);
