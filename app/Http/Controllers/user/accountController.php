@@ -60,7 +60,7 @@ class accountController extends Controller
 		$isNotValidRequest = $this->custom_validator->isNotValidRequest(Validator::make($request->all(),$rules, []));
 		if($isNotValidRequest)
 			return $isNotValidRequest;
-		$apiset = $this->apiHandleSet($user_id, $user_token, $request->api_key);
+		$apiset = $this->apiHandleSet($request->guest_id, $request->guest_token, $request->api_key);
 		if($apiset !== true)
 			return $apiset;
 		if(normalUsersModel::where("user_email", $request->host_email)->exists())
@@ -129,6 +129,9 @@ class accountController extends Controller
 		if($isNotValidRequest)
 			return $isNotValidRequest;
 
+		$apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+			if($apiset !== true)
+				return $apiset;
 		$isValidCode = emailVerificationModel::where([
 			["user_id", $request->host_id],
 			["user_token", $request->host_token],
@@ -148,6 +151,7 @@ class accountController extends Controller
 			$this->Error->setError(["The verification code is not valid"]);
 			return $this->Error->getError();
 		}
+
 		$user = normalUsersModel::where([
 			["user_id", $request->host_id],
 			["user_token", $request->host_token],
@@ -160,12 +164,9 @@ class accountController extends Controller
 		}
 		else if($isValidCode[0]->is_expired)
 		{
-			$this->Error->setError(["The user account is not valid"]);
+			$this->Error->setError(["The user verification is not valid or has expired"]);
 			return $this->Error->getError();
 		}
-		$apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
-			if($apiset !== true)
-				return $apiset;
 		if($request->verification_type === "confirm")
 		{
 			if($user[0]->is_verified)

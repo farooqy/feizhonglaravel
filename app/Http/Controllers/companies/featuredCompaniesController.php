@@ -8,11 +8,43 @@ use App\Http\Controllers\Controller;
 use App\models\companydata_model;
 use App\models\companies\featuredCompaniesModel;
 use Illuminate\Support\Facades\Validator;
+use App\customClass\ApiKeyManager;
 
 use Image;
 class featuredCompaniesController extends Controller
 {
     //
+    protected $Error;
+    protected $custom_validator;
+    protected $ApiKey;
+    protected $ip_address;
+    protected $requestUrl;
+    public function __construct()
+    {
+        $this->Error = new Error();
+        $this->custom_validator = new CustomRequestValidator();
+        $this->ApiKey = new ApiKeyManager();
+        $this->ip_address = \Request::ip();
+        $this->requestUrl = url()->current();
+
+    }
+    public function apiHandleSet($user_id, $user_token, $api_key)
+    {
+        $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
+        if(!$userOwnsKey)
+        {
+            $this->Error->setError(["The access key is not valid"], -1);
+            return $this->Error->getError();
+        }
+        $apiKeyDetails = $this->ApiKey->getKeyDetails($user_id, $user_token);
+        if($apiKeyDetails[0]->api_key !== $api_key)
+        {
+            $this->Error->setError(['Invalid api key']);
+            return $this->Error->getError();
+        }
+        $this->ApiKey->setRequest($apiKeyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
+        return true;
+    }
     public function requestToBeFeatured(Request $request)
     {
     	$rules = [
@@ -28,30 +60,17 @@ class featuredCompaniesController extends Controller
     	];
 
     	$request_is_valid = Validator::make($request->all(), $rules, $messages	);
-
-    	if($request_is_valid->fails())
-    	{
-    		$errors = $request_is_valid->errors();
-    		$errors_list = [];
-    		foreach($errors->all() as $error)
-    			array_push($errors_list, $error);
-    		return json_encode(array(
-    			"errorMessage" => $errors_list,
-    			"error_status" => true,
-                "isSuccess" => false,
-                "successMessage" => null
-    		));
-    	}
-
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($request_is_valid);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
     	$is_already_featured = featuredCompaniesModel::where('featured_for_id', $request->host_id)->get();
     	if($is_already_featured !== null && $is_already_featured->count() > 0)
     	{
-    		return json_encode(array(
-    			"errorMessage" => "The company is already featured, cannot be featured more than once",
-    			"error_status" => true,
-                "isSuccess" => false,
-                "successMessage" => null
-    		));
+            $this->Error->setError(["The company is already featured, cannot be featured more than once"]);
+            return $this->Error->getError();
     	}
 
     	$is_valid_company = companydata_model::where([
@@ -61,12 +80,8 @@ class featuredCompaniesController extends Controller
 
     	if($is_valid_company == null || $is_valid_company->count() <= 0)
     	{
-    		return json_encode(array(
-    			"errorMessage" => "The company id and token do not match",
-    			"error_status" => true,
-                "isSuccess" => false,
-                "successMessage" => null
-    		));
+            $this->Error->setError(["The company id and token do not match"]);
+            return $this->Error->getError();
     	}
 
         $filepath = "uploads/comp/".$request->host_token.'/feature_files';
@@ -74,12 +89,8 @@ class featuredCompaniesController extends Controller
     	{
     		if(!mkdir(public_path($filepath), 0765, true))
     		{
-    			return json_encode([
-    				"errorMessage" => ["Failed to create featured file directory for the company, Contact support"],
-    				"error_status" => true,
-                    "isSuccess" => false,
-                    "successMessage" => null
-    			]);
+                $this->Error->setError(["Failed to create featured file directory for the company, Contact support"]);
+                return $this->Error->getError();
     		}
     	}
         
@@ -89,11 +100,8 @@ class featuredCompaniesController extends Controller
          (strpos($request->featured_file, ";")-5));
         if(($type_key = array_search($file_type, $allowed_file_types)) === false)
         {
-            return json_encode([
-                'errorMessage' => "The file type provided is not valid",
-                'isSuccess' => false, 
-                'successMessage' =>null
-            ]);
+            $this->Error->setError(["The file type provided is not valid"]);
+            return $this->Error->getError();
         }
         else
             $extenstion = $file_extension[$type_key];
@@ -111,52 +119,46 @@ class featuredCompaniesController extends Controller
     		$featuredCompaniesModel->feature_file_type = $extenstion;
 
     		$featuredCompaniesModel->save();
-
-    		return json_encode([
-    			"success" => true,
-    			"data" => [],
-                "errorMessage" => [],
-                "isSuccess" => true,
-                "successMessage" => "success"
-    		]);
+            $this->ApiKey->successFullRequest();
+            $this->Error->setSuccess([]);
+            return $this->Error->getSuccess();
     	}
     	catch(\Illuminate\Database\QueryException $exception)
         {
-            $error = json_encode(array(
-                'errorMessage' => array($exception->errorInfo),
-                "error_status" => true,
-                "isSuccess" => false,
-                "successMessage" => null
-            ));
-            return $error;
+            $this->Error->setError([$exception->errorInfo]);
+            return $this->Error->getError();
 
     	}
     	catch(Exception $exception)
     	{
-    		$error = json_encode(array(
-                'errorMessage' => array($exception->errorInfo),
-                "error_status" => true,
-                "isSuccess" => false,
-                "successMessage" => null
-            ));
-            return $error;
+            $this->Error->setError([$exception->errorInfo]);
+            return $this->Error->getError();
     	}
 
     }
 
     public function getFeaturedCompanies(Request $request)
     {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "host_type" => "required|string|in:normal,comp,guest",
+        ];
+        $validity = Validator::make($request->al(), $rules, []);
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($validity);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
     	$featured_companies = featuredCompaniesModel::where([
     		['feature_approved', true],
     		['feature_status', 'approved']
     	])->get();
 
-    	return json_encode(array(
-                'errorMessage' => null,
-                "isSuccess" => true,
-                "successMessage" => "success",
-                "data" => $featured_companies
-            ));;
+        $this->ApiKey->successFullRequest();
+        $this->Error->setSuccess($featured_companies);
+        return $this->Error->getSuccess();
     }
 
     public function approveFeatureCompany(Request $request)
@@ -169,45 +171,25 @@ class featuredCompaniesController extends Controller
     	];
 
     	$is_valid = Validator::make($request->all(), $rules, $messages);
-    	if($is_valid->fails())
-    	{
-    		$errors = $is_valid->errors()->all();
-    		$errors_list = [];
-    		foreach($errors as $error)
-    		{
-    			array_push($errors_list, $error);
-    		}
-
-    		return json_encode([
-    			"errorMessage" => $errors_list,
-    			"error_status" => true,
-                "isSuccess" => false,
-                "successMessage" => null
-    		]);
-    	}
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($is_valid);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
     	$has_request = featuredCompaniesModel::where([
     		['featured_for_id', $request->company_id],
     		['feature_approved', false],
     		['feature_status', 'requested']
     	])->get();
     	if($has_request == null || $has_request->count() <= 0)
-    	{
-    		return json_encode([
-    			"errorMessage" => ["The company doesn't have any feature request waiting for approval"],
-    			"error_status" => true,
-                "isSuccess" => false,
-                "successMessage" => null
-    		]);
+    	{  
+
+            $this->Error->setError(["The company doesn't have any feature request waiting for approval"]);
+            return $this->Error->getError();
     	}
     	featuredCompaniesModel::where([
     		['featured_for_id', $request->company_id]
     	])->update(['feature_approved' => true, 'feature_status' => 'approved']);
-
-    	return json_encode([
-    		"success" => true,
-    		"data" => [],
-            "isSuccess" => true,
-            "successMessage" => "success"
-    	]);
+        
+        $this->Error->setSuccess($featured_companies);
+        return $this->Error->getSuccess();
     }
 }
