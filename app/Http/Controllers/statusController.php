@@ -149,7 +149,7 @@ class statusController extends Controller
         if($isNotValidRequest)
             return $isNotValidRequest;
 
-        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        $apiset = $this->apiHandleSet($fileForm->host_id, $fileForm->host_token, $fileForm->api_key);
         if($apiset !== true)
             return $apiset;   
         //check if has uplaoded license
@@ -279,7 +279,7 @@ class statusController extends Controller
         $isNotValidRequest = $this->customValidator->isNotValidRequest($validation);
         if($isNotValidRequest)
             return $isNotValidRequest;
-        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        $apiset = $this->apiHandleSet($statusForm->host_id, $statusForm->host_token, $statusForm->api_key);
         if($apiset !== true)
             return $apiset;
         else if($statusForm->num_files <= 0)
@@ -575,7 +575,7 @@ class statusController extends Controller
             $this->Error->setError(["Failed to set the like for the status "]);
             return $this->Error->getError();
         }
-        $this->Error->successFullRequest();
+        $this->ApiKey->successFullRequest();
         $this->Error->setSuccess([]);
         return $this->Error->getSuccess();
     }
