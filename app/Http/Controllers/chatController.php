@@ -190,6 +190,11 @@ class chatController extends Controller
         {
             return $is_not_valid_request;
         }
+        if($request->host_type === $request->target_type && $request->host_id === $request->target_id && $request->host_token === $request->target_type)
+        {
+            $this->Error->setError(["Can't send message to self"]);
+            return $this->Error->getError();
+        }
         //isvalid host
         if($request->host_type === "comp")
         {
