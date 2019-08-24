@@ -616,9 +616,9 @@ class statusController extends Controller
             return $this->Error->getError();
         }
         $status = likesModel::where([
-            ["status_id" => $status_id],
-            ["host_id" => $host_id],
-            ["host_type" => $host_type]
+            ["status_id" => $request->status_id],
+            ["host_id" => $request->host_id],
+            ["host_type" => $request->host_type]
         ])->get();
         foreach ($status as $s) {
             $s->delete();
@@ -672,9 +672,9 @@ class statusController extends Controller
             ]);
         $comment = commentsModel::where([
             ["id" => $request->comment_id],
-            ["status_id" => $status_id],
-            ["host_type" => $host_type],
-            ["host_id" => $host_id]
+            ["status_id" => $request->status_id],
+            ["host_type" => $request->host_type],
+            ["host_id" => $request->host_id]
         ])->get();
         foreach ($comment as $c) {
             $c->delete();
