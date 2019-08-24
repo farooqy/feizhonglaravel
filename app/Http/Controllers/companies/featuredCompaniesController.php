@@ -145,6 +145,7 @@ class featuredCompaniesController extends Controller
             "host_id" => "required|integer",
             "host_token" => "required|string",
             "host_type" => "required|string|in:normal,comp,guest",
+            "api_key" => "required|string",
         ];
         $validity = Validator::make($request->all(), $rules, []);
         $isNotValidRequest = $this->custom_validator->isNotValidRequest($validity);
