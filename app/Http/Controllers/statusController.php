@@ -262,7 +262,7 @@ class statusController extends Controller
             "has_files" => "required|in:0,1|",
             "num_files" => "required|integer|min:0|max:10",
             // "files" => "mimes:jpg, jpeg, png, avi, web, mp4"
-            "statusFiles" => "required|string",
+            "status_files" => "required|string",
             "status_type" => "required|string|in:status,product",
             "status_generated_token" => "required|string",
             "host_type" => "required|in:normal,comp",
@@ -566,7 +566,16 @@ class statusController extends Controller
             $this->Error->setError(["The host provided is not valid or doesn't exist"]);
             return $this->Error->getError();
         }
-        
+        $likedbefore = likesModel::where([
+            ["status_id", $request->status_id],
+            ["host_id", $request->host_id],
+            ["host_type", $request->host_type],
+        ])->exists();
+        if($likedbefore)
+        {
+            $this->Error->setError(["You  already liked before"]);
+            return $this->Error->getError();
+        }
         $lModel = new likesModel;
         $lModel->status_id = $request->status_id;
         $lModel->host_id = $request->host_id;
@@ -601,12 +610,11 @@ class statusController extends Controller
             return $apiset;
         $status_valid = compStatusModel::where('id', $request->status_id)->get();
         if($status_valid === null || $status_valid->count() <= 0)
-            return json_encode([
-                "errorMessage" => ["The target status is not valid or doesn't exist"],
-                "isSuccess" => false,
-                "successMessage" => null,
-                "data" => []
-            ]);
+        {
+            $this->Error->setError(["The target status is not valid or doesn't exist"]);
+            return $this->Error->getError();
+        }
+
         //is it valid host
         if($request->host_type === "normal")
         {
@@ -616,12 +624,10 @@ class statusController extends Controller
             $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
 
         if($host_is_valid === null || $host_is_valid->count() <= 0)
-            return json_encode([
-                "errorMessage" => ["The host provided is not valid or doesn't exist"],
-                "isSuccess" => false,
-                "successMessage" => null,
-                "data" => []
-            ]);
+        {
+            $this->Error->setError(["The host provided is not valid or doesn't exist"]);
+            return $this->Error->getError();
+        }
         $status = likesModel::where([
             ["status_id" => $status_id],
             ["host_id" => $host_id],
@@ -639,6 +645,7 @@ class statusController extends Controller
     public function deleteComment(Request $request)
     {
         $rules = [
+            "comment_id" => "required|integer",
             "status_id" => "required|integer",
             "host_id" => "required|integer",
             "host_token" => "required|string",
@@ -677,6 +684,7 @@ class statusController extends Controller
                 "data" => []
             ]);
         $comment = commentsModel::where([
+            ["id" => $request->comment_id],
             ["status_id" => $status_id],
             ["host_type" => $host_type],
             ["host_id" => $host_id]

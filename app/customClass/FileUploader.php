@@ -26,7 +26,7 @@ class FileUploader {
 		{
 			if(!mkdir($this->publicpath, 0765, true))
 			{
-				$this->setError(["Failed to create upload directory. Please contact support"]);
+				$this->Error->setError(["Failed to create upload directory. Please contact support"]);
 				return false;
 			}
 		}
