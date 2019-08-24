@@ -259,7 +259,7 @@ class statusController extends Controller
             "has_files" => "required|in:0,1|",
             "num_files" => "required|integer|min:0|max:10",
             // "files" => "mimes:jpg, jpeg, png, avi, web, mp4"
-            "status_files" => "required|string",
+            "statusFiles" => "required|string",
             "status_type" => "required|string|in:status,product",
             "status_generated_token" => "required|string",
             "host_type" => "required|in:normal,comp",
