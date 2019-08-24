@@ -66,7 +66,7 @@ class statusController extends Controller
         $rules = [
             "host_id" => "required|integer",
             "host_token" => "required|string",
-            "host_type" => "required|string|in:normal,comp",
+            "host_type" => "required|string|in:normal,comp,guest",
             "api_key" => "required|string"
         ];
         $validity = Validator::make($request->all(), $rules, []);
