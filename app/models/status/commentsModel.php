@@ -13,7 +13,7 @@ class commentsModel extends Model
         $this->Error = new Error();
     }
     protected $table = "status_comments";
-    protected $fillable = ["status_id", "host_id", "host_type", "comment_text"];
+    protected $fillable = ["status_id", "host_id","host_token", "host_type", "comment_text"];
     public function status()
     {
     	return $this->belonsTo('App\models\compStatusModel', 'id');

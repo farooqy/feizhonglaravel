@@ -116,6 +116,11 @@ class statusController extends Controller
                 foreach( $likes as  $like)
                 {
                     $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
+                    if($like->host_type === $request->host_type && $like->host_id === $request->host_id && $request->host_token)
+                        $listProducts[$key]->hasLiked = true;
+                    else
+                        $listProducts[$key]->hasLiked = false;
+                    
                 }
 
                 $statusData[$statusCount]["num_comments"] = $comments->count();
@@ -499,6 +504,7 @@ class statusController extends Controller
         $cModel = new commentsModel;
         $cModel->status_id = $request->status_id;
         $cModel->host_id = $request->host_id;
+        $cModel->host_token = $request->host_token;
         $cModel->host_type = $request->host_type;
         $cModel->comment_text = $request->comment_text;
         if($cModel->save())
@@ -545,10 +551,16 @@ class statusController extends Controller
         //is it valid host
         if($request->host_type === "normal")
         {
-            $host_is_valid = normalUsersModel::where('user_id', $request->host_id)->get();
+            $host_is_valid = normalUsersModel::where([
+                ['user_id', $request->host_id],
+                ['user_token', $request->host_token],
+            ])->get();
         }
         else
-            $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
+            $host_is_valid = companydata_model::where([
+                ['comp_id', $request->host_id],
+                ['comp_token', $request->host_token],
+            ])->get();
 
         if($host_is_valid === null || $host_is_valid->count() <= 0)
         {    
@@ -559,6 +571,7 @@ class statusController extends Controller
         $likedbefore = likesModel::where([
             ["status_id", $request->status_id],
             ["host_id", $request->host_id],
+            ["host_token", $request->host_token],
             ["host_type", $request->host_type],
         ])->exists();
         if($likedbefore)
@@ -569,6 +582,7 @@ class statusController extends Controller
         $lModel = new likesModel;
         $lModel->status_id = $request->status_id;
         $lModel->host_id = $request->host_id;
+        $lModel->host_token = $request->host_token;
         $lModel->host_type = $request->host_type;
 
         if(!$lModel->save())
@@ -621,6 +635,7 @@ class statusController extends Controller
         $status = likesModel::where([
             ["status_id", $request->status_id],
             ["host_id" , $request->host_id],
+            ["host_token" , $request->host_token],
             ["host_type" , $request->host_type]
         ])->get();
         foreach ($status as $s) {
@@ -677,7 +692,8 @@ class statusController extends Controller
             ["id" , $request->comment_id],
             ["status_id" , $request->status_id],
             ["host_type" , $request->host_type],
-            ["host_id", $request->host_id]
+            ["host_id", $request->host_id],
+            ["host_token", $request->host_token],
         ])->get();
         foreach ($comment as $c) {
             $c->delete();
