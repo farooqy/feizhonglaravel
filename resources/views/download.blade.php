@@ -24,7 +24,7 @@
         </div>
         
         <div class="div_btn">
-            <a href="https://cloud.drongo.tech/process.php?do=download&id=2" class="btn_download">Download</a>
+            <a href="https://cloud.drongo.tech/process.php?do=download&id=2" class="btn_download" download >Download</a>
 <!--            <img src="img/ic_arrow_down@2x.png" alt="download button" class="img_download"></a>-->
         </div>
         
