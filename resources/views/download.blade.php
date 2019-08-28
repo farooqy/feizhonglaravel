@@ -13,7 +13,7 @@
         <!-- GOOGLE FONTS -->
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
         
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="/css/custom.css">
     </head>
 
     <body>
