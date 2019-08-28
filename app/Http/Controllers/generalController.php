@@ -208,4 +208,9 @@ class generalController extends Controller
         $this->Error->setSuccess(["version_number" => 8]);
         return $this->Error->getSuccess();
     }
+
+    public function webDownloadPage()
+    {
+        return view("download");
+    }
 }
