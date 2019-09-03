@@ -211,7 +211,7 @@ class generalController extends Controller
         ];
 
 
-        return response()->file(public_path( "/uploads/static/artboard.pdf"));
+        return response()->file(public_path( "/static/artboard.pdf"));
  
     }
 
