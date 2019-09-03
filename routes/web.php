@@ -15,3 +15,5 @@
 Route::get('/', function () {
     return view('index');
 });
+Route::get('/exhbition', 'generalController@getExhbitionPdf');
+Route::get('/whatsapp', 'generalController@whatsAppLink');

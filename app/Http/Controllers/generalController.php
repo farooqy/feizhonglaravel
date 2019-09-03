@@ -202,7 +202,24 @@ class generalController extends Controller
     		return $this->Error->getError();
     	}
     }
+    public function getExhbitionPdf(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "host_type" => "required|string|in:normal,comp,guest",
+        ];
 
+
+        return response()->file(public_path( "/uploads/static/artboard.pdf"));
+ 
+    }
+
+    public function whatsAppLink()
+    {
+        $url = "https://chat.whatsapp.com/lbhbKZsc6MJnw0qQX6VH";
+        return \Redirect::to($url);
+    }
     public function getVersion()
     {
         $this->Error->setSuccess(["version_number" => 7]);

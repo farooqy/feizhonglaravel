@@ -86,6 +86,8 @@ Route::post('/search', 'generalController@getSearchItem');
 Route::get('/quote', 'generalController@showQuote');
 
 Route::post('/images/base64', 'generalController@getBase64Image');
+Route::post('/whatsapp', 'generalController@whatsAppLink');
+Route::post('/exhbition', 'generalController@getExhbitionPdf');
 
 Route::post('/version_code', 'generalController@getVersion');
 
