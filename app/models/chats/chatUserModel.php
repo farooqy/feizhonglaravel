@@ -24,32 +24,32 @@ class chatUserModel extends Model
     }
     public function companySent()
     {
-    	return $this->belongsTo('App\models\companies\companydataModel', 'chat_origin_id', 'comp_id');
+    	return $this->belongsTo('App\models\companies\companydataModel', 'chat_origin_token', 'comp_token');
     }
     public function companyReceived()
     {
-    	return $this->belongsTo('App\models\companies\companydataModel', 'chat_destination_id', 'comp_id');
+    	return $this->belongsTo('App\models\companies\companydataModel', 'chat_destination_token', 'comp_token');
     }
     public function companyChat()
     {
     	if($this->companySent === null)
     		return $this->companyReceived();
-        else if($this->companyReceived !== null && $this->companySent !== null)//comp to comp
-            return $this->companyReceived();
+        // else if($this->companyReceived !== null && $this->companySent !== null)//comp to comp
+        //     return $this->companyReceived();
     	else
     		return $this->companySent();
     }
     public function userSent()
     {
-    	return $this->belongsTo('App\models\normalUsersModel', 'chat_origin_id', 'user_id');
+    	return $this->belongsTo('App\models\normalUsersModel', 'chat_origin_token', 'user_token');
     }
     public function userReceived()
     {
-    	return $this->belongsTo('App\models\normalUsersModel', 'chat_destination_id', 'user_id');
+    	return $this->belongsTo('App\models\normalUsersModel', 'chat_destination_token', 'user_token');
     }
     public function userChat()
     {
-    	if($this->userSent === null)
+    	if($this->userSent === null )
     		return $this->userReceived();
     	else
     		return $this->userSent();

@@ -9,7 +9,7 @@ class likesModel extends Model
 {
     //
     protected $table = "status_likes";
-    public $fillable = ["status_id", "host_id", "host_type"];
+    public $fillable = ["status_id", "host_id","host_token", "host_type"];
     protected $Error;
     public function __construct()
     {

@@ -166,29 +166,38 @@ class chatController extends Controller
             $chat_user = $chat->userChat;
             $c = $chat->lastMessage;
             $unread = $chat->unreadMessages;
-            $chats[$ckey]->companyReceived = null;
-            unset($chats[$ckey]->companyReceived);
-            if($chat->companyChat !== null && $chat->companySent !== null)
-            { 
+            if($chat->companyReceived !== null && $chat->companySent !== null)
+            {
+
                 $chats[$ckey]->sender = $chat->companySent;
                 $chats[$ckey]->receiver = $chat->companyReceived;
                 $chats[$ckey]->recieverType = "comp";
                 $chats[$ckey]->senderType = "comp";
+                $chats[$ckey]->executor = 1;
             }
-            else if($chat->companyChat === null && $chat->userSent !== null)
+            else if($chat->companySent !== null && $chat->companyReceived === null )
             {
-                $chats[$ckey]->sender = $chat->userSent;
-                $chats[$ckey]->receiver = $chat->companyReceived;
-                $chats[$ckey]->recieverType = "comp";
-                $chats[$ckey]->senderType = "normal";
-            }
-            else //($chat->companyChat !== null && $chat->userReceived !== null)
-            {
-
+                
                 $chats[$ckey]->sender = $chat->companySent;
                 $chats[$ckey]->receiver = $chat->userReceived;
                 $chats[$ckey]->recieverType = "normal";
                 $chats[$ckey]->senderType = "comp";
+                $chats[$ckey]->executor = 2;
+            }
+            else if($chat->userSent !== null && $chat->companySent === null && $chat->companyReceived !== null)
+            {
+                
+                $chats[$ckey]->sender = $chat->userSent;
+                $chats[$ckey]->receiver = $chat->companyReceived;
+                $chats[$ckey]->recieverType = "comp";
+                $chats[$ckey]->senderType = "normal";
+                $chats[$ckey]->executor = 3;
+            }
+            else
+            {
+                $chats[$ckey]->recieverType = "normal";
+                $chats[$ckey]->senderType = "normal";
+                $chats[$ckey]->executor = 4;
             }
             unset($chats[$ckey]->companyChat);
             unset($chats[$ckey]->companySent);
@@ -197,13 +206,6 @@ class chatController extends Controller
             unset($chats[$ckey]->companyReceived);
             unset($chats[$ckey]->userChat);
             unset($chats[$ckey]->userReceived);
-            // if($chat->companySent !== null && $chat->companyReceived !== null)
-            // {
-            //     if($request->host_id === $chat->companySent->comp_id && $request->host_token === $chat->companySent->comp_token)
-            //         $chats[$ckey]->companyChat = $chat->companyReceived;
-            //     else
-            //         $chats[$ckey]->companyChat = $chat->companySent;
-            // }
         }
         $this->Error->setSuccess($chats);
         return $this->Error->getSuccess();
@@ -256,8 +258,8 @@ class chatController extends Controller
         //is valid target id
         if($request->target_type === "comp")
         {
-            $hostdata = companydataModel::where('comp_id', $request->target_id)->get();
-            if($hostdata === null || $hostdata->count() <= 0)
+            $targetdata = companydataModel::where('comp_id', $request->target_id)->get();
+            if($targetdata === null || $targetdata->count() <= 0)
             {
                 $this->Error->setError(['The target id is not valid']);
                 return $this->Error->getError();
@@ -265,8 +267,8 @@ class chatController extends Controller
         }    
         else
         {
-            $hostdata = normalUsersModel::where('user_id', $request->target_id)->get();
-            if($hostdata === null || $hostdata->count() <= 0)
+            $targetdata = normalUsersModel::where('user_id', $request->target_id)->get();
+            if($targetdata === null || $targetdata->count() <= 0)
             {
                 $this->Error->setError(['The target id given is not valid']);
                 return $this->Error->getError();
@@ -285,10 +287,14 @@ class chatController extends Controller
             //check if previous chat existed
             $previousChat = chatUserModel::where([
                 ['chat_origin_id', $request->host_id],
-                ['chat_destination_id', $request->target_id]
+                ['chat_origin_token', $request->host_token],
+                ['chat_destination_id', $request->target_id],
+                ['chat_destination_token', $request->target_token],
             ])->orwhere([
                 ['chat_origin_id', $request->target_id],
-                ['chat_destination_id', $request->host_id]
+                ['chat_origin_token', $request->target_token],
+                ['chat_destination_id', $request->host_id],
+                ['chat_destination_token', $request->host_token],
             ])->skip(0)->take(1)->get();
             if($previousChat === null || $previousChat->count() <= 0)
             {

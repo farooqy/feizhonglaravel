@@ -17,6 +17,7 @@ class CreateStatusLikesTable extends Migration
             $table->increments('id');
             $table->bigInteger('status_id');
             $table->bigInteger('host_id');
+            $table->string('host_token');
             $table->string('host_type',10);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
