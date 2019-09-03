@@ -217,7 +217,7 @@ class generalController extends Controller
 
     public function whatsAppLink()
     {
-        $url = "https://chat.whatsapp.com/lbhbKZsc6MJnw0qQX6VH";
+        $url = "https://chat.whatsapp.com/IbhbKWZsc6MJnwj0qQX6VH";
         return \Redirect::to($url);
     }
     public function getVersion()
