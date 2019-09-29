@@ -92,8 +92,11 @@ class generalController extends Controller
     	$list = companydataModel::latest()->get();
     	if($list === null || $list->count() <=0 )
     	{
-    		$this->Error->setError(["Failed to get the list. Empty database could be the reason"]);
-    		return $this->Error->getError();
+    		// $this->Error->setError(["Failed to get the list. Empty database could be the reason"]);
+    		// return $this->Error->getError();
+
+            $this->Error->setSuccess([]);
+            return $this->Error->getSuccess();
     	}
     	else
     	{
