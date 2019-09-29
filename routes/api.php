@@ -31,6 +31,7 @@ Route::post('/comp/register/address', 'companies\accountController@addressRegist
 Route::post('/comp/register/type', 'companies\accountController@companyTypeRegistration');
 Route::post('/comp/verifyComp', 'companies\accountController@sendConfirmationText');
 Route::post("/comp/myposts", "companies\accountController@getMyPosts");
+Route::post('/comp/register/phoneverificaton', 'companies\accountController@sendConfirmationText');
 Route::post("/comp/addLicense", "companies\companyLicenseController@addCompanyLicense");
 Route::post("/comp/getLicense", "companies\companyLicenseController@getCompanyLicense");
 
