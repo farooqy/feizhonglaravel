@@ -30,7 +30,7 @@ class browserController extends Controller
       //Is Logged In User Account = ILIUA
       if(isset($_COOKIE["iliua"]))
       {
-        return view("atoc_index");
+        return redirect()->route("homePage");
       }
       else
         return view('atoclayout.register_supplier');
@@ -42,7 +42,7 @@ class browserController extends Controller
         return view("atoc_index");
       }
       else
-        return $this->getIndexPage();
+        return redirect()->route("homePage");
     }
     public function logout()
     {

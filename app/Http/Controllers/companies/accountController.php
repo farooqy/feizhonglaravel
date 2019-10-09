@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\companies;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Twilio\Rest\Client;
 use Twilio\Exceptions\TwilioException;
@@ -63,9 +64,9 @@ class accountController extends Controller
 		$rules = [
 			"company_phone" => "required|string",
 			"company_password" => "required|string",
-            "guest_id" => "required|integer",
-            "guest_token" => "required|string",
-            "api_key" => "required|string",
+      "guest_id" => "required|integer",
+      "guest_token" => "required|string",
+      "api_key" => "required|string",
 		];
 
 		$messages = [
@@ -121,6 +122,16 @@ class accountController extends Controller
 
             // $this->ApiKey->successFullRequest();
 			$this->setSucces($data);
+			if($request->cookie("is_browser"))
+			{
+				$min = 24*60*360;
+				$response = response($this->success)
+				->cookie("host_id", $data[0]->comp_id, $min)
+				->cookie("host_token", $data[0]->comp_token, $min)
+				->cookie("host_type", "comp")
+				->cookie("iliua", true, $min);
+				return $response;
+			}
 			return $this->success;
 		}
 		else

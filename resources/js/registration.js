@@ -100,9 +100,9 @@ const app = new Vue({
       idTokenUrl: "/api/statistics/generateIdAndToken",
       apiurl: "/api/statistics/getApiKey/browser",
       showLoader:false,
-      comp_registration:true,
+      comp_registration:false,
       user_registration:false,
-      comp_login:false,
+      comp_login:true,
       user_login:false,
       login_panel:'#lg1',
       comp_basic_info:false,
@@ -229,6 +229,39 @@ const app = new Vue({
                 this.showLoader = false;
                 alert('Please check your SMS for the codes sent');
               }
+              else if(type === "basicInfo")
+              {
+                this.comp_basic_info =false;
+                this.comp_addr_info = true
+                this.showLoader = false;
+                this.Company.company_id = this.Company.guest_id = response.data.data.comp_id;
+                this.Company.company_token = this.Company.guest_token = response.data.data.comp_token;
+                this.comp_basic_info =false;
+                this.comp_addr_info = true
+                this.showLoader = false;
+              }
+              else if(type === "address")
+              {
+                this.comp_addr_info =false;
+                this.comp_type_info = true ;
+                this.showLoader = false;
+              }
+              else if(type === "type")
+              {
+                var data = {
+                  "company_phone": this.Company.country_code+
+                  this.Company.company_phone,
+                  "company_password": this.Company.company_password,
+                  "guest_id": this.Company.guest_id,
+                  "guest_token": this.Company.guest_token,
+                  "api_key": this.Company.api_key
+                };
+                this.serverRequest(data, "/api/comp/login", "comp_login");
+              }
+              else if(type === "comp_login")
+              {
+                window.location.reload();
+              }
               else
               {
                 this.showLoader = false;
@@ -313,6 +346,7 @@ const app = new Vue({
       updateSelect(event){
         console.log("type number ", event.target.options.selectedIndex);
         this.selected_type =event.target.options.selectedIndex;
+        this.Company.company_subtype = this.Company.types[this.selected_type][0];
         if(this.selected_type === 20)
         {
           this.showCustomInput();
@@ -328,12 +362,13 @@ const app = new Vue({
       stageOneRegistration()
       {
         if(this.Company.company_logo === null ||
-          this.Company.verification_code === null)
-          {
-            this.errorObject.error_text = "Please upload a logo, and verify your phone number";
-            this.errorModal = true;
-            this.errorObject.errorModal = this.errorModal;
-          }
+          this.Company.verification_code === null ||
+          this.Company.company_logo === "/atoc_assets/images/upload_logo_icon.jpg")
+        {
+          this.errorObject.error_text = "Please upload a logo, and verify your phone number";
+          this.errorModal = true;
+          this.errorObject.errorModal = this.errorModal;
+        }
         else
           this.comp_phone_verification = false, this.comp_basic_info = true;
       },
@@ -369,8 +404,20 @@ const app = new Vue({
 
         }
         else {
-          this.comp_basic_info =false;
-          this.comp_addr_info = true
+          var data = {
+            "company_logo": this.Company.company_logo,
+            "company_name": this.Company.company_name,
+            "company_email": this.Company.company_email,
+            "company_phone": this.Company.country_code+
+            this.Company.company_phone,
+            "company_password": this.Company.company_password,
+            "verification_code": this.Company.verification_code,
+            "guest_id": this.Company.guest_id,
+            "guest_token": this.Company.guest_token,
+            "api_key": this.Company.api_key
+          };
+          this.serverRequest(data, "/api/comp/register/basicInfo", "basicInfo");
+
         }
 
       },
@@ -395,17 +442,74 @@ const app = new Vue({
           this.errorObject.errorModal = this.errorModal = true;
         }
         else {
-          this.comp_addr_info =false;
-          this.comp_type_info = true ;
+          var data = {
+            "company_address_one":this.Company.company_address_one,
+            "company_address_two": this.Company.company_address_two,
+            "company_province": this.Company.company_province,
+            "company_city": this.Company.company_city,
+            "company_token": this.Company.guest_token,
+            "company_id": this.Company.guest_id,
+            "api_key": this.Company.api_key,
+          };
+          this.serverRequest(data,"/api/comp/register/address","address");
+
         }
 
+      },
+      submitRegistrationForm()
+      {
+        if(this.Company.company_type === null ||
+          this.Company.company_type === "")
+        {
+            this.errorObject.error_text = "Please provide company type";
+            this.errorObject.errorModal = this.errorModal = true;
+        }
+        else if(this.Company.company_subtype === null ||
+          this.Company.company_subtype === "")
+        {
+            this.errorObject.error_text = "Please provide company subtype";
+            this.errorObject.errorModal = this.errorModal = true;
+        }
+        else if(this.Company.company_description === null ||
+            this.Company.company_description === "")
+        {
+            this.errorObject.error_text = "Please provide company description";
+            this.errorObject.errorModal = this.errorModal = true;
+        }
+        else {
+          var data = {
+            "company_type": this.Company.company_type,
+            "company_subtype": this.Company.company_subtype,
+            "company_description": this.Company.company_description,
+            "company_token": this.Company.guest_token,
+            "company_id": this.Company.guest_id,
+            "api_key": this.Company.api_key,
+          };
+
+          this.serverRequest(data, "/api/comp/register/type", "type");
+        }
+      },
+      companyLogin()
+      {
+        var data = {
+          "company_phone": this.Company.country_code+
+          this.Company.company_phone,
+          "company_password": this.Company.company_password,
+          "guest_id": this.Company.guest_id,
+          "guest_token": this.Company.guest_token,
+          "api_key": this.Company.api_key
+        };
+        this.serverRequest(data, "/api/comp/login", "comp_login");
       }
+
     },
     components: {
 
     },
     mounted() {
       this.modal_content.showPopModel = this.showPopModel;
+      this.Company.company_type = "Aerospace industry";
+      this.Company.company_subtype = "Civil Aircraft";
       this.getGuestCredentials();
     }
 });

@@ -58,55 +58,52 @@ export default class Company {
         "Airships",
         "Propulsion",
         "Avionics",
-        "Other"
       ],
       [
         "Fishing industry",
         "Timer Industry",
         "Tobacco Industry",
-        "Other"
+      ],
+      [
+        "Face make up",
+        "Slim products"
       ],
       [
         "Pharmaceutical Industry",
-        "Other"
       ],
       [
         "Software Industry",
-        "Other"
       ],
       [
-        "Other"
+        "Metals",
+        "Bricks"
       ],
       [
         "Arms industry",
-        "Other"
       ],
       [
-        "Other"
+        "Books",
+        "Pens"
       ],
       [
         "Electrical Power",
         "Petroleum Industry",
-        "Other"
+
       ],
       [
-        "Other"
+        "Dj Equeipments",
       ],
       [
         "Insurance industry",
-        "Other"
       ],
       [
         "Fruit Production",
-        "Other"
       ],
       [
         "Hospital facilities",
-        "Other"
       ],
       [
         "Motion industry",
-        "Other",
       ],
       [
         "Automotive Industry",
@@ -114,7 +111,6 @@ export default class Company {
         "Pulp and paper",
         "Steel Industry",
         "Ship building",
-        "Other"
       ],
       [
         "Broadcasting",
@@ -123,25 +119,25 @@ export default class Company {
         "News Media",
         "Publishing",
         "World Wide Web",
-        "Other"
       ],
       [
         "Gold mining",
         "Mineral mining",
-        "Other",
       ],
       [
         "Internet",
-        "Other"
+        "Signal Boosters"
       ],
       [
-        "Other"
+        "Brigdes",
+        "Road staff"
       ],
       [
-        "Other"
+        "Water bottles",
+        "Drinks"
       ],
       [
-        "Other"
+        "Heavy products"
       ],
       [
         "Other"

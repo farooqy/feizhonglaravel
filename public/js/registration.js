@@ -49176,7 +49176,7 @@ var Company = function Company() {
     "company_subtype": null,
     "company_description": null
   };
-  this.types = [["Civil Aircraft", "General Aviation Aircraft", "Commercial Heavy Aircraft", "Military Aircaft", "Helicopters", "Unmanned aerial vehicles", "Missiles", "Space launchers", "Spacecraft", "Airships", "Propulsion", "Avionics", "Other"], ["Fishing industry", "Timer Industry", "Tobacco Industry", "Other"], ["Pharmaceutical Industry", "Other"], ["Software Industry", "Other"], ["Other"], ["Arms industry", "Other"], ["Other"], ["Electrical Power", "Petroleum Industry", "Other"], ["Other"], ["Insurance industry", "Other"], ["Fruit Production", "Other"], ["Hospital facilities", "Other"], ["Motion industry", "Other"], ["Automotive Industry", "Electronic Industry", "Pulp and paper", "Steel Industry", "Ship building", "Other"], ["Broadcasting", "Film Industry", "Music Industry", "News Media", "Publishing", "World Wide Web", "Other"], ["Gold mining", "Mineral mining", "Other"], ["Internet", "Other"], ["Other"], ["Other"], ["Other"], ["Other"]];
+  this.types = [["Civil Aircraft", "General Aviation Aircraft", "Commercial Heavy Aircraft", "Military Aircaft", "Helicopters", "Unmanned aerial vehicles", "Missiles", "Space launchers", "Spacecraft", "Airships", "Propulsion", "Avionics"], ["Fishing industry", "Timer Industry", "Tobacco Industry"], ["Face make up", "Slim products"], ["Pharmaceutical Industry"], ["Software Industry"], ["Metals", "Bricks"], ["Arms industry"], ["Books", "Pens"], ["Electrical Power", "Petroleum Industry"], ["Dj Equeipments"], ["Insurance industry"], ["Fruit Production"], ["Hospital facilities"], ["Motion industry"], ["Automotive Industry", "Electronic Industry", "Pulp and paper", "Steel Industry", "Ship building"], ["Broadcasting", "Film Industry", "Music Industry", "News Media", "Publishing", "World Wide Web"], ["Gold mining", "Mineral mining"], ["Internet", "Signal Boosters"], ["Brigdes", "Road staff"], ["Water bottles", "Drinks"], ["Heavy products"], ["Other"]];
 };
 
 
@@ -49341,9 +49341,9 @@ var app = new Vue({
     idTokenUrl: "/api/statistics/generateIdAndToken",
     apiurl: "/api/statistics/getApiKey/browser",
     showLoader: false,
-    comp_registration: true,
+    comp_registration: false,
     user_registration: false,
-    comp_login: false,
+    comp_login: true,
     user_login: false,
     login_panel: '#lg1',
     comp_basic_info: false,
@@ -49453,6 +49453,31 @@ var app = new Vue({
           } else if (type === "phone") {
             _this2.showLoader = false;
             alert('Please check your SMS for the codes sent');
+          } else if (type === "basicInfo") {
+            _this2.comp_basic_info = false;
+            _this2.comp_addr_info = true;
+            _this2.showLoader = false;
+            _this2.Company.company_id = _this2.Company.guest_id = response.data.data.comp_id;
+            _this2.Company.company_token = _this2.Company.guest_token = response.data.data.comp_token;
+            _this2.comp_basic_info = false;
+            _this2.comp_addr_info = true;
+            _this2.showLoader = false;
+          } else if (type === "address") {
+            _this2.comp_addr_info = false;
+            _this2.comp_type_info = true;
+            _this2.showLoader = false;
+          } else if (type === "type") {
+            var data = {
+              "company_phone": _this2.Company.country_code + _this2.Company.company_phone,
+              "company_password": _this2.Company.company_password,
+              "guest_id": _this2.Company.guest_id,
+              "guest_token": _this2.Company.guest_token,
+              "api_key": _this2.Company.api_key
+            };
+
+            _this2.serverRequest(data, "/api/comp/login", "comp_login");
+          } else if (type === "comp_login") {
+            window.location.reload();
           } else {
             _this2.showLoader = false;
             alert('success');
@@ -49526,6 +49551,7 @@ var app = new Vue({
     updateSelect: function updateSelect(event) {
       console.log("type number ", event.target.options.selectedIndex);
       this.selected_type = event.target.options.selectedIndex;
+      this.Company.company_subtype = this.Company.types[this.selected_type][0];
 
       if (this.selected_type === 20) {
         this.showCustomInput();
@@ -49537,7 +49563,7 @@ var app = new Vue({
       this.customtype = true;
     },
     stageOneRegistration: function stageOneRegistration() {
-      if (this.Company.company_logo === null || this.Company.verification_code === null) {
+      if (this.Company.company_logo === null || this.Company.verification_code === null || this.Company.company_logo === "/atoc_assets/images/upload_logo_icon.jpg") {
         this.errorObject.error_text = "Please upload a logo, and verify your phone number";
         this.errorModal = true;
         this.errorObject.errorModal = this.errorModal;
@@ -49561,8 +49587,18 @@ var app = new Vue({
         this.errorModal = true;
         this.errorObject.errorModal = this.errorModal;
       } else {
-        this.comp_basic_info = false;
-        this.comp_addr_info = true;
+        var data = {
+          "company_logo": this.Company.company_logo,
+          "company_name": this.Company.company_name,
+          "company_email": this.Company.company_email,
+          "company_phone": this.Company.country_code + this.Company.company_phone,
+          "company_password": this.Company.company_password,
+          "verification_code": this.Company.verification_code,
+          "guest_id": this.Company.guest_id,
+          "guest_token": this.Company.guest_token,
+          "api_key": this.Company.api_key
+        };
+        this.serverRequest(data, "/api/comp/register/basicInfo", "basicInfo");
       }
     },
     stageAddressInfo: function stageAddressInfo() {
@@ -49576,14 +49612,56 @@ var app = new Vue({
         this.errorObject.error_text = "Please provide company city";
         this.errorObject.errorModal = this.errorModal = true;
       } else {
-        this.comp_addr_info = false;
-        this.comp_type_info = true;
+        var data = {
+          "company_address_one": this.Company.company_address_one,
+          "company_address_two": this.Company.company_address_two,
+          "company_province": this.Company.company_province,
+          "company_city": this.Company.company_city,
+          "company_token": this.Company.guest_token,
+          "company_id": this.Company.guest_id,
+          "api_key": this.Company.api_key
+        };
+        this.serverRequest(data, "/api/comp/register/address", "address");
       }
+    },
+    submitRegistrationForm: function submitRegistrationForm() {
+      if (this.Company.company_type === null || this.Company.company_type === "") {
+        this.errorObject.error_text = "Please provide company type";
+        this.errorObject.errorModal = this.errorModal = true;
+      } else if (this.Company.company_subtype === null || this.Company.company_subtype === "") {
+        this.errorObject.error_text = "Please provide company subtype";
+        this.errorObject.errorModal = this.errorModal = true;
+      } else if (this.Company.company_description === null || this.Company.company_description === "") {
+        this.errorObject.error_text = "Please provide company description";
+        this.errorObject.errorModal = this.errorModal = true;
+      } else {
+        var data = {
+          "company_type": this.Company.company_type,
+          "company_subtype": this.Company.company_subtype,
+          "company_description": this.Company.company_description,
+          "company_token": this.Company.guest_token,
+          "company_id": this.Company.guest_id,
+          "api_key": this.Company.api_key
+        };
+        this.serverRequest(data, "/api/comp/register/type", "type");
+      }
+    },
+    companyLogin: function companyLogin() {
+      var data = {
+        "company_phone": this.Company.country_code + this.Company.company_phone,
+        "company_password": this.Company.company_password,
+        "guest_id": this.Company.guest_id,
+        "guest_token": this.Company.guest_token,
+        "api_key": this.Company.api_key
+      };
+      this.serverRequest(data, "/api/comp/login", "comp_login");
     }
   },
   components: {},
   mounted: function mounted() {
     this.modal_content.showPopModel = this.showPopModel;
+    this.Company.company_type = "Aerospace industry";
+    this.Company.company_subtype = "Civil Aircraft";
     this.getGuestCredentials();
   }
 });

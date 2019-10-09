@@ -125,9 +125,10 @@
                   <div class="col-lg-12 col-md-12">
                     <div class="row">
                       <select name="company_type" class="select_custom col-md-6 col-lg-6"
-                      @change="updateSelect($event)">
+                      @change="updateSelect($event)" v-model="Company.company_type">
                           <option value="Aerospace industry" >Aerospace industry</option>
                           <option value="Agriculture" >Agriculture</option>
+                          <option value="Agriculture" >Beauty Products</option>
                           <option value="Chemical industry" >Chemical industry</option>
                           <option value="Computer industry" >Computer industry</option>
                           <option value="Construction industry" >Construction industry</option>
@@ -149,9 +150,10 @@
                           <option value="Other" >Other</option>
                       </select>
 
-                      <select  class="select_custom col-md-6 col-lg-6" name="comp_subtype">
+                      <select  class="select_custom col-md-6 col-lg-6" name="comp_subtype"
+                      v-model="Company.company_subtype">
                         <option v-for=" type in Company.types[selected_type]"
-                        :value="type" v-text="type">
+                        :value="type" v-text="type" >
                       </option>
                       </select>
                     </div>
@@ -159,9 +161,19 @@
                       <input type="text" class="col-md-6 col-lg-6"
                       placeholder="Enter custom type"
                       v-model="Company.company_type"/>
-                        <input type="text" class="col-md-6 col-lg-6"
-                        placeholder="Enter custom sub type"
-                        v-model="Company.company_subtype"/>
+                      <input type="text" class="col-md-6 col-lg-6"
+                      placeholder="Enter custom sub type"
+                      v-model="Company.company_subtype"/>
+                    </div>
+                    <div class="row mt-3">
+                      <textarea class="textarea" placeholder="Company description"
+                      name="company_description" v-model="Company.company_description">
+                    </textarea>
+                    </div>
+                    <div class="row mt-3">
+                      <input type="submit" class="btn" class="col-md-12 col-lg-12"
+                      @click.prevent="submitRegistrationForm"
+                      value="Finish Registration" style="background-color:green;"/>
                     </div>
                   </div>
                 </div>
@@ -183,15 +195,26 @@
               <div class="row pl-4">
                 <h4><u>Company Login Form</u></h4>
               </div>
-                <input type="text" name="user-name" placeholder="Email">
-                <input type="password" name="user-password" placeholder="Password">
+
+              <div class="row">
+                <select class="select_custom col-md-4 col-lg-4">
+                  <option value="+86">China +86</option>
+                </select>
+                <input class="input col-md-6 col-lg-6" placeholder="telephone"
+                v-model="Company.company_phone" />
+              </div>
+              <div class="row">
+                <input type="password" name="company_password" placeholder="Password"
+                v-model="Company.company_password">
+              </div>
+
                 <div class="button-box">
                     <div class="login-toggle-btn">
                         <input type="checkbox">
                         <label>Remember me</label>
                         <a href="#">Forgot Password?</a>
                     </div>
-                    <button type="submit">Login</button>
+                    <button type="submit" @click.prevent="companyLogin">Login</button>
                 </div>
             </form>
         </div>
