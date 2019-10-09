@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\customClass\Error;
@@ -82,11 +83,11 @@ class accountController extends Controller
 				$this->Error->setSuccess($account);
 				return $this->Error->getSuccess();
 			}
-		
+
 
 			$VerifierModel = new emailVerificationModel;
 			$verification_code = $VerifierModel->generateVerifCode($user_id, $user_token);
-			
+
 			$VerifierModel->user_id = $user_id;
 			$VerifierModel->user_token = $user_token;
 			$VerifierModel->user_type = $user_type;
@@ -198,7 +199,7 @@ class accountController extends Controller
 			return $this->Error->getSuccess();
 		}
 
-			
+
 	}
 	public function userLogin(Request $request)
 	{
@@ -249,6 +250,7 @@ class accountController extends Controller
 
 	public function register(Request $request)
 	{
+		
 		$rules = [
 			"user_firstName" => "required|string|min:4|max:45",
 			"user_lastName" => "required|string|min:4|max:45",
@@ -278,12 +280,25 @@ class accountController extends Controller
 		$normalUsersModel->user_phone = $request->user_phone;
 		$normalUsersModel->user_password = Hash::make($request->password);
 		$normalUsersModel->user_token = hash('md5', time()."".$request->user_email);
-		
+
 		if($normalUsersModel->save())
 		{
 			$data = normalUsersModel::where("user_email", $request->user_email)->get();
 			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token, "normal");
 			// $this->ApiKey->successFullRequest();
+			$min = 24*60*360;
+			if($request->cookie("is_browser"))
+			{
+				$response = response(
+					$this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal")
+				)
+				->cookie("host_id", $data[0]->user_id, $min)
+				->cookie("host_token", $data[0]->user_token, $min)
+				->cookie("host_type", "user")
+				->cookie("iliua", true, $min);
+				return $response;
+			}
+
 			return $this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal");
 			// $this->Error->setSuccess($data[0]);
 			// return $this->Error->getSuccess();
@@ -317,7 +332,7 @@ class accountController extends Controller
 
 	public function sendConfirmationEmail($userEmail, $user_id, $user_token, $user_type)
 	{
-		
+
 		$isValidUser = normalUsersModel::where([
 			["user_id", $user_id],
 			["user_token", $user_token],
@@ -345,7 +360,7 @@ class accountController extends Controller
 			}
 		}
 
-		
+
 		if($isValidUser[0]->is_verified)
 		{
 			$this->Error->setError(["This account email is already verified"]);
@@ -353,7 +368,7 @@ class accountController extends Controller
 		}
 		$VerifierModel = new emailVerificationModel;
 		$verification_code = $VerifierModel->generateVerifCode($user_id, $user_token);
-		
+
 		$VerifierModel->user_id = $user_id;
 		$VerifierModel->user_token = $user_token;
 		$VerifierModel->user_type = $user_type;
@@ -389,7 +404,7 @@ class accountController extends Controller
 		$apiset = $this->apiHandleSet($request->userId, $request->userToken, $request->api_key);
 			if($apiset !== true)
 				return $apiset;
-		switch ($request->updateField) 
+		switch ($request->updateField)
 		{
 			case "userFirstName":
 				return $this->updateFirstName($request);
@@ -578,15 +593,15 @@ class accountController extends Controller
 			$this->Error->setError(["The interest data format is not valid"]);
 			return $this->Error->getError();
 		}
-		foreach ($interests as $interest) 
+		foreach ($interests as $interest)
 		{
 			$subInterest = explode("|", $interest);
 			if($subInterest === false)
 			{
 				$this->Error->setError(["The sub-interest data format is not valid"]);
 				return $this->Error->getError();
-			} 
-			foreach ($subInterest as $skey => $subInt) 
+			}
+			foreach ($subInterest as $skey => $subInt)
 			{
 				if($skey === 0)
 					continue;//the first one is the interest category and is saved as the category
@@ -614,5 +629,5 @@ class accountController extends Controller
 
 	}
 
-		
+
 }

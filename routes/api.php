@@ -96,4 +96,5 @@ Route::post('/statistics/profileVisits', 'statisticsController@profileVisit');
 Route::post('/statistics/visitedProfiles', 'statisticsController@visitedProfiles');
 Route::post('/statistics/productVisits', 'statisticsController@productSet');
 Route::post('/statistics/getApiKey', 'statisticsController@getApiKey');
+Route::post('/statistics/getApiKey/browser', 'statisticsController@getApiKeyBrowser');
 Route::post('/statistics/generateIdAndToken', 'statisticsController@generateIdAndToken');

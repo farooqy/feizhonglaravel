@@ -1,0 +1,131 @@
+.chat {
+    &_box {
+        position: fixed;
+        bottom: 0;
+        right: 20px;
+        background: $white;
+        width: 300px;
+        border-radius: 5px 5px 0 0;
+        z-index: 1000;
+    }
+    
+    &_head {
+        cursor: pointer;
+        background: $theme-color;
+        padding: 15px;
+        color: $white;
+        border-radius: 5px 5px 0 0;
+    }
+    
+    &_body {
+        height: 400px;
+    }
+    
+    &ting_with {
+        padding: 10px 20px;
+        
+        &:hover {
+            background-color: $grey;
+            cursor: pointer;
+        }
+    }
+}
+
+.msg {
+    &_box {
+        position: fixed;
+        bottom: -5px;
+        right: 340px;
+        background: $white;
+        width: 250px;
+        border-radius: 5px 5px 0 0;
+        z-index: 1000;
+    }
+    
+    &_head {
+        cursor: pointer; 
+        background: $theme-color;
+        padding: 10px 15px;
+        color: $white;
+        border-radius: 5px 5px 0 0;
+    }
+    
+    &_close {
+        float: right;
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        color: $white;
+        cursor: pointer;
+    }
+    
+    &_body {
+        height: 300px;
+        padding: 5px;
+        font-size: 12px;
+        overflow: auto;
+        overflow-x: hidden;
+        
+        &_received {
+            position: relative;
+            width: 90%;
+            padding: 15px;
+            margin: 5px 0 0 20px;
+            background-color: $grey;
+            border-radius: 10px;
+        }
+        &_received:before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 10px solid;
+            left: -20px;
+            border-color: transparent $grey transparent transparent;
+            top: 17px;
+        }
+        
+        &_sent {
+            position: relative;
+            padding: 15px;
+            width: 90%;
+            float: right;
+            color: $white;
+            margin: 5px 15px 0 0;
+            background-color: $theme-color-light;
+            border-radius: 10px;
+        }
+        &_sent:before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 10px solid;
+            right: -20px;
+            border-color: transparent transparent transparent $theme-color-light;
+            top: 17px;
+        }
+    }
+    
+    &_footer {
+    
+        &_input {
+            padding: 0 5px;
+            border: transparent;
+            outline: none;
+            border-top: solid 1px $grey;
+            width: 100%;
+            font-size: 12px;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+        
+    }
+}
+
+textarea[name="chat_input"] {
+    resize: none;
+    overflow: auto;
+    outline: none;
+}

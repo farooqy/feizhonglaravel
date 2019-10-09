@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 
@@ -12,6 +13,7 @@ use App\models\normalUsersModel;
 use App\models\statisticsModel;
 use App\models\products\productModel;
 use App\models\apiKeyModel;
+use App\models\browserDetailsModel;
 
 use App\customClass\ApiKeyManager;
 class statisticsController extends Controller
@@ -108,7 +110,7 @@ class statisticsController extends Controller
             $statModel->host_id = $request["host_id"];
             $statModel->host_token = $request["host_token"];
             $statModel->visit_count = 1;
-            
+
 
             if(!$statModel->save())
             {
@@ -117,11 +119,11 @@ class statisticsController extends Controller
             }
         }
 
-        
+
         $this->Error->setSuccess(["success"]);
         // $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
-            
+
     }
     public function productSet(Request $request)
     {
@@ -198,7 +200,7 @@ class statisticsController extends Controller
         // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess(["success"]);
         return $this->Error->getSuccess();
-        	
+
     }
 
     public function visitedProfiles(Request $request)
@@ -207,7 +209,7 @@ class statisticsController extends Controller
             "host_id" => "required|integer",
             "host_token" => "required|string",
             "host_type" => "required|in:normal,comp",
-            "api_key" => "required|string",
+            "api_key" => "required|string"
         ];
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []));
@@ -227,6 +229,50 @@ class statisticsController extends Controller
         return $this->Error->getSuccess();
     }
 
+    public function getApiKeyBrowser(Request $request)
+    {
+        $this->ApiKey->setPlatform("browser");
+        $rules = [
+            "api_host_id" => "required|integer",
+            "api_host_token" => "required|string",
+            "api_host_type" => "required|string|in:normal,comp,guest",
+            "os_name" => "required|string",
+            "os_version" => "required|integer",
+            "browser_name" => "required|string",
+            "browser_version" => "required|string",
+            "navigator_userAgent" => "required|string",
+            "navigator_appVersion" => "required|string",
+            "navigator_platform" => "required|string",
+            "navigator_vendor" => "required|string",
+        ];
+        $validity = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->customValidator->isNotValidRequest($validity);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $this->ApiKey->setBrowserData($request);
+        if($this->ApiKey->HasApiKey($request->api_host_id, $request->api_host_token))
+        {
+            $keyDetails = $this->ApiKey->getKeyDetails($request->api_host_id, $request->api_host_token);
+            $this->ApiKey->setRequest($keyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
+            $this->Error->setSuccess(["api_key" => $keyDetails[0]->api_key ]);
+            // $this->ApiKey->successFullRequest();
+            return $this->Error->getSuccess();
+        }
+        $apikey = $this->ApiKey->Generate_New_Api();
+        if(!$apikey)
+            return $this->ApiKey->Get_Message();
+        $this->Error->setSuccess(["api_key" => $apikey]);
+
+        $keyid = browserDetailsModel::where([
+            ["api_key", $apikey],
+            ["api_host_id", $request->api_host_id]
+        ])->get()[0]->api_id;
+        $this->ApiKey->setRequest($keyid, $this->ip_address, $this->requestUrl);
+        $this->Error->setSuccess(["api_key" => $apikey ]);
+        // $this->ApiKey->successFullRequest();
+        return $this->Error->getSuccess();
+
+    }
     public function getApiKey(Request $request)
     {
         $rules = [
@@ -252,7 +298,7 @@ class statisticsController extends Controller
         $isNotValidRequest = $this->customValidator->isNotValidRequest($validity);
         if($isNotValidRequest)
             return $isNotValidRequest;
-        
+
         $this->ApiKey->setPhoneDetails($request);
 
         if($request->api_host_type === "comp")
@@ -292,17 +338,46 @@ class statisticsController extends Controller
         ])->get()[0]->api_id;
         $this->ApiKey->setRequest($keyid, $this->ip_address, $this->requestUrl);
         $this->Error->setSuccess(["api_key" => $apikey ]);
-        // $this->ApiKey->successFullRequest();    
+        // $this->ApiKey->successFullRequest();
         return $this->Error->getSuccess();
     }
 
     public function generateIdAndToken(Request $request)
     {
-        $id = random_int(100000,1000000000);
-        $token = bin2hex(random_bytes(64));
+      $rules = [
+        "platform" => "required|integer|in:0,1"
+      ];
+      $isbrowser = false;
+      if($request->platform === 1)
+        $isbrowser = true;
+      if($request->cookie("host_id") &&
+         $request->cookie("host_token") &&
+         $request->cookie("host_type") && $isbrowser)
+       {
+       $this->Error->setSuccess([
+         "host_id" => $request->cookie("host_id"),
+         "host_token" => $request->cookie("host_token"),
+         "host_type" => $request->cookie("host_type")
+       ]);
+        return response($this->Error->getSuccess());
+      }
+      $id = random_int(100000,1000000000);
+      $token = bin2hex(random_bytes(64));
+      $this->Error->setSuccess([
+        "host_id" => $id,
+        "host_token" => $token,
+        "host_type" => "guest"
+      ]);
+      if($isbrowser)
+        return response($this->Error->getSuccess())
+        ->cookie('host_id', $id, (60*24*360))
+        ->cookie('host_token', $token, (60*24*360))
+        ->cookie('host_type', "guest", (60*24*360))
+        ->cookie('is_browser', true, (60*24*360));
+      else
+        return response($this->Error->getSuccess());
 
-        $this->Error->setSuccess(["guest_id" => $id, "guest_token" => $token]);
-        return $this->Error->getSuccess();
+        // return $response;;
     }
 
 }

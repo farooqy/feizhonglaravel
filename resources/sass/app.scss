@@ -12,3 +12,47 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+.error_text {
+  color: red;
+}
+.loaderHolder {
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 999999;
+  height: 100%;
+  position: fixed;
+  background-color: rgba(0,0,0,0.5);
+  text-align: center;
+}
+.loaderHolder div.spinner-border {
+  position: relative;
+  top: 40vh;
+}
+#comp_logo_image {
+  border: thick solid #a90303;
+  padding: 10px;
+  border-radius: 9px;
+}
+.select_custom {
+  border:1px solid #ebebeb;
+  height: 50px;
+}
+.reg_phases {
+    height: 50px;
+    width: 50px;
+    border: thin solid gray;
+    border-radius: 50%;
+    line-height: 50px;
+    text-align: center;
+    margin-right: 30px;
+  }
+
+  .phases-container {
+    display: inline-flex;
+    text-align: center;
+    margin-left: 30%;
+    margin-bottom: 25px;
+  }

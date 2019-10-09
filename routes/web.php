@@ -12,9 +12,10 @@
 */
 
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'browserController@getIndexPage');
+Route::get('/register', 'browserController@getRegisterPage');
+Route::get('/login', 'browserController@getLoginPage');
+Route::get('/logout', 'browserController@logout');
 Route::get('/exhibition', 'generalController@getExhbitionPdf');
 Route::get('/whatsapp', 'generalController@whatsAppLink');
 

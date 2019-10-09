@@ -128,7 +128,7 @@ class accountController extends Controller
 			$this->setError(["The company password and phone do not match "]);
 			return $this->error;
 		}
-		
+
 	}
 	public function companyTypeRegistration(Request $request)
 	{
@@ -136,9 +136,9 @@ class accountController extends Controller
 			"company_type" => "required|string|max:75",
 			"company_subtype" => "required|string|max:50",
 			"company_description" => "required|string|min:45",
-			"company_token" => "required|string|max:330", 
-            "api_key" => "required|string",
-            "company_id" => "required|integer",
+			"company_token" => "required|string|max:330",
+      "api_key" => "required|string",
+      "company_id" => "required|integer",
 		];
 		$messages =[
 			"required" => "The :attribute is required",
@@ -184,7 +184,7 @@ class accountController extends Controller
 
 		try
 		{
-			
+
 			companyTypeModel::create([
 				"comp_id" => $company_id[0]->comp_id,
 				"comp_type" => $request->company_type,
@@ -194,7 +194,7 @@ class accountController extends Controller
 			]);
 
 			registrationTrackerModel::where('comp_token', $request->company_token)->update(["stage" => "complete"]);
-            
+
             // $this->ApiKey->successFullRequest();
 			$this->setSucces(["comp_token" => $request->company_token, "process" => "final"]);
 			return $this->success;
@@ -217,9 +217,9 @@ class accountController extends Controller
 			"company_address_one" => "required|string|max:75",
 			"company_province" => "required|string|max:50",
 			"company_city" => "required|string|max:45",
-            "company_token" => "required|string|max:330", 
-			"company_id" => "required|integer", 
-            "api_key" => "required|string",
+      "company_token" => "required|string|max:330",
+			"company_id" => "required|integer",
+      "api_key" => "required|string",
 		];
 		$messages =[
 			"required" => "The :attribute is required",
@@ -245,7 +245,7 @@ class accountController extends Controller
 
 		try
 		{
-			
+
 			companyAddressModel::create([
 				"comp_id" => $company_id[0]->comp_id,
 				"comp_addr_one" => $request->company_address_one,
@@ -281,9 +281,9 @@ class accountController extends Controller
     		"company_password" => "required|string|min:8",
     		"company_email" => "required|email",
     		"verification_code" => "required|integer",
-            "guest_id" => "required|integer",
-            "guest_token" => "required|string",
-            "api_key" => "required|string",
+        "guest_id" => "required|integer",
+        "guest_token" => "required|string",
+        "api_key" => "required|string",
 
     	];
     	$messages = [
@@ -375,9 +375,14 @@ class accountController extends Controller
     			['target_phone', $request->company_phone],
     			['verification_code', $request->verification_code]
     		])->update(['is_verified' => true]);
-    		$this->setSucces(["comp_token" => $comp_token, "process" => "page2"]);
+            $data =  companydataModel::where([
+                ["comp_phone", $request->company_phone],
+                ["comp_token", $comp_token],
+            ])->get();
+    		$this->setSucces(["comp_token" => $comp_token, "comp_id" =>$data[0]->comp_id , "process" => "page2"]);
             // $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token, "comp");
             // $this->ApiKey->successFullRequest();
+
     		return $this->success;
     	}
     	catch(\Illuminate\Database\QueryException $exception)
@@ -427,9 +432,9 @@ class accountController extends Controller
         if($apiset !== true)
             return $apiset;
     	if($this->phone_exists($request->telephone))
-    		
+
         {
-            $this->Error->setError(["The phone number cannot be used for registration of new user"]);
+            $this->Error->setError(["The phone number cannot be used for registration of new company"]);
             return $this->Error->getError();
         }
 
@@ -552,7 +557,7 @@ class accountController extends Controller
             $publicpath = public_path($dir);//full path
         else
             $publicpath = env("APP_ROOT").$dir;
-        
+
         $filename = 'profile_'.hash('md5',time()).'_pic.';
         $this->FileUploader->setFilePath($publicpath);
         $this->FileUploader->setFileDirectory($dir);//path with url
@@ -562,8 +567,8 @@ class accountController extends Controller
         if($file_url === false)
         {
             $this->Error->setError($this->FileUploader->getError());
-            return false;  
-        } 
+            return false;
+        }
         else
         {
             return $file_url;
@@ -599,7 +604,7 @@ class accountController extends Controller
     public function updateCompName(Request $request)
     {
         return $this->doCheckAndUpdate("comp_name", $request, new companydataModel);
-        
+
     }//done
     public function updateCompProfile(Request $request)
     {
@@ -628,7 +633,7 @@ class accountController extends Controller
     public function updateCompProvince(Request $request)
     {
         return $this->doCheckAndUpdate("comp_province", $request, new companyAddressModel);
-    }//done 
+    }//done
     public function updateCompEmail(Request $request)
     {
         return $this->doCheckAndUpdate("comp_email", $request, new companydataModel);//different...needs to verify email
@@ -658,7 +663,7 @@ class accountController extends Controller
         {
             $this->Error->setError(json_decode($apiset)->errorMessage);
             return false;
-        }        
+        }
         if($targetField==="comp_phone")
         {
             $new_value = phoneVerificationModel::where('verification_code', $request->company_target_change)->get();
@@ -730,7 +735,7 @@ class accountController extends Controller
             $this->Error->setError([$exception->errorInfo]);
             return false;
         }
-            
+
     }
 
     public function getMyPosts(Request $request)
@@ -763,7 +768,7 @@ class accountController extends Controller
             foreach($comments as $comment)
             {
                 $status["comments"] = ["comment"=>$comment, "details"=> $comment->personProfile];
-            }   
+            }
             foreach( $likes as  $like)
             {
                 $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
