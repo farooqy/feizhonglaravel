@@ -16,6 +16,8 @@ Route::get('/', 'browserController@getIndexPage')->name("homePage");
 Route::get('/register', 'browserController@getRegisterPage')->name("registrationPage");
 Route::get('/login', 'browserController@getLoginPage')->name("loginPage");
 Route::get('/logout', 'browserController@logout')->name("logoutPage");
+Route::get('/profile', 'browserController@profilePage')->name("profilePage");
+Route::get('/profile/edit', 'browserController@editProfilePage')->name("editProfilePage");
 Route::get('/exhibition', 'generalController@getExhbitionPdf');
 Route::get('/whatsapp', 'generalController@whatsAppLink');
 

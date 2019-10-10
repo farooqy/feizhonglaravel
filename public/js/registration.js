@@ -49208,6 +49208,7 @@ var User = function User() {
   this.guest_token = null;
   this.api_key = null;
   this.is_browser = true;
+  this.user_profile = "/img/logo.png";
   this.error = {
     "user_firstName": null,
     "user_lastName": null,
@@ -49395,8 +49396,7 @@ var app = new Vue({
           this.user_registration = true;
         }
       } else if (this.user_registration) {
-        if (panel === 'login') company_types;
-        {
+        if (panel === 'login') {
           this.user_login = true;
           this.user_registration = false;
         }
@@ -49413,8 +49413,6 @@ var app = new Vue({
       }
     },
     showTab: function showTab(tab) {
-      company_types;
-
       if (tab === 'supplier') {
         this.user_login = false;
         this.user_registration = false;
@@ -49428,7 +49426,17 @@ var app = new Vue({
       }
     },
     userRegistration: function userRegistration() {
-      this.serverRequest(this.User, "/api/user/register");
+      this.serverRequest(this.User, "/api/user/register", "user");
+    },
+    userLogin: function userLogin() {
+      var data = {
+        "user_email": this.User.user_email,
+        "user_password": this.User.password,
+        "guest_id": this.User.guest_id,
+        "guest_token": this.User.guest_token,
+        "api_key": this.User.api_key
+      };
+      this.serverRequest(data, "api/user/login", "user");
     },
     serverRequest: function serverRequest(form, url) {
       var _this2 = this;
@@ -49437,7 +49445,11 @@ var app = new Vue({
       this.showLoader = true;
       axios.post(url, form).then(function (response) {
         if (response.data.isSuccess) {
-          if (type === "user" || type === "company") window.location.reload();else if (type === "guest") {
+          if (type === "user" || type === "company") {
+            window.location.reload();
+            _this2.User.password = '';
+            _this2.Company.company_password = '';
+          } else if (type === "guest") {
             _this2.showLoader = false;
             console.log(response.data.data);
             _this2.User.guest_id = response.data.data.host_id;
@@ -49477,6 +49489,7 @@ var app = new Vue({
 
             _this2.serverRequest(data, "/api/comp/login", "comp_login");
           } else if (type === "comp_login") {
+            _this2.Company.company_password = '';
             window.location.reload();
           } else {
             _this2.showLoader = false;

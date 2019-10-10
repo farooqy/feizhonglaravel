@@ -15,4 +15,5 @@ mix.js('resources/js/app.js', 'public/js')
   .js('resources/js/registration.js', 'public/js')
   .js('resources/js/User.js', 'public/js')
   .js('resources/js/Company.js', 'public/js')
+  .js('resources/js/profile/user_profile.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css');

@@ -201,6 +201,41 @@ class accountController extends Controller
 
 
 	}
+	public function getUserData(Request $request)
+	{
+		$rules = [
+			"platform" => "required|integer|in:1",
+			"host" => "required|string|in:user,comp"
+		];
+		$isvalid = Validator::make($request->all(), $rules, []);
+		$isNotValidRequest = $this->custom_validator->isNotValidRequest($isvalid);
+		if($isNotValidRequest)
+			return $isNotValidRequest;
+		if(!$request->cookie("iliua"))
+		{
+			$this->Error->setError(["Authentication error. Please login "]);
+			return $this->Error->getError();
+		}
+		$user_id = $request->cookie("host_id");
+		$user_token = $request->cookie("host_token");
+
+		if($user_id === null || $user_token === null)
+		{
+			$this->Error->setError(["Authentication details incomplete. Please login"]);
+			return $this->Error->getError();
+		}
+		$data = normalUsersModel::Where([
+			["user_id", $user_id],
+			["user_token", $user_token]
+		])->get();
+		if($data === null || $data->count() <= 0)
+		{
+			$this->Error->setError(["The Authentication details is invalid"]);
+			return $this->Error->getError();
+		}
+		$this->Error->setSuccess($data);
+		return $this->Error->getSuccess();
+	}
 	public function userLogin(Request $request)
 	{
 		$rules = [
@@ -239,6 +274,19 @@ class accountController extends Controller
 			$this->Error->setSuccess($data);
 			// $this->ApiKey->successFullRequest();
 			$this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token, "normal");
+			if($request->cookie("is_browser"))
+			{
+				$min = 60*24*360;
+				$data[0]->api_key = $request->cookie("api_key");
+				$response = response(
+					$this->Error->getSuccess()
+				)
+				->cookie("host_id", $data[0]->user_id, $min)
+				->cookie("host_token", $data[0]->user_token, $min)
+				->cookie("host_type", "user")
+				->cookie("iliua", true, $min);
+				return $response;
+			}
 			return $this->Error->getSuccess();
 		}
 		else
@@ -250,7 +298,7 @@ class accountController extends Controller
 
 	public function register(Request $request)
 	{
-		
+
 		$rules = [
 			"user_firstName" => "required|string|min:4|max:45",
 			"user_lastName" => "required|string|min:4|max:45",

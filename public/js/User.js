@@ -111,6 +111,7 @@ var User = function User() {
   this.guest_token = null;
   this.api_key = null;
   this.is_browser = true;
+  this.user_profile = "/img/logo.png";
   this.error = {
     "user_firstName": null,
     "user_lastName": null,

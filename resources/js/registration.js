@@ -155,7 +155,7 @@ const app = new Vue({
         }
         else if(this.user_registration)
         {
-          if(panel === 'login')company_types
+          if(panel === 'login')
           {
             this.user_login = true;
             this.user_registration = false;
@@ -179,7 +179,7 @@ const app = new Vue({
         }
       },
       showTab(tab)
-      {company_types
+      {
         if(tab === 'supplier')
         {
           this.user_login = false;
@@ -197,7 +197,18 @@ const app = new Vue({
       },
       userRegistration()
       {
-        this.serverRequest(this.User, "/api/user/register");
+        this.serverRequest(this.User, "/api/user/register", "user");
+      },
+      userLogin()
+      {
+        var data = {
+          "user_email": this.User.user_email,
+          "user_password": this.User.password,
+          "guest_id": this.User.guest_id,
+          "guest_token": this.User.guest_token,
+          "api_key": this.User.api_key
+        };
+        this.serverRequest(data, "api/user/login", "user");
       },
       serverRequest(form, url, type="user")
       {
@@ -207,7 +218,11 @@ const app = new Vue({
             if(response.data.isSuccess)
             {
               if(type === "user" || type === "company")
+              {
                 window.location.reload();
+                this.User.password = '';
+                this.Company.company_password ='';
+              }
               else if( type === "guest")
               {
                 this.showLoader = false;
@@ -260,6 +275,7 @@ const app = new Vue({
               }
               else if(type === "comp_login")
               {
+                this.Company.company_password = '';
                 window.location.reload();
               }
               else

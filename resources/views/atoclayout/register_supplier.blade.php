@@ -97,15 +97,17 @@
                                     <div class="login-form-container">
                                         <div class="login-register-form">
                                             <form action="#" method="post">
-                                                <input type="text" name="user-name" placeholder="Email">
-                                                <input type="password" name="user-password" placeholder="Password">
+                                                <input type="text" name="user-name" placeholder="Email"
+                                                v-model="User.user_email">
+                                                <input type="password" name="user-password" placeholder="Password"
+                                                v-model="User.password">
                                                 <div class="button-box">
                                                     <div class="login-toggle-btn">
                                                         <input type="checkbox">
                                                         <label>Remember me</label>
                                                         <a href="#">Forgot Password?</a>
                                                     </div>
-                                                    <button type="submit">Login</button>
+                                                    <button type="submit" @click.prevent="userLogin">Login</button>
                                                 </div>
                                             </form>
                                         </div>

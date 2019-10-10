@@ -42,7 +42,7 @@ class browserController extends Controller
         return view("atoc_index");
       }
       else
-        return redirect()->route("homePage");
+        return redirect()->route("registrationPage");
     }
     public function logout()
     {
@@ -52,5 +52,44 @@ class browserController extends Controller
       \Cookie::queue(\Cookie::forget("host_type"));
       $this->Error->setSuccess([]);
       return $this->Error->getSuccess();
+    }
+    public function profilePage()
+    {
+      if(isset($_COOKIE["iliua"]) && isset($_COOKIE["host_type"]))
+      {
+        if($_COOKIE["host_type"] === "user")
+          return view("atoclayout.user.profile_page");
+        else if($_COOKIE["host_type"])
+        {
+          return view("atoclayout.comp.profile_page");
+        }
+        else
+        {
+          return view("atoclayout.error_profile");
+        }
+      }
+      else {
+        return redirect()->route("loginPage");
+      }
+    }
+
+    public function editProfilePage()
+    {
+      if(isset($_COOKIE["iliua"]) && isset($_COOKIE["host_type"]))
+      {
+        if($_COOKIE["host_type"] === "user")
+          return view("atoclayout.user.edit_profile");
+        else if($_COOKIE["host_type"])
+        {
+          return view("atoclayout.comp.edit_profile");
+        }
+        else
+        {
+          return view("atoclayout.error_profile");
+        }
+      }
+      else {
+        return redirect()->route("loginPage");
+      }
     }
 }
