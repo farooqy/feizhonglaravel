@@ -33,6 +33,7 @@
   <link href="/assets/js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link href="/assets/css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link href="/css/app.css" rel="stylesheet"/>
 </head>
 
 <body class="">
@@ -87,6 +88,11 @@
     </div>
   </nav>
   <div class="main-content" id="app">
+    <!-- Loadermodal -->
+    <div class="loaderHolder" v-show="showLoader">
+      <loader  v-bind="Loader"></loader>
+    </div>
+
     <!-- Errormodal -->
     <error v-show="errorModal" v-bind="errorObject"
      v-on:close-error-modal="disMissErrorModel"></error>

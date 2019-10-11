@@ -1,6 +1,7 @@
 
 require(".././bootstrap");
 import error from "../components/error.vue";
+import loader from "../components/loader.vue";
 import User from ".././User.js";
 window.Vue = require("vue");
 Vue.use(require('vue-cookies'));
@@ -11,7 +12,7 @@ var app = new Vue({
   methods: {
     getProfileData()
     {
-      var data = {
+      var req = {
 
       }
     },
@@ -54,12 +55,32 @@ var app = new Vue({
       else {
         console.log("The address is empty");
       }
+      this.Loader.showLoader = this.showLoader = false;
     },
-    updateInfo()
+    updateInfo(field)
     {
-      var req = {
+      var fields = [
+        "userFirstName","userLastName","userPhoneNumber",
+      "userEmail"];
+      var values = [
+        this.User.user_firstName,
+        this.User.user_lastName,
+        this.User.user_phone,
+        this.User.user_email,
+      ];
 
-      }
+
+
+      var data = {
+        "userToken": this.User.guest_token,
+        "userId": this.User.guest_id,
+        "api_key": (!this.User.api_key) ? "apikey" : this.User.api_key,
+        "updateField": fields[field],
+        "updateValue": values[field]
+      };
+      console.log('data --- ',data);
+      this.serverRequest("/api/user/update", data, ("field_"+field));
+
     },
     updateAddress()
     {
@@ -83,12 +104,62 @@ var app = new Vue({
       };
       this.serverRequest("/api/user/update/aboutMe", req, "udpate_about_me");
     },
+    userFieldUpdate(type)
+    {
+      switch (type)
+      {
+        case "field_0":
+          alert("Your first name has been successfully updated");
+          break;
+        case "field_1":
+          alert("Your second name has been successfully updated");
+          break;
+        case "field_2":
+          alert("Your Phone number has been successfully updated");
+          break;
+        case "field_3":
+          alert("Your email has been successfully updated");
+          break;
+        default:
+          console.log("successful update of "+type);
+
+
+      }
+      this.Loader.showLoader = this.showLoader = false;
+    },
+    updateUserLogo(event)
+    {
+      console.log(event);
+      var input = event.target;
+      if(input.files && input.files[0])
+      {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          var req = {
+            "profile_picture": e.target.result,
+            "user_id": this.User.guest_id,
+            "user_token": this.User.guest_token
+          };
+          this.serverRequest("/api/user/update/profile", req, "update_profile");
+
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+    setNewProfile(data)
+    {
+      // data = data[0];
+      this.User.user_profile = data.user_profile;
+      this.Loader.showLoader = this.showLoader = false;
+    },
     serverRequest(url, form, type="default")
     {
+      this.Loader.showLoader = this.showLoader = true;
+      console.log('received data ', form, 'for type ',type);
       axios.post(url, form).
       then(response => {
         response = response.data;
-        if(response.data.error_message)
+        if(response.hasOwnProperty('error_message'))
         {
           this.errorObject.error_text = response.error_message;
           this.errorObject.errorModal = this.errorModal = true;
@@ -99,15 +170,22 @@ var app = new Vue({
             this.setUserData(response.data);
           else if(type === "user_address")
             this.setUserAddress(response.data);
+          else if(type === "field_1" || type === "field_2" ||
+            type === "field_3" || type === "field_0")
+            this.userFieldUpdate(type);
+          else if(type === "update_profile")
+            this.setNewProfile(response.data);
           else {
             alert('success');
             console.log(response);
+            this.Loader.showLoader = this.showLoader = false;
           }
         }
         else
         {
           this.errorObject.error_text = response.errorMessage;
           this.errorObject.errorModal = this.errorModal = true;
+          this.Loader.showLoader = this.showLoader = false;
         }
       })
       .catch(error => {
@@ -130,14 +208,19 @@ var app = new Vue({
 
   },
   components: {
-    error,
+    error,loader
   },
   data: {
     User:new User(),
-    errorModal:true,
+    errorModal:false,
     errorObject: {
       errorModal:false,
       error_text: "This is default error text"
-    }
+    },
+    updatedProfile:null,
+    showLoader: false,
+    Loader: {
+      showLoader:false
+    },
   }
 });

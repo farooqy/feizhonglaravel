@@ -16,31 +16,33 @@
       <div class="container-fluid d-flex align-items-center">
         <div class="row">
           <div class="col-lg-7 col-md-10">
-            <h1 class="display-2 text-white">
+            <h4 class="display-2 text-white" style="font-size:30px">
               Welcome  <span v-text="User.user_firstName+User.user_lastName">John</span>
-            </h1>
+            </h4>
             <p class="text-white mt-0 mb-5">
               This is your profile page.
               You can see the progress you've made with your work and
               manage your interactions with companies</p>
-            <a href="#!" class="btn btn-info">Edit profile</a>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="container-fluid mt--7">
+    <div class="container-fluid mt--9">
       <div class="row">
         <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
           <div class="card card-profile shadow">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
-                  <a href="#">
-                    <img :src="User.user_profile" class="rounded-circle">
-                  </a>
+                    <img :src="User.user_profile" class=""
+                    @click="$refs.logo_uploader.click()" style="cursor:pointer">
                 </div>
               </div>
+            </div>
+            <div class="row" v-show="false">
+              <input type="file" ref="logo_uploader" name="logo_uploader"
+              @change="updateUserLogo($event)" v-modal="updatedProfile"/>
             </div>
             <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
             </div>
@@ -103,12 +105,12 @@
                 </div>
               </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style=" background-color: #ffffffe8;">
               <form>
                 <h6 class="heading-small text-muted mb-4">User information</h6>
                 <div class="pl-lg-4">
                   <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                       <div class="form-group focused">
                         <label class="form-control-label" for="input-username">Telephone</label>
                         <input type="text" id="input-username"
@@ -116,7 +118,15 @@
                         placeholder="Username" v-model="User.user_phone">
                       </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
+                    @click="updateInfo('2')">
+                      <span class="">
+                        <i class="fas fa-user-edit"></i>
+                      </span>
+                    </div>
+
+
+                    <div class="col-lg-5">
                       <div class="form-group">
                         <label class="form-control-label" for="input-email">Email address</label>
                         <input type="email" id="input-email"
@@ -124,9 +134,16 @@
                         placeholder="jesse@example.com" v-model="User.user_email">
                       </div>
                     </div>
+
+                    <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
+                    @click="updateInfo('3')">
+                      <span class="">
+                        <i class="fas fa-user-edit"></i>
+                      </span>
+                    </div>
                   </div>
                   <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                       <div class="form-group focused">
                         <label class="form-control-label" for="input-first-name">First name</label>
                         <input type="text" id="input-first-name"
@@ -134,7 +151,14 @@
                         placeholder="First name" v-model="User.user_firstName">
                       </div>
                     </div>
-                    <div class="col-lg-6">
+
+                    <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
+                    @click="updateInfo('0')">
+                      <span class="">
+                        <i class="fas fa-user-edit"></i>
+                      </span>
+                    </div>
+                    <div class="col-lg-5">
                       <div class="form-group focused">
                         <label class="form-control-label" for="input-last-name">Last name</label>
                         <input type="text" id="input-last-name"
@@ -142,15 +166,13 @@
                         placeholder="Last name" v-model="User.user_lastName">
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-4 col-lg-4"></div>
-                    <div class="col-md-4 col-lg-4">
-                      <div class="btn btn-sm btn-primary" @click="updateInfo">
-                        Update information
-                      </div>
+
+                    <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
+                    @click="updateInfo('1')">
+                      <span class="">
+                        <i class="fas fa-user-edit"></i>
+                      </span>
                     </div>
-                    <div class="col-md-4 col-lg-4"></div>
                   </div>
                 </div>
                 <hr class="my-4">

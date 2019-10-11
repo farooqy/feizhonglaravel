@@ -24,6 +24,7 @@ Route::post('/user/emailConfirmation', 'user\accountController@emailConfirmation
 Route::post('/user/confirmUser', 'user\accountController@verifyUser');
 Route::post('/user/update/address', 'user\accountController@updateUserAddress');
 Route::post('/user/update/aboutMe', 'user\accountController@updateUserAboutMe');
+Route::post('/user/update/profile', 'user\accountController@updateUserProfile');
 Route::post('/user/update', 'user\accountController@updateUserInfo');
 Route::post('/user/resetPassword', 'user\accountController@resetPassword');
 Route::post('/user/data', 'user\accountController@getUserData');

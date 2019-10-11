@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\customClass\ApiKeyManager;
+use App\customClass\FileUploader;
 use App\models\normalUsersModel;
 use App\models\emailVerificationModel;
 use App\models\userInterestModel;
@@ -24,6 +25,7 @@ class accountController extends Controller
 	protected $ApiKey;
 	protected $ip_address;
 	protected $requestUrl;
+	protected $FileUploader;
 	public function __construct()
 	{
     	$this->Error = new Error();
@@ -31,6 +33,7 @@ class accountController extends Controller
     	$this->ApiKey = new ApiKeyManager();
     	$this->ip_address = \Request::ip();
     	$this->requestUrl = url()->current();
+			$this->FileUploader = new FileUploader();
 
 	}
 	public function apiHandleSet($user_id, $user_token, $api_key)
@@ -476,12 +479,12 @@ class accountController extends Controller
 		if($user === null || $user->count() !== 1)
 		{
 			$this->Error->setError(["Could not verify your profile "]);
-			$this->Error->getError();
+			return $this->Error->getError();
 		}
 		else if($user[0]->user_fname === $request->updateValue)
 		{
 			$this->Error->setError(["You provided same name "]);
-			$this->Error->getError();
+			return $this->Error->getError();
 		}
 		else
 		{
@@ -501,12 +504,12 @@ class accountController extends Controller
 		if($user === null || $user->count() !== 1)
 		{
 			$this->Error->setError(["Could not verify your profile "]);
-			$this->Error->getError();
+			return $this->Error->getError();
 		}
 		else if($user[0]->user_sname === $request->updateValue)
 		{
 			$this->Error->setError(["You provided same name "]);
-			$this->Error->getError();
+			return $this->Error->getError();
 		}
 		else
 		{
@@ -527,12 +530,19 @@ class accountController extends Controller
 		if($user === null || $user->count() !== 1)
 		{
 			$this->Error->setError(["Could not verify your profile "]);
-			$this->Error->getError();
+			return $this->Error->getError();
 		}
 		else if($user[0]->user_email === $request->updateValue)
 		{
 			$this->Error->setError(["You provided same email "]);
-			$this->Error->getError();
+			return $this->Error->getError();
+		}
+		$existingEmail = normalUsersModel::where("user_email",
+			$request->updateValue)->exists();
+		if($existingEmail)
+		{
+			$this->Error->setError(["The updated email cannot be used"]);
+			return $this->Error->getError();
 		}
 		else
 		{
@@ -552,12 +562,19 @@ class accountController extends Controller
 		if($user === null || $user->count() !== 1)
 		{
 			$this->Error->setError(["Could not verify your profile "]);
-			$this->Error->getError();
+			return $this->Error->getError();
 		}
 		else if($user[0]->user_phone === $request->updateValue)
 		{
 			$this->Error->setError(["You provided same phone number "]);
-			$this->Error->getError();
+			return $this->Error->getError();
+		}
+		$existingphone = normalUsersModel::where("user_phone",
+		$request->updateValue)->exists();
+		if($existingphone)
+		{
+			$this->Error->setError(["The phone number provided cannot be used"]);
+			return $this->Error->getError();
 		}
 		else
 		{
@@ -578,12 +595,12 @@ class accountController extends Controller
 		if($user === null || $user->count() !== 1)
 		{
 			$this->Error->setError(["Could not verify your profile "]);
-			$this->Error->getError();
+			return $this->Error->getError();
 		}
 		else if(Hash::check($data[0]->user_password , $hashpass))
 		{
 			$this->Error->setError(["You provided same phone number "]);
-			$this->Error->getError();
+			return $this->Error->getError();
 		}
 		else
 		{
@@ -637,6 +654,7 @@ class accountController extends Controller
 				$request->cookie("host_token") !== $request->host_token)
 			{
 				$this->Error->setError(["Authentication data not valid"]);
+				return $this->Error->getError();
 			}
 		}
 
@@ -698,6 +716,7 @@ class accountController extends Controller
 				$request->cookie("host_token") !== $request->host_token)
 			{
 				$this->Error->setError(["Authentication data not valid"]);
+				return $this->Error->getError();
 			}
 		}
 		$userAddress = userAddressModel::where([
@@ -816,6 +835,66 @@ class accountController extends Controller
 		}
 		$this->Error->setSuccess($address);
 		return $this->Error->getSuccess();
+	}
+
+	public function updateUserProfile(Request $request)
+	{
+		$rules = [
+			"profile_picture" => "required|string",
+			"user_id" => "required|integer",
+			"user_token" => "required|string"
+		];
+
+		$is_valid_request = Validator::make($request->all(), $rules, []);
+		$isNotValidRequest = $this->custom_validator->isNotValidRequest($is_valid_request);
+		if($isNotValidRequest)
+			return $isNotValidRequest;
+		else if($request->cookie("is_browser")===null || $_COOKIE["is_browser"] === null)
+		{
+			if($request->cookie("iliua") === null || $request->cookie("host_id") ===null ||
+				$request->cookie("host_token") ===null )
+			{
+				$this->Error->setError(["Authentication error, user details not set"]);
+				return $this->Error->getError();
+			}
+			else if($request->cookie("host_id") !== $request->user_id ||
+				$request->cookie("host_token") !== $request->host_token)
+			{
+				$this->Error->setError(["Authentication data not valid"]);
+				return $this->Error->getError();
+			}
+		}
+		$dir = "uploads/users/".$request->user_token."/profile/";
+		if(env("APP_ENV") === "local")
+		{
+			$user_directory = public_path($dir);
+		}
+		else
+			$user_directory = env("APP_ROOT").$dir;
+		$filename = hash('md5', time())."_profile_.";
+
+		$this->FileUploader->setFilePath($user_directory);
+		$this->FileUploader->setFileDirectory($dir);//path with url
+		$this->FileUploader->setFileName($filename);
+
+		$file_url = $this->FileUploader->uplaodJsonFile($request->profile_picture);
+		if($file_url === false)
+		{
+				$this->Error->setError($this->FileUploader->getError());
+				return false;
+		}
+		else
+		{
+				normalUsersModel::where([
+					["user_id", $request->user_id],
+					["user_token", $request->user_token]
+				])->update([
+					"user_profile" => $file_url
+				]);
+				$this->Error->setSuccess(["user_profile" => $file_url]);
+				return $this->Error->getSuccess();
+		}
+
 	}
 
 }
