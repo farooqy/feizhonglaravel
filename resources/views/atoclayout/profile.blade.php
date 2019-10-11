@@ -118,11 +118,22 @@
             <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="media align-items-center">
                 <span class="avatar avatar-sm rounded-circle">
+
+                  @if($_COOKIE["host_type"] === "comp")
+                  <img alt="Image placeholder" :src="Company.company_logo">
+
+                  @else
                   <img alt="Image placeholder" :src="User.user_profile">
+
+                  @endif
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
                   <span class="mb-0 text-sm  font-weight-bold">
+                    @if($_COOKIE["host_type"] === "user")
                     <span v-text="User.user_firstName+User.user_lastName"></span>
+                    @else
+                    <span v-text="Company.company_name"></span>
+                    @endif
                   </span>
                 </div>
               </div>
@@ -157,7 +168,7 @@
   <!--   Argon JS   -->
   <script src="/assets/js/argon-dashboard.min.js?v=1.1.0"></script>
   <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-  <script src="/js/user_profile.js"></script>
+  @yield("vuescript")
   <script>
     window.TrackJS &&
       TrackJS.install({

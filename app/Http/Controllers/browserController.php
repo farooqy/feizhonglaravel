@@ -59,7 +59,7 @@ class browserController extends Controller
       {
         if($_COOKIE["host_type"] === "user")
           return view("atoclayout.user.profile_page");
-        else if($_COOKIE["host_type"])
+        else if($_COOKIE["host_type"] === "comp")
         {
           return view("atoclayout.comp.profile_page");
         }
@@ -81,7 +81,7 @@ class browserController extends Controller
           return view("atoclayout.user.edit_profile");
         else if($_COOKIE["host_type"])
         {
-          return view("atoclayout.comp.edit_profile");
+          return view("atoclayout.comp.profile_page");
         }
         else
         {

@@ -58,7 +58,12 @@ class accountController extends Controller
         $this->ApiKey->setRequest($apiKeyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
         return true;
     }
-
+	public function getCompanyData(Request $request)
+	{
+		$rules = [
+			
+		];
+	}
 	public function companyLogin(Request $request)
 	{
 		$rules = [
