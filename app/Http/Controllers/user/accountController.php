@@ -12,6 +12,7 @@ use App\customClass\ApiKeyManager;
 use App\models\normalUsersModel;
 use App\models\emailVerificationModel;
 use App\models\userInterestModel;
+use App\models\userAddressModel;
 use App\Mail\userVerificationMail;
 use App\Mail\generalMailHandler;
 use Hash, Mail;
@@ -33,23 +34,23 @@ class accountController extends Controller
 
 	}
 	public function apiHandleSet($user_id, $user_token, $api_key)
-    {
-    	return true;
-        $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
-        if(!$userOwnsKey)
-        {
-            $this->Error->setError(["The access key is not valid"], -1);
-            return $this->Error->getError();
-        }
-        $apiKeyDetails = $this->ApiKey->getKeyDetails($user_id, $user_token);
-        if($apiKeyDetails[0]->api_key !== $api_key)
-        {
-            $this->Error->setError(['Invalid api key']);
-            return $this->Error->getError();
-        }
-        $this->ApiKey->setRequest($apiKeyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
-        return true;
-    }
+  {
+  	return true;
+      $userOwnsKey =$this->ApiKey->HasApiKey($user_id, $user_token);
+      if(!$userOwnsKey)
+      {
+          $this->Error->setError(["The access key is not valid"], -1);
+          return $this->Error->getError();
+      }
+      $apiKeyDetails = $this->ApiKey->getKeyDetails($user_id, $user_token);
+      if($apiKeyDetails[0]->api_key !== $api_key)
+      {
+          $this->Error->setError(['Invalid api key']);
+          return $this->Error->getError();
+      }
+      $this->ApiKey->setRequest($apiKeyDetails[0]->api_id, $this->ip_address, $this->requestUrl);
+      return true;
+  }
 	public function resetPassword(Request $request)
 	{
 		$rules = [
@@ -283,7 +284,7 @@ class accountController extends Controller
 				)
 				->cookie("host_id", $data[0]->user_id, $min)
 				->cookie("host_token", $data[0]->user_token, $min)
-				->cookie("host_type", "user")
+				->cookie("host_type", "user", $min)
 				->cookie("iliua", true, $min);
 				return $response;
 			}
@@ -342,7 +343,7 @@ class accountController extends Controller
 				)
 				->cookie("host_id", $data[0]->user_id, $min)
 				->cookie("host_token", $data[0]->user_token, $min)
-				->cookie("host_type", "user")
+				->cookie("host_type", "user", $min)
 				->cookie("iliua", true, $min);
 				return $response;
 			}
@@ -607,6 +608,123 @@ class accountController extends Controller
 		])->get();
 	}
 
+	public function updateUserAddress(Request $request)
+	{
+		$rules = [
+			"address" => "required|string",
+			"province_state" => "required|string|max:56",
+			"city" => "required|string|max:46",
+			"country" => "required|string|max:46",
+			"postal_code" => "required|string|max:8",
+			"user_id" => "required|integer",
+			"user_token" => "required|string"
+		];
+
+
+		$isValidUser = Validator::make($request->all(), $rules, []);
+		$isNotValidRequest = $this->custom_validator->isNotValidRequest($isValidUser);
+		if($isNotValidRequest)
+			return $isNotValidRequest;
+		else if($request->cookie("is_browser")===null || $_COOKIE["is_browser"] === null)
+		{
+			if($request->cookie("iliua") === null || $request->cookie("host_id") ===null ||
+				$request->cookie("host_token") ===null )
+			{
+				$this->Error->setError(["Authentication error, user details not set"]);
+				return $this->Error->getError();
+			}
+			else if($request->cookie("host_id") !== $request->user_id ||
+				$request->cookie("host_token") !== $request->host_token)
+			{
+				$this->Error->setError(["Authentication data not valid"]);
+			}
+		}
+
+		$userAddress = userAddressModel::where([
+			["user_id", $request->user_id],
+			["user_token", $request->user_token]
+		])->get();
+		if($userAddress->count() <= 0)
+		{
+			userAddressModel::create([
+				"address" => $request->address,
+				"province_state" => $request->province_state,
+				"city" => $request->city,
+				"country" => $request->country,
+				"postal_code" => $request->postal_code,
+				"about_user" => '',
+				"user_id" => $request->user_id,
+				"user_token" => $request->user_token,
+			]);
+			$this->Error->setSuccess([]);
+			return $this->Error->getSuccess();
+		}
+		else {
+			userAddressModel::where([
+				["user_id", $request->user_id],
+				["user_token", $request->user_token],
+			])->update([
+				"address" => $request->address,
+				"province_state" => $request->province_state,
+				"city" => $request->city,
+				"country" => $request->country,
+				"postal_code" => $request->postal_code
+			]);
+			$this->Error->setSuccess([]);
+			return $this->Error->getSuccess();
+		}
+
+	}
+	public function updateUserAboutMe(Request $request)
+	{
+		$rules = [
+			"user_id" => "required|integer",
+			"user_token" => "required|string",
+			"about_me" => "required|string|max:600"
+		];
+		$isValidUser = Validator::make($request->all(), $rules, []);
+		$isNotValidRequest = $this->custom_validator->isNotValidRequest($isValidUser);
+		if($isNotValidRequest)
+			return $isNotValidRequest;
+		else if($request->cookie("is_browser")===null || $_COOKIE["is_browser"] === null)
+		{
+			if($request->cookie("iliua") === null || $request->cookie("host_id") ===null ||
+				$request->cookie("host_token") ===null )
+			{
+				$this->Error->setError(["Authentication error, user details not set"]);
+				return $this->Error->getError();
+			}
+			else if($request->cookie("host_id") !== $request->user_id ||
+				$request->cookie("host_token") !== $request->host_token)
+			{
+				$this->Error->setError(["Authentication data not valid"]);
+			}
+		}
+		$userAddress = userAddressModel::where([
+			["user_id", $request->user_id],
+			["user_token", $request->user_token]
+		])->get();
+		if($userAddress->count() <= 0)
+		{
+			userAddressModel::create([
+				"about_user" => '',
+				"user_id" => $request->user_id,
+				"user_token" => $request->user_token,
+			]);
+			$this->Error->setSuccess([]);
+			return $this->Error->getSuccess();
+		}
+		else {
+			userAddressModel::where([
+				["user_id", $request->user_id],
+				["user_token", $request->user_token],
+			])->update([
+				"about_user" => $request->about_me
+			]);
+			$this->Error->setSuccess([]);
+			return $this->Error->getSuccess();
+		}
+	}
 	public function setUserInterest(Request $request)
 	{
 		$rules = [
@@ -676,6 +794,28 @@ class accountController extends Controller
 
 
 	}
+	public function getUserAddress(Request $request)
+	{
+		$rules = [
+			"user_id" => "required|integer",
+			"user_token" => "required|string",
+		];
 
+		$isValidUser = Validator::make($request->all(), $rules, []);
+		$isNotValidRequest = $this->custom_validator->isNotValidRequest($isValidUser);
+		if($isNotValidRequest)
+			return $isNotValidRequest;
+		$address = userAddressModel::where([
+			["user_id", $request->user_id],
+			["user_token", $request->user_token]
+		])->get();
+		if($address === null )
+		{
+			$this->Error->setError(["Could not fetch the address of the user"]);
+			return $this->Error->getError();
+		}
+		$this->Error->setSuccess($address);
+		return $this->Error->getSuccess();
+	}
 
 }

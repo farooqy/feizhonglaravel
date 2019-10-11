@@ -34,7 +34,54 @@ var app = new Vue({
       this.User.guest_token = data.user_token;
       this.User.api_key = data.api_key;
       this.User.user_profile = data.user_profile;
+      var req = {"user_id": this.User.guest_id, "user_token":this.User.guest_token};
+      this.serverRequest("/api/user/address", req, "user_address");
       console.log(data);
+    },
+    setUserAddress(data)
+    {
+      if(data[0] !== undefined)
+        data = data[0];
+      if(data.hasOwnProperty("address"))
+      {
+        this.User.address = data.address;
+        this.User.province_state = data.province_state;
+        this.User.city = data.city;
+        this.User.country = data.country;
+        this.User.postal_code = data.postal_code;
+        this.User.about_me = data.about_user;
+      }
+      else {
+        console.log("The address is empty");
+      }
+    },
+    updateInfo()
+    {
+      var req = {
+
+      }
+    },
+    updateAddress()
+    {
+      var req = {
+        "address": this.User.address,
+        "province_state": this.User.province_state,
+        "city": this.User.city,
+        "country": this.User.country,
+        "postal_code": this.User.postal_code,
+        "user_id": this.User.guest_id,
+        "user_token": this.User.guest_token
+      };
+      this.serverRequest("/api/user/update/address", req, "update_address");
+    },
+    updateAboutMe()
+    {
+      var req = {
+        "user_id": this.User.guest_id,
+        "user_token": this.User.guest_token,
+        "about_me": this.User.about_me
+      };
+      this.serverRequest("/api/user/update/aboutMe", req, "udpate_about_me");
     },
     serverRequest(url, form, type="default")
     {
@@ -50,6 +97,8 @@ var app = new Vue({
         {
           if(type === "hostdata")
             this.setUserData(response.data);
+          else if(type === "user_address")
+            this.setUserAddress(response.data);
           else {
             alert('success');
             console.log(response);

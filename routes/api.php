@@ -22,9 +22,12 @@ Route::post('/user/register', 'user\accountController@register');
 Route::post('/user/setInterest', 'user\accountController@setUserInterest');
 Route::post('/user/emailConfirmation', 'user\accountController@emailConfirmation');
 Route::post('/user/confirmUser', 'user\accountController@verifyUser');
+Route::post('/user/update/address', 'user\accountController@updateUserAddress');
+Route::post('/user/update/aboutMe', 'user\accountController@updateUserAboutMe');
 Route::post('/user/update', 'user\accountController@updateUserInfo');
 Route::post('/user/resetPassword', 'user\accountController@resetPassword');
 Route::post('/user/data', 'user\accountController@getUserData');
+Route::post('/user/address', 'user\accountController@getUserAddress');
 
 Route::post('/comp/login', 'companies\accountController@companyLogin');
 Route::post('/comp/register/basicInfo', 'companies\accountController@basicInfoRegister');

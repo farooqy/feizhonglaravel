@@ -22,6 +22,13 @@ export default class User {
       "guest_id" : null,
       "guest_token" : null,
       "api_key" : null,
-    }
+    },
+    this.address = "Uknown address";
+    this.province_state = "Uknown";
+    this.city = "Uknown";
+    this.country = "Uknown";
+    this.postal_code = "0000";
+    this.about_me = null;
+
   }
 }

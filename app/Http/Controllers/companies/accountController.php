@@ -128,7 +128,7 @@ class accountController extends Controller
 				$response = response($this->success)
 				->cookie("host_id", $data[0]->comp_id, $min)
 				->cookie("host_token", $data[0]->comp_token, $min)
-				->cookie("host_type", "comp")
+				->cookie("host_type", "comp", $min)
 				->cookie("iliua", true, $min);
 				return $response;
 			}

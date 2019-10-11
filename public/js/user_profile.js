@@ -49366,7 +49366,12 @@ var User = function User() {
     "guest_id": null,
     "guest_token": null,
     "api_key": null
-  };
+  }, this.address = "Uknown address";
+  this.province_state = "Uknown";
+  this.city = "Uknown";
+  this.country = "Uknown";
+  this.postal_code = "0000";
+  this.about_me = null;
 };
 
 
@@ -49544,7 +49549,49 @@ var app = new Vue({
       this.User.guest_token = data.user_token;
       this.User.api_key = data.api_key;
       this.User.user_profile = data.user_profile;
+      var req = {
+        "user_id": this.User.guest_id,
+        "user_token": this.User.guest_token
+      };
+      this.serverRequest("/api/user/address", req, "user_address");
       console.log(data);
+    },
+    setUserAddress: function setUserAddress(data) {
+      if (data[0] !== undefined) data = data[0];
+
+      if (data.hasOwnProperty("address")) {
+        this.User.address = data.address;
+        this.User.province_state = data.province_state;
+        this.User.city = data.city;
+        this.User.country = data.country;
+        this.User.postal_code = data.postal_code;
+        this.User.about_me = data.about_user;
+      } else {
+        console.log("The address is empty");
+      }
+    },
+    updateInfo: function updateInfo() {
+      var req = {};
+    },
+    updateAddress: function updateAddress() {
+      var req = {
+        "address": this.User.address,
+        "province_state": this.User.province_state,
+        "city": this.User.city,
+        "country": this.User.country,
+        "postal_code": this.User.postal_code,
+        "user_id": this.User.guest_id,
+        "user_token": this.User.guest_token
+      };
+      this.serverRequest("/api/user/update/address", req, "update_address");
+    },
+    updateAboutMe: function updateAboutMe() {
+      var req = {
+        "user_id": this.User.guest_id,
+        "user_token": this.User.guest_token,
+        "about_me": this.User.about_me
+      };
+      this.serverRequest("/api/user/update/aboutMe", req, "udpate_about_me");
     },
     serverRequest: function serverRequest(url, form) {
       var _this = this;
@@ -49557,7 +49604,7 @@ var app = new Vue({
           _this.errorObject.error_text = response.error_message;
           _this.errorObject.errorModal = _this.errorModal = true;
         } else if (response.isSuccess) {
-          if (type === "hostdata") _this.setUserData(response.data);else {
+          if (type === "hostdata") _this.setUserData(response.data);else if (type === "user_address") _this.setUserAddress(response.data);else {
             alert('success');
             console.log(response);
           }
