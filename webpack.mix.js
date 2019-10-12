@@ -17,4 +17,5 @@ mix.js('resources/js/app.js', 'public/js')
   .js('resources/js/Company.js', 'public/js')
   .js('resources/js/profile/user_profile.js', 'public/js')
   .js('resources/js/profile/comp_profile.js', 'public/js')
+  .js('resources/js/profile/comp_post.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css');

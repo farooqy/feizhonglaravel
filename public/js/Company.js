@@ -121,6 +121,8 @@ var Company = function Company() {
   this.company_type = null;
   this.company_subtype = null;
   this.company_description = null;
+  this.company_hasLicense = null;
+  this.company_license = null;
   this.browser = true;
   this.error = {
     "company_logo": null,

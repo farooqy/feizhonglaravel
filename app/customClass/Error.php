@@ -30,7 +30,7 @@ class Error{
     		"successMessage" => null,
     		"error_code_number" => $error_code,
     	];
-
+			// print_r($this->getError());
     	Log::channel('customlog')->info("[-ERROR-] ::  ".implode(" - ",$this->getError()["errorMessage"])." - IP:: ".\Request::ip()." - URL: ".url()->current(). " - Params:: ".implode(\Request::route()->parameters()));
 
 	}
@@ -46,11 +46,11 @@ class Error{
 	public function getError()
 	{
 		return $this->error;
-	} 
+	}
 	public function getSuccess()
 	{
 		return $this->success;
-	} 
+	}
 
 	public function configErrorNumbers()
 	{
@@ -60,5 +60,5 @@ class Error{
 			"2" => "The request contains/missing invalid/required paramaters",
 		];
 	}
-} 
+}
 ?>

@@ -49818,6 +49818,7 @@ var app = new Vue({
         console.log("server error ", error);
         _this2.errorObject.error_text = error;
         _this2.errorObject.errorModal = _this2.errorModal = true;
+        _this2.Loader.showLoader = _this2.showLoader = false;
       });
     },
     disMissErrorModel: function disMissErrorModel() {

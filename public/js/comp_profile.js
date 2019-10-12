@@ -1688,6 +1688,65 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/authenticationmodal.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/authenticationmodal.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+module.exports = {
+  data: function data() {
+    this.field_change_password = null;
+    return {
+      'field_change_password': this.field_change_password
+    };
+  },
+  methods: {
+    disMissAuthenticationModal: function disMissAuthenticationModal() {
+      this.$emit('close-auth-modal');
+    },
+    saveChanges: function saveChanges() {
+      if (this.change_type === 1) this.$emit('save-address', this.field_change_password);else if (this.change_type === 2) this.$emit('save-description', this.field_change_password);else if (this.change_type === 3) this.$emit('save-profile', this.field_change_password, this.change_value);else this.$emit('save-changes', this.field_change_password);
+    }
+  },
+  props: ["change_type", "change_value"]
+};
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/error.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/error.vue?vue&type=script&lang=js& ***!
@@ -1754,6 +1813,72 @@ module.exports = {
     };
   },
   props: ["showLoader"]
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/phoneupdate.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/phoneupdate.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+module.exports = {
+  data: function data() {
+    this.field_change_password = null;
+    this.verification_code = null;
+    return {
+      'field_change_password': this.field_change_password
+    };
+  },
+  methods: {
+    disMissAuthenticationModal: function disMissAuthenticationModal() {
+      this.$emit('close-phone-modal');
+    },
+    saveChanges: function saveChanges() {
+      this.$emit('save-phone-changes', this.field_change_password, this.verification_code);
+    }
+  },
+  props: ['verification_code']
 };
 
 /***/ }),
@@ -37163,6 +37288,123 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/authenticationmodal.vue?vue&type=template&id=4873c6ba&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/authenticationmodal.vue?vue&type=template&id=4873c6ba& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal",
+      staticStyle: { display: "block" },
+      attrs: { tabindex: "-1", role: "dialog" }
+    },
+    [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "modal-header" }, [
+            _c("h5", { staticClass: "modal-title" }, [
+              _vm._v(" Enter password to save changes ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: {
+                  type: "button",
+                  "data-dismiss": "modal",
+                  "aria-label": "Close"
+                },
+                on: { click: _vm.disMissAuthenticationModal }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "form-group focused" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "form-control-label",
+                  attrs: { for: "input-first-name" }
+                },
+                [_vm._v("Enter password")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.field_change_password,
+                    expression: "field_change_password"
+                  }
+                ],
+                staticClass: "form-control form-control-alternative",
+                attrs: {
+                  type: "password",
+                  id: "input-first-name",
+                  placeholder: "Enter password"
+                },
+                domProps: { value: _vm.field_change_password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.field_change_password = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.saveChanges }
+              },
+              [_vm._v("\n        Save\n      ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" },
+                on: { click: _vm.disMissAuthenticationModal }
+              },
+              [_vm._v("Edit")]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/error.vue?vue&type=template&id=6e88e6cd&":
 /*!********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/error.vue?vue&type=template&id=6e88e6cd& ***!
@@ -37250,6 +37492,160 @@ var staticRenderFns = [
     )
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/phoneupdate.vue?vue&type=template&id=c4468988&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/phoneupdate.vue?vue&type=template&id=c4468988& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal",
+      staticStyle: { display: "block" },
+      attrs: { tabindex: "-1", role: "dialog" }
+    },
+    [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "modal-header" }, [
+            _c("h5", { staticClass: "modal-title" }, [
+              _vm._v(" Enter Verification code sent to your phone ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: {
+                  type: "button",
+                  "data-dismiss": "modal",
+                  "aria-label": "Close"
+                },
+                on: { click: _vm.disMissAuthenticationModal }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "form-group focused" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "form-control-label",
+                  attrs: { for: "input-first-name" }
+                },
+                [_vm._v("Enter Code")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.verification_code,
+                    expression: "verification_code"
+                  }
+                ],
+                staticClass: "form-control form-control-alternative",
+                attrs: {
+                  type: "password",
+                  id: "input-first-name",
+                  placeholder: "Enter password"
+                },
+                domProps: { value: _vm.verification_code },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.verification_code = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group focused" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "form-control-label",
+                  attrs: { for: "input-first-name" }
+                },
+                [_vm._v("Enter password")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.field_change_password,
+                    expression: "field_change_password"
+                  }
+                ],
+                staticClass: "form-control form-control-alternative",
+                attrs: {
+                  type: "password",
+                  id: "input-first-name",
+                  placeholder: "Enter password"
+                },
+                domProps: { value: _vm.field_change_password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.field_change_password = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.saveChanges }
+              },
+              [_vm._v("\n        Save\n      ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" },
+                on: { click: _vm.disMissAuthenticationModal }
+              },
+              [_vm._v("Edit")]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -49427,6 +49823,8 @@ var Company = function Company() {
   this.company_type = null;
   this.company_subtype = null;
   this.company_description = null;
+  this.company_hasLicense = null;
+  this.company_license = null;
   this.browser = true;
   this.error = {
     "company_logo": null,
@@ -49508,6 +49906,78 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/authenticationmodal.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/authenticationmodal.vue ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _authenticationmodal_vue_vue_type_template_id_4873c6ba___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./authenticationmodal.vue?vue&type=template&id=4873c6ba& */ "./resources/js/components/authenticationmodal.vue?vue&type=template&id=4873c6ba&");
+/* harmony import */ var _authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./authenticationmodal.vue?vue&type=script&lang=js& */ "./resources/js/components/authenticationmodal.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _authenticationmodal_vue_vue_type_template_id_4873c6ba___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _authenticationmodal_vue_vue_type_template_id_4873c6ba___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/authenticationmodal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/authenticationmodal.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/authenticationmodal.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./authenticationmodal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/authenticationmodal.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/authenticationmodal.vue?vue&type=template&id=4873c6ba&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/authenticationmodal.vue?vue&type=template&id=4873c6ba& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_template_id_4873c6ba___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./authenticationmodal.vue?vue&type=template&id=4873c6ba& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/authenticationmodal.vue?vue&type=template&id=4873c6ba&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_template_id_4873c6ba___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_authenticationmodal_vue_vue_type_template_id_4873c6ba___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
@@ -49655,6 +50125,78 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/phoneupdate.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/phoneupdate.vue ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _phoneupdate_vue_vue_type_template_id_c4468988___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./phoneupdate.vue?vue&type=template&id=c4468988& */ "./resources/js/components/phoneupdate.vue?vue&type=template&id=c4468988&");
+/* harmony import */ var _phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./phoneupdate.vue?vue&type=script&lang=js& */ "./resources/js/components/phoneupdate.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _phoneupdate_vue_vue_type_template_id_c4468988___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _phoneupdate_vue_vue_type_template_id_c4468988___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/phoneupdate.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/phoneupdate.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/phoneupdate.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./phoneupdate.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/phoneupdate.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/phoneupdate.vue?vue&type=template&id=c4468988&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/phoneupdate.vue?vue&type=template&id=c4468988& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_template_id_c4468988___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./phoneupdate.vue?vue&type=template&id=c4468988& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/phoneupdate.vue?vue&type=template&id=c4468988&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_template_id_c4468988___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_phoneupdate_vue_vue_type_template_id_c4468988___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/profile/comp_profile.js":
 /*!**********************************************!*\
   !*** ./resources/js/profile/comp_profile.js ***!
@@ -49666,8 +50208,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_error_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/error.vue */ "./resources/js/components/error.vue");
 /* harmony import */ var _components_loader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/loader.vue */ "./resources/js/components/loader.vue");
-/* harmony import */ var _Company_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! .././Company.js */ "./resources/js/Company.js");
+/* harmony import */ var _components_authenticationmodal_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/authenticationmodal.vue */ "./resources/js/components/authenticationmodal.vue");
+/* harmony import */ var _components_phoneupdate_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/phoneupdate.vue */ "./resources/js/components/phoneupdate.vue");
+/* harmony import */ var _Company_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! .././Company.js */ "./resources/js/Company.js");
 __webpack_require__(/*! .././bootstrap */ "./resources/js/bootstrap.js");
+
+
 
 
 
@@ -49678,12 +50224,206 @@ window.Axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 var app = new Vue({
   el: "#app",
   methods: {
-    updateInfo: function updateInfo(index) {},
-    updateAddress: function updateAddress() {},
-    updateCompanyDescription: function updateCompanyDescription() {},
-    updateUserLogo: function updateUserLogo(event) {},
-    serverRequest: function serverRequest(url, form) {
+    getCompanyData: function getCompanyData() {
+      var req = {
+        "platform": 1,
+        "host": "comp"
+      };
+      this.serverRequest("/api/comp/data", req, "comp_data");
+    },
+    setCompanyData: function setCompanyData(data) {
+      if (data[0]) data = data[0];
+      this.Company.company_logo = data.comp_logo;
+      this.Company.company_name = data.comp_name;
+      this.Company.company_email = data.comp_email;
+      this.Company.company_phone = data.comp_phone;
+      this.Company.guest_id = data.comp_id;
+      this.Company.guest_token = data.comp_token;
+      this.Company.company_address_one = data.address.comp_addr_one;
+      this.Company.company_address_two = data.address.comp_addr_two;
+      this.Company.company_province = data.address.comp_province;
+      this.Company.company_city = data.address.comp_city;
+      this.Company.company_type = data.type.comp_type;
+      this.Company.company_subtype = data.type.comp_subtype;
+      this.Company.company_description = data.type.comp_description;
+      this.Company.company_hasLicense = data.hasLicense;
+      console.log(data);
+      this.hideLoader();
+    },
+    updateInfo: function updateInfo(index) {
+      this.changeWhere.change_type = 0; //info
+
+      if (index === '2') {
+        var req = {
+          "telephone": this.Company.company_phone,
+          "guest_id": this.Company.guest_id,
+          "guest_token": this.Company.guest_token,
+          "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key
+        };
+        this.serverRequest("/api/comp/register/phoneverificaton", req, "newphone");
+      } else {
+        this.showPasswordModal = true;
+        this.updateTarget = index;
+      }
+
+      console.log('index ', index);
+    },
+    updatePhone: function updatePhone(p, code) {
+      var req = {
+        "company_id": this.Company.guest_id,
+        "company_token": this.Company.guest_token,
+        "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key,
+        "company_password": p,
+        "company_target_change": code
+      };
+      this.serverRequest("/api/comp/edit/phone", req, "update_phone");
+    },
+    saveChanges: function saveChanges(p) {
+      this.changeWhere.change_type = -1; //reset
+
+      this.disMissAuthenticationModal();
+      var data = {
+        "company_id": this.Company.guest_id,
+        "company_token": this.Company.guest_token,
+        "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key,
+        "company_password": p
+      };
+
+      switch (this.updateTarget) {
+        case '0':
+          data.company_target_change = this.Company.company_name;
+          this.serverRequest("/api/comp/edit/name", data, "update");
+          break;
+
+        case '1':
+          data.company_target_change = this.Company.company_logo;
+          this.serverRequest("/api/comp/edit/profiile", data, "update");
+          break;
+
+        case '2':
+          data.company_target_change = this.Company.company_phone;
+          this.serverRequest("/api/comp/edit/phone", data, "update");
+          break;
+
+        case '3':
+          data.company_target_change = this.Company.company_email;
+          this.serverRequest("/api/comp/edit/email", data, "update");
+          break;
+
+        default:
+      }
+
+      this.Loader.showLoader = this.showLoader = false;
+    },
+    updateAddress: function updateAddress(index) {
+      this.addressTarget = index;
+      this.showPasswordModal = true;
+      this.changeWhere.change_type = 1; //address
+    },
+    saveAddress: function saveAddress(p) {
+      var req = {
+        "company_id": this.Company.guest_id,
+        "company_token": this.Company.guest_token,
+        "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key,
+        "company_password": p
+      };
+
+      switch (this.addressTarget) {
+        case '0':
+          req.company_target_change = this.Company.company_address_one;
+          this.serverRequest("/api/comp/edit/addressOne", req, "address");
+          break;
+
+        case '1':
+          req.company_target_change = this.Company.company_address_two;
+          this.serverRequest("/api/comp/edit/addressTwo", req, "address");
+          break;
+
+        case '2':
+          req.company_target_change = this.Company.company_province;
+          this.serverRequest("/api/comp/edit/province", req, "address");
+          break;
+
+        case '3':
+          req.company_target_change = this.Company.company_city;
+          this.serverRequest("/api/comp/edit/city", req, "address");
+          break;
+
+        default:
+          console.log('unrecognized field ', this.addressTarget);
+      }
+    },
+    updateCompanyDescription: function updateCompanyDescription() {
+      this.changeWhere.change_type = 2;
+      this.showPasswordModal = true;
+    },
+    saveCompanyDescription: function saveCompanyDescription(p) {
+      var req = {
+        "company_id": this.Company.guest_id,
+        "company_token": this.Company.guest_token,
+        "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key,
+        "company_target_change": this.Company.company_description,
+        "company_password": p
+      };
+      this.serverRequest("/api/comp/edit/description", req, "update");
+    },
+    updateCompanyLogo: function updateCompanyLogo(event) {
       var _this = this;
+
+      console.log('updated event ', event);
+      var input = event.target;
+      this.Loader.showLoader = this.showLoader = true;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          _this.changeWhere.change_value = _this.updatedProfile = e.target.result;
+          _this.showPasswordModal = true;
+          _this.changeWhere.change_type = 3;
+
+          _this.hideLoader();
+        };
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    },
+    saveCompanyLogo: function saveCompanyLogo(p, input) {
+      console.log('event');
+      console.log('event ', input);
+      var req = {
+        "company_target_change": input,
+        "company_id": this.Company.guest_id,
+        "company_token": this.Company.guest_token,
+        "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key,
+        "company_password": p
+      };
+      this.serverRequest("/api/comp/edit/profile", req, "update_profile");
+    },
+    uploadCompanyLicense: function uploadCompanyLicense(event) {
+      var _this2 = this;
+
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var req = {
+            "license": e.target.result,
+            "comp_id": _this2.Company.guest_id,
+            "comp_token": _this2.Company.guest_token,
+            "api_key": _this2.Company.api_key === null ? "apikey" : _this2.Company.api_key
+          };
+
+          _this2.serverRequest("/api/comp/addLicense", req, "update_license");
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+    serverRequest: function serverRequest(url, form) {
+      var _this3 = this;
 
       var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "default";
       this.Loader.showLoader = this.showLoader = true;
@@ -49692,38 +50432,97 @@ var app = new Vue({
         response = response.data;
 
         if (response.hasOwnProperty('error_message')) {
-          _this.errorObject.error_text = response.error_message;
-          _this.errorObject.errorModal = _this.errorModal = true;
+          _this3.errorObject.error_text = response.error_message;
+          _this3.errorObject.errorModal = _this3.errorModal = true;
         } else if (response.isSuccess) {
-          // else {
-          alert('success');
-          console.log(response);
-          _this.Loader.showLoader = _this.showLoader = false; // }
+          if (type === "comp_data") _this3.setCompanyData(response.data);else if (type === "update") {
+            _this3.updateTarget = null;
+            _this3.showPasswordModal = null;
+            _this3.changeWhere.change_type = -1;
+
+            _this3.hideLoader();
+
+            alert("successfully updated");
+          } else if (type === "newphone") {
+            _this3.update_phone = true;
+
+            _this3.hideLoader();
+          } else if (type === "update_phone") {
+            _this3.changeWhere.change_type = -1;
+            _this3.update_phone = false;
+
+            _this3.hideLoader();
+
+            alert("phone number has been successfully updated");
+          } else if (type === "update_license") {
+            _this3.Company.company_hasLicense = true;
+            alert("Company license has been updated successfully");
+
+            _this3.hideLoader();
+          } else if (type === "address") {
+            _this3.changeWhere.change_type = -1; //reset
+
+            _this3.showPasswordModal = false;
+
+            _this3.hideLoader();
+          } else if (type === "update_profile") {
+            _this3.changeWhere.change_type = -1;
+            _this3.changeWhere.change_value = null;
+            _this3.showPasswordModal = false;
+            _this3.Company.company_logo = response.data.change_value;
+
+            _this3.hideLoader();
+          } else {
+            alert('success');
+            console.log(response);
+            _this3.Loader.showLoader = _this3.showLoader = false;
+          }
         } else {
-          _this.errorObject.error_text = response.errorMessage;
-          _this.errorObject.errorModal = _this.errorModal = true;
-          _this.Loader.showLoader = _this.showLoader = false;
+          _this3.changeWhere.change_type = -1;
+          _this3.showPasswordModal = false;
+          if (response.errorMessage[0]) response.errorMessage = response.errorMessage[0];
+          _this3.errorObject.error_text = response.errorMessage;
+          _this3.errorObject.errorModal = _this3.errorModal = true;
+
+          _this3.hideLoader();
         }
       })["catch"](function (error) {
+        _this3.changeWhere.change_type = -1;
         console.log("server error ", error);
-        _this.errorObject.error_text = error;
-        _this.errorObject.errorModal = _this.errorModal = true;
+        _this3.errorObject.error_text = error;
+        _this3.errorObject.errorModal = _this3.errorModal = true;
+
+        _this3.hideLoader();
       });
     },
     disMissErrorModel: function disMissErrorModel() {
       this.errorModal = false;
       this.errorObject.errorModal = this.errorModal;
       this.errorObject.error_text = "This is the default error text";
+    },
+    disMissAuthenticationModal: function disMissAuthenticationModal() {
+      this.showPasswordModal = false;
+      this.changeWhere.change_type = -1;
+    },
+    disMissPhoneModal: function disMissPhoneModal() {
+      this.update_phone = false;
+    },
+    hideLoader: function hideLoader() {
+      this.Loader.showLoader = this.showLoader = false;
     }
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.getCompanyData();
+  },
   computed: {},
   components: {
     error: _components_error_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    loader: _components_loader_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    loader: _components_loader_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    authenticationmodal: _components_authenticationmodal_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    phoneupdate: _components_phoneupdate_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: {
-    Company: new _Company_js__WEBPACK_IMPORTED_MODULE_2__["default"](),
+    Company: new _Company_js__WEBPACK_IMPORTED_MODULE_4__["default"](),
     errorModal: false,
     errorObject: {
       errorModal: false,
@@ -49733,6 +50532,14 @@ var app = new Vue({
     showLoader: false,
     Loader: {
       showLoader: false
+    },
+    showPasswordModal: false,
+    updateTarget: null,
+    update_phone: false,
+    addressTarget: null,
+    changeWhere: {
+      "change_type": -1,
+      "change_value": null
     }
   }
 });

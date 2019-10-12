@@ -39,6 +39,7 @@ Route::post("/comp/myposts", "companies\accountController@getMyPosts");
 Route::post('/comp/register/phoneverificaton', 'companies\accountController@sendConfirmationText');
 Route::post("/comp/addLicense", "companies\companyLicenseController@addCompanyLicense");
 Route::post("/comp/getLicense", "companies\companyLicenseController@getCompanyLicense");
+Route::post("/comp/data", "companies\accountController@getCompanyData");
 
 Route::post('/comp/status', 'statusController@index');
 Route::post('/comp/status/getStatus', 'statusController@getStatus');

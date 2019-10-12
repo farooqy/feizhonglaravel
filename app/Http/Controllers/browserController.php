@@ -92,4 +92,37 @@ class browserController extends Controller
         return redirect()->route("loginPage");
       }
     }
+
+    public function showPostPage()
+    {
+      if(!$this->isLoggedIn("comp"))
+      {
+        return redirect()->route('loginPage');
+      }
+
+      return view("atoclayout.post_page");
+
+    }
+
+    public function isLoggedIn($type="user")
+    {
+      if(isset($_COOKIE["iliua"]) && isset($_COOKIE["host_type"]))
+      {
+        if(!isset($_COOKIE["host_id"]) || !isset($_COOKIE["host_token"]))
+        {
+          $this->logout();
+          return false;
+        }
+        if($_COOKIE["host_type"] !== $type)
+        {
+          $this->logout();
+          return false;
+        }
+      }
+      else {
+        return false;
+      }
+
+      return true;
+    }
 }

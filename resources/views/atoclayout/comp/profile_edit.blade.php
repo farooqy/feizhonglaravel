@@ -20,6 +20,13 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
 </div>
 
 <div class="container-fluid mt--9">
+  <authenticationmodal v-show="showPasswordModal"
+  v-on:close-auth-modal="disMissAuthenticationModal" v-bind="changeWhere"
+  v-on:save-changes="saveChanges" v-on:save-address="saveAddress"
+  v-on:save-description="saveCompanyDescription"
+  v-on:save-profile="saveCompanyLogo"></authenticationmodal>
+  <phoneupdate v-show="update_phone" v-on:save-phone-changes="updatePhone"
+  v-on:close-phone-modal="disMissPhoneModal"></phoneupdate>
   <div class="row">
     <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
       <div class="card card-profile shadow">
@@ -33,7 +40,7 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
         </div>
         <div class="row" v-show="false">
           <input type="file" ref="logo_uploader" name="logo_uploader"
-          @change="updateUserLogo($event)" v-modal="updatedProfile"/>
+          @change="updateCompanyLogo($event)" />
         </div>
         <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
         </div>
@@ -69,7 +76,7 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
             </h3>
             <div class="h5 font-weight-300">
               <i class="ni location_pin mr-2"></i>
-              <span v-text="Company.city+' '+Company.Province">Uknown address</span>
+              <span v-text="Company.company_city+','+Company.company_province">Uknown address</span>
             </div>
             <div class="h5 mt-4">
               <i class="fas fa-map mr-2"></i>
@@ -151,13 +158,28 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
                 </div>
                 <div class="col-lg-5">
                   <div class="form-group focused">
+                    <label class="form-control-label" for="input-first-name">Company License</label>
+                    <div class="alert alert-danger" role="alert"
+                    v-show="Company.company_hasLicense === false"
+                    style="height: calc(1.6em + 0.75rem + 2px); padding: 6px 45px;
+                    cursor:pointer" @click="$refs.license_upload.click()">
+                      Please upload license
+                    </div>
+                      <div class="alert alert-success" role="alert"
+                      v-show="Company.company_hasLicense"
+                      style="height: calc(1.6em + 0.75rem + 2px); padding: 6px 45px;
+                      cursor:pointer" @click="$refs.license_upload.click()">
+                        Update License
+                      </div>
                   </div>
                 </div>
+                <div class="row" v-show="false">
+                  <input type="file" name="license_upload" ref="license_upload"
+                  @change="uploadCompanyLicense($event)">
+                </div>
 
-                <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
-                @click="updateInfo('1')">
+                <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;">
                   <span class="">
-                    <i class="fas fa-user-edit"></i>
                   </span>
                 </div>
               </div>
@@ -167,13 +189,19 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
             <h6 class="heading-small text-muted mb-4">Contact information</h6>
             <div class="pl-lg-4">
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                   <div class="form-group focused">
                     <label class="form-control-label" for="input-address">Address One</label>
                     <input id="input-address"
                     class="form-control form-control-alternative"
                     placeholder="Address one" v-model="Company.company_address_one" type="text">
                   </div>
+                </div>
+                <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
+                @click="updateAddress('0')">
+                  <span class="">
+                    <i class="fas fa-user-edit"></i>
+                  </span>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group focused">
@@ -183,9 +211,16 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
                     placeholder="Address two" v-model="Company.company_address_two" type="text">
                   </div>
                 </div>
+                <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
+                @click="updateAddress('1')">
+                  <span class="">
+                    <i class="fas fa-user-edit"></i>
+                  </span>
+                </div>
+
               </div>
               <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-5">
                   <div class="form-group focused">
                     <label class="form-control-label" for="input-city">Province</label>
                     <input type="text" id="input-city"
@@ -193,7 +228,14 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
                     placeholder="Province" v-model="Company.company_province">
                   </div>
                 </div>
-                <div class="col-lg-4">
+
+                <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
+                @click="updateAddress('2')">
+                  <span class="">
+                    <i class="fas fa-user-edit"></i>
+                  </span>
+                </div>
+                <div class="col-lg-5">
                   <div class="form-group focused">
                     <label class="form-control-label" for="input-country">City</label>
                     <input type="text" id="input-country"
@@ -201,24 +243,13 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
                     placeholder="City" v-model="Company.company_city">
                   </div>
                 </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-country">Postal code</label>
-                    <input type="number" id="input-postal-code"
-                    class="form-control form-control-alternative"
-                    placeholder="Postal code" v-model="Company.postal_code">
-                  </div>
-                </div>
-              </div>
 
-              <div class="row">
-                <div class="col-md-4 col-lg-4"></div>
-                <div class="col-md-4 col-lg-4">
-                  <div class="btn btn-sm btn-primary" @click="updateAddress">
-                    Update Address
-                  </div>
+                <div class="col-lg-1 mt-5 ml--3" style="cursor:pointer;"
+                @click="updateAddress('3')">
+                  <span class="">
+                    <i class="fas fa-user-edit"></i>
+                  </span>
                 </div>
-                <div class="col-md-4 col-lg-4"></div>
               </div>
 
             </div>

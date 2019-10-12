@@ -61,8 +61,54 @@ class accountController extends Controller
 	public function getCompanyData(Request $request)
 	{
 		$rules = [
-			
+			"host" => "required|string|in:comp",
+			"platform" => "required|integer|in:1"
 		];
+		$valid_request = Validator::make($request->all(), $rules,[]);
+		$isNotValidRequest = $this->custom_validator->isNotValidRequest($valid_request);
+		if($isNotValidRequest)
+			return $isNotValidRequest;
+		if(!$request->cookie("iliua") || !$request->cookie("is_browser") )
+		{
+			$this->Error->setError(["Authentication data not complete"]);
+			return $this->Error->getError();
+		}
+		else if($request->cookie("host_type") !== "comp")
+		{
+			$this->Error->setError(["The authentication host type is not valid"]);
+			$this->forgetAuthenticationCookies();
+			return $this->Error->getError();
+		}
+		$host_id = $request->cookie("host_id");
+		$host_token = $request->cookie("host_token");
+
+		if(!$host_id || !$host_token)
+		{
+			$this->Error->setError(["Authentication data is not set"]);
+			$this->forgetAuthenticationCookies();
+			return $this->Error->getError();
+		}
+		$data = companydataModel::where([
+			["comp_id", $host_id],
+			["comp_token", $host_token]
+		])->get();
+
+		if($data->count() <= 0)
+		{
+			$this->Error->setError(["Authentication failed. Could not get company
+			information. Please log in back"]);
+			$this->forgetAuthenticationCookies();
+			return $this->Error->getError();
+		}
+		$data[0]->type;
+		$data[0]->address;
+		if($data[0]->license === null)
+			$data[0]->hasLicense = false;
+		else
+			$data[0]->hasLicense = true;
+		$this->Error->setSuccess($data);
+		return $this->Error->getSuccess();
+
 	}
 	public function companyLogin(Request $request)
 	{
@@ -352,31 +398,18 @@ class accountController extends Controller
     	try
     	{
     		$comp_token = hash('md5', time());
-    		$publicpath = public_path('uploads/comp/'.$comp_token.'/profile');
-    		if(!is_dir($publicpath))
-    		{
-    			if(!mkdir($publicpath, 0765, true))
-    			{
-    				$this->setError(["Failed to create upload directory. Please contact support"]);
-    				return $this->error;
-    			}
-    		}
-    		$allowed_file_types = ["image/jpeg", "image/png", "image/jpg"];
-            $file_extension = ["jpeg", "png", "jpg"];
-            $file_type =  substr($request->company_logo,(strpos($request->company_logo, "data:")+5),
-             (strpos($request->company_logo, ";")-5));
-            if(($type_key = array_search($file_type, $allowed_file_types)) === false)
-            {
-                $this->setError(["The file type provided is not valid. Given ".$file_type]);
-                return $this->error;
-            }
-            else
-                $extenstion = $file_extension[$type_key];
-            $request->company_logo = base64_decode(str_replace("data:".$file_type.";base64", '', $request->company_logo));
-            $filename = 'profile_'.hash('md5',time()).'_pic.'.$extenstion;
-            $logo_url = $publicpath.'/'.$filename;
+				$dir = 'uploads/comp/'.$comp_token.'/profile/';
+				if(env("APP_ENV") === "local")
+    			$publicpath = public_path($dir);
+				else
+					$publicpath = env("APP_ROOT").$dir;
+				$filename = 'profile_'.hash('md5',time()).'_pic.';
 
-    		File::put($logo_url, $request->company_logo);
+				$this->FileUploader->setFilePath($publicpath);
+				$this->FileUploader->setFileDirectory($dir);//path with url
+				$this->FileUploader->setFileName($filename);
+
+				$logo_url = $this->FileUploader->uplaodJsonFile($request->company_logo);
 
     		companydataModel::create([
     			"comp_name" => $request->company_name,
@@ -384,7 +417,7 @@ class accountController extends Controller
     			"comp_phone" => $request->company_phone,
     			"comp_token" => $comp_token,
     			"comp_pass" => Hash::make($request->company_password),
-    			"comp_logo" => env('APP_URL').'feizhonglaravel/public/uploads/comp/'.$comp_token.'/profile'.'/'.$filename,
+    			"comp_logo" => $logo_url,
     		]);
     		registrationTrackerModel::create(["comp_token"=>$comp_token, "stage" => 'basicinfo']);
     		phoneVerificationModel::where([
@@ -465,20 +498,28 @@ class accountController extends Controller
             }
         }
 
-    	$TwilioClient = new Client(env('TWILIO_SID'), env('TWILIO_AUTH'));
-    	try
-    	{
-    		$new_code = phoneVerificationModel::generateVerifCode();
+				$new_code = phoneVerificationModel::generateVerifCode();
     		phoneVerificationModel::create(
     			["target_phone" => $request->telephone, "verification_code" =>$new_code]
     		);
-    		$TwilioClient->messages->create(
-    			$request->telephone,[
-    				"body" => "[AtoC] ".$new_code." is your verification code. This code will expire in 5 minutes. Please do not disclose it for security purposes.",
+				$body = "[AtoC] ".$new_code." is your verification code. This code will expire in 5 minutes.
+				Please do not disclose it for security purposes.";
+
+				return $this->twilioSendMessage($request->telephone, $body);
+
+    }
+		public function twilioSendMessage($telephone, $body)
+		{
+			$TwilioClient = new Client(env('TWILIO_SID'), env('TWILIO_AUTH'));
+    	try
+    	{
+
+    		$TwilioClient->messages->create($telephone,[
+    				"body" => $body,
     				"from" => env('TWILIO_NUMBER'),
     			]);
     		Log::info(
-    			"message_sent_to: ".$request->telephone
+    			"message_sent_to: ".$telephone
     		);
             // $this->ApiKey->successFullRequest();
     		return json_encode([
@@ -492,15 +533,14 @@ class accountController extends Controller
     	catch(TwilioException $e)
     	{
     		return json_encode([
-    			"errorMessage" => [$e,"Twilio failed to send code"],
+    			"errorMessage" => ["Failed: Could not send verification code.", $e],
     			"successMessage" => null,
     			"isSuccess" => false,
     			"data" => [],
     			"extra" => "I am cause 4"
     		]);
     	}
-
-    }
+		}
 
     protected function isNotValidRequest($validator)
     {
@@ -545,25 +585,25 @@ class accountController extends Controller
     protected function registrationCheckTrack($request, $stage = "basicinfo")
     {
     	$is_registering = registrationTrackerModel::where('comp_token', $request->company_token)->get();
-		if($is_registering->count() <= 0)
-		{
-			$this->setError(["Cannot continue to this stage, please register the basic information first"]);
-			return false;
-		}
-		else if($is_registering->count() > 1)
-		{
-			registrationTrackerModel::where('comp_token', $request->company_token)->delete();
-			companydataModel::where('comp_token', $request->company_token)->delete();
-			companyAddressModel::where('comp_token', $request->company_token)->delete();
-			$this->setError(["The company registration cannot be continued at this stage, please restart your registration"]);
-			return false;
-		}
-		if($is_registering[0]->stage !== $stage)
-		{
-			$this->setError(["You are already registered with basic info, please log in to finish registering"]);
-			return false;
-		}
-		return true;
+			if($is_registering->count() <= 0)
+			{
+				$this->setError(["Cannot continue to this stage, please register the basic information first"]);
+				return false;
+			}
+			else if($is_registering->count() > 1)
+			{
+				registrationTrackerModel::where('comp_token', $request->company_token)->delete();
+				companydataModel::where('comp_token', $request->company_token)->delete();
+				companyAddressModel::where('comp_token', $request->company_token)->delete();
+				$this->setError(["The company registration cannot be continued at this stage, please restart your registration"]);
+				return false;
+			}
+			if($is_registering[0]->stage !== $stage)
+			{
+				$this->setError(["You are already registered with basic info, please log in to finish registering"]);
+				return false;
+			}
+			return true;
     }
     protected function uploadCompProfile($request, $model)
     {
@@ -606,6 +646,16 @@ class accountController extends Controller
                     $request->company_target_change = $file_url;
                 }
             }
+						else if($targetField === "comp_email")
+						{
+							$existingEmail = companydataModel::where("comp_email",
+							$request->company_target_change)->exists();
+							if($existingEmail)
+							{
+								$this->Error->setError(["The email is already taken"]);
+								return $this->Error->getError();
+							}
+						}
             $is_updated = $this->updateField($targetField, $request, $model);
             if($is_updated)
             {
@@ -661,7 +711,7 @@ class accountController extends Controller
     protected function checkUpdateFields($request, $targetField='')
     {
         $rules = [
-            "company_id" => "required|string",
+            "company_id" => "required|integer",
             "company_token" => "required|string|max:330|min:20",
             "company_target_change" => "required|string|min:6",
             "company_password" => "required|string",
@@ -719,7 +769,7 @@ class accountController extends Controller
             $current_value = $current_data[0][$targetField];
             if($current_value === $request->company_target_change)
             {
-                $this->Error->setError(['Please provide a different value than the existing '.$current_value." == ".$request->company_target_change]);
+                $this->Error->setError(['Please provide a different value than the existing ']);
                 return false;
             }
             $new_value = $request->company_target_change;
@@ -797,4 +847,11 @@ class accountController extends Controller
         $this->Error->setSuccess($statusData);
         return $this->Error->getSuccess();
     }
+		public function forgetAuthenticationCookies()
+		{
+			\Cookie::queue(\Cookie::forget("iliua"));
+      \Cookie::queue(\Cookie::forget("host_id"));
+      \Cookie::queue(\Cookie::forget("host_token"));
+      \Cookie::queue(\Cookie::forget("host_type"));
+		}
 }

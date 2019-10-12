@@ -3,6 +3,7 @@
     "/js/User.js": "/js/User.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/comp_post.js": "/js/comp_post.js",
     "/js/comp_profile.js": "/js/comp_profile.js",
     "/js/registration.js": "/js/registration.js",
     "/js/user_profile.js": "/js/user_profile.js"

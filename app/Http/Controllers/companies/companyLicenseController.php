@@ -85,7 +85,7 @@ class companyLicenseController extends Controller
     	if($hasValidLicense !== null && $hasValidLicense->count() > 0)
     	{
     		foreach ($hasValidLicense as $license) {
-    			
+
     			companyLicenseModel::where("id", $license->id)->update(["is_expired" => true]);
     		}
     	}

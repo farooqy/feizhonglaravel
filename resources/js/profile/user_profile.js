@@ -192,6 +192,7 @@ var app = new Vue({
         console.log("server error ",error);
         this.errorObject.error_text = error;
         this.errorObject.errorModal = this.errorModal = true;
+        this.Loader.showLoader = this.showLoader = false;
       })
     },
     disMissErrorModel()
