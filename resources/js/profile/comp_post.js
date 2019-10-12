@@ -106,43 +106,11 @@ var app = new Vue({
       {
         "post_title": "This is my title",
         "post_text": "This is my post text",
-        "post_image": "/atoc_assets/images/upload_logo_icon.jpg",
+        "post_image": "/atoc_assets/images/nairobi_bk.jpg",
       },
-      {
-        "post_title": "This is my title",
-        "post_text": "--This is my post textThis is my post textThis is my post textThis is my post textThis is my post text",
-        "post_image": "/atoc_assets/images/upload_logo_icon.jpg",
-      },
-        {
-          "post_title": "This is my title",
-          "post_text": "This is my post text",
-          "post_image": "/atoc_assets/images/upload_logo_icon.jpg",
-        },
-        {
-          "post_title": "This is my title",
-          "post_text": "--This is my post textThis is my post textThis is my post textThis is my post textThis is my post text",
-          "post_image": "/atoc_assets/images/upload_logo_icon.jpg",
-        },
-          {
-            "post_title": "This is my title",
-            "post_text": "This is my post text",
-            "post_image": "/atoc_assets/images/upload_logo_icon.jpg",
-          },
-          {
-            "post_title": "This is my title",
-            "post_text": "--This is my post textThis is my post textThis is my post textThis is my post textThis is my post text",
-            "post_image": "/atoc_assets/images/upload_logo_icon.jpg",
-          },
-            {
-              "post_title": "This is my title",
-              "post_text": "This is my post text",
-              "post_image": "/atoc_assets/images/upload_logo_icon.jpg",
-            },
-            {
-              "post_title": "This is my title",
-              "post_text": "--This is my post textThis is my post textThis is my post textThis is my post textThis is my post text",
-              "post_image": "/atoc_assets/images/upload_logo_icon.jpg",
-            },
     ],
+    post_images: [
+      
+    ]
   }
 })

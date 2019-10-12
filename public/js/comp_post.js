@@ -37308,11 +37308,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card mr-2 mt-3", staticStyle: { width: "13rem" } },
+    { staticClass: "card mr-2 mt-3", staticStyle: { width: "11rem" } },
     [
       _c("img", {
         staticClass: "card-img-top",
-        attrs: { src: _vm.post_image, alt: "Card image cap" }
+        attrs: { src: _vm.post_image, alt: "Card image cap", height: "130px" }
       }),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
@@ -49914,36 +49914,9 @@ var app = new Vue({
     user_posts: [{
       "post_title": "This is my title",
       "post_text": "This is my post text",
-      "post_image": "/atoc_assets/images/upload_logo_icon.jpg"
-    }, {
-      "post_title": "This is my title",
-      "post_text": "--This is my post textThis is my post textThis is my post textThis is my post textThis is my post text",
-      "post_image": "/atoc_assets/images/upload_logo_icon.jpg"
-    }, {
-      "post_title": "This is my title",
-      "post_text": "This is my post text",
-      "post_image": "/atoc_assets/images/upload_logo_icon.jpg"
-    }, {
-      "post_title": "This is my title",
-      "post_text": "--This is my post textThis is my post textThis is my post textThis is my post textThis is my post text",
-      "post_image": "/atoc_assets/images/upload_logo_icon.jpg"
-    }, {
-      "post_title": "This is my title",
-      "post_text": "This is my post text",
-      "post_image": "/atoc_assets/images/upload_logo_icon.jpg"
-    }, {
-      "post_title": "This is my title",
-      "post_text": "--This is my post textThis is my post textThis is my post textThis is my post textThis is my post text",
-      "post_image": "/atoc_assets/images/upload_logo_icon.jpg"
-    }, {
-      "post_title": "This is my title",
-      "post_text": "This is my post text",
-      "post_image": "/atoc_assets/images/upload_logo_icon.jpg"
-    }, {
-      "post_title": "This is my title",
-      "post_text": "--This is my post textThis is my post textThis is my post textThis is my post textThis is my post text",
-      "post_image": "/atoc_assets/images/upload_logo_icon.jpg"
-    }]
+      "post_image": "/atoc_assets/images/nairobi_bk.jpg"
+    }],
+    post_images: []
   }
 });
 

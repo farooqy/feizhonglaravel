@@ -32,6 +32,7 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
             <textarea v-model="post_text" class="textarea col-md-8 col-lg-8"
             rows="3" style="resize:none; height:80px"></textarea>
             <div class="col-md-4 col-lg-4">
+              <img v-for="image in post_images" :src="image" height="45px"/>
             </div>
 
           </div>
@@ -45,8 +46,13 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
     </div>
   </div>
   <div class="row mt-6">
-    <div class="" style="display:contents;">
-      <posts v-for="post in user_posts" v-bind="post"></posts>
+    <div class="card col-xl-12 col-md-12 col-md-12" >
+      <div class="card-header">Your posts</div>
+      <div class="card-body" >
+        <div class="row" style="">
+          <posts v-for="post in user_posts" v-bind="post"></posts>
+        </div>
+      </div>
     </div>
   </div>
 </div>

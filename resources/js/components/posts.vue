@@ -1,6 +1,6 @@
 <template>
-<div class="card mr-2 mt-3" style="width: 13rem;">
-  <img class="card-img-top" :src="post_image" alt="Card image cap">
+<div class="card mr-2 mt-3" style="width: 11rem;">
+  <img class="card-img-top" :src="post_image" alt="Card image cap" height="130px">
   <div class="card-body">
     <div class=""><p class="card-text" >{{post_text | truncate(30, '...')}}</p></div>
 
