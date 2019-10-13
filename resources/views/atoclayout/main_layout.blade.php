@@ -1,1647 +1,1022 @@
-<!doctype html>
-<html class="no-js" lang="en-US">
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Daxone - eCommerce Bootstrap 4 Template</title>
-    <meta name="robots" content="noindex, follow" />
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/atoc_assets/images/favicon.png">
+	<title>Atoc</title>
 
-<!--
-    <link rel="apple-touch-icon" sizes="180x180" href="/atoc_assets/images/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/atoc_assets/images/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/atoc_assets/images/favicons/favicon-16x16.png">
-    <link rel="manifest" href="/atoc_assets/images/favicons/site.webmanifest">
-    <link rel="mask-icon" href="/atoc_assets/images/favicons/safari-pinned-tab.svg" color="#1470a9">
-    <meta name="msapplication-TileColor" content="#2b5797">
-    <meta name="theme-color" content="#ffffff">
--->
+	<!-- Required meta tags always come first -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+	<!-- Main Font -->
+	<script src="/olympus_assets/js/webfontloader.min.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: ['Roboto:300,400,500,700:latin']
+			}
+		});
+	</script>
 
-    <!-- CSS -->
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" type="text/css" href="/olympus_assets/Bootstrap/dist/css/bootstrap-reboot.css">
+	<link rel="stylesheet" type="text/css" href="/olympus_assets/Bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/olympus_assets/Bootstrap/dist/css/bootstrap-grid.css">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/atoc_assets/css/vendor/bootstrap.min.css">
-    <!-- Icon Font CSS -->
-    <link rel="stylesheet" href="/atoc_assets/css/vendor/line-awesome.css">
-    <link rel="stylesheet" href="/atoc_assets/css/vendor/themify.css">
-    <!-- Other CSS -->
-    <link rel="stylesheet" href="/atoc_assets/css/plugins/animate.css">
-    <link rel="stylesheet" href="/atoc_assets/css/plugins/owl-carousel.css">
-    <link rel="stylesheet" href="/atoc_assets/css/plugins/slick.css">
-    <link rel="stylesheet" href="/atoc_assets/css/plugins/magnific-popup.css">
-    <link rel="stylesheet" href="/atoc_assets/css/plugins/jquery-ui.css">
-    <link rel="stylesheet" href="/atoc_assets/css/style.css">
+	<!-- Main Styles CSS -->
+	<link rel="stylesheet" type="text/css" href="/olympus_assets/css/main.min.css">
+  <link rel="stylesheet" type="text/css" href="/olympus_assets/css/fonts.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app.css">
+
 
 </head>
-
 <body>
-    <div class="main-wrapper">
-        <div class="chat_box">
-            <div class="chat_head">Chat</div>
-            <div class="chat_body">
-                <div class="chatting_with">Company 1</div>
-                <div class="chatting_with">Company 2</div>
-                <div class="chatting_with">Company 3</div>
-                <div class="chatting_with">Company 4</div>
-            </div>
-        </div>
-        <div class="msg_box">
-            <div class="msg_head">Company 1
-                <button class="msg_close"><span class="la la-close"></span></button>
-            </div>
-            <div class="msg_wrapper">
-                <div class="msg_body">
-                    <div class="msg_body_received"></div>
-                    <div class="msg_body_sent"></div>
-                    <div class="msg_body_new_msg"></div>
-                </div>
-                <div class="msg_footer"><textarea name="chat_input" id="chat_input" cols="1" rows="1" class="msg_footer_input" placeholder="Say something..."></textarea></div>
-            </div>
-        </div>
-        <header class="header-area sticky-bar header-padding-5">
-            <div class="main-header-wrap">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-3">
-                            <div class="logo mt-40">
-                                <a href="index.html"><img src="/atoc_assets/images/logo/logo-1.png" alt="logo"></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-6 d-flex justify-content-center">
-                            <div class="main-menu menu-common-style menu-lh-1 menu-margin-4 menu-font-3">
-                                <nav>
-                                    <ul>
-                                        <li class="angle-shape"><a href="/atoc_assets/pages/shop.html">For Buyers</a>
-                                            <ul class="mega-menu">
-                                                <li><a class="menu-title" href="#">Search suppliers</a>
-                                                    <ul>
-                                                        <li><a href="/atoc_assets/pages/shop.html">standard style</a></li>
-                                                        <li><a href="shop-2.html">standard style 2</a></li>
-                                                        <li><a href="shop-2-col.html">shop 2 column</a></li>
-                                                        <li><a href="shop-no-sidebar.html">shop no sidebar</a></li>
-                                                        <li><a href="shop-fullwide.html">shop fullwide</a></li>
 
-                                                    </ul>
-                                                </li>
-                                                <li><a class="menu-title" href="#">Sourcing Solutions</a>
-                                                    <ul>
-                                                        <li><a href="shop-fullwide-no-sidebar.html">fullwide no sidebar </a></li>
-                                                        <li><a href="shop-list.html">list style</a></li>
-                                                        <li><a href="shop-list-2col.html">list 2 column</a></li>
-                                                        <li><a href="shop-list-no-sidebar.html">list no sidebar</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a class="menu-title" href="#">Service</a>
-                                                    <ul>
-                                                        <li><a href="product-details.html">standard style</a></li>
-                                                        <li><a href="product-details-2.html">standard style 2</a></li>
-                                                        <li><a href="product-details-tab1.html">tab style 1</a></li>
-                                                        <li><a href="product-details-tab2.html">tab style 2</a></li>
-                                                        <li><a href="product-details-tab3.html">tab style 3 </a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a class="menu-title" href="#">Quick Links</a>
-                                                    <ul>
-                                                        <li><a href="product-details-gallery.html">gallery style </a></li>
-                                                        <li><a href="product-details-sticky.html">sticky style</a></li>
-                                                        <li><a href="product-details-slider.html">slider style</a></li>
-                                                        <li><a href="product-details-affiliate.html">Affiliate style</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="angle-shape"><a href="blog.html">For Suppliers</a>
-                                            <ul class="submenu">
-                                                <li><a href="blog.html">Register Company</a></li>
-                                                <li><a href="blog-2col.html">Import and Export</a></li>
-                                                <li><a href="blog-sidebar.html">blog sidebar </a></li>
-                                                <li><a href="blog-details.html">Create company profile </a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="login-register.html">Sign In</a></li>
-                                        <li class="angle-shape"><a href="register-login.html">Register for Free</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-3">
-                            <div class="header-right-wrap mt-40">
-                                <div class="search-wrap common-style mr-45">
-                                    <button class="search-active">
-                                        <i class="la la-search"></i>
-                                    </button>
-                                </div>
-                                <div class="cart-wrap cart-wrap-3 cart-wrap-3-white cart-wrap-hm9">
-                                    <button class="user-active">
-                                        <a href="login-register.html"><i class="la la-user"></i></a>
-<!--                                        <span class="count-style-3">01</span>-->
-                                    </button>
-<!--
-                                    <div class="shopping-cart-content">
-                                        <div class="shopping-cart-top">
-                                            <h4>Your Cart</h4>
-                                            <a class="cart-close" href="#"><i class="la la-close"></i></a>
-                                        </div>
-                                        <ul>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="/atoc_assets/images/cart/cart-1.jpg"></a>
-                                                    <div class="item-close">
-                                                        <a href="#"><i class="sli sli-close"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                                    <span>$99.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="la la-trash"></i></a>
-                                                </div>
-                                            </li>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="/atoc_assets/images/cart/cart-2.jpg"></a>
-                                                    <div class="item-close">
-                                                        <a href="#"><i class="sli sli-close"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                                    <span>$99.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="la la-trash"></i></a>
-                                                </div>
-                                            </li>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="/atoc_assets/images/cart/cart-3.jpg"></a>
-                                                    <div class="item-close">
-                                                        <a href="#"><i class="sli sli-close"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                                    <span>$99.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="la la-trash"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-bottom">
-                                            <div class="shopping-cart-total">
-                                                <h4>Subtotal <span class="shop-total">$290.00</span></h4>
-                                            </div>
-                                            <div class="shopping-cart-btn btn-hover default-btn text-center">
-                                                <a class="black-color" href="checkout.html">Continue to Chackout</a>
-                                            </div>
-                                        </div>
-                                    </div>
--->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- main-search start -->
-                <div class="main-search-active">
-                    <div class="sidebar-search-icon">
-                        <button class="search-close"><span class="la la-close"></span></button>
-                    </div>
-                    <div class="sidebar-search-input">
-                        <form>
-                            <div class="form-search">
-                                <input id="search" class="input-text" value="" placeholder="Search Now" type="search">
-                                <button>
-                                    <a href="/atoc_assets/pages/shop.html" style="color: white;"><i class="la la-search"></i></a>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="header-small-mobile">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <div class="mobile-logo">
-                                <a href="index.html">
-                                    <img alt="" src="/atoc_assets/images/logo/logo-1.png">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="header-right-wrap">
-                                <div class="cart-wrap common-style">
-                                    <button class="cart-active">
-                                        <i class="la la-shopping-cart"></i>
-                                        <span class="count-style">2 Items</span>
-                                    </button>
-                                    <div class="shopping-cart-content">
-                                        <div class="shopping-cart-top">
-                                            <h4>Your Cart</h4>
-                                            <a class="cart-close" href="#"><i class="la la-close"></i></a>
-                                        </div>
-                                        <ul>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="/atoc_assets/images/cart/cart-1.jpg"></a>
-                                                    <div class="item-close">
-                                                        <a href="#"><i class="sli sli-close"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                                    <span>$99.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="la la-trash"></i></a>
-                                                </div>
-                                            </li>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="/atoc_assets/images/cart/cart-2.jpg"></a>
-                                                    <div class="item-close">
-                                                        <a href="#"><i class="sli sli-close"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                                    <span>$99.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="la la-trash"></i></a>
-                                                </div>
-                                            </li>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="/atoc_assets/images/cart/cart-3.jpg"></a>
-                                                    <div class="item-close">
-                                                        <a href="#"><i class="sli sli-close"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Golden Easy Spot Chair.</a></h4>
-                                                    <span>$99.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="la la-trash"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-bottom">
-                                            <div class="shopping-cart-total">
-                                                <h4>Subtotal <span class="shop-total">$290.00</span></h4>
-                                            </div>
-                                            <div class="shopping-cart-btn btn-hover default-btn text-center">
-                                                <a class="black-color" href="checkout.html">Continue to Chackout</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mobile-off-canvas">
-                                    <a class="mobile-aside-button" href="#"><i class="la la-navicon la-2x"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div class="mobile-off-canvas-active">
-            <a class="mobile-aside-close"><i class="la la-close"></i></a>
-            <div class="header-mobile-aside-wrap">
-                <div class="mobile-search">
-                    <form class="search-form" action="#">
-                        <input type="text" placeholder="Search entire store…">
-                        <button class="button-search"><i class="la la-search"></i></button>
-                    </form>
-                </div>
-                <div class="mobile-menu-wrap">
-                    <!-- mobile menu start -->
-                    <div class="mobile-navigation">
-                        <!-- mobile menu navigation start -->
-                        <nav>
-                            <ul class="mobile-menu">
-                                <li class="menu-item-has-children"><a href="index.html">Home</a>
-                                    <ul class="dropdown">
-                                        <li><a href="index.html">Home version 1 </a></li>
-                                        <li><a href="index-2.html">Home version 2 </a></li>
-                                        <li><a href="index-3.html">Home version 3 </a></li>
-                                        <li><a href="index-4.html">Home version 4 </a></li>
-                                        <li><a href="index-5.html">Home version 5 </a></li>
-                                        <li><a href="index-6.html">Home version 6 </a></li>
-                                        <li><a href="index-7.html">Home version 7 </a></li>
-                                        <li><a href="index-8.html">Home version 8 </a></li>
-                                        <li><a href="index-9.html">Home version 9 </a></li>
-                                        <li><a href="index-10.html">Home version 10 </a></li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children "><a href="#">shop</a>
-                                    <ul class="dropdown">
-                                        <li class="menu-item-has-children"><a href="#">shop layout</a>
-                                            <ul class="dropdown">
-                                                <li><a href="/atoc_assets/pages/shop.html">standard grid style</a></li>
-                                                <li><a href="shop-2.html">standard style 2</a></li>
-                                                <li><a href="shop-2-col.html">shop 2 column</a></li>
-                                                <li><a href="shop-no-sidebar.html">shop no sidebar</a></li>
-                                                <li><a href="shop-fullwide.html">shop fullwide</a></li>
-                                                <li><a href="shop-fullwide-no-sidebar.html">fullwide no sidebar </a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="menu-item-has-children"><a href="#">shop list layout</a>
-                                            <ul class="dropdown">
-                                                <li><a href="shop-list.html">list style</a></li>
-                                                <li><a href="shop-list-2col.html">list 2 column</a></li>
-                                                <li><a href="shop-list-no-sidebar.html">list no sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="menu-item-has-children"><a href="#">product details</a>
-                                            <ul class="dropdown">
-                                                <li><a href="product-details.html">standard style</a></li>
-                                                <li><a href="product-details-2.html">standard style 2</a></li>
-                                                <li><a href="product-details-tab1.html">tab style 1</a></li>
-                                                <li><a href="product-details-tab2.html">tab style 2</a></li>
-                                                <li><a href="product-details-tab3.html">tab style 3 </a></li>
-                                                <li><a href="product-details-gallery.html">gallery style </a></li>
-                                                <li><a href="product-details-sticky.html">sticky style</a></li>
-                                                <li><a href="product-details-slider.html">slider style</a></li>
-                                                <li><a href="product-details-affiliate.html">Affiliate style</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children"><a href="#">Pages</a>
-                                    <ul class="dropdown">
-                                        <li><a href="about-us.html">about us </a></li>
-                                        <li><a href="cart.html">cart page </a></li>
-                                        <li><a href="checkout.html">checkout </a></li>
-                                        <li><a href="compare.html">compare </a></li>
-                                        <li><a href="wishlist.html">wishlist </a></li>
-                                        <li><a href="my-account.html">my account </a></li>
-                                        <li><a href="contact.html">contact us </a></li>
-                                        <li><a href="login-register.html">login/register </a></li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children "><a href="#">Blog</a>
-                                    <ul class="dropdown">
-                                        <li><a href="blog.html">standard style </a></li>
-                                        <li><a href="blog-2col.html">blog 2 column </a></li>
-                                        <li><a href="blog-sidebar.html">blog sidebar </a></li>
-                                        <li><a href="blog-details.html">blog details </a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="contact.html">Contact us</a></li>
-                            </ul>
-                        </nav>
-                        <!-- mobile menu navigation end -->
-                    </div>
-                    <!-- mobile menu end -->
-                </div>
-                <div class="mobile-curr-lang-wrap">
-                    <div class="single-mobile-curr-lang">
-                        <a class="mobile-language-active" href="#">Language <i class="la la-angle-down"></i></a>
-                        <div class="lang-curr-dropdown lang-dropdown-active">
-                            <ul>
-                                <li><a href="#">English (US)</a></li>
-                                <li><a href="#">English (UK)</a></li>
-                                <li><a href="#">Spanish</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="single-mobile-curr-lang">
-                        <a class="mobile-currency-active" href="#">Currency <i class="la la-angle-down"></i></a>
-                        <div class="lang-curr-dropdown curr-dropdown-active">
-                            <ul>
-                                <li><a href="#">USD</a></li>
-                                <li><a href="#">EUR</a></li>
-                                <li><a href="#">Real</a></li>
-                                <li><a href="#">BDT</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="single-mobile-curr-lang">
-                        <a class="mobile-account-active" href="#">My Account <i class="la la-angle-down"></i></a>
-                        <div class="lang-curr-dropdown account-dropdown-active">
-                            <ul>
-                                <li><a href="#">Login</a></li>
-                                <li><a href="#">Creat Account</a></li>
-                                <li><a href="#">My Account</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="mobile-social-wrap">
-                    <a class="facebook" href="#"><i class="ti-facebook"></i></a>
-                    <a class="twitter" href="#"><i class="ti-twitter-alt"></i></a>
-                    <a class="pinterest" href="#"><i class="ti-pinterest"></i></a>
-                    <a class="instagram" href="#"><i class="ti-instagram"></i></a>
-                    <a class="google" href="#"><i class="ti-google"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="slider-area section-margin-3">
-            <div class="slider-active-3 owl-carousel nav-style-5">
-                <div class="bg-img slider-height-10 res-white-overly-xs" style="background-image:url(/atoc_assets/images/slider/hm10-bg-1.jpg);">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="ml-auto col-xl-5 col-lg-6 col-md-10 col-12 col-sm-12">
-                                <div class="slider-content-10 slider-animated-1 slider-content-border2">
-                                    <h5 class="animated">Drongo Tech LLC. <br>Jiangsu, Nanjing</h5>
-                                        <h1 class="animated">Information Technology</h1>
-                                        <div class="slider-btn-10 btn-hover">
-                                            <a class="animated" href="product-details.html">Go to Company Profile</a>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-img slider-height-10 res-white-overly-xs" style="background-image:url(/atoc_assets/images/slider/hm10-bg-1.jpg);">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="ml-auto col-xl-5 col-lg-6 col-md-10 col-12 col-sm-12">
-                                <div class="slider-content-10 slider-animated-1 slider-content-border2">
-                                    <h5 class="animated">Avocado Limited <br>Jiangsu, Zhenjiang</h5>
-                                        <h1 class="animated">Food Production</h1>
-                                        <div class="slider-btn-10 btn-hover">
-                                            <a class="animated" href="product-details.html">Go to Company Profile</a>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="banner-area pt-30">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="banner-wrap mb-30 res-white-overly-xs">
-                            <a href="product-details.html">
-                                <img src="/atoc_assets/images/banner/banner-28.png" alt="banner">
-                            </a>
-                            <div class="banner-content-16">
-                                <h3><a href="product-details.html">Curved soft sofa</a></h3>
-                                <span>#New style</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="banner-wrap mb-30 res-white-overly-xs">
-                            <a href="product-details.html">
-                                <img src="/atoc_assets/images/banner/banner-29.png" alt="banner">
-                            </a>
-                            <div class="banner-content-16">
-                                <h3><a href="product-details.html">Easy wooden Chair</a></h3>
-                                <span>#Wooden</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="product-area pt-60 pb-85">
-            <div class="container">
-                <div class="section-title-6 mb-50 text-center">
-                    <h2>Trending Companies</h2>
-                </div>
-                <div class="product-slider-active-3 owl-carousel">
-                    <div class="product-wrap">
-                        <div class="product-img mb-15">
-                            <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm10-1.jpg" alt="product"></a>
-                            <div class="product-action">
-                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <span>Chair</span>
-                            <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                            <div class="price-addtocart">
-                                <div class="product-price">
-                                    <span>$210.00</span>
-                                </div>
-                                <div class="product-addtocart">
-                                    <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-wrap">
-                        <div class="product-img mb-15">
-                            <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm10-2.jpg" alt="product"></a>
-                            <div class="product-action">
-                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <span>Chair</span>
-                            <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                            <div class="price-addtocart">
-                                <div class="product-price">
-                                    <span>$210.00</span>
-                                    <span class="old">$230.00</span>
-                                </div>
-                                <div class="product-addtocart">
-                                    <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-wrap">
-                        <div class="product-img mb-15">
-                            <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm10-3.jpg" alt="product"></a>
-                            <div class="product-action">
-                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <span>Chair</span>
-                            <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                            <div class="price-addtocart">
-                                <div class="product-price">
-                                    <span>$250.00</span>
-                                </div>
-                                <div class="product-addtocart">
-                                    <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-wrap">
-                        <div class="product-img mb-15">
-                            <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm10-4.jpg" alt="product"></a>
-                            <div class="product-action">
-                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <span>Chair</span>
-                            <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                            <div class="price-addtocart">
-                                <div class="product-price">
-                                    <span>$320.00</span>
-                                    <span class="old">$120.00</span>
-                                </div>
-                                <div class="product-addtocart">
-                                    <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="product-area pb-50">
-            <div class="container">
-                <div class="section-title-tab-wrap2">
-                    <div class="row">
-                        <div class="col-xl-6 col-lg-4 col-md-4 col-sm-4">
-                            <div class="section-title-7">
-                                <h2>Top Picks</h2>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-8 col-md-8 col-sm-8">
-                            <div class="product-tab-list-5 nav">
-                                <a class="active" href="#product-10" data-toggle="tab">
-                                    <h5>All</h5>
-                                </a>
-                                <a href="#product-11" data-toggle="tab">
-                                    <h5>Electronics</h5>
-                                </a>
-                                <a href="#product-12" data-toggle="tab">
-                                    <h5>Furnitures</h5>
-                                </a>
-                                <a href="#product-13" data-toggle="tab">
-                                    <h5>Others</h5>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-content jump">
-                    <div id="product-10" class="tab-pane active">
-                        <div class="row">
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-1.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$210.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-2.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$250.00</span>
-                                                <span class="old">$270.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-3.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$200.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-4.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$220.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-5.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$250.00</span>
-                                                <span class="old">$260.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-6.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$260.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-7.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$240.00</span>
-                                                <span class="old">$290.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-8.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$280.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="product-11" class="tab-pane">
-                        <div class="row">
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-8.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$210.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-7.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$250.00</span>
-                                                <span class="old">$270.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-6.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$200.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-5.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$220.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-4.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$250.00</span>
-                                                <span class="old">$260.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-3.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$260.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-2.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$240.00</span>
-                                                <span class="old">$290.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-1.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$280.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="product-12" class="tab-pane">
-                        <div class="row">
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-4.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$210.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-3.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$250.00</span>
-                                                <span class="old">$270.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-2.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$200.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-1.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$220.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-8.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$250.00</span>
-                                                <span class="old">$260.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-7.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$260.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-6.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$240.00</span>
-                                                <span class="old">$290.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-5.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$280.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="product-13" class="tab-pane">
-                        <div class="row">
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-6.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$210.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-5.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$250.00</span>
-                                                <span class="old">$270.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-4.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$200.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-3.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$220.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-2.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$250.00</span>
-                                                <span class="old">$260.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-1.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$260.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-8.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$240.00</span>
-                                                <span class="old">$290.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                <div class="product-wrap mb-35">
-                                    <div class="product-img mb-15">
-                                        <a href="product-details.html"><img src="/atoc_assets/images/product/pro-hm1-7.jpg" alt="product"></a>
-                                        <div class="product-action">
-                                            <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class="la la-plus"></i></a>
-                                            <a title="Wishlist" href="wishlist.html"><i class="la la-heart-o"></i></a>
-                                            <a title="Compare" href="compare.html"><i class="la la-retweet"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <span>Chair</span>
-                                        <h4><a href="product-details.html">Golden Easy Spot Chair.</a></h4>
-                                        <div class="price-addtocart">
-                                            <div class="product-price">
-                                                <span>$280.00</span>
-                                            </div>
-                                            <div class="product-addtocart">
-                                                <a title="Add To Cart" href="#">+ Add To Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="deal-area section-margin-3">
-            <div class="bg-img deal-bg" style="background-image:url(/atoc_assets/images/bg/bg-5.jpg);">
-                <div class="container">
-                    <div class="row">
-                        <div class="ml-auto col-lg-7 col-md-10 col-sm-10 col-12">
-                            <div class="deal-content-4">
-                                <img src="/atoc_assets/images/icon-img/deal-text.png" alt="">
-                                <h2>Super deal for home</h2>
-                                <p>It is a long established fact that a reader will be distracted by the readable content</p>
-                                <div class="deal-btn4 btn-hover btn-hover-radious">
-                                    <a href="product-details.html">Company Profile</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="blog-area pt-90 pb-50">
-            <div class="container">
-                <div class="section-title-6 mb-50 text-center">
-                    <h2>News & Updates</h2>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="blog-wrap mb-30">
-                            <div class="blog-img mb-20">
-                                <a href="blog-details.html"><img src="/atoc_assets/images/blog/blog-1.jpg" alt="blog"></a>
-                            </div>
-                            <div class="blog-content blog-border">
-                                <h3><a href="blog-details.html">There are many variations of passages of Lorem.</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="blog-wrap mb-30">
-                            <div class="blog-img mb-20">
-                                <a href="blog-details.html"><img src="/atoc_assets/images/blog/blog-2.jpg" alt="blog"></a>
-                            </div>
-                            <div class="blog-content blog-border">
-                                <h3><a href="blog-details.html">There are many variations of passages of Lorem.</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="blog-wrap mb-30">
-                            <div class="blog-img mb-20">
-                                <a href="blog-details.html"><img src="/atoc_assets/images/blog/blog-3.jpg" alt="blog"></a>
-                            </div>
-                            <div class="blog-content blog-border">
-                                <h3><a href="blog-details.html">There are many variations of passages of Lorem.</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- FOOTER -->
-        <footer class="footer-area section-padding-2 bg-bluegray pt-80">
-            <div class="container-fluid">
-                <div class="footer-top pb-40">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-8 col-12 col-sm-12">
-                            <div class="footer-widget mb-30">
-                                <a href="#"><img src="/atoc_assets/images/logo/logo-1.png" alt="logo"></a>
-                                <div class="footer-about">
-                                    <p>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms. </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-6 col-sm-6">
-                            <div class="footer-widget mb-30 ml-55">
-                                <div class="footer-title-3">
-                                    <h3>Company</h3>
-                                </div>
-                                <div class="footer-list-3">
-                                    <ul>
-                                        <li><a href="about-us.html">About US</a></li>
-                                        <li><a href="blog.html">Blogs</a></li>
-                                        <li><a href="#">Careers</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-6 col-sm-6">
-                            <div class="footer-widget mb-30 footer-ngtv-mrg1">
-                                <div class="footer-title-3">
-                                    <h3>Product</h3>
-                                </div>
-                                <div class="footer-list-3">
-                                    <ul>
-                                        <li><a href="#">Pricing</a></li>
-                                        <li><a href="#">Features</a></li>
-                                        <li><a href="#">Customers</a></li>
-                                        <li><a href="#">Demos</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-6 col-sm-6">
-                            <div class="footer-widget mb-30 ml-35">
-                                <div class="footer-title-3">
-                                    <h3>Helps</h3>
-                                </div>
-                                <div class="footer-list-3">
-                                    <ul>
-                                        <li><a href="#">Introduction</a></li>
-                                        <li><a href="#">Feedback</a></li>
-                                        <li><a href="#">Referrals</a></li>
-                                        <li><a href="#">Network Status</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-6 col-sm-6">
-                            <div class="footer-widget mb-30 ml-135">
-                                <div class="footer-title-3">
-                                    <h3>Follow us</h3>
-                                </div>
-                                <div class="footer-list-3">
-                                    <ul>
-                                        <li><a href="#">Facebook</a></li>
-                                        <li><a href="#">Telegram</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-bottom pt-40 border-top-1">
 
-                    <div class="copyright-3 text-center pb-50">
-                        <p>Copyright © <a href="#">AtoC</a>. All Right Reserved</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
+<div id="app">
+<!-- Header-BP -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="tab-content quickview-big-img">
-                                    <div id="pro-1" class="tab-pane fade show active">
-                                        <img src="/atoc_assets/images/product/quickview-l1.jpg" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="product-details-content quickview-content">
-                                    <div class="pro-details-compare-wishlist">
-                                        <div class="pro-details-wishlist">
-                                            <a title="Add To Wishlist" href="#"><i class="la la-star-o"></i> Favorite</a>
-                                        </div>
-                                    </div>
-                                    <div class="pro-details-buy-now btn-hover btn-hover-radious">
-                                        <a href="#">Chat</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal end -->
+<header class="header" id="site-header">
 
-    </div>
-    <!-- JS
-============================================ -->
+	<div class="page-title">
+		<img src="/img/logo.png" style="height:40px; margin-top:-10px"/>
+	</div>
 
-    <!-- Modernizer JS -->
-    <script src="/atoc_assets/js/vendor/modernizr-3.6.0.min.js"></script>
-    <!-- Modernizer JS -->
-    <script src="/atoc_assets/js/vendor/jquery-3.3.1.min.js"></script>
-    <!-- Popper JS -->
-    <script src="/atoc_assets/js/vendor/popper.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="/atoc_assets/js/vendor/bootstrap.min.js"></script>
+	<div class="header-content-wrapper">
+		<form class="search-bar w-search notification-list friend-requests">
+			<div class="form-group with-button">
+				<input class="form-control js-user-search" placeholder="Search here people or pages..."
+        type="text" style="background: transparent;">
+				<button>
+					<svg class="olymp-magnifying-glass-icon">
+            <use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon"></use>
+          </svg>
+				</button>
+			</div>
+		</form>
 
-    <!-- Slick Slider JS -->
-    <script src="/atoc_assets/js/plugins/countdown.js"></script>
-    <script src="/atoc_assets/js/plugins/counterup.js"></script>
-    <script src="/atoc_assets/js/plugins/images-loaded.js"></script>
-    <script src="/atoc_assets/js/plugins/isotope.js"></script>
-    <script src="/atoc_assets/js/plugins/instafeed.js"></script>
-    <script src="/atoc_assets/js/plugins/jquery-ui.js"></script>
-    <script src="/atoc_assets/js/plugins/jquery-ui-touch-punch.js"></script>
-    <script src="/atoc_assets/js/plugins/magnific-popup.js"></script>
-    <script src="/atoc_assets/js/plugins/owl-carousel.js"></script>
-    <script src="/atoc_assets/js/plugins/scrollup.js"></script>
-    <script src="/atoc_assets/js/plugins/waypoints.js"></script>
-    <script src="/atoc_assets/js/plugins/slick.js"></script>
-    <script src="/atoc_assets/js/plugins/wow.js"></script>
-    <script src="/atoc_assets/js/plugins/textillate.js"></script>
-    <script src="/atoc_assets/js/plugins/elevatezoom.js"></script>
-    <script src="/atoc_assets/js/plugins/sticky-sidebar.js"></script>
-    <script src="/atoc_assets/js/plugins/smoothscroll.js"></script>
+		<a href="#" class="link-find-friend">Find Companies</a>
 
-    <!-- Main JS -->
-    <script src="/atoc_assets/js/main.js"></script>
+		<div class="control-block">
+
+
+			<div class="control-icon more has-items">
+				<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+				<div class="label-avatar bg-purple">2</div>
+
+				<div class="more-dropdown more-with-triangle triangle-top-center">
+					<div class="ui-block-title ui-block-title-small">
+						<h6 class="title">Chat / Messages</h6>
+						<a href="#">Mark all as read</a>
+						<a href="#">Settings</a>
+					</div>
+
+					<div class="mCustomScrollbar" data-mcs-theme="dark">
+						<ul class="notification-list chat-message">
+							<li class="message-unread">
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar59-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<a href="#" class="h6 notification-friend">Diana Jameson</a>
+									<span class="chat-message-item">Hi James! It’s Diana, I just wanted to let you know that we have to reschedule...</span>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+								</div>
+								<span class="notification-icon">
+									<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+								</span>
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+								</div>
+							</li>
+
+							<li>
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar60-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<a href="#" class="h6 notification-friend">Jake Parker</a>
+									<span class="chat-message-item">Great, I’ll see you tomorrow!.</span>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+								</div>
+								<span class="notification-icon">
+									<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+								</span>
+
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+								</div>
+							</li>
+							<li>
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar61-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<a href="#" class="h6 notification-friend">Elaine Dreyfuss</a>
+									<span class="chat-message-item">We’ll have to check that at the office and see if the client is on board with...</span>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 9:56pm</time></span>
+								</div>
+									<span class="notification-icon">
+										<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+									</span>
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+								</div>
+							</li>
+
+							<li class="chat-group">
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar11-sm.jpg" alt="author">
+									<img src="/olympus_assets/img/avatar12-sm.jpg" alt="author">
+									<img src="/olympus_assets/img/avatar13-sm.jpg" alt="author">
+									<img src="/olympus_assets/img/avatar10-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<a href="#" class="h6 notification-friend">You, Faye, Ed &amp; Jet +3</a>
+									<span class="last-message-author">Ed:</span>
+									<span class="chat-message-item">Yeah! Seems fine by me!</span>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 16th at 10:23am</time></span>
+								</div>
+									<span class="notification-icon">
+										<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+									</span>
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+								</div>
+							</li>
+						</ul>
+					</div>
+
+					<a href="#" class="view-all bg-purple">View All Messages</a>
+				</div>
+			</div>
+
+			<div class="control-icon more has-items">
+				<svg class="olymp-thunder-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-thunder-icon"></use></svg>
+
+				<div class="label-avatar bg-primary">8</div>
+
+				<div class="more-dropdown more-with-triangle triangle-top-center">
+					<div class="ui-block-title ui-block-title-small">
+						<h6 class="title">Notifications</h6>
+						<a href="#">Mark all as read</a>
+						<a href="#">Settings</a>
+					</div>
+
+					<div class="mCustomScrollbar" data-mcs-theme="dark">
+						<ul class="notification-list">
+							<li>
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar62-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<div><a href="#" class="h6 notification-friend">Mathilda Brinker</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+								</div>
+									<span class="notification-icon">
+										<svg class="olymp-comments-post-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use></svg>
+									</span>
+
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+									<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+								</div>
+							</li>
+
+							<li class="un-read">
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar63-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<div>You and <a href="#" class="h6 notification-friend">Nicholas Grissom</a> just became friends. Write on <a href="#" class="notification-link">his wall</a>.</div>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">9 hours ago</time></span>
+								</div>
+									<span class="notification-icon">
+										<svg class="olymp-happy-face-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+									</span>
+
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+									<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+								</div>
+							</li>
+
+							<li class="with-comment-photo">
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar64-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<div><a href="#" class="h6 notification-friend">Sarah Hetfield</a> commented on your <a href="#" class="notification-link">photo</a>.</div>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 5:32am</time></span>
+								</div>
+									<span class="notification-icon">
+										<svg class="olymp-comments-post-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use></svg>
+									</span>
+
+								<div class="comment-photo">
+									<img src="img/comment-photo1.jpg" alt="photo">
+									<span>“She looks incredible in that outfit! We should see each...”</span>
+								</div>
+
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+									<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+								</div>
+							</li>
+
+							<li>
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar65-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<div><a href="#" class="h6 notification-friend">Green Goo Rock</a> invited you to attend to his event Goo in <a href="#" class="notification-link">Gotham Bar</a>.</div>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 5th at 6:43pm</time></span>
+								</div>
+									<span class="notification-icon">
+										<svg class="olymp-happy-face-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+									</span>
+
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+									<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+								</div>
+							</li>
+
+							<li>
+								<div class="author-thumb">
+									<img src="/olympus_assets/img/avatar66-sm.jpg" alt="author">
+								</div>
+								<div class="notification-event">
+									<div><a href="#" class="h6 notification-friend">James Summers</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
+									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 2nd at 8:29pm</time></span>
+								</div>
+									<span class="notification-icon">
+										<svg class="olymp-heart-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-heart-icon"></use></svg>
+									</span>
+
+								<div class="more">
+									<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+									<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+								</div>
+							</li>
+						</ul>
+					</div>
+
+					<a href="#" class="view-all bg-primary">View All Notifications</a>
+				</div>
+			</div>
+
+			<div class="author-page author vcard inline-items more">
+				<div class="author-thumb">
+					<img alt="author" :src="getHostProfile()" class="avatar"
+          style="width:40px; height:40px">
+					<span class="icon-status online"></span>
+					<div class="more-dropdown more-with-triangle">
+						<div class="mCustomScrollbar" data-mcs-theme="dark">
+							<div class="ui-block-title ui-block-title-small">
+								<h6 class="title">Your Account</h6>
+							</div>
+
+							<ul class="account-settings">
+								<li>
+									<a href="29-YourAccount-AccountSettings.html">
+
+										<svg class="olymp-menu-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-menu-icon"></use></svg>
+
+										<span>Profile Settings</span>
+									</a>
+								</li>
+								<li>
+									<a href="36-FavPage-SettingsAndCreatePopup.html">
+										<svg class="olymp-star-icon left-menu-icon"  data-toggle="tooltip" data-placement="right"   data-original-title="FAV PAGE"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-star-icon"></use></svg>
+
+										<span>Create Fav Page</span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<svg class="olymp-logout-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-logout-icon"></use></svg>
+
+										<span>Log Out</span>
+									</a>
+								</li>
+							</ul>
+
+							<div class="ui-block-title ui-block-title-small">
+								<h6 class="title">About Olympus</h6>
+							</div>
+
+							<ul>
+								<li>
+									<a href="#">
+										<span>Terms and Conditions</span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<span>FAQs</span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<span>Careers</span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<span>Contact</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+				<a href="02-ProfilePage.html" class="author-name fn">
+					<div class="author-title">
+						@{{getHostName()}} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use></svg>
+					</div>
+					<span class="author-subtitle"> </span>
+				</a>
+			</div>
+
+		</div>
+	</div>
+
+</header>
+
+<!-- ... end Header-BP -->
+
+
+<!-- Responsive Header-BP -->
+
+<header class="header header-responsive" id="site-header-responsive">
+
+	<div class="header-content-wrapper">
+		<ul class="nav nav-tabs mobile-app-tabs" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#request" role="tab">
+					<div class="control-icon has-items">
+						<svg class="olymp-happy-face-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+						<div class="label-avatar bg-blue">6</div>
+					</div>
+				</a>
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#chat" role="tab">
+					<div class="control-icon has-items">
+						<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+						<div class="label-avatar bg-purple">2</div>
+					</div>
+				</a>
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#notification" role="tab">
+					<div class="control-icon has-items">
+						<svg class="olymp-thunder-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-thunder-icon"></use></svg>
+						<div class="label-avatar bg-primary">8</div>
+					</div>
+				</a>
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#search" role="tab">
+					<svg class="olymp-magnifying-glass-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon"></use></svg>
+					<svg class="olymp-close-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-close-icon"></use></svg>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<!-- Tab panes -->
+	<div class="tab-content tab-content-responsive">
+
+		<div class="tab-pane " id="chat" role="tabpanel">
+
+			<div class="mCustomScrollbar" data-mcs-theme="dark">
+				<div class="ui-block-title ui-block-title-small">
+					<h6 class="title">Chat / Messages</h6>
+					<a href="#">Mark all as read</a>
+					<a href="#">Settings</a>
+				</div>
+
+				<ul class="notification-list chat-message">
+					<li class="message-unread">
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar59-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<a href="#" class="h6 notification-friend">Diana Jameson</a>
+							<span class="chat-message-item">Hi James! It’s Diana, I just wanted to let you know that we have to reschedule...</span>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+						</div>
+									<span class="notification-icon">
+										<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+									</span>
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+						</div>
+					</li>
+
+					<li>
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar60-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<a href="#" class="h6 notification-friend">Jake Parker</a>
+							<span class="chat-message-item">Great, I’ll see you tomorrow!.</span>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+						</div>
+									<span class="notification-icon">
+										<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+									</span>
+
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+						</div>
+					</li>
+					<li>
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar61-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<a href="#" class="h6 notification-friend">Elaine Dreyfuss</a>
+							<span class="chat-message-item">We’ll have to check that at the office and see if the client is on board with...</span>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 9:56pm</time></span>
+						</div>
+										<span class="notification-icon">
+											<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+										</span>
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+						</div>
+					</li>
+
+					<li class="chat-group">
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar11-sm.jpg" alt="author">
+							<img src="/olympus_assets/img/avatar12-sm.jpg" alt="author">
+							<img src="/olympus_assets/img/avatar13-sm.jpg" alt="author">
+							<img src="/olympus_assets/img/avatar10-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<a href="#" class="h6 notification-friend">You, Faye, Ed &amp; Jet +3</a>
+							<span class="last-message-author">Ed:</span>
+							<span class="chat-message-item">Yeah! Seems fine by me!</span>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 16th at 10:23am</time></span>
+						</div>
+										<span class="notification-icon">
+											<svg class="olymp-chat---messages-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+										</span>
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+						</div>
+					</li>
+				</ul>
+
+				<a href="#" class="view-all bg-purple">View All Messages</a>
+			</div>
+
+		</div>
+
+		<div class="tab-pane " id="notification" role="tabpanel">
+
+			<div class="mCustomScrollbar" data-mcs-theme="dark">
+				<div class="ui-block-title ui-block-title-small">
+					<h6 class="title">Notifications</h6>
+					<a href="#">Mark all as read</a>
+					<a href="#">Settings</a>
+				</div>
+
+				<ul class="notification-list">
+					<li>
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar62-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<div><a href="#" class="h6 notification-friend">Mathilda Brinker</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
+						</div>
+										<span class="notification-icon">
+											<svg class="olymp-comments-post-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use></svg>
+										</span>
+
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+							<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+						</div>
+					</li>
+
+					<li class="un-read">
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar63-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<div>You and <a href="#" class="h6 notification-friend">Nicholas Grissom</a> just became friends. Write on <a href="#" class="notification-link">his wall</a>.</div>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">9 hours ago</time></span>
+						</div>
+										<span class="notification-icon">
+											<svg class="olymp-happy-face-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+										</span>
+
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+							<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+						</div>
+					</li>
+
+					<li class="with-comment-photo">
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar64-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<div><a href="#" class="h6 notification-friend">Sarah Hetfield</a> commented on your <a href="#" class="notification-link">photo</a>.</div>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 5:32am</time></span>
+						</div>
+										<span class="notification-icon">
+											<svg class="olymp-comments-post-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use></svg>
+										</span>
+
+						<div class="comment-photo">
+							<img src="img/comment-photo1.jpg" alt="photo">
+							<span>“She looks incredible in that outfit! We should see each...”</span>
+						</div>
+
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+							<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+						</div>
+					</li>
+
+					<li>
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar65-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<div><a href="#" class="h6 notification-friend">Green Goo Rock</a> invited you to attend to his event Goo in <a href="#" class="notification-link">Gotham Bar</a>.</div>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 5th at 6:43pm</time></span>
+						</div>
+										<span class="notification-icon">
+											<svg class="olymp-happy-face-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+										</span>
+
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+							<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+						</div>
+					</li>
+
+					<li>
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar66-sm.jpg" alt="author">
+						</div>
+						<div class="notification-event">
+							<div><a href="#" class="h6 notification-friend">James Summers</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 2nd at 8:29pm</time></span>
+						</div>
+										<span class="notification-icon">
+											<svg class="olymp-heart-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-heart-icon"></use></svg>
+										</span>
+
+						<div class="more">
+							<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+							<svg class="olymp-little-delete"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+						</div>
+					</li>
+				</ul>
+
+				<a href="#" class="view-all bg-primary">View All Notifications</a>
+			</div>
+
+		</div>
+
+		<div class="tab-pane " id="search" role="tabpanel">
+
+
+				<form class="search-bar w-search notification-list friend-requests">
+					<div class="form-group with-button">
+						<input class="form-control js-user-search" placeholder="Search here people or pages..." type="text">
+					</div>
+				</form>
+
+
+		</div>
+
+	</div>
+	<!-- ... end  Tab panes -->
+
+</header>
+
+<!-- ... end Responsive Header-BP -->
+<div class="header-spacer"></div>
+
+
+<div class="container" >
+
+  <div class="loaderHolder" v-show="showLoader">
+    <loader  v-bind="Loader"></loader>
+  </div>
+
+  <!-- Errormodal -->
+  <error v-show="errorModal" v-bind="errorObject"
+   v-on:close-error-modal="disMissErrorModel"></error>
+	<div class="row">
+
+		<!-- Main Content -->
+
+		@yield("body")
+
+	</div>
+</div>
+
+
+<!-- Window-popup Update Header Photo -->
+
+<div class="modal fade" id="update-header-photo" tabindex="-1" role="dialog" aria-labelledby="update-header-photo" aria-hidden="true">
+	<div class="modal-dialog window-popup update-header-photo" role="document">
+		<div class="modal-content">
+			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+				<svg class="olymp-close-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-close-icon"></use></svg>
+			</a>
+
+			<div class="modal-header">
+				<h6 class="title">Update Header Photo</h6>
+			</div>
+
+			<div class="modal-body">
+				<a href="#" class="upload-photo-item">
+				<svg class="olymp-computer-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-computer-icon"></use></svg>
+
+				<h6>Upload Photo</h6>
+				<span>Browse your computer.</span>
+			</a>
+
+				<a href="#" class="upload-photo-item" data-toggle="modal" data-target="#choose-from-my-photo">
+
+			<svg class="olymp-photos-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-photos-icon"></use></svg>
+
+			<h6>Choose from My Photos</h6>
+			<span>Choose from your uploaded photos</span>
+		</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- ... end Window-popup Update Header Photo -->
+
+<!-- Window-popup Choose from my Photo -->
+
+<div class="modal fade" id="choose-from-my-photo" tabindex="-1" role="dialog" aria-labelledby="choose-from-my-photo" aria-hidden="true">
+	<div class="modal-dialog window-popup choose-from-my-photo" role="document">
+
+		<div class="modal-content">
+			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+				<svg class="olymp-close-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-close-icon"></use></svg>
+			</a>
+			<div class="modal-header">
+				<h6 class="title">Choose from My Photos</h6>
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-expanded="true">
+							<svg class="olymp-photos-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-photos-icon"></use></svg>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-expanded="false">
+							<svg class="olymp-albums-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-albums-icon"></use></svg>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="modal-body">
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active" id="home" role="tabpanel" aria-expanded="true">
+
+						<div class="choose-photo-item" data-mh="choose-item">
+							<div class="radio">
+								<label class="custom-radio">
+									<img src="/olympus_assets/img/choose-photo1.jpg" alt="photo">
+									<input type="radio" name="optionsRadios">
+								</label>
+							</div>
+						</div>
+						<div class="choose-photo-item" data-mh="choose-item">
+							<div class="radio">
+								<label class="custom-radio">
+									<img src="/olympus_assets/img/choose-photo2.jpg" alt="photo">
+									<input type="radio" name="optionsRadios">
+								</label>
+							</div>
+						</div>
+						<div class="choose-photo-item" data-mh="choose-item">
+							<div class="radio">
+								<label class="custom-radio">
+									<img src="/olympus_assets/img/choose-photo3.jpg" alt="photo">
+									<input type="radio" name="optionsRadios">
+								</label>
+							</div>
+						</div>
+
+
+						<a href="#" class="btn btn-secondary btn-lg btn--half-width">Cancel</a>
+						<a href="#" class="btn btn-primary btn-lg btn--half-width">Confirm Photo</a>
+
+					</div>
+					<div class="tab-pane" id="profile" role="tabpanel" aria-expanded="false">
+
+						<div class="choose-photo-item" data-mh="choose-item">
+							<figure>
+								<img src="/olympus_assets/img/choose-photo10.jpg" alt="photo">
+								<figcaption>
+									<a href="#">South America Vacations</a>
+									<span>Last Added: 2 hours ago</span>
+								</figcaption>
+							</figure>
+						</div>
+						<div class="choose-photo-item" data-mh="choose-item">
+							<figure>
+								<img src="/olympus_assets/img/choose-photo11.jpg" alt="photo">
+								<figcaption>
+									<a href="#">Photoshoot Summer 2016</a>
+									<span>Last Added: 5 weeks ago</span>
+								</figcaption>
+							</figure>
+						</div>
+						<div class="choose-photo-item" data-mh="choose-item">
+							<figure>
+								<img src="/olympus_assets/img/choose-photo12.jpg" alt="photo">
+								<figcaption>
+									<a href="#">Amazing Street Food</a>
+									<span>Last Added: 6 mins ago</span>
+								</figcaption>
+							</figure>
+						</div>
+
+
+
+						<a href="#" class="btn btn-secondary btn-lg btn--half-width">Cancel</a>
+						<a href="#" class="btn btn-primary btn-lg disabled btn--half-width">Confirm Photo</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- ... end Window-popup Choose from my Photo -->
+
+
+<a class="back-to-top" href="#">
+	<img src="/olympus_assets/svg-icons/back-to-top.svg" alt="arrow" class="back-icon">
+</a>
+
+
+
+
+<!-- Window-popup-CHAT for responsive min-width: 768px -->
+
+<div class="ui-block popup-chat popup-chat-responsive" tabindex="-1" role="dialog" aria-labelledby="update-header-photo" aria-hidden="true">
+
+	<div class="modal-content">
+		<div class="modal-header">
+			<span class="icon-status online"></span>
+			<h6 class="title" >Chat</h6>
+			<div class="more">
+				<svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+				<svg class="olymp-little-delete js-chat-open"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use></svg>
+			</div>
+		</div>
+		<div class="modal-body">
+			<div class="mCustomScrollbar">
+				<ul class="notification-list chat-message chat-message-field">
+					<li>
+						<div class="author-thumb">
+							<img src="/olympus_assets/img/avatar14-sm.jpg" alt="author" class="mCS_img_loaded">
+						</div>
+						<div class="notification-event">
+							<span class="chat-message-item">Hi James! Please remember to buy the food for tomorrow! I’m gonna be handling the gifts and Jake’s gonna get the drinks</span>
+							<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 8:10pm</time></span>
+						</div>
+					</li>
+
+				</ul>
+			</div>
+
+			<form class="need-validation">
+
+		<div class="form-group label-floating is-empty">
+			<label class="control-label">Press enter to post...</label>
+			<textarea class="form-control" placeholder=""></textarea>
+			<div class="add-options-message">
+				<a href="#" class="options-message">
+					<svg class="olymp-computer-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-computer-icon"></use></svg>
+				</a>
+				<div class="options-message smile-block">
+
+					<svg class="olymp-happy-sticker-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-happy-sticker-icon"></use></svg>
+
+					<ul class="more-dropdown more-with-triangle triangle-bottom-right">
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat1.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat2.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat3.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat4.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat5.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat6.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat7.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat8.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat9.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat10.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat11.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat12.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat13.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat14.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat15.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat16.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat17.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat18.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat19.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat20.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat21.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat22.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat23.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat24.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat25.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat26.png" alt="icon">
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="/olympus_assets/img/icon-chat27.png" alt="icon">
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	</form>
+		</div>
+	</div>
+
+</div>
+
+<!-- ... end Window-popup-CHAT for responsive min-width: 768px -->
+</div> <!--- the end app -->
+<!-- JS Scripts -->
+<script src="/olympus_assets/js/jquery-3.2.1.js"></script>
+<script src="/olympus_assets/js/jquery.appear.js"></script>
+<script src="/olympus_assets/js/jquery.mousewheel.js"></script>
+<script src="/olympus_assets/js/perfect-scrollbar.js"></script>
+<script src="/olympus_assets/js/jquery.matchHeight.js"></script>
+<script src="/olympus_assets/js/svgxuse.js"></script>
+<script src="/olympus_assets/js/imagesloaded.pkgd.js"></script>
+<script src="/olympus_assets/js/Headroom.js"></script>
+<script src="/olympus_assets/js/velocity.js"></script>
+<script src="/olympus_assets/js/ScrollMagic.js"></script>
+<script src="/olympus_assets/js/jquery.waypoints.js"></script>
+<script src="/olympus_assets/js/jquery.countTo.js"></script>
+<script src="/olympus_assets/js/popper.min.js"></script>
+<script src="/olympus_assets/js/material.min.js"></script>
+<script src="/olympus_assets/js/bootstrap-select.js"></script>
+<script src="/olympus_assets/js/smooth-scroll.js"></script>
+<script src="/olympus_assets/js/selectize.js"></script>
+<script src="/olympus_assets/js/swiper.jquery.js"></script>
+<script src="/olympus_assets/js/moment.js"></script>
+<script src="/olympus_assets/js/daterangepicker.js"></script>
+<script src="/olympus_assets/js/simplecalendar.js"></script>
+<script src="/olympus_assets/js/fullcalendar.js"></script>
+<script src="/olympus_assets/js/isotope.pkgd.js"></script>
+<script src="/olympus_assets/js/ajax-pagination.js"></script>
+<script src="/olympus_assets/js/Chart.js"></script>
+<script src="/olympus_assets/js/chartjs-plugin-deferred.js"></script>
+<script src="/olympus_assets/js/circle-progress.js"></script>
+<script src="/olympus_assets/js/loader.js"></script>
+<script src="/olympus_assets/js/run-chart.js"></script>
+<script src="/olympus_assets/js/jquery.magnific-popup.js"></script>
+<script src="/olympus_assets/js/jquery.gifplayer.js"></script>
+<script src="/olympus_assets/js/mediaelement-and-player.js"></script>
+<script src="/olympus_assets/js/mediaelement-playlist-plugin.min.js"></script>
+
+<script src="/olympus_assets/js/base-init.js"></script>
+<script defer src="/olympus_assets/fonts/fontawesome-all.js"></script>
+
+<script src="/olympus_assets/Bootstrap/dist/js/bootstrap.bundle.js"></script>
+
+@yield("vuescript")
+
 </body>
-
 </html>

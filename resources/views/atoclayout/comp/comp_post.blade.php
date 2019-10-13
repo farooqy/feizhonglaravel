@@ -29,16 +29,23 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
         </div>
         <div class="card-body">
           <div class="row">
-            <textarea v-model="post_text" class="textarea col-md-8 col-lg-8"
+            <textarea v-model="Status.status_content" class="textarea col-md-8 col-lg-8"
             rows="3" style="resize:none; height:80px"></textarea>
             <div class="col-md-4 col-lg-4">
-              <img v-for="image in post_images" :src="image" height="45px"/>
+              <img v-for="image in Status.status_files" :src="image.file_src"
+              height="45px"/>
             </div>
 
           </div>
           <div class="row mt-1">
-            <i class="fas fa-cloud-upload-alt ml-2" style="font-size:40px"></i>
-            <button class="btn btn-primary ml-3">Post Status</button>
+            <i class="fas fa-cloud-upload-alt ml-2" style="font-size:40px;
+            cursor:pointer"
+            @click="$refs.status_file.click()"></i>
+            <button class="btn btn-primary ml-3"
+            @click.prevent="stagePost">Post Status</button>
+          </div>
+          <div v-show="false">
+            <input type="file" ref="status_file" @change="setStatusFile"/>
           </div>
         </div>
 

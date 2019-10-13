@@ -9,7 +9,11 @@ class compStatusModel extends Model
     //
 
     protected $table = 'company_status';
-    public function Status_Files() 
+    public $fillable = [
+      "status_generated_token", "comp_id", "comp_token", "status_content",
+      "has_files", "num_files", "status_status",
+    ];
+    public function Status_Files()
     {
     	return $this->hasMany('App\models\uploadedFilesModel', 'file_generated_token','status_generated_token');
     }

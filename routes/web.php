@@ -18,6 +18,9 @@ Route::get('/login', 'browserController@getLoginPage')->name("loginPage");
 Route::get('/logout', 'browserController@logout')->name("logoutPage");
 Route::get('/profile', 'browserController@profilePage')->name("profilePage");
 Route::get('/profile/edit', 'browserController@editProfilePage')->name("editProfilePage");
+
+Route::get('/comp/view/{comp_id}/{comp_token}', 'browserController@viewCompany');
+
 Route::get('/posts', 'browserController@showPostPage')->name("showPostPage");
 Route::get('/exhibition', 'generalController@getExhbitionPdf');
 Route::get('/whatsapp', 'generalController@whatsAppLink');

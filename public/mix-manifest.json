@@ -5,6 +5,7 @@
     "/css/app.css": "/css/app.css",
     "/js/comp_post.js": "/js/comp_post.js",
     "/js/comp_profile.js": "/js/comp_profile.js",
+    "/js/homepage.js": "/js/homepage.js",
     "/js/registration.js": "/js/registration.js",
     "/js/user_profile.js": "/js/user_profile.js"
 }

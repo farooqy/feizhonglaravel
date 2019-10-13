@@ -125,4 +125,8 @@ class browserController extends Controller
 
       return true;
     }
+    public function viewCompany($comp_id, $comp_token)
+    {
+      return view("atoclayout.comp.single_comp_view");
+    }
 }

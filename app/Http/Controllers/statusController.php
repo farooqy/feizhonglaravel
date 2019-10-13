@@ -16,6 +16,7 @@ use App\models\products\productModel;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\customClass\ApiKeyManager;
+use App\customClass\FileUploader;
 
 use Illuminate\Support\Facades\Validator;
 // use Intervention\Image\Facades\Image as Image;
@@ -28,6 +29,7 @@ class statusController extends Controller
     protected $ApiKey;
     protected $ip_address;
     protected $requestUrl;
+    protected $FileUploader ;
     public function __construct()
     {
         $this->Error = new Error();
@@ -35,6 +37,7 @@ class statusController extends Controller
         $this->ApiKey = new ApiKeyManager;
         $this->ip_address = \Request::ip();
         $this->requestUrl = url()->current();
+        $this->FileUploader = new FileUploader();
     }
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
@@ -57,10 +60,37 @@ class statusController extends Controller
     public function index()
     {
     	$json = json_encode(array(
-    		'errorMessage' => null, 
-    		'isSuccess' => false, 
+    		'errorMessage' => null,
+    		'isSuccess' => false,
     		'successMessage' => null));
     	return $json;
+    }
+    //gets owners statuses
+    public function getSimpleStatusDetails(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "host_type" => "required|string|in:normal,comp,guest",
+            "api_key" => "required|string"
+        ];
+        $validity = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->customValidator->isNotValidRequest($validity);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        if($apiset !== true)
+            return $apiset;
+        $statusData = compStatusModel::where([
+          ['status_status' ,'=', 'active'],
+          ['comp_id', $request->host_id],
+          ['comp_token', $request->host_token],
+        ])->latest()->get();
+        foreach ($statusData as $key => $status) {
+          $status->Status_Files;
+        }
+        $this->Error->setSuccess($statusData);
+        return $this->Error->getSuccess();
     }
     public function getStatus (Request $request)
     {
@@ -94,8 +124,8 @@ class statusController extends Controller
                 $listProducts[$key]->type = "product";
 
                 $eachStatus->companydata;
-                
-            }    
+
+            }
             else
             {
                 $listProducts[$key]->type = "status";
@@ -112,7 +142,7 @@ class statusController extends Controller
                 foreach($comments as $comment)
                 {
                     $status["comments"] = ["comment"=>$comment, "details"=> $comment->personProfile];
-                }   
+                }
                 foreach( $likes as  $like)
                 {
                     $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
@@ -120,13 +150,13 @@ class statusController extends Controller
                         $listProducts[$key]->hasLiked = true;
                     else
                         $listProducts[$key]->hasLiked = false;
-                    
+
                 }
 
                 $statusData[$statusCount]["num_comments"] = $comments->count();
                 $statusData[$statusCount]["num_likes"] = $likes->count();
-            }    
-            
+            }
+
 
         }
     	// return json_encode(["isSuccess"=> true, "errorMessage"=> null,
@@ -136,125 +166,89 @@ class statusController extends Controller
         return $this->Error->getSuccess();
 
     }
-    public function uploadFile(Request $fileForm)
+    public function uploadFile(Request $request)
     {
         $rules = [
             "file_value" => 'required|string',
             'host_id' => 'required|integer',
             'host_token' => 'required|string',
-            'host_type' => 'required|in:normal,comp',
+            'host_type' => 'required|in:comp',
             "generated_token" => "required|string",
-            "api_key" => "required|string"
+            "api_key" => "required|string",
+            "has_files" => "required|integer",//number of saved fils
         ];
         $messages = [
             "required" => "The :attribute is required"
         ];
-        $validation = Validator::make($fileForm->all(), $rules, $messages);
+        $validation = Validator::make($request->all(), $rules, $messages);
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest($validation);
         if($isNotValidRequest)
             return $isNotValidRequest;
 
-        $apiset = $this->apiHandleSet($fileForm->host_id, $fileForm->host_token, $fileForm->api_key);
-        if($apiset !== true)
-            return $apiset;   
+        // $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        // if($apiset !== true)
+        //     return $apiset;
         //check if has uplaoded license
-        if(!$this->hasUploadedLicense($fileForm->host_id, $fileForm->host_token))
+        if(!$this->hasUploadedLicense($request->host_id, $request->host_token))
         {
             $this->Error->setError(["Your company is not verified. Please upload license to be verified"]);
             return $this->Error->getError();
         }
         //check generated token
-        $isvalid_token = $this->is_valid_generated_token($fileForm->generated_token,
-            $fileForm->host_id,$fileForm->host_token, $fileForm->host_type);
+        $isvalid_token = $this->is_valid_generated_token($request->generated_token,
+            $request->host_id,$request->host_token, $request->host_type);
         if(!$isvalid_token[0])
         {
             return $isvalid_token[1];
         }
         // return $isvalid_token;
         // end checking generated token
+        $searchModel = new companydata_model;
+        $isExisting = $searchModel::where([['comp_id', '=', $request->comp_id],['comp_token', '=', $request->comp_token]]);
 
-        if($fileForm->host_type === "comp")
-        {
-            $searchModel = new companydata_model;
-            $isExisting = $searchModel::where([['comp_id', '=', $fileForm->comp_id],['comp_token', '=', $fileForm->comp_token]]);
-        }
-        else
-        {
-            $searchModel = new normalUsersModel;
-            $isExisting = $searchModel::where([['user_id', '=', $fileForm->comp_id],['user_token', '=', $fileForm->comp_token]]);
-        }
         if($isExisting === null)
         {
-            // $errors = json_encode([
-            //     'errorMessage' => ["The company id and company token do not match"],
-            //     'isSuccess' => false, 
-            //     'successMessage' => null
-            // ]);
-            // return $errors;
             $this->Error->setError(["The company id and company token do not match"]);
             return $this->Error->getError();
         }
+        $dir = 'uploads/comp/'.$request->host_token.'/status/';
+        if(env("APP_ENV") === "local")
+          $publicpath = public_path($dir);
         else
+          $publicpath = env("APP_ROOT").$dir;
+        $filename = 'status_'.hash('md5', time().$request->file_value).'_image.';
+
+				$this->FileUploader->setFilePath($publicpath);
+				$this->FileUploader->setFileDirectory($dir);//path with url
+				$this->FileUploader->setFileName($filename);
+
+				$file_url = $this->FileUploader->uplaodJsonFile($request->file_value);
+        if(!$file_url)
         {
-            if(!is_dir(public_path('uploads/comp/'.$fileForm->host_token)))
-            {
-                if(!mkdir(public_path('uploads/comp/'.$fileForm->host_token), 0765, true))
-                {    // return json_encode([
-                    //     'errorMessage' => ["Failed to create directory for the status file"],
-                    //     'isSuccess' => false, 
-                    //     'successMessage' => null
-                    // ]);
-                    $this->Error->setError(["Failed to create directory for the status file"]);
-                    return $this->Error->getError();
-                }
-            }
-            $allowed_file_types = ["image/jpeg", "image/png", "image/jpg", "video/mp4"];
-            $file_extension = ["jpeg", "png", "jpg", "mp4"];
-            $file_type =  substr($fileForm->file_value,(strpos($fileForm->file_value, "data:")+5),
-             (strpos($fileForm->file_value, ";")-5));
-            if(($type_key = array_search($file_type, $allowed_file_types)) === false)
-            {
-                // return json_encode([
-                //     'errorMessage' => "The file type provided is not valid",
-                //     'isSuccess' => false, 
-                //     'successMessage' =>null
-                // ]);
-                $this->Error->setError(["The file type provided is not valid"]);
-                return $this->Error->getError();
-            }
-            else
-                $extenstion = $file_extension[$type_key];
-            $fileForm->file_value = str_replace("data:".$file_type.";base64", '', $fileForm->file_value);
-            $fileForm->file_value = base64_decode($fileForm->file_value);
-            $filename = 'status_image_decoded_'.hash('md5', time()).'.'.$extenstion;
-            $fileUrl = 'uploads/comp/'.$fileForm->host_token.'/'.$filename;
-            $filepath = public_path($fileUrl);
-            // Image::make($fileForm->file('file_value'))->save($filepath);
-            \File::put($filepath, $fileForm->file_value);
-            $fileModel = new uploadedFilesModel;
-            $fileModel->file_url = env('APP_URL').'feizhonglaravel/public/uploads/comp/'.$fileForm->host_token.'/'.$filename;
-            $fileModel->file_uploaded_by_id = $fileForm->host_id;
-            $fileModel->file_uploaded_by_who = $fileForm->host_type;
-            $fileModel->file_generated_token = $fileForm->generated_token;
-
-            $fileModel->save();
-            $fileId = $fileModel::where('file_url', env('APP_URL').'feizhonglaravel/public/uploads/comp/'.$fileForm->host_token.'/'.$filename)->get()[0]->id;
-
-            // return json_encode([
-            //     'errorMessage' => null,
-            //     'isSuccess' => true, 
-            //     'successMessage' => "success",
-            //     "data" => ["file_id" => $fileId]
-            // ]);
-            // $this->ApiKey->successFullRequest();
-            $this->Error->setSuccess(["file_id" => $fileId]);
-            return $this->Error->getSuccess();
+          $this->Error->setError(["Failed to upload file"]);
+          return $this->FileUploader->getError();
         }
+        uploadedFilesModel::create([
+          "file_url" => $file_url,
+          "file_uploaded_by_id" => $request->host_id,
+          "file_uploaded_by_who" => $request->host_token,
+          "file_generated_token" =>$request->generated_token
+        ]);
+          // $this->ApiKey->successFullRequest();
+        $file_id = uploadedFilesModel::where([
+          ["file_uploaded_by_who", $request->host_token],
+          ["file_generated_token", $request->generated_token]
+        ])->get()[0]["id"];
+        $this->Error->setSuccess([
+          "file_id" => $file_id,
+          "file_index" => $request->has_files
+        ]);
+        return $this->Error->getSuccess();
     }
-    public function setStatus (Request $statusForm)
+    public function setStatus (Request $request)
     {
-        // $statusForm->validate([
+        // $request->validate([
         //     'comp_id' => "required|"
         // ]);
 
@@ -262,41 +256,23 @@ class statusController extends Controller
             "host_id" => "required|integer|min:1",
             "status_content" => "required|string|max:1001",
             "host_token" => "required|string|min:30",
-            "has_files" => "required|in:0,1|",
-            "num_files" => "required|integer|min:0|max:10",
-            // "files" => "mimes:jpg, jpeg, png, avi, web, mp4"
-            "statusFiles" => "required|string",
             "status_type" => "required|string|in:status,product",
             "status_generated_token" => "required|string",
-            "host_type" => "required|in:normal,comp",
-            "api_key" => "required|string"
-        ];
-        $messages = [
-            "required" => "The :attribute field is required",
-            "min" => "The :attribute field content is below the minimum",
-            "string" => "The :attribute type is not valid",
-            "integer" => "The :attribute type must be integer",
-            "mimes" => "The :attribute file type(s) is not valid"
+            "host_type" => "required|in:comp",
+            "api_key" => "required|string",
+            "has_files" => "required|integer",//number of saved fils
         ];
         // validation form
-        $validation = Validator::make($statusForm->all(), $rules, $messages);
-        $statusFilesObject = [];
-        
+        $validation = Validator::make($request->all(), $rules, []);
+
         $isNotValidRequest = $this->customValidator->isNotValidRequest($validation);
         if($isNotValidRequest)
             return $isNotValidRequest;
-        $apiset = $this->apiHandleSet($statusForm->host_id, $statusForm->host_token, $statusForm->api_key);
-        if($apiset !== true)
-            return $apiset;
-        else if($statusForm->num_files <= 0)
-        {
-            return json_encode(array(
-                "errorMessage" => ["An image/video must be uplaoded"],
-                "isSuccess" => false,
-                "successMessage" => null,
-            ));
-        }
-        if(!$this->hasUploadedLicense($statusForm->host_id, $statusForm->host_token))
+        // $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+        // if($apiset !== true)
+        //     return $apiset;
+
+        if(!$this->hasUploadedLicense($request->host_id, $request->host_token))
         {
             $this->Error->setError(["Your company is not verified. Please upload license to be verified"]);
             return $this->Error->getError();
@@ -304,110 +280,75 @@ class statusController extends Controller
         // end validation form
 
         // check the token is in the database and not used
-        $isvalid_token = $this->is_valid_generated_token($statusForm->status_generated_token,
-            $statusForm->host_id,$statusForm->host_token, $statusForm->host_type);
+        $isvalid_token = $this->is_valid_generated_token($request->status_generated_token,
+            $request->host_id,$request->host_token, $request->host_type);
         if(!$isvalid_token[0])
         {
             return $isvalid_token[1];
         }
-            
+
         // generated token end
 
         //check host exist in the database
-        if($statusForm->host_type === "normal")
+        if($request->host_type === "normal")
         {
             $hostModel = new normalUsersModel;
             $validHost = $hostModel::where([
-                ["user_id", "=", $statusForm->host_id],
-                ["user_token", "=", $statusForm->host_token]
+                ["user_id", "=", $request->host_id],
+                ["user_token", "=", $request->host_token]
             ])->get();
-        }    
+        }
         else
         {
             $hostModel = new companydata_model;
             $validHost = $hostModel::where([
-                ["comp_id", "=", $statusForm->host_id],
-                ["comp_token", "=", $statusForm->host_token]
+                ["comp_id", "=", $request->host_id],
+                ["comp_token", "=", $request->host_token]
             ])->get();
-        }    
+        }
         if($validHost === null)
         {
-            return json_encode(array(
-                "errorMessage" => ["The host id and token do not match "],
-                "isSuccess" => false,
-                "successMessage" => null,
-            ));
+          $this->Error->setError(["The host id and token do not match "]);
+          return $this->Error->getError();
         }
-        // end check host 
-
-        //check files
-        $fileIds = explode("|", $statusForm->statusFiles);
-        // return $fileIds;
-        if(count($fileIds) !== (integer)$statusForm->num_files)
+        $uploaded_files = uploadedFilesModel::where([
+          ["file_uploaded_by_who", $request->host_token],
+          ["file_generated_token", $request->status_generated_token]
+        ])->get();
+        if($uploaded_files === null || $uploaded_files->count() <= 0)
         {
-            return json_encode(array(
-                "errorMessage" => "The file list and given files, do not match",
-                "isSuccess" => false,
-                "successMessage" => null,
-            ));
+          $this->Error->setError(["The post files haven't been uploaded"]);
+          return $this->Error->getError();
         }
-        else 
+        else if($uploaded_files->count() !== ($request->has_files+1))//index 0
         {
-            foreach($fileIds as $fileId)
-            {
-                $is_valid_file = uploadedFilesModel::where([
-                    ['id', $fileId],
-                    ['file_uploaded_by_id', $statusForm->host_id],
-                    ['file_uploaded_by_who', $statusForm->host_type],
-                    ['file_generated_token', $statusForm->status_generated_token]
-                ])->get();
-                if($is_valid_file == null || $is_valid_file->count() <= 0)
-                {
-                    return json_encode(array(
-                        "errorMessage" => "The files you are trying to add to the status don't exist. Please retry again",
-                        "isSuccess" => false,
-                        "successMessage" => null,
-                    ));
-                }
-            }
+          $this->Error->setError(["The uploaded files and saved files mismatch.
+          Please try again"]);
+          foreach ($uploaded_files as $key => $file) {
+            $file->delete();
+          }
+          return $this->Error->getError();
         }
-        // end checking file
-        try
-        {
+        compStatusModel::create([
+          "comp_id" => $request->host_id,
+          "comp_token" => $request->host_token,
+          "status_content" => $request->status_content,
+          "has_files" => true,
+          "num_files" => $uploaded_files->count(),
+          "status_generated_token" => $request->status_generated_token
+        ]);
 
-            $compStatusModel = new compStatusModel;
-            $compStatusModel->comp_id = $statusForm->host_id;
-            $compStatusModel->comp_token = $statusForm->host_token;
-            $compStatusModel->status_content = $statusForm->status_content;
-            $compStatusModel->has_files = $statusForm->has_files;
-            $compStatusModel->num_files = $statusForm->num_files;
-            $compStatusModel->status_generated_token = $statusForm->status_generated_token;
+        tokenStatusGeneratorModel::where([
+            ['generated_token',$request->status_generated_token],
+            ['generated_for_id', $request->host_id]
+        ])->update(['generated_completed' => true]);
+        // companyStatusFilesModel::insert($statusFilesObject);
 
-            $compStatusModel->save();
+        // $this->ApiKey->successFullRequest();
+        $this->Error->setSuccess([]);
+        return $this->Error->getSuccess();
 
-            tokenStatusGeneratorModel::where([
-                ['generated_token',$statusForm->status_generated_token],
-                ['generated_for_id', $statusForm->host_id]
-            ])->update(['generated_completed' => true]);
-            // companyStatusFilesModel::insert($statusFilesObject);
-            $success = json_encode(array(
-                "isSuccess" => true,
-                "successMessage" => "success",
-                "errorMessage" => null
-            ));
-            // $this->ApiKey->successFullRequest();
 
-            return $success;
-        }
-        catch(\Illuminate\Database\QueryException $exception)
-        {
-            $error = json_encode(array(
-                'errorMessage' => array($exception->errorInfo),
-                "isSuccess" => false,
-                "successMessage" => null,
-            ));
-            return $error;
-        }  
     }
 
     public function is_valid_generated_token($generated_token, $host_id, $host_token, $host_type)
@@ -418,27 +359,19 @@ class statusController extends Controller
             ['generated_for_token', '=', $host_token],
             ['generated_for_type', '=', $host_type]
         ])->get();
-        
+
         if($valid_generated_token == null || $valid_generated_token->count() <= 0)
         {
+          $this->Error->setError(["The provided status token is not valid"]);
             return [
-                false,
-                json_encode(array(
-                "errorMessage" => ["The provided status token is not valid",],
-                "isSuccess" => false,
-                "successMessage" => null,
-            ))
+                false, $this->Error->getError()
             ];
         }
         else if($valid_generated_token[0]->generated_completed)
         {
+          $this->Error->setError(["The status token has expired. "]);
             return[
-                false,
-                json_encode(array(
-                    "errorMessage" => ["The status token has expired. "],
-                    "isSuccess" => false,
-                    "successMessage" => null,
-                ))
+                false, $this->Error->getError()
          ];
         }
         else
@@ -469,8 +402,8 @@ class statusController extends Controller
                 array_push($error_list, $error);
 
             $json = json_encode(array(
-                'errorMessage' => $error_list, 
-                'isSuccess' => false, 
+                'errorMessage' => $error_list,
+                'isSuccess' => false,
                 'successMessage' => null));
             return $json;
         }
@@ -540,11 +473,11 @@ class statusController extends Controller
         $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;
-        
+
         $status_valid = compStatusModel::where('id', $request->status_id)->get();
         if($status_valid === null || $status_valid->count() <= 0)
-        {    
-            
+        {
+
             $this->Error->setError(["The target status is not valid or doesn't exist"]);
             return $this->Error->getError();
         }
@@ -563,8 +496,8 @@ class statusController extends Controller
             ])->get();
 
         if($host_is_valid === null || $host_is_valid->count() <= 0)
-        {    
-            
+        {
+
             $this->Error->setError(["The host provided is not valid or doesn't exist"]);
             return $this->Error->getError();
         }

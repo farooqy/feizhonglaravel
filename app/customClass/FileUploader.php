@@ -1,6 +1,6 @@
 <?php
 namespace  App\customClass;
-require_once 'Error.php'; 
+require_once 'Error.php';
 use File;
 class FileUploader {
 
@@ -14,7 +14,7 @@ class FileUploader {
 		$this->Error = new Error();
 		$this->directory = 'uploads/file_uploader/';
 		$this->publicpath = public_path($this->directory);
-		
+
 		$this->filename = "chunk_".time()."_.";
 		$this->allowed_file_types = ["image/jpeg", "image/png", "image/jpg"];
         $this->file_extension = ["jpeg", "png", "jpg"];
@@ -30,7 +30,7 @@ class FileUploader {
 				return false;
 			}
 		}
-		
+
         $file_type =  substr($filedata,(strpos($filedata, "data:")+5),
          (strpos($filedata, ";")-5));
         if(($type_key = array_search($file_type, $this->allowed_file_types)) === false)
@@ -47,7 +47,7 @@ class FileUploader {
         	File::put($logo_url, $filedata);
         	return env('APP_URL').$this->directory.$this->filename.$extenstion;
         }
-		
+
 		catch(Exception $exception)
 		{
             $this->Error->setError(["Failed to upload the file ", $exception ]);

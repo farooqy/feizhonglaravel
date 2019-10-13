@@ -6,18 +6,35 @@ use Illuminate\Http\Request;
 use App\models\tokenStatusGeneratorModel;
 use App\models\normalUsersModel;
 use App\models\companydata_model;
+use App\customClass\Error;
+use App\customClass\CustomRequestValidator;
+use App\customClass\ApiKeyManager;
+use App\customClass\FileUploader;
 
 use Illuminate\Support\Facades\Validator;
 class Status_TokenGeneratorModelController extends Controller
 {
     //
+    protected $Error;
+    protected $customValidator;
+    protected $ApiKey;
+    protected $ip_address;
+    protected $requestUrl;
+    public function __construct()
+    {
+        $this->Error = new Error();
+        $this->customValidator = new CustomRequestValidator();
+        $this->ApiKey = new ApiKeyManager;
+        $this->ip_address = \Request::ip();
+        $this->requestUrl = url()->current();
+    }
     public function generate_Token(Request $request)
     {
     	// return $request->all();
     	$rules = [
     		"host_token" => "required|string",
     		"host_id" => "required|integer",
-    		"host_type" => "required|in:normal,comp",
+    		"host_type" => "required|in:comp",
     	];
     	$message = [
     		"required" => "The :attribute is required",
@@ -32,12 +49,10 @@ class Status_TokenGeneratorModelController extends Controller
             $errors_list = [];
             foreach($errors->all() as $error)
                 array_push($errors_list, $error);
-            return json_encode(array(
-                "errorMessage" => $errors_list,
-                "isSuccess" => false,
-                "successMessage" => null,
-            ));
-        }	
+
+            $this->Error->setError($errors_list);
+            return $this->Error->getError();
+        }
     	//ensure there is no unused token
     	$existing_token = tokenStatusGeneratorModel::where([
     		['generated_for_token', '=', $request->host_token],
@@ -46,28 +61,22 @@ class Status_TokenGeneratorModelController extends Controller
     		['generated_for_id', '=', $request->host_id],
     	])->get();
     	if($existing_token->count() >= 1)
-            return json_encode(array(
-                "errorMessage" =>null,
-                "isSuccess" => true,
-                "successMessage" => "success",
-                "data" => ["generated_token" => $existing_token[0]->generated_token]
-                ));
-    	
-    	if($request->host_type === "normal")
-    		$isValidHost = normalUsersModel::where([
-    			['user_id', '=' ,$request->host_id],
-    			['user_token', '=', $request->host_token]])->get();
-    	else
-    		$isValidHost = companydata_model::where([
-    			['comp_id', '=' ,$request->host_id],
-    			['comp_token', '=', $request->host_token]])->get();
-    	if($isValidHost === null || $isValidHost->count() <= 0)
-    		return json_encode(array(
-                "errorMessage" =>["The provided host id and host token do not match",],
-                "isSuccess" => false,
-                "successMessage" => null,
-    			));
+      {
+        $this->Error->setSuccess(["generated_token" => $existing_token[0]->generated_token]);
+        return $this->Error->getSuccess();
+      }
 
+  		$isValidHost = companydata_model::where([
+  			['comp_id', '=' ,$request->host_id],
+  			['comp_token', '=', $request->host_token]])->get();
+    	if($isValidHost === null || $isValidHost->count() <= 0)
+    	{
+        $this->Error->setError(["The provided host id and host token do not match"]);
+        return $this->Error->getError();
+      }
+
+      //to increase the uniqueness of the token,
+      //prepend the previous unique id of the previous token generated
     	$lastToken = tokenStatusGeneratorModel::get()->last();
     	if($lastToken === null)
     		$tokenId = 0;
@@ -78,15 +87,11 @@ class Status_TokenGeneratorModelController extends Controller
     	$generatorModel = new tokenStatusGeneratorModel;
     	$generatorModel->generated_token = $generated_Token;
     	$generatorModel->generated_for_id = $request->host_id;
-    	$generatorModel->generated_for_token = $request->host_token;	
+    	$generatorModel->generated_for_token = $request->host_token;
     	$generatorModel->generated_for_type = $request->host_type;
 
     	$generatorModel->save();
-        return json_encode(array(
-                "errorMessage" =>null,
-                "isSuccess" => true,
-                "successMessage" => "success",
-                "data" => ["generated_token" => $generated_Token]
-                ));
+      $this->Error->setSuccess(["generated_token" => $generated_Token]);
+      return $this->Error->getSuccess();
     }
 }

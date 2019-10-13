@@ -43,6 +43,7 @@ Route::post("/comp/data", "companies\accountController@getCompanyData");
 
 Route::post('/comp/status', 'statusController@index');
 Route::post('/comp/status/getStatus', 'statusController@getStatus');
+Route::post('/comp/status/getCompStatus', 'statusController@getSimpleStatusDetails');
 Route::post('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/addFile', 'statusController@uploadFile');
 Route::post('/comp/status/getToken', 'Status_TokenGeneratorModelController@generate_Token');

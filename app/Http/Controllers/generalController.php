@@ -104,17 +104,17 @@ class generalController extends Controller
     		foreach($list as $ckey => $company)
     		{
                 if($company->address === null || $company->type === null )
-                {    
+                {
                     unset($list[$ckey]);
-                    
-                    continue; 
+
+                    continue;
                 }
                 array_push($comp_list, $company);
                 if($company->license === null)
                 {
                     $list[$ckey]->hasLicense=false;
                     unset($company->license);
-                }    
+                }
                 else
                     $list[$ckey]->hasLicense=true;
                 $company->address = null;
@@ -215,7 +215,7 @@ class generalController extends Controller
 
 
         return response()->file(public_path( "/static/artboard.pdf"));
- 
+
     }
 
     public function whatsAppLink()

@@ -1775,6 +1775,10 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -1783,7 +1787,7 @@ module.exports = {
       'version': 1
     };
   },
-  props: ["post_title", "post_text", "post_image"],
+  props: ["post_title", "post_text", "post_image", "post_time"],
   filters: {
     truncate: function truncate(text, length, suffix) {
       return text.substring(0, length) + suffix;
@@ -37321,7 +37325,21 @@ var render = function() {
             _vm._v(_vm._s(_vm._f("truncate")(_vm.post_text, 30, "...")))
           ])
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "card-footer",
+          staticStyle: {
+            "font-size": "10px",
+            "text-align": "center",
+            height: "20px",
+            "line-height": "0px"
+          }
+        },
+        [_c("span", { domProps: { textContent: _vm._s(_vm.post_time) } })]
+      )
     ]
   )
 }
@@ -49531,6 +49549,33 @@ var Company = function Company() {
 
 /***/ }),
 
+/***/ "./resources/js/Status.js":
+/*!********************************!*\
+  !*** ./resources/js/Status.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Status; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Status = function Status() {
+  _classCallCheck(this, Status);
+
+  this.status_id = null;
+  this.status_token = null;
+  this.generated_token = null;
+  this.status_files = [];
+  this.status_content = null;
+  this.status_type = "status";
+};
+
+
+
+/***/ }),
+
 /***/ "./resources/js/bootstrap.js":
 /*!***********************************!*\
   !*** ./resources/js/bootstrap.js ***!
@@ -49818,7 +49863,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_loader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/loader.vue */ "./resources/js/components/loader.vue");
 /* harmony import */ var _components_posts_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/posts.vue */ "./resources/js/components/posts.vue");
 /* harmony import */ var _Company_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! .././Company.js */ "./resources/js/Company.js");
+/* harmony import */ var _Status_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! .././Status.js */ "./resources/js/Status.js");
 __webpack_require__(/*! .././bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -49833,8 +49880,89 @@ var app = new Vue({
     this.getCompanyData();
   },
   methods: {
-    serverRequest: function serverRequest(url, form) {
+    stagePost: function stagePost() {
+      if (this.Status.status_content === null) {
+        this.errorObject.error_text = "Please say something about your post";
+        this.showErrorModal();
+        return;
+      } else if (this.Status.status_files === null || this.Status.status_files.length <= 0) {
+        this.errorObject.error_text = "Please upload at least one image";
+        this.showErrorModal();
+        return;
+      }
+
+      var req = {
+        "host_id": this.Company.guest_id,
+        "host_token": this.Company.guest_token,
+        "host_type": "comp"
+      };
+      this.serverRequest("/api/comp/status/getToken", req, "gen_token");
+    },
+    sendFiles: function sendFiles(token) {
+      this.Status.generated_token = token;
+      var i;
+
+      for (i = 0; i < this.Status.status_files.length; i++) {
+        var req = {
+          'host_id': this.Company.guest_id,
+          'host_token': this.Company.guest_token,
+          'host_type': "comp",
+          "generated_token": this.Status.generated_token,
+          "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key,
+          "file_value": this.Status.status_files[i].file_src,
+          "has_files": i
+        }; // req.file_value = this.Status.status_files[i].file_src;
+        // req.has_files = i;
+
+        console.log('i is ', i, ' req ', req);
+        this.serverRequest("/api/comp/status/addFile", req, "add_file");
+      }
+    },
+    savePost: function savePost(index) {
+      if (index + 1 === this.Status.status_files.length) {
+        var req = {
+          'host_id': this.Company.guest_id,
+          'host_token': this.Company.guest_token,
+          'host_type': "comp",
+          "status_generated_token": this.Status.generated_token,
+          "status_content": this.Status.status_content,
+          "status_type": this.Status.status_type,
+          "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key,
+          "has_files": index
+        };
+        this.serverRequest("/api/comp/status/setStatus", req, "save_post");
+      } else {
+        console.log("index not equal ", index, " !== ", this.Status.status_files.length);
+      }
+    },
+    setStatusFile: function setStatusFile() {
       var _this = this;
+
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          _this.Status.status_files.push({
+            "file_src": e.target.result,
+            "file_id": null
+          });
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+    pushNewStatus: function pushNewStatus() {
+      this.user_posts.push({
+        "post_text": this.Status.status_content,
+        "post_image": this.Status.status_files[0].file_src
+      });
+      this.Status = new _Status_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
+      this.hideLoader();
+    },
+    serverRequest: function serverRequest(url, form) {
+      var _this2 = this;
 
       var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "default";
       this.Loader.showLoader = this.showLoader = true;
@@ -49843,23 +49971,27 @@ var app = new Vue({
         response = response.data;
 
         if (response.hasOwnProperty('error_message')) {
-          _this.errorObject.error_text = response.error_message;
-          _this.errorObject.errorModal = _this.errorModal = true;
+          _this2.errorObject.error_text = response.error_message;
+          _this2.errorObject.errorModal = _this2.errorModal = true;
         } else if (response.isSuccess) {
-          if (type === "comp_data") _this.setCompanyData(response.data);
+          if (type === "comp_data") _this2.setCompanyData(response.data);else if (type === "gen_token") _this2.sendFiles(response.data.generated_token);else if (type === "add_file") {
+            _this2.Status.status_files[response.data.file_index].file_id = response.data.file_id;
+
+            _this2.savePost(response.data.file_index);
+          } else if (type === "save_post") _this2.pushNewStatus();else if (type === "get_status") _this2.setStatus(response.data);
         } else {
           if (response.errorMessage[0]) response.errorMessage = response.errorMessage[0];
-          _this.errorObject.error_text = response.errorMessage;
-          _this.errorObject.errorModal = _this.errorModal = true;
+          _this2.errorObject.error_text = response.errorMessage;
+          _this2.errorObject.errorModal = _this2.errorModal = true;
 
-          _this.hideLoader();
+          _this2.hideLoader();
         }
       })["catch"](function (error) {
         console.log("server error ", error);
-        _this.errorObject.error_text = error;
-        _this.errorObject.errorModal = _this.errorModal = true;
+        _this2.errorObject.error_text = error;
+        _this2.errorObject.errorModal = _this2.errorModal = true;
 
-        _this.hideLoader();
+        _this2.hideLoader();
       });
     },
     disMissErrorModel: function disMissErrorModel() {
@@ -49889,10 +50021,36 @@ var app = new Vue({
       this.Company.company_description = data.type.comp_description;
       this.Company.company_hasLicense = data.hasLicense;
       console.log(data);
+      var req = {
+        "host_id": this.Company.guest_id,
+        "host_token": this.Company.guest_token,
+        "host_type": "comp",
+        "api_key": this.Company.api_key === null ? "apikey" : this.Company.api_key
+      };
+      this.serverRequest("/api/comp/status/getCompStatus", req, "get_status");
+    },
+    setStatus: function setStatus(data) {
+      var i = 0;
+
+      for (i; i < data.length; i++) {
+        console.log(data[i]);
+        this.user_posts.push({
+          "post_text": data[i].status_content,
+          "post_image": data[i].status__files[0].file_url,
+          "post_time": data[i].created_at
+        });
+      } // this.user_posts.push({
+      //
+      // })
+
+
       this.hideLoader();
     },
     hideLoader: function hideLoader() {
       this.Loader.showLoader = this.showLoader = false;
+    },
+    showErrorModal: function showErrorModal() {
+      this.errorObject.errorModal = this.errorModal = true;
     }
   },
   components: {
@@ -49902,19 +50060,21 @@ var app = new Vue({
   },
   data: {
     Company: new _Company_js__WEBPACK_IMPORTED_MODULE_3__["default"](),
+    Status: new _Status_js__WEBPACK_IMPORTED_MODULE_4__["default"](),
     Loader: {
       "showLoader": false
     },
     showLoader: false,
     errorModal: false,
     errorObject: {
-      errorModal: false
+      "errorModal": false,
+      "error_text": ''
     },
     post_text: null,
     user_posts: [{
-      "post_title": "This is my title",
       "post_text": "This is my post text",
-      "post_image": "/atoc_assets/images/nairobi_bk.jpg"
+      "post_image": "/atoc_assets/images/nairobi_bk.jpg",
+      "post_time": "2019-10-13 02:49:18"
     }],
     post_images: []
   }
