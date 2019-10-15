@@ -51944,7 +51944,7 @@ var app = new Vue({
       this.ServerRequest.setRequest({
         "host_id": this.comp_id,
         "host_token": this.comp_token,
-        "api_key": this.Host.api_key,
+        "api_key": this.Host.api_key === null || this.Host.api === undefined ? "apikey" : this.Host.api_key,
         "host_type": "comp"
       });
       this.ServerRequest.serverRequest("/api/comp/status/getCompStatus", this.setStatus, this.showError);
@@ -52002,7 +52002,7 @@ var app = new Vue({
         this.Host.guest_id = data.host_id;
         this.Host.guest_token = data.host_token;
         this.Host.api_key = "apikey";
-        this.host_type = 1;
+        this.host_type = 0;
         this.ServerRequest.setRequest({
           "platform": 1,
           "host": "comp"
@@ -52013,14 +52013,14 @@ var app = new Vue({
         this.Host.guest_id = data.host_id;
         this.Host.guest_token = data.host_token;
         this.Host.api_key = "apikey";
-        this.host_type = 2;
+        this.host_type = 1;
         this.ServerRequest.setRequest({
           "platform": 1,
           "host": "user"
         });
         this.ServerRequest.serverRequest("/api/user/data", this.setUserData, this.showError);
       } else {
-        this.host_type = 3;
+        this.host_type = 2;
         this.Host = new _Guest_js__WEBPACK_IMPORTED_MODULE_10__["default"]();
         this.Host.guest_id = data.host_id;
         this.Host.guest_token = data.host_token;
@@ -52066,11 +52066,17 @@ var app = new Vue({
       this.Host.user_email = data.user_email;
       this.Host.user_phone = data.user_phone;
       this.Host.guest_id = data.user_id;
-      this.Host.guest_token = data.user_token;
-      this.Host.api_key = data.api_key;
+      this.Host.guest_token = data.user_token; // this.Host.api_key = data.api_key;
+
       this.Host.user_profile = data.user_profile; // var req = {"user_id": this.User.guest_id, "user_token":this.User.guest_token};
       // this.serverRequest("/api/user/address", req, "user_address");
 
+      this.req = {
+        "host_id": this.Host.guest_id,
+        "host_token": this.Host.guest_token,
+        "host_type": this.host_type === 1 ? "comp" : "normal",
+        "api_key": this.Host.api_key === null ? "apikey" : this.Host.api_key
+      };
       console.log(data);
       this.getCompanyProfile();
     },
@@ -52079,7 +52085,7 @@ var app = new Vue({
       this.ServerRequest.setRequest({
         "comp_id": this.comp_id,
         "comp_token": this.comp_token,
-        "api_key": this.Host.api_key === null ? "apikey" : this.Host.api_key
+        "api_key": this.Host.api_key === null || this.Host.api === undefined ? "apikey" : this.Host.api_key
       });
       this.ServerRequest.serverRequest("/api/list/getCompanyData", this.setCompanyProfile, this.showError);
     },
@@ -52097,10 +52103,10 @@ var app = new Vue({
       this.hideLoader();
     },
     getHostProfile: function getHostProfile() {
-      if (this.host_type === 1) return this.Host.company_logo;else if (this.host_type === 2) return this.Host.user_profile;
+      if (this.host_type === 0) return this.Host.company_logo;else if (this.host_type === 1) return this.Host.user_profile;else console.log('_----------- Uknown host ', this.host_type);
     },
     getHostName: function getHostName() {
-      if (this.host_type === 1) return this.Host.company_name;else if (this.host_type === 2) return this.Host.user_firstName + ' ' + this.Host.user_lastName;
+      if (this.host_type === 0) return this.Host.company_name;else if (this.host_type === 1) return this.Host.user_firstName + ' ' + this.Host.user_lastName;else console.log('_----------- Uknown host ', this.host_type);
     },
     toggleTab: function toggleTab(tab) {
       switch (tab) {
