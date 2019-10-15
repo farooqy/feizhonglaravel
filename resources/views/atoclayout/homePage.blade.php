@@ -1,6 +1,6 @@
 <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
 
-  <div class="ui-block">
+  <div class="ui-block" v-if="isLoggedIn()">
 
     <!-- News Feed Form  -->
 
@@ -29,30 +29,21 @@
       <div class="tab-content">
 
         <div class="tab-pane" id="product_form" role="tabpanel" aria-expanded="true">
-          <form>
-            <div class="author-thumb">
-              <img src="/olympus_assets/img/author-page.jpg" alt="author">
+          <div class="card">
+            <div class="card-header">
+              COMING SOON
             </div>
-            <div class="form-group with-icon label-floating is-empty">
-              <label class="control-label">Add products...</label>
-              <textarea class="form-control" placeholder=""  ></textarea>
+            <div class="card-body">
+              We are sorry, the products posting will be availalbe soon.
             </div>
-            <div class="add-options-message">
-              <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
-                <svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-camera-icon"></use></svg>
-              </a>
-
-              <button class="btn btn-primary btn-md-2">Post Product</button>
-
-            </div>
-
-          </form>
+          </div>
         </div>
 
         <div class="tab-pane active" id="status_form" role="tabpanel" aria-expanded="true">
           <form>
             <div class="author-thumb">
-              <img src="/olympus_assets/img/author-page.jpg" alt="author">
+              <img :src="getHostProfile()" alt="author"
+              style="height:40px; width:40px">
             </div>
             <div class="form-group with-icon label-floating is-empty">
               <label class="control-label">Share what you are thinking here...</label>
@@ -75,13 +66,22 @@
 
     <!-- ... end News Feed Form  -->
   </div>
+  <div class="ui-block" v-else="!isLoggedIn()">
+    <div class="card">
+      <div class="card-header">
+        LOGIN / REGISTER
+      </div>
+      <div class="card-body">
+        In order to post status or product, first <br>
+        <a href="/login" class="btn btn-primary">Login</a>
 
+        <a href="/register" class="btn btn-success">Register</a>
+      </div>
+    </div>
+  </div>
 
   <div class="ui-block">
-    <div class="photo-album-wrapper">
-
-      <statuslist v-for="status in Status" v-bind="status"></statuslist>
-    </div> <!--- End the photo album wrapper-->
+      <statuslistv2 v-for="status in Status" v-bind="status"></statuslistv2>
   </div>
 
     <!-- Load more icon -->
@@ -100,7 +100,8 @@
 
 <!-- Left Sidebar -->
 
-<aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-12 col-12">
+<aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2
+col-md-6 col-sm-12 col-12">
 
 
         <div class="ui-block">

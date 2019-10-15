@@ -3,9 +3,12 @@ require("./bootstrap");
 import error from "./components/error.vue";
 import loader from "./components/loader.vue";
 import statuslist from "./components/statuslist.vue";
+import statuslistv2 from "./components/statuslistv2.vue";
 import trendingcompanylist from "./components/trendingcompanylist.vue";
+import companylist from "./components/companylist.vue";
 import Company from "./Company.js";
 import User from "./User.js";
+import Guest from "./Guest.js";
 import Status from "./Status.js";
 window.Vue = require("vue");
 Vue.use(require('vue-cookies'));
@@ -17,21 +20,6 @@ var app = new Vue({
     this.getCompanyData();
   },
   methods: {
-    getStatuses()
-    {
-
-    },
-    getTrendingCompanies()
-    {
-
-      var req = {
-        "host_id":this.Host.guest_id,
-        "host_token": this.Host.guest_token,
-        "host_type": this.host_type === 1 ? "comp": "normal",
-        "api_key": this.Host.api_key === null ? "apikey" : this.Host.api_key
-      };
-      this.serverRequest('/api/list/companies', req, "trending");
-    },
     serverRequest(url, form, type="default")
     {
       this.Loader.showLoader = this.showLoader = true;
@@ -53,8 +41,17 @@ var app = new Vue({
             case "comp_data":
               this.setCompanyDetails(response.data);
               break;
+            case "user_data":
+              this.setUserData(response.data);
+              break;
             case "trending":
               this.setTrendingList(response.data);
+              break;
+            case "list_status":
+              this.setStatus(response.data);
+              break;
+            case "comp_list":
+              this.setCompanyList(response.data);
               break;
             default:
               console.log('successfull request ',response);
@@ -75,6 +72,74 @@ var app = new Vue({
         this.errorObject.errorModal = this.errorModal = true;
         this.hideLoader();
       })
+    },
+    getCompanyList()
+    {
+      this.serverRequest('/api/list/companies', this.req, "comp_list")
+    },
+    setCompanyList(data)
+    {
+      var i;
+      for(i=0; i < data.length; i++)
+      {
+        this.comp_list.push({
+          "comp_id": data[i].comp_id,
+          "comp_token": data[i].comp_token,
+          "comp_name": data[i].comp_name,
+          "comp_logo": data[i].comp_logo,
+          "comp_type": data[i].comp_type,
+          "is_verified": data[i].hasLicense,
+          "comp_rate": 0
+        });
+      }
+
+    },
+    getStatuses()
+    {
+
+      this.serverRequest("/api/comp/status/getCompSimpleStatus", this.req, "list_status");
+    },
+    setStatus(data)
+    {
+
+      console.log(data);
+      // console.log('status files ', data[0].);
+      var i;
+      for(i=0; i < data.length; i++)
+      {
+        var j, c_counter, l_counter;
+        var files = [];
+        var comments = [];
+        var likes = [];
+        for(j=0; j<data[i].status__files.length; j++)
+        {
+          files.push({
+            "file_url": data[i].status__files[j].file_url
+          });
+        }
+        for(c_counter =0; c_counter < data[i].comments.length; c_counter++)
+        {
+          console.log("comments ",data[i].comments)
+        }
+        for(l_counter =0; l_counter < data[i].comments.length; l_counter++)
+        {
+            console.log("lieks ",data[i].likes);
+        }
+
+        this.Status.push({
+          "status_text": data[i].status_content,
+          "status_image": files[0].file_url,
+          "status_time": data[i].created_at,
+          "status_files": files,
+          "uploaded_by_name": data[i].company_data.comp_name,
+          "uploaded_by_picture": data[i].company_data.comp_logo
+        })
+      }
+    },
+    getTrendingCompanies()
+    {
+      //TO DO:: trending algorithm
+      this.serverRequest('/api/list/companies', this.req, "trending");
     },
     setTrendingList(data)
     {
@@ -123,39 +188,99 @@ var app = new Vue({
         this.Host.company_description = data.type.comp_description;
         this.Host.company_hasLicense = data.hasLicense;
 
+        this.req = {
+          "host_id":this.Host.guest_id,
+          "host_token": this.Host.guest_token,
+          "host_type": this.host_type === 1 ? "comp": "normal",
+          "api_key": this.Host.api_key === null ? "apikey" : this.Host.api_key
+        };
         this.getTrendingCompanies();
+
+        this.getStatuses();
+        this.getCompanyList();
+    },
+    setUserData(data)
+    {
+      data = data[0];
+      this.Host.user_firstName = data.user_fname+' ';
+      this.Host.user_lastName = data.user_sname;
+      this.Host.user_email = data.user_email;
+      this.Host.user_phone = data.user_phone;
+      this.Host.guest_id = data.user_id;
+      this.Host.guest_token = data.user_token;
+      this.Host.api_key = data.api_key;
+      this.Host.user_profile = data.user_profile;
+      // var req = {"user_id": this.User.guest_id, "user_token":this.User.guest_token};
+      // this.serverRequest("/api/user/address", req, "user_address");
+      console.log(data);
+      this.req = {
+        "host_id":this.Host.guest_id,
+        "host_token": this.Host.guest_token,
+        "host_type": this.host_type === 1 ? "comp": "normal",
+        "api_key": (this.Host.api_key === null ||
+          this.Host.api_key === undefined) ? "apikey" : this.Host.api_key
+      }
+      this.getTrendingCompanies();
+
+      this.getStatuses();
+      this.getCompanyList();
     },
     setInitData(data)
     {
       if(data.host_type === "comp")
       {
         this.Host = new Company();
-        this.host_type = 1;
+        this.host_type = 0;
         var req = {
           "platform" : 1,
           "host": "comp"
         };
         this.serverRequest("/api/comp/data", req, "comp_data");
       }
-      else {
+      else if(data.host_type === "user")
+      {
         this.Host = new User();
+        this.host_type = 1;
+        var req = {
+          "platform" : 1,
+          "host": "user"
+        };
+        this.serverRequest("/api/user/data", req, "user_data");
+      }
+      else
+      {
+        this.Host = new Guest();
         this.host_type = 2;
+        this.req = {
+          "host_id": data.host_id,
+          "host_token": data.host_token,
+          "host_type": data.host_type,
+          "api_key": "apikey",
+        };
       }
 
       this.Host.guest_id = data.host_id;
       this.Host.guest_token = data.host_token;
+      if(data.host_type === "guest")
+      {
+
+        this.getTrendingCompanies();
+
+        this.getStatuses();
+        this.getCompanyList();
+      }
       this.hideLoader();
     },
     getHostProfile()
     {
-      if(this.host_type === 1)
+      if(this.host_type === 0)
         return this.Host.company_logo;
       else
         return this.Host.user_profile;
     },
     getHostName()
     {
-      if(this.host_type === 1)
+      if(this.host_type === 0)
         return this.Host.company_name;
       else
         return this.Host.user_firstName+' '+this.Host.user_lastName;
@@ -168,6 +293,10 @@ var app = new Vue({
     {
       this.errorObject.errorModal = this.errorModal = true;
     },
+    isLoggedIn()
+    {
+      return true === (this.host_type === 1 || this.host_type === 0);
+    },
     disMissErrorModel()
     {
       this.errorModal = false;
@@ -175,7 +304,8 @@ var app = new Vue({
 
   },
   components: {
-    error,loader,statuslist,trendingcompanylist
+    error,loader,statuslist,trendingcompanylist,statuslistv2,
+    companylist
   },
   data: {
     Host: null,
@@ -188,6 +318,9 @@ var app = new Vue({
     ],
     trending_list: [
     ],
+    comp_list: [
+
+    ],
     Loader: {
       "showLoader":false,
     },
@@ -197,6 +330,7 @@ var app = new Vue({
       "errorModal":false,
       "error_text":'',
     },
-    host_type:-1
+    host_type:-1,
+    req: null,
   }
 })

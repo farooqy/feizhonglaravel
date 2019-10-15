@@ -129,4 +129,9 @@ class browserController extends Controller
     {
       return view("atoclayout.comp.single_comp_view");
     }
+
+    public function listCompanies()
+    {
+      return view("atoclayout.listcomp_page");
+    }
 }

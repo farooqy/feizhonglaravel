@@ -88,9 +88,45 @@ class statusController extends Controller
         ])->latest()->get();
         foreach ($statusData as $key => $status) {
           $status->Status_Files;
+          $status->companyData;
+          $status->comments->count();
+          $status->likes->count();
         }
         $this->Error->setSuccess($statusData);
         return $this->Error->getSuccess();
+    }
+    //gets the status for the homepage -- all users, logged in or not
+    public function simpleDetailedStatus(Request $request)
+    {
+
+          $rules = [
+              "host_id" => "required|integer",
+              "host_token" => "required|string",
+              "host_type" => "required|string|in:normal,comp,guest",
+              "api_key" => "required|string"
+          ];
+          $validity = Validator::make($request->all(), $rules, []);
+          $isNotValidRequest = $this->customValidator->isNotValidRequest($validity);
+          if($isNotValidRequest)
+              return $isNotValidRequest;
+          $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
+          if($apiset !== true)
+              return $apiset;
+      	$statusData = compStatusModel::where([
+          ['status_status' ,'=', 'active']
+        ])->latest()->get();
+        foreach ($statusData as $key => $status) {
+          $eachStatus[$key] = [
+            "files" => $status->Status_Files,
+            "companyProfile" => $status->companyData,
+            "num_comments" => $status->comments->count(),
+            "num_likes" => $status->likes->count(),
+          ];
+        }
+
+        $this->Error->setSuccess($statusData);
+        return $this->Error->getSuccess();
+
     }
     public function getStatus (Request $request)
     {

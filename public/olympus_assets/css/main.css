@@ -4821,7 +4821,7 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
   margin-bottom: -70px; }
 
 .bg-account {
-  background-image: url("../img/top-header3.png"); }
+  background-image: url("../img/top-header-custom1.png"); }
 
 .bg-birthday {
   background-image: url("../img/top-header6.png"); }
@@ -14626,15 +14626,15 @@ input[type=checkbox] {
 /**
  * Swiper 3.3.1
  * Most modern mobile touch slider and framework with hardware accelerated transitions
- * 
+ *
  * http://www.idangero.us/swiper/
- * 
+ *
  * Copyright 2016, Vladimir Kharlampidi
  * The iDangero.us
  * http://www.idangero.us/
- * 
+ *
  * Licensed under MIT
- * 
+ *
  * Released on: February 7, 2016
  */
 .swiper-container {
