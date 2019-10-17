@@ -15,7 +15,7 @@ $factory->define(App\models\companies\companydataModel::class, function (Faker $
 	if(env("APP_URL") ==="local")
   	$path = public_path("/uploads/comp/".$comp_token);
 	else
-		$path = env("APP_ROOT")."uploads/".$comp_token;
+		$path = env("APP_ROOT")."uploads/comp/".$comp_token;
 	if(!is_dir($path))
 		mkdir($path,0765, true);
   $filename = "/profile_me_".rand(0, 99999)."_.png";
