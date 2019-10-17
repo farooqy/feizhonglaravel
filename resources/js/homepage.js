@@ -10,6 +10,8 @@ import Company from "./Company.js";
 import User from "./User.js";
 import Guest from "./Guest.js";
 import Status from "./Status.js";
+import Product from "./Product.js";
+import ServerRequest from "./ServerRequest";
 window.Vue = require("vue");
 Vue.use(require('vue-cookies'));
 window.Axios = require('axios');
@@ -271,6 +273,67 @@ var app = new Vue({
       }
       this.hideLoader();
     },
+    prepareProduct()
+    {
+      if(this.Product.product_name === null || Product.product_name === "")
+      {
+        this.showError('Please provide product name');
+      }
+      else if(this.Product.product_description ===null )
+      {
+        this.showError('Please provide product description')
+      }
+      else if(this.Product.product_price <= 0)
+      {
+        this.showError('Please provide product price')
+      }
+      else if(this.Product.product_currency ===null)
+      {
+        this.showError('Please provide product currency ')
+      }
+      else if(this.Product.product_unit ===null)
+      {
+        this.showError('Please provide product unit such as kilogram or pieces')
+      }
+      else if(this.Product.product_files.length <= 0)
+      {
+        this.showError('Please provide at least one image for the product')
+      }
+      else {
+        console.log('ready for publishing product ');
+      }
+    },
+    prepareProductFile(event)
+    {
+
+        console.log(event);
+        var input = event.target;
+        this.ServerRequest.previewFile(input, this.previewProductFile,
+        this.showError);
+    },
+    previewProductFile(src)
+    {
+      this.Product.product_files.push({
+        "file_src": src.target.result,
+        "alt": "Product file",
+        "index": this.Product.product_files.length,
+      });
+    },
+    removeMe(index)
+    {
+      console.log(index, ' to be remved');
+      this.Product.product_files.splice(index, 1);
+      var i;
+      for(i = index; i < this.Product.product_files.length; i++)
+      {
+        this.Product.product_files[i].index = i;
+      }
+    },
+    showError(error)
+    {
+      this.errorObject.error_text = error;
+      this.errorObject.errorModal = this.errorModal = true;
+    },
     getHostProfile()
     {
       if(this.host_type === 0)
@@ -285,6 +348,7 @@ var app = new Vue({
       else
         return this.Host.user_firstName+' '+this.Host.user_lastName;
     },
+
     hideLoader()
     {
       this.Loader.showLoader = this.showLoader = false;
@@ -332,5 +396,7 @@ var app = new Vue({
     },
     host_type:-1,
     req: null,
+    Product:  new Product(),
+    ServerRequest: new ServerRequest(),
   }
 })

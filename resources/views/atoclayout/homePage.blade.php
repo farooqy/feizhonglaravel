@@ -37,38 +37,57 @@
               <form class="form" action="" method="post">
                 <div class="form-goruplabel-floating ">
                   <label for="product_name" class="label">Product name</label>
-                  <input type="text" placeholder="Product name"/>
+                  <input type="text" placeholder="Product name"
+                  v-model="Product.product_name"/>
                 </div>
                 <div class="form-group">
                   <textarea type="text" placeholder="Product description"
-                  class="form-control">
+                  class="form-control" v-model="Product.product_description">
                   </textarea>
                 </div>
                 <div class="form-gorup">
                   <div class="row">
                     <div class="col-md-3 col-lg-3">
                         <label for="product_name" class="label"> Price</label>
-                        <input type="text" placeholder=" Price"/>
+                        <input type="text" placeholder=" Price"
+                         v-model="Product.product_price"/>
                     </div>
                     <div class="col-md-3 col-lg-3">
                       <label for="product_name" class="label">Currency</label>
-                      <input type="text" placeholder="Currency"/>
+                      <input type="text" placeholder="Currency"
+                       v-model="Product.product_currency"/>
                     </div>
                     <div class="col-md-6 col-lg-6">
                       <label for="product_name" class="label">Measuring unit</label>
-                      <input type="text" placeholder="Measuring unit i.e grams"/>
+                      <input type="text" placeholder="Measuring unit i.e grams"
+                       v-model="Product.product_unit"/>
                     </div>
                   </div>
                 </div>
-
+                <div class="form-group" v-show="false">
+                  <input type="file" name="product_file" ref="product_file"
+                  @change="prepareProductFile($event)">
+                </div>
+                <div class="form-group">
+                  <img v-for="file in Product.product_files" :src="file.file_src"
+                  class="post_image_preview" :alt="file.alt"
+                  style="height:60px;width:60px;
+                  background-image:url(olympus_assets/img/danger.png)"
+                  @click="removeMe(file.index)"/>
+                  <div class="">
+                    <span class="hint">Click on the photo to remove it</span>
+                  </div>
+                </div>
 
                 <div class="add-options-message">
-                  <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
-                    <svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-camera-icon"></use></svg>
-                  </a>
+                  <span @click.prevent="$refs.product_file.click()">
+                  <i class="fas fa-camera pointer" style="font-size:30px;
+                  cursor:pointer"
+                  ></i></span>
 
 
-                  <button class="btn btn-primary btn-md-2">Post Product</button>
+                  <button class="btn btn-primary btn-md-2"
+                  @click.prevent="prepareProduct()" >Post Product</button>
 
                 </div>
               </form>
@@ -91,7 +110,7 @@
                 </div>
                 <div class="form-group">
                   <img src="/olympus_assets/img/last-photo8.jpg"
-                  class="product_image_preview"
+                  class="post_image_preview"
                   style="height:60px;width:60px;
                   background-image:url(olympus_assets/img/danger.png)"/>
                 </div>

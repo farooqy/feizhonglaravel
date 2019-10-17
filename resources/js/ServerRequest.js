@@ -41,6 +41,23 @@ export default class serverRequest {
       errorCallback(error);
     })
   }
+  previewFile(input, successCallback, errorCallback)
+  {
+    if(input.files && input.files[0])
+    {
+      var reader = new FileReader();
+      reader.onload = (e) => {
+        successCallback(e);
+      }
+      reader.onerror = (error) => {
+        errorCallback(error);
+      }
+      reader.onabort = (interupt) => {
+        errorCallback(interupt);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
   getError()
   {
     return this.error;

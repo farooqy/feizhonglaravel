@@ -50210,6 +50210,138 @@ var Guest = function Guest() {
 
 /***/ }),
 
+/***/ "./resources/js/Product.js":
+/*!*********************************!*\
+  !*** ./resources/js/Product.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Product; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Product = function Product() {
+  _classCallCheck(this, Product);
+
+  this.product_id = null;
+  this.product_token = null;
+  this.generated_token = null;
+  this.product_files = [];
+  this.product_description = null;
+  this.product_name = null;
+  this.product_price = null;
+  this.product_currency = "RMB";
+  this.product_unit = "pieces";
+};
+
+
+
+/***/ }),
+
+/***/ "./resources/js/ServerRequest.js":
+/*!***************************************!*\
+  !*** ./resources/js/ServerRequest.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return serverRequest; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var serverRequest =
+/*#__PURE__*/
+function () {
+  function serverRequest() {
+    _classCallCheck(this, serverRequest);
+
+    this.req = null;
+    this.error = null;
+    this.data = null;
+  }
+
+  _createClass(serverRequest, [{
+    key: "setRequest",
+    value: function setRequest(req) {
+      console.log('will set request ', req);
+      this.req = req;
+    }
+  }, {
+    key: "serverRequest",
+    value: function serverRequest(url, successCallback, errorCallback) {
+      var _this = this;
+
+      axios.post(url, this.req).then(function (response) {
+        response = response.data;
+
+        if (response.hasOwnProperty('error_message')) {
+          console.log('server error ', response.error_message);
+          _this.error = response.error_message;
+          errorCallback(_this.error);
+          return false;
+        } else if (response.isSuccess) {
+          console.log('success request ', response);
+          _this.data = response.data;
+          successCallback(_this.data);
+          return true;
+        } else {
+          console.log('error reposen ', response);
+          _this.error = response.errorMessage[0];
+          errorCallback(_this.error);
+          return false;
+        }
+      })["catch"](function (error) {
+        console.log("server error ", error);
+        errorCallback(error);
+      });
+    }
+  }, {
+    key: "previewFile",
+    value: function previewFile(input, successCallback, errorCallback) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          successCallback(e);
+        };
+
+        reader.onerror = function (error) {
+          errorCallback(error);
+        };
+
+        reader.onabort = function (interupt) {
+          errorCallback(interupt);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  }, {
+    key: "getError",
+    value: function getError() {
+      return this.error;
+    }
+  }, {
+    key: "getData",
+    value: function getData() {
+      return this.data;
+    }
+  }]);
+
+  return serverRequest;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/js/Status.js":
 /*!********************************!*\
   !*** ./resources/js/Status.js ***!
@@ -50793,7 +50925,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _User_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./User.js */ "./resources/js/User.js");
 /* harmony import */ var _Guest_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Guest.js */ "./resources/js/Guest.js");
 /* harmony import */ var _Status_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Status.js */ "./resources/js/Status.js");
+/* harmony import */ var _Product_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Product.js */ "./resources/js/Product.js");
+/* harmony import */ var _ServerRequest__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ServerRequest */ "./resources/js/ServerRequest.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+
 
 
 
@@ -51048,6 +51184,48 @@ var app = new Vue({
 
       this.hideLoader();
     },
+    prepareProduct: function prepareProduct() {
+      if (this.Product.product_name === null || _Product_js__WEBPACK_IMPORTED_MODULE_10__["default"].product_name === "") {
+        this.showError('Please provide product name');
+      } else if (this.Product.product_description === null) {
+        this.showError('Please provide product description');
+      } else if (this.Product.product_price <= 0) {
+        this.showError('Please provide product price');
+      } else if (this.Product.product_currency === null) {
+        this.showError('Please provide product currency ');
+      } else if (this.Product.product_unit === null) {
+        this.showError('Please provide product unit such as kilogram or pieces');
+      } else if (this.Product.product_files.length <= 0) {
+        this.showError('Please provide at least one image for the product');
+      } else {
+        console.log('ready for publishing product ');
+      }
+    },
+    prepareProductFile: function prepareProductFile(event) {
+      console.log(event);
+      var input = event.target;
+      this.ServerRequest.previewFile(input, this.previewProductFile, this.showError);
+    },
+    previewProductFile: function previewProductFile(src) {
+      this.Product.product_files.push({
+        "file_src": src.target.result,
+        "alt": "Product file",
+        "index": this.Product.product_files.length
+      });
+    },
+    removeMe: function removeMe(index) {
+      console.log(index, ' to be remved');
+      this.Product.product_files.splice(index, 1);
+      var i;
+
+      for (i = index; i < this.Product.product_files.length; i++) {
+        this.Product.product_files[i].index = i;
+      }
+    },
+    showError: function showError(error) {
+      this.errorObject.error_text = error;
+      this.errorObject.errorModal = this.errorModal = true;
+    },
     getHostProfile: function getHostProfile() {
       if (this.host_type === 0) return this.Host.company_logo;else return this.Host.user_profile;
     },
@@ -51094,7 +51272,9 @@ var app = new Vue({
       "error_text": ''
     },
     host_type: -1,
-    req: null
+    req: null,
+    Product: new _Product_js__WEBPACK_IMPORTED_MODULE_10__["default"](),
+    ServerRequest: new _ServerRequest__WEBPACK_IMPORTED_MODULE_11__["default"]()
   }
 });
 

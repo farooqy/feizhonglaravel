@@ -51152,6 +51152,27 @@ function () {
       });
     }
   }, {
+    key: "previewFile",
+    value: function previewFile(input, successCallback, errorCallback) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          successCallback(e);
+        };
+
+        reader.onerror = function (error) {
+          errorCallback(error);
+        };
+
+        reader.onabort = function (interupt) {
+          errorCallback(interupt);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  }, {
     key: "getError",
     value: function getError() {
       return this.error;
