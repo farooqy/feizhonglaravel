@@ -31,35 +31,83 @@
         <div class="tab-pane" id="product_form" role="tabpanel" aria-expanded="true">
           <div class="card">
             <div class="card-header">
-              COMING SOON
+              Adding New Product
             </div>
             <div class="card-body">
-              We are sorry, the products posting will be availalbe soon.
+              <form class="form" action="" method="post">
+                <div class="form-goruplabel-floating ">
+                  <label for="product_name" class="label">Product name</label>
+                  <input type="text" placeholder="Product name"/>
+                </div>
+                <div class="form-group">
+                  <textarea type="text" placeholder="Product description"
+                  class="form-control">
+                  </textarea>
+                </div>
+                <div class="form-gorup">
+                  <div class="row">
+                    <div class="col-md-3 col-lg-3">
+                        <label for="product_name" class="label"> Price</label>
+                        <input type="text" placeholder=" Price"/>
+                    </div>
+                    <div class="col-md-3 col-lg-3">
+                      <label for="product_name" class="label">Currency</label>
+                      <input type="text" placeholder="Currency"/>
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                      <label for="product_name" class="label">Measuring unit</label>
+                      <input type="text" placeholder="Measuring unit i.e grams"/>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="add-options-message">
+                  <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
+                    <svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-camera-icon"></use></svg>
+                  </a>
+
+
+                  <button class="btn btn-primary btn-md-2">Post Product</button>
+
+                </div>
+              </form>
             </div>
           </div>
         </div>
 
         <div class="tab-pane active" id="status_form" role="tabpanel" aria-expanded="true">
-          <form>
-            <div class="author-thumb">
-              <img :src="getHostProfile()" alt="author"
-              style="height:40px; width:40px">
+          <div class="card">
+            <div class="card-header">Add New Post</div>
+            <div class="card-body">
+              <form>
+                <div class="author-thumb">
+                  <img :src="getHostProfile()" alt="author"
+                  style="height:40px; width:40px">
+                </div>
+                <div class="form-group with-icon label-floating is-empty">
+                  <label class="control-label">Share what you are thinking here...</label>
+                  <textarea class="form-control" placeholder=""  ></textarea>
+                </div>
+                <div class="form-group">
+                  <img src="/olympus_assets/img/last-photo8.jpg"
+                  class="product_image_preview"
+                  style="height:60px;width:60px;
+                  background-image:url(olympus_assets/img/danger.png)"/>
+                </div>
+                <div class="add-options-message">
+                  <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
+                    <svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-camera-icon"></use></svg>
+                  </a>
+
+
+                  <button class="btn btn-primary btn-md-2">Post Status</button>
+
+                </div>
+
+              </form>
             </div>
-            <div class="form-group with-icon label-floating is-empty">
-              <label class="control-label">Share what you are thinking here...</label>
-              <textarea class="form-control" placeholder=""  ></textarea>
-            </div>
-            <div class="add-options-message">
-              <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
-                <svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-camera-icon"></use></svg>
-              </a>
-
-
-              <button class="btn btn-primary btn-md-2">Post Status</button>
-
-            </div>
-
-          </form>
+          </div>
         </div>
       </div>
     </div>

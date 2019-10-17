@@ -128,7 +128,7 @@
                       @change="updateSelect($event)" v-model="Company.company_type">
                           <option value="Aerospace industry" >Aerospace industry</option>
                           <option value="Agriculture" >Agriculture</option>
-                          <option value="Agriculture" >Beauty Products</option>
+                          <option value="Beautify" >Beauty Products</option>
                           <option value="Chemical industry" >Chemical industry</option>
                           <option value="Computer industry" >Computer industry</option>
                           <option value="Construction industry" >Construction industry</option>
