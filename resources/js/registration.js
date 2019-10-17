@@ -363,7 +363,7 @@ const app = new Vue({
         console.log("type number ", event.target.options.selectedIndex);
         this.selected_type =event.target.options.selectedIndex;
         this.Company.company_subtype = this.Company.types[this.selected_type][0];
-        if(this.selected_type === 20)
+        if(this.selected_type === 21)
         {
           this.showCustomInput();
         }

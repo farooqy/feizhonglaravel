@@ -103,7 +103,7 @@
                       <input type="text"  placeholder="Company address one"
                       v-model="Company.company_address_one" name="company_addr_one"
                       class="col-md-6 col-lg-6"/>
-                        <input type="password" class="col-md-6 col-lg-6" v-model="Company.company_address_two"
+                        <input type="text" class="col-md-6 col-lg-6" v-model="Company.company_address_two"
                         placeholder="Address two (optional)" name="company_addr_two"/>
                     </div>
                     <div class="row">
