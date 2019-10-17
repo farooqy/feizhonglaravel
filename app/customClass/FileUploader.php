@@ -45,7 +45,7 @@ class FileUploader {
         try
         {
         	File::put($logo_url, $filedata);
-        	return env('APP_URL').$this->directory.$this->filename.$extenstion;
+        	return "/".$this->directory.$this->filename.$extenstion;
         }
 
 		catch(Exception $exception)
