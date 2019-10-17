@@ -12,7 +12,7 @@ $factory->define(App\models\companies\companydataModel::class, function (Faker $
 
 	$comp_token = hash('md5', time()*rand(0,99999));
   $phonenumber = str_replace( "-",'', $faker->unique()->phoneNumber());
-	if(env("APP_URL") ==="local")
+	if(env("APP_ENV") ==="local")
   	$path = public_path("/uploads/comp/".$comp_token."/profile");
 	else
 		$path = env("APP_ROOT")."uploads/comp/profile/".$comp_token."/profile";
