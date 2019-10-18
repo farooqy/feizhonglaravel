@@ -158,6 +158,9 @@ class statusController extends Controller
             if($eachStatus->product_gen_token)
             {
                 $listProducts[$key]->type = "product";
+                $listProducts[$key]->product_files = $eachStatus->Product_Files;
+                $listProducts[$key]->num_likes = $eachStatus->likes->count();
+                $listProducts[$key]->num_comments = $eachStatus->comments->count();
 
                 $eachStatus->companydata;
 

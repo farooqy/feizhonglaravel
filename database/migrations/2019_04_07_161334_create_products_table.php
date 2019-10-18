@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('product_gen_token',330);
             $table->bigInteger('product_for_id');
             $table->string('product_name',250);
-            $table->string('product_description');
+            $table->text('product_description',1000);
             $table->string('product_measure_unit');
             $table->float('product_price');
             $table->string('product_measure_currency');

@@ -4,6 +4,7 @@ import error from "./components/error.vue";
 import loader from "./components/loader.vue";
 import statuslist from "./components/statuslist.vue";
 import statuslistv2 from "./components/statuslistv2.vue";
+import productlist from "./components/productlist.vue";
 import trendingcompanylist from "./components/trendingcompanylist.vue";
 import companylist from "./components/companylist.vue";
 import Company from "./Company.js";
@@ -14,13 +15,11 @@ import Product from "./Product.js";
 import ServerRequest from "./ServerRequest";
 window.Vue = require("vue");
 Vue.use(require('vue-cookies'));
+Vue.use(require('vue-faker'), {locale: 'zh_CN'});
 window.Axios = require('axios');
 
 var app = new Vue({
   el:"#app",
-  mounted(){
-    this.getCompanyData();
-  },
   methods: {
     serverRequest(url, form, type="default")
     {
@@ -50,7 +49,7 @@ var app = new Vue({
               this.setTrendingList(response.data);
               break;
             case "list_status":
-              this.setStatus(response.data);
+              this.setStatusProduct(response.data);
               break;
             case "comp_list":
               this.setCompanyList(response.data);
@@ -99,9 +98,9 @@ var app = new Vue({
     getStatuses()
     {
 
-      this.serverRequest("/api/comp/status/getCompSimpleStatus", this.req, "list_status");
+      this.serverRequest("/api/comp/status/getStatus", this.req, "list_status");
     },
-    setStatus(data)
+    setStatusProduct(data)
     {
 
       console.log(data);
@@ -109,35 +108,73 @@ var app = new Vue({
       var i;
       for(i=0; i < data.length; i++)
       {
+        var statusproduct = data[i];
         var j, c_counter, l_counter;
         var files = [];
         var comments = [];
         var likes = [];
-        for(j=0; j<data[i].status__files.length; j++)
+        var listfiles;
+        if(statusproduct.type === "product")
         {
-          files.push({
-            "file_url": data[i].status__files[j].file_url
-          });
+          listfiles = statusproduct.product_files;
+          console.log('file is for proudct ', listfiles);
         }
-        for(c_counter =0; c_counter < data[i].comments.length; c_counter++)
-        {
-          console.log("comments ",data[i].comments)
-        }
-        for(l_counter =0; l_counter < data[i].comments.length; l_counter++)
-        {
-            console.log("lieks ",data[i].likes);
+        else{
+          listfiles = statusproduct.status__files;
+          console.log('file is for status ', listfiles);
         }
 
-        this.Status.push({
-          "status_text": data[i].status_content,
-          "status_image": files[0].file_url,
-          "status_time": data[i].created_at,
-          "status_files": files,
-          "uploaded_by_name": data[i].company_data.comp_name,
-          "uploaded_by_picture": data[i].company_data.comp_logo
-        })
+        for(j=0; j<listfiles.length; j++)
+        {
+          files.push({
+            "file_url": listfiles[j].file_url
+          });
+        }
+        for(c_counter =0; c_counter < statusproduct.comments.length; c_counter++)
+        {
+          console.log("comments ",statusproduct.comments)
+        }
+        for(l_counter =0; l_counter < statusproduct.comments.length; l_counter++)
+        {
+            console.log("lieks ",statusproduct.likes);
+        }
+        if(statusproduct.type === "status")
+          this.setStatus(statusproduct, comments, likes, files);
+        else
+          this.setProduct(statusproduct, comments, likes, files);
       }
     },
+    setStatus(status, comments, likes, files)
+    {
+      this.StatusList.push({
+        "status_text": status.status_content,
+        "status_image": files[0].file_url,
+        "status_time": status.created_at,
+        "status_files": files,
+        "uploaded_by_name": status.company_data.comp_name,
+        "uploaded_by_picture": status.company_data.comp_logo,
+        "comments": comments,
+        "likes": likes,
+      })
+    },
+    setProduct(product, comments, likes,files)
+    {
+      var p = new Product();
+      p.product_id = product.id;
+      p.product_token = product.product_gen_token;
+      p.generated_token = product.product_gen_token;
+      p.product_files = product.product_files;
+      p.product_description = product.product_description;
+      p.product_name = product.product_name;
+      p.product_price = product.product_price;
+      p.product_currency = product.product_measure_currency;
+      p.product_unit = product.product_measure_unit;
+      p.product_company = product.companydata;
+      p.created_at = product.created_at;
+      this.productList.push(p)
+      console.log('products ',product);
+    },
+
     getTrendingCompanies()
     {
       //TO DO:: trending algorithm
@@ -193,7 +230,7 @@ var app = new Vue({
         this.req = {
           "host_id":this.Host.guest_id,
           "host_token": this.Host.guest_token,
-          "host_type": this.host_type === 1 ? "comp": "normal",
+          "host_type": this.host_type === 0 ? "comp": "normal",
           "api_key": this.Host.api_key === null ? "apikey" : this.Host.api_key
         };
         this.getTrendingCompanies();
@@ -300,12 +337,61 @@ var app = new Vue({
         this.showError('Please provide at least one image for the product')
       }
       else {
-        console.log('ready for publishing product ');
+        this.ServerRequest.setRequest(this.req);
+        this.ServerRequest.serverRequest("/api/comp/product/genToken",
+        this.setProductFiles, this.showError);
       }
+    },
+    setProductFiles(data)
+    {
+      if(data[0] !== undefined)
+        data = data[0];
+      this.Product.generated_token = data.generated_token;
+      var i;
+      var len = this.Product.product_files.length;
+
+      for(i=0; i < len; i++)
+      {
+        var req = this.req;
+        this.req.product_file = this.Product.product_files[i].file_src;
+        this.req.product_gen_token = this.Product.generated_token;
+        this.ServerRequest.setRequest(req);
+        this.ServerRequest.serverRequest("/api/comp/product/addImage",
+        this.setProductFileUrl, this.showError);
+      }
+    },
+    setProductFileUrl(data)
+    {
+      if(data[0] !== undefined)
+        data =  data[0];
+      this.successfullProductFiles.push({
+        "file_url": data.producte_file_src,
+        "file_id": data.product_file_id
+      });
+      if(this.successfullProductFiles.length ===
+        this.Product.product_files.length)
+      {
+        var req = this.req;
+        req.product_gen_token = this.Product.generated_token;
+        req.product_name = this.Product.product_name;
+        req.product_description = this.Product.product_description;
+        req.product_measure_unit = this.Product.product_unit;
+        req.product_measure_currency = this.Product.product_currency;
+        req.product_price = parseInt( this.Product.product_price);
+        this.ServerRequest.setRequest(req);
+
+        this.ServerRequest.serverRequest("/api/comp/product/addProduct",
+          this.setProductInfo, this.showError);
+      }
+
+    },
+    setProductInfo(data)
+    {
+      this.productList.push(this.Product);
+      this.Product = new Product();
     },
     prepareProductFile(event)
     {
-
         console.log(event);
         var input = event.target;
         this.ServerRequest.previewFile(input, this.previewProductFile,
@@ -365,20 +451,32 @@ var app = new Vue({
     {
       this.errorModal = false;
     },
+    populateProduct()
+    {
+      // this.Product =  new Product();
+      this.Product.product_name = this.$faker().commerce.productName();
+      this.Product.product_description = this.$faker().lorem.paragraph();
+      this.Product.product_currency = this.$faker().finance.currencySymbol();
+      this.Product.product_unit = "pieces";
+      this.Product.product_price = this.$faker().finance.amount(1,50);
+    },
 
   },
   components: {
     error,loader,statuslist,trendingcompanylist,statuslistv2,
-    companylist
+    companylist, productlist,
   },
   data: {
     Host: null,
-    Status: [
+    StatusList: [
       {
         "status_text": "This is my status text with a lot of long text",
         "status_image": "/olympus_assets/img/photo-album2.jpg",
         "status_time": "2019-10-13 02:49:18"
       }
+    ],
+    productList: [
+
     ],
     trending_list: [
     ],
@@ -398,5 +496,11 @@ var app = new Vue({
     req: null,
     Product:  new Product(),
     ServerRequest: new ServerRequest(),
-  }
+    successfullProductFiles:[],
+
+  },
+  mounted(){
+    this.getCompanyData();
+      this.populateProduct();
+  },
 })

@@ -410,7 +410,8 @@ class accountController extends Controller
 				$this->FileUploader->setFileName($filename);
 
 				$logo_url = $this->FileUploader->uplaodJsonFile($request->company_logo);
-
+				if(!$logo_url)
+					return $this->FileUploader->getError();
     		companydataModel::create([
     			"comp_name" => $request->company_name,
     			"comp_email" => $request->company_email,

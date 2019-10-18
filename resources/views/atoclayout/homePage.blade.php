@@ -147,9 +147,14 @@
     </div>
   </div>
 
+
   <div class="ui-block">
-      <statuslistv2 v-for="status in Status" v-bind="status"></statuslistv2>
+      <productlist v-for="product in productList" v-bind="product"></productlist>
   </div>
+  <div class="ui-block">
+      <statuslistv2 v-for="status in StatusList" v-bind="status"></statuslistv2>
+  </div>
+
 
     <!-- Load more icon -->
   <a id="load-more-button" href="#" class="btn btn-control btn-more"

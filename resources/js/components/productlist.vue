@@ -3,43 +3,36 @@
       <article class="hentry blog-post blog-post-v3">
 
 					<div class="post-thumb">
-						<img src="img/post1.jpg" alt="photo">
-						<a href="#" class="post-category bg-blue-light">THE COMMUNITY</a>
+						<img :src="product_files[0].file_url" alt="Product photo">
+						<a href="#" class="post-category bg-blue-light">Product</a>
 					</div>
 
 					<div class="post-content">
 
 						<div class="author-date">
 							by
-							<a class="h6 post__author-name fn" href="#">Maddy Simmons</a>
+							<a class="h6 post__author-name fn" href="#">
+                {{ product_company.comp_name }}
+              </a>
 							<div class="post__date">
-								<time class="published" datetime="2017-03-24T18:18">
-									- 7 hours ago
+								<time class="published" :datetime="created_at">
+									{{created_at}}
 								</time>
 							</div>
 						</div>
 
-						<a href="#" class="h3 post-title">Here’s the Featured Urban photo of August! </a>
-						<p>Here’s a photo from last month’s photoshoot. We had a lot of fun doing it and got really
-							awesome shots for the new summer catalog.
+						<a href="#" class="h3 post-title">
+              {{product_name}}
+            </a>
+						<p>
+              {{product_description | truncate(45, "...")}}
 						</p>
 
 						<div class="post-additional-info inline-items">
 
-							<ul class="friends-harmonic">
-								<li>
-									<a href="#">
-										<img src="img/icon-chat27.png" alt="icon">
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<img src="img/icon-chat2.png" alt="icon">
-									</a>
-								</li>
-							</ul>
+							<i class="fas fa-money"></i>
 							<div class="names-people-likes">
-								26
+								{{ product_currency }} {{product_price }} / {{product_unit}}
 							</div>
 
 							<div class="comments-shared">
@@ -64,9 +57,9 @@ module.exports = {
   console.log('child ready');
   return {'postlist':1,'version':2}
   },
-  props:["status_image","status_text", "status_time",
-  "status_id", "status_generated_token", "status_files", "uploaded_by_name",
-  "uploaded_by_picture"],
+  props:["generated_token","product_currency", "product_description",
+  "product_files", "status_generated_token", "product_id", "product_name",
+  "product_price", "product_unit", "product_company", "created_at"],
   filters: {
     truncate: function (text, length, suffix) {
             return text.substring(0, length) + suffix;

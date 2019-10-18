@@ -9,6 +9,7 @@ class FileUploader {
 	protected $filename;
 	protected $allowed_file_types;
 	protected $file_extension;
+	protected $uploaded_extension;
 	public function __construct()
 	{
 		$this->Error = new Error();
@@ -45,6 +46,7 @@ class FileUploader {
         try
         {
         	File::put($logo_url, $filedata);
+					$this->uploaded_extension = $extenstion;
         	return "/".$this->directory.$this->filename.$extenstion;
         }
 
@@ -99,6 +101,10 @@ class FileUploader {
 			return false;
 		}
 		$this->file_extension = $extension;
+	}
+	public function getUploadedExtension()
+	{
+		return $this->uploaded_extension;
 	}
 	public function getError()
 	{
