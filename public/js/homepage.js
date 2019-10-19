@@ -127620,7 +127620,6 @@ var app = new Vue({
   },
   mounted: function mounted() {
     this.getCompanyData();
-    this.Status.status_content = this.$faker().lorem.paragraph();
   }
 });
 

@@ -630,6 +630,5 @@ var app = new Vue({
   },
   mounted(){
     this.getCompanyData();
-    this.Status.status_content = this.$faker().lorem.paragraph();
   },
 })
