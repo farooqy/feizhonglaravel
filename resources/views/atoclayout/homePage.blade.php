@@ -105,22 +105,35 @@
                   style="height:40px; width:40px">
                 </div>
                 <div class="form-group with-icon label-floating is-empty">
-                  <label class="control-label">Share what you are thinking here...</label>
-                  <textarea class="form-control" placeholder=""  ></textarea>
+                  <label class="control-label">
+                  </label>
+                  <textarea class="form-control"
+                  placeholder="Share customers with your product / company"
+                  v-model="Status.status_content" ></textarea>
+                </div>
+                <div class="form-group" v-show="false">
+                  <input type="file" name="status_file" ref="status_file"
+                  @change="prepareStatusFile($event)">
                 </div>
                 <div class="form-group">
-                  <img src="/olympus_assets/img/last-photo8.jpg"
-                  class="post_image_preview"
+                  <img v-for="file in Status.status_files" :src="file.file_src"
+                  class="post_image_preview" :alt="file.alt"
                   style="height:60px;width:60px;
-                  background-image:url(olympus_assets/img/danger.png)"/>
+                  background-image:url(olympus_assets/img/danger.png)"
+                  @click="removeMe(file.index, 'status')"/>
+                  <div class="">
+                    <span class="hint">Click on the photo to remove it</span>
+                  </div>
                 </div>
                 <div class="add-options-message">
-                  <a href="#" class="options-message" data-toggle="tooltip" data-placement="top"   data-original-title="ADD PHOTOS">
-                    <svg class="olymp-camera-icon" data-toggle="modal" data-target="#update-header-photo"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-camera-icon"></use></svg>
-                  </a>
+                  <span @click.prevent="$refs.status_file.click()">
+                  <i class="fas fa-camera pointer" style="font-size:30px;
+                  cursor:pointer"
+                  ></i></span>
 
 
-                  <button class="btn btn-primary btn-md-2">Post Status</button>
+                  <button class="btn btn-primary btn-md-2"
+                  @click.prevent="preparePostStaus()">Post Status</button>
 
                 </div>
 
@@ -149,11 +162,11 @@
 
 
   <div class="ui-block">
-      <productlist v-for="product in productList" v-bind="product"></productlist>
+      <productlist v-for="statProd in StatusList" v-bind="statProd"></productlist>
   </div>
-  <div class="ui-block">
+  <!-- <div class="ui-block">
       <statuslistv2 v-for="status in StatusList" v-bind="status"></statuslistv2>
-  </div>
+  </div> -->
 
 
     <!-- Load more icon -->

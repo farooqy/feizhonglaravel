@@ -38830,7 +38830,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("span", { staticClass: "chat-message-item" }, [
-        _vm._v(" " + _vm._s(_vm.company_type) + " / Bar")
+        _vm._v(" " + _vm._s(_vm.company_type))
       ])
     ]),
     _vm._v(" "),

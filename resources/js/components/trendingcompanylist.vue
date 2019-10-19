@@ -7,7 +7,7 @@
     <div class="notification-event">
       <a :href="'/comp/view/'+this.company_id+'/'+this.company_token" class="h6 notification-friend"
       v-text="company_name"></a>
-      <span class="chat-message-item"> {{company_type}} / Bar</span>
+      <span class="chat-message-item"> {{company_type}}</span>
     </div>
     <span class="notification-icon" data-toggle="tooltip" data-placement="top"
       data-original-title="View company">

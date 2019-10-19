@@ -95,7 +95,7 @@ class productController extends Controller
         $publicpath = public_path($dir);
       else
         $publicpath = env("APP_ROOT").$dir;
-      $filename = "product_".hash("md5",time())."_pic.";
+      $filename = "product_".hash("md5",time().rand(0, 999999))."_pic.";
 
       $this->FileUploader->setFilePath($publicpath);
       $this->FileUploader->setFileDirectory($dir);//path with url

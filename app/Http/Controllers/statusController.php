@@ -256,7 +256,7 @@ class statusController extends Controller
           $publicpath = public_path($dir);
         else
           $publicpath = env("APP_ROOT").$dir;
-        $filename = 'status_'.hash('md5', time().$request->file_value).'_image.';
+        $filename = 'status_'.hash('md5', time().rand(0,9999)).'_image.';
 
 				$this->FileUploader->setFilePath($publicpath);
 				$this->FileUploader->setFileDirectory($dir);//path with url
@@ -281,7 +281,8 @@ class statusController extends Controller
         ])->get()[0]["id"];
         $this->Error->setSuccess([
           "file_id" => $file_id,
-          "file_index" => $request->has_files
+          "file_index" => $request->has_files,
+          "file_src" => $file_url
         ]);
         return $this->Error->getSuccess();
     }
@@ -359,7 +360,7 @@ class statusController extends Controller
           $this->Error->setError(["The post files haven't been uploaded"]);
           return $this->Error->getError();
         }
-        else if($uploaded_files->count() !== ($request->has_files+1))//index 0
+        else if($uploaded_files->count() !== $request->has_files)//index 0
         {
           $this->Error->setError(["The uploaded files and saved files mismatch.
           Please try again"]);

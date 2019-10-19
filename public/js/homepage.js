@@ -1904,6 +1904,93 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -1912,7 +1999,7 @@ module.exports = {
       'version': 2
     };
   },
-  props: ["generated_token", "product_currency", "product_description", "product_files", "status_generated_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at"],
+  props: ["post_type", "generated_token", "product_currency", "product_description", "product_files", "status_generated_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
   filters: {
     truncate: function truncate(text, length, suffix) {
       return text.substring(0, length) + suffix;
@@ -1935,6 +2022,12 @@ module.exports = {
     },
     getStatusLink: function getStatusLink() {
       return "/status/" + this.status_id + "/" + this.status_generated_token;
+    },
+    isStatusStatus: function isStatusStatus() {
+      return this.post_type === "status";
+    },
+    isStatusProduct: function isStatusProduct() {
+      return this.post_type === "product";
     }
   }
 };
@@ -113345,96 +113438,326 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("article", { staticClass: "hentry blog-post blog-post-v3" }, [
-    _c("div", { staticClass: "post-thumb" }, [
-      _c("img", {
-        attrs: { src: _vm.product_files[0].file_url, alt: "Product photo" }
-      }),
-      _vm._v(" "),
-      _c(
-        "a",
-        { staticClass: "post-category bg-blue-light", attrs: { href: "#" } },
-        [_vm._v("Product")]
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "post-content" }, [
-      _c("div", { staticClass: "author-date" }, [
-        _vm._v("\n\t\t\t\t\t\t\tby\n\t\t\t\t\t\t\t"),
-        _c(
-          "a",
-          { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
-          [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.product_company.comp_name) +
-                "\n              "
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "post__date" }, [
+  return _vm.isStatusProduct()
+    ? _c(
+        "article",
+        {
+          staticClass: "hentry blog-post blog-post-v3",
+          staticStyle: {
+            "border-bottom": "thin solid",
+            display: "block",
+            "padding-top": "25px"
+          }
+        },
+        [
           _c(
-            "time",
-            { staticClass: "published", attrs: { datetime: _vm.created_at } },
+            "div",
+            {
+              staticClass: "post__author author vcard inline-items",
+              staticStyle: { "margin-left": "25px" }
+            },
             [
-              _vm._v(
-                "\n\t\t\t\t\t\t\t\t\t" +
-                  _vm._s(_vm.created_at) +
-                  "\n\t\t\t\t\t\t\t\t"
-              )
+              _c("img", {
+                attrs: {
+                  src: _vm.product_company.comp_logo,
+                  alt: "company logo"
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "author-date" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "h6 post__author-name fn",
+                    attrs: { href: "" }
+                  },
+                  [
+                    _c("h6", [
+                      _vm._v(" " + _vm._s(_vm.product_company.comp_name) + " ")
+                    ])
+                  ]
+                ),
+                _vm._v("\n            Posted  "),
+                _c("a", { attrs: { href: _vm.getStatusLink() } }, [
+                  _vm._v("product")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "post__date" }, [
+                  _c(
+                    "time",
+                    {
+                      staticClass: "published",
+                      attrs: { datetime: _vm.created_at }
+                    },
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(" at " + _vm.created_at) +
+                          "\n              "
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticStyle: {
+                display: "flex",
+                "margin-bottom": "15px",
+                "padding-left": "25px"
+              }
+            },
+            [
+              _c("div", { staticClass: "post-thumb" }, [
+                _c("img", {
+                  attrs: {
+                    src: _vm.product_files[0].file_url,
+                    alt: "Product photo"
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "post-category bg-blue-light",
+                    attrs: { href: "#" }
+                  },
+                  [_vm._v("Product")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "post-content" }, [
+                _c(
+                  "a",
+                  { staticClass: "h3 post-title", attrs: { href: "#" } },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.product_name) +
+                        "\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "\n              " +
+                      _vm._s(
+                        _vm._f("truncate")(_vm.product_description, 45, "...")
+                      ) +
+                      "\n  \t\t\t\t\t"
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "post-additional-info inline-items" },
+                  [
+                    _c("div", { staticClass: "names-people-likes" }, [
+                      _c("a", {
+                        staticClass: "post-add-icon inline-items",
+                        attrs: { href: "#" }
+                      }),
+                      _vm._v(" "),
+                      _c("b", [
+                        _c("u", [
+                          _vm._v(
+                            "\n  \t\t\t\t\t\t\t" +
+                              _vm._s(_vm.product_currency) +
+                              " " +
+                              _vm._s(_vm.product_price) +
+                              " / " +
+                              _vm._s(_vm.product_unit) +
+                              "\n\n                "
+                          )
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]
+                )
+              ])
             ]
           )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("a", { staticClass: "h3 post-title", attrs: { href: "#" } }, [
-        _vm._v("\n              " + _vm._s(_vm.product_name) + "\n            ")
-      ]),
-      _vm._v(" "),
-      _c("p", [
-        _vm._v(
-          "\n              " +
-            _vm._s(_vm._f("truncate")(_vm.product_description, 45, "...")) +
-            "\n\t\t\t\t\t\t"
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "post-additional-info inline-items" }, [
-        _c("i", { staticClass: "fas fa-money" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "names-people-likes" }, [
-          _vm._v(
-            "\n\t\t\t\t\t\t\t\t" +
-              _vm._s(_vm.product_currency) +
-              " " +
-              _vm._s(_vm.product_price) +
-              " / " +
-              _vm._s(_vm.product_unit) +
-              "\n\t\t\t\t\t\t\t"
-          )
+        ]
+      )
+    : _c("article", { staticClass: "hentry post" }, [
+        _c("div", { staticClass: "post__author author vcard inline-items" }, [
+          _c("img", { attrs: { src: _vm.uploaded_by_picture, alt: "author" } }),
+          _vm._v(" "),
+          _c("div", { staticClass: "author-date" }, [
+            _c(
+              "a",
+              { staticClass: "h6 post__author-name fn", attrs: { href: "" } },
+              [_vm._v(_vm._s(_vm.uploaded_by_name))]
+            ),
+            _vm._v("\n              Posted  "),
+            _c("a", { attrs: { href: _vm.getStatusLink() } }, [
+              _vm._v("status")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "post__date" }, [
+              _c(
+                "time",
+                {
+                  staticClass: "published",
+                  attrs: { datetime: _vm.status_time }
+                },
+                [
+                  _vm._v(
+                    "\n        \t\t\t\t\t" +
+                      _vm._s(_vm.status_time) +
+                      "\n        \t\t\t\t"
+                  )
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "more" }, [
+            _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+              _c("use", { attrs: { "xlink:href": "#olymp-three-dots-icon" } })
+            ]),
+            _vm._v(" "),
+            _vm._m(1)
+          ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "comments-shared" }, [
+        _c("p", [
+          _vm._v("\n          " + _vm._s(_vm.status_text) + "\n        \t")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "post-block-photo js-zoom-gallery" },
+          _vm._l(_vm.status_files.slice(0, 2), function(file) {
+            return _c(
+              "a",
+              {
+                staticClass: "half-width",
+                class: _vm.addClassMorePhotos(file.file_url),
+                attrs: { href: file.file_url }
+              },
+              [
+                _c("img", { attrs: { src: file.file_url, alt: "photo" } }),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.isLastPhoto(file.file_url),
+                        expression: "isLastPhoto(file.file_url)"
+                      }
+                    ],
+                    staticClass: "h2"
+                  },
+                  [
+                    _vm._v(
+                      " +\n              " +
+                        _vm._s(_vm.status_files.length - 2) +
+                        "\n              "
+                    )
+                  ]
+                )
+              ]
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "post-additional-info inline-items" }, [
           _c(
             "a",
             { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
             [
-              _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-                _c("use", {
-                  attrs: { "xlink:href": "#olymp-speech-balloon-icon" }
-                })
+              _c("svg", { staticClass: "olymp-heart-icon" }, [
+                _c("use", { attrs: { "xlink:href": "#olymp-heart-icon" } })
               ]),
               _vm._v(" "),
-              _c("span", [_vm._v("0")])
+              _c("span", [_vm._v("15")])
             ]
-          )
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "comments-shared" }, [
+            _c(
+              "a",
+              {
+                staticClass: "post-add-icon inline-items",
+                attrs: { href: "#" }
+              },
+              [
+                _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
+                  _c("use", {
+                    attrs: { "xlink:href": "#olymp-speech-balloon-icon" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("span", [_vm._v("0")])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "post-add-icon inline-items",
+                attrs: { href: "#" }
+              },
+              [
+                _c("svg", { staticClass: "olymp-share-icon" }, [
+                  _c("use", { attrs: { "xlink:href": "#olymp-share-icon" } })
+                ]),
+                _vm._v(" "),
+                _c("span", [_vm._v("16")])
+              ]
+            )
+          ])
         ])
       ])
-    ])
-  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "comments-shared" }, [
+      _c(
+        "a",
+        { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+        [
+          _c("i", { staticClass: "fas fa-eye" }),
+          _vm._v(" "),
+          _c("span", [_vm._v("0")])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "more-dropdown" }, [
+      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Edit Post")])]),
+      _vm._v(" "),
+      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Delete Post")])]),
+      _vm._v(" "),
+      _c("li", [
+        _c("a", { attrs: { href: "#" } }, [_vm._v("Turn Off Notifications")])
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c("a", { attrs: { href: "#" } }, [_vm._v("Select as Featured")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -113710,7 +114033,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("span", { staticClass: "chat-message-item" }, [
-        _vm._v(" " + _vm._s(_vm.company_type) + " / Bar")
+        _vm._v(" " + _vm._s(_vm.company_type))
       ])
     ]),
     _vm._v(" "),
@@ -126913,7 +127236,8 @@ var app = new Vue({
         "uploaded_by_name": status.company_data.comp_name,
         "uploaded_by_picture": status.company_data.comp_logo,
         "comments": comments,
-        "likes": likes
+        "likes": likes,
+        "post_type": "status"
       });
     },
     setProduct: function setProduct(product, comments, likes, files) {
@@ -126929,7 +127253,10 @@ var app = new Vue({
       p.product_unit = product.product_measure_unit;
       p.product_company = product.companydata;
       p.created_at = product.created_at;
-      this.productList.push(p);
+      p.post_type = "product"; // this.productList.push(p)
+      //combine product and status
+
+      this.StatusList.push(p);
       console.log('products ', product);
     },
     getTrendingCompanies: function getTrendingCompanies() {
@@ -127071,11 +127398,19 @@ var app = new Vue({
       this.Product.generated_token = data.generated_token;
       var i;
       var len = this.Product.product_files.length;
+      var pfiles = this.Product.product_files;
 
       for (i = 0; i < len; i++) {
-        var req = this.req;
-        this.req.product_file = this.Product.product_files[i].file_src;
-        this.req.product_gen_token = this.Product.generated_token;
+        var p_src = pfiles[i];
+        var file_src = p_src.file_src;
+        var req = {
+          "host_id": this.Host.guest_id,
+          "host_token": this.Host.guest_token,
+          "host_type": "comp",
+          "product_file": file_src,
+          "product_gen_token": this.Product.generated_token
+        };
+        console.log('req for product is ', req);
         this.ServerRequest.setRequest(req);
         this.ServerRequest.serverRequest("/api/comp/product/addImage", this.setProductFileUrl, this.showError);
       }
@@ -127083,7 +127418,7 @@ var app = new Vue({
     setProductFileUrl: function setProductFileUrl(data) {
       if (data[0] !== undefined) data = data[0];
       this.successfullProductFiles.push({
-        "file_url": data.producte_file_src,
+        "file_url": data.product_file_src,
         "file_id": data.product_file_id
       });
 
@@ -127100,8 +127435,26 @@ var app = new Vue({
       }
     },
     setProductInfo: function setProductInfo(data) {
-      this.productList.push(this.Product);
+      var p = {
+        "created_at": "now",
+        "generated_token": this.Product.generated_token,
+        "post_type": "product",
+        "product_company": {
+          "comp_name": this.Host.company_name,
+          "comp_id": this.Host.guest_id,
+          "comp_token": this.Host.guest_token,
+          "comp_logo": this.Host.company_logo
+        },
+        "product_currency": this.Product.product_currency,
+        "product_description": this.Product.product_description,
+        "product_files": this.successfullProductFiles,
+        "product_token": this.Product.generated_token,
+        "product_price": this.Product.product_price,
+        "product_unit": this.Product.product_unit
+      };
+      this.StatusList.unshift(p);
       this.Product = new _Product_js__WEBPACK_IMPORTED_MODULE_11__["default"]();
+      this.successfullProductFiles = [];
     },
     prepareProductFile: function prepareProductFile(event) {
       console.log(event);
@@ -127115,14 +127468,96 @@ var app = new Vue({
         "index": this.Product.product_files.length
       });
     },
+    prepareStatusFile: function prepareStatusFile(event) {
+      var input = event.target;
+      this.ServerRequest.previewFile(input, this.previewStatusFile, this.showError);
+    },
+    previewStatusFile: function previewStatusFile(src) {
+      this.Status.status_files.push({
+        "file_src": src.target.result,
+        "alt": "Status file",
+        "index": this.Status.status_files.length
+      });
+    },
+    preparePostStaus: function preparePostStaus() {
+      if (this.Status.status_content === null) this.showError("Please say something about your status");else if (this.Status.status_files.length <= 0) this.showError("Please upload at least one image/video");else {
+        var req = this.req;
+        this.ServerRequest.setRequest(req);
+        this.ServerRequest.serverRequest("/api/comp/status/getToken", this.setStatusFiles, this.showError);
+      }
+    },
+    setStatusFiles: function setStatusFiles(data) {
+      if (data[0]) data = data[0];
+      this.Status.generated_token = data.generated_token;
+      var i;
+      var files = this.Status.status_files;
+
+      for (i = 0; i < files.length; i++) {
+        var f = files[i];
+        console.log('f is  ', f);
+        var src = f.file_src;
+        var statRequest = {
+          "host_id": this.Host.guest_id,
+          "host_token": this.Host.guest_token,
+          "host_type": "comp",
+          "has_files": i,
+          "file_value": src,
+          "api_key": this.Host.api_key === null ? "api_key" : this.Host.api_key,
+          "generated_token": data.generated_token
+        };
+        this.ServerRequest.setRequest(statRequest);
+        this.ServerRequest.serverRequest("/api/comp/status/addFile", this.setUploadedFile, this.showError);
+      }
+    },
+    setUploadedFile: function setUploadedFile(data) {
+      if (data[0]) data = data[0];
+      this.successfullStatusFiles.push({
+        "file_id": data.file_id,
+        "file_src": data.file_src,
+        "file_index": data.file_index
+      });
+
+      if (this.successfullStatusFiles.length === this.Status.status_files.length) {
+        this.setStatusInfo(data);
+      }
+    },
+    setStatusInfo: function setStatusInfo(data) {
+      var req = this.req;
+      req.status_content = this.Status.status_content;
+      req.status_type = "status";
+      req.status_generated_token = this.Status.generated_token;
+      req.has_files = this.successfullStatusFiles.length;
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest("/api/comp/status/setStatus", this.setSavedStatus, this.showError);
+    },
+    setSavedStatus: function setSavedStatus(data) {
+      this.StatusList.unshift({
+        "status_text": this.Status.status_content,
+        "status_image": this.successfullStatusFiles[0].file_src,
+        "status_time": "now",
+        "status_files": this.successfullStatusFiles,
+        "uploaded_by_name": this.Host.company_name,
+        "uploaded_by_picture": this.Host.company_logo,
+        "comments": [],
+        "likes": [],
+        "post_type": "status"
+      });
+      this.Status = new _Status_js__WEBPACK_IMPORTED_MODULE_10__["default"]();
+      this.successfullStatusFiles = [];
+    },
     removeMe: function removeMe(index) {
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "product";
       console.log(index, ' to be remved');
-      this.Product.product_files.splice(index, 1);
+      var files;
+      if (type === "product") files = this.Product.product_files;else files = this.Status.status_files;
+      files.splice(index, 1);
       var i;
 
-      for (i = index; i < this.Product.product_files.length; i++) {
-        this.Product.product_files[i].index = i;
+      for (i = index; i < files.length; i++) {
+        files[i].index = i;
       }
+
+      if (type === "product") this.Product.product_files = files;else this.Status.status_files = files;
     },
     showError: function showError(error) {
       this.errorObject.error_text = error;
@@ -127145,14 +127580,6 @@ var app = new Vue({
     },
     disMissErrorModel: function disMissErrorModel() {
       this.errorModal = false;
-    },
-    populateProduct: function populateProduct() {
-      // this.Product =  new Product();
-      this.Product.product_name = this.$faker().commerce.productName();
-      this.Product.product_description = this.$faker().lorem.paragraph();
-      this.Product.product_currency = this.$faker().finance.currencySymbol();
-      this.Product.product_unit = "pieces";
-      this.Product.product_price = this.$faker().finance.amount(1, 50);
     }
   },
   components: {
@@ -127186,12 +127613,14 @@ var app = new Vue({
     host_type: -1,
     req: null,
     Product: new _Product_js__WEBPACK_IMPORTED_MODULE_11__["default"](),
+    Status: new _Status_js__WEBPACK_IMPORTED_MODULE_10__["default"](),
     ServerRequest: new _ServerRequest__WEBPACK_IMPORTED_MODULE_12__["default"](),
-    successfullProductFiles: []
+    successfullProductFiles: [],
+    successfullStatusFiles: []
   },
   mounted: function mounted() {
     this.getCompanyData();
-    this.populateProduct();
+    this.Status.status_content = this.$faker().lorem.paragraph();
   }
 });
 

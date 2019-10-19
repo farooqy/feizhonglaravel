@@ -155,6 +155,7 @@ var app = new Vue({
         "uploaded_by_picture": status.company_data.comp_logo,
         "comments": comments,
         "likes": likes,
+        "post_type" : "status"
       })
     },
     setProduct(product, comments, likes,files)
@@ -171,7 +172,10 @@ var app = new Vue({
       p.product_unit = product.product_measure_unit;
       p.product_company = product.companydata;
       p.created_at = product.created_at;
-      this.productList.push(p)
+      p.post_type = "product";
+      // this.productList.push(p)
+      //combine product and status
+      this.StatusList.push(p);
       console.log('products ',product);
     },
 
@@ -349,12 +353,19 @@ var app = new Vue({
       this.Product.generated_token = data.generated_token;
       var i;
       var len = this.Product.product_files.length;
-
+      var pfiles = this.Product.product_files;
       for(i=0; i < len; i++)
       {
-        var req = this.req;
-        this.req.product_file = this.Product.product_files[i].file_src;
-        this.req.product_gen_token = this.Product.generated_token;
+        var p_src = pfiles[i];
+        var file_src = p_src.file_src;
+        var req = {
+          "host_id" : this.Host.guest_id,
+          "host_token": this.Host.guest_token,
+          "host_type": "comp",
+          "product_file": file_src,
+          "product_gen_token": this.Product.generated_token,
+        }
+        console.log('req for product is ',req);
         this.ServerRequest.setRequest(req);
         this.ServerRequest.serverRequest("/api/comp/product/addImage",
         this.setProductFileUrl, this.showError);
@@ -365,7 +376,7 @@ var app = new Vue({
       if(data[0] !== undefined)
         data =  data[0];
       this.successfullProductFiles.push({
-        "file_url": data.producte_file_src,
+        "file_url": data.product_file_src,
         "file_id": data.product_file_id
       });
       if(this.successfullProductFiles.length ===
@@ -387,8 +398,26 @@ var app = new Vue({
     },
     setProductInfo(data)
     {
-      this.productList.push(this.Product);
+      var p = {
+        "created_at": "now",
+        "generated_token": this.Product.generated_token,
+        "post_type": "product",
+        "product_company": {
+          "comp_name":this.Host.company_name,
+          "comp_id": this.Host.guest_id,
+          "comp_token": this.Host.guest_token,
+          "comp_logo": this.Host.company_logo
+        },
+        "product_currency": this.Product.product_currency,
+        "product_description": this.Product.product_description,
+        "product_files": this.successfullProductFiles,
+        "product_token": this.Product.generated_token,
+        "product_price": this.Product.product_price,
+        "product_unit": this.Product.product_unit,
+      }
+      this.StatusList.unshift(p);
       this.Product = new Product();
+      this.successfullProductFiles = [];
     },
     prepareProductFile(event)
     {
@@ -405,15 +434,121 @@ var app = new Vue({
         "index": this.Product.product_files.length,
       });
     },
-    removeMe(index)
+    prepareStatusFile(event)
+    {
+      var input = event.target;
+      this.ServerRequest.previewFile(input, this.previewStatusFile,
+      this.showError);
+
+    },
+    previewStatusFile(src)
+    {
+      this.Status.status_files.push({
+        "file_src": src.target.result,
+        "alt": "Status file",
+        "index": this.Status.status_files.length
+      })
+    },
+    preparePostStaus()
+    {
+      if(this.Status.status_content === null)
+        this.showError("Please say something about your status");
+      else if(this.Status.status_files.length <=0)
+        this.showError("Please upload at least one image/video");
+      else {
+        var req = this.req;
+        this.ServerRequest.setRequest(req);
+        this.ServerRequest.serverRequest("/api/comp/status/getToken",
+          this.setStatusFiles, this.showError);
+      }
+    },
+    setStatusFiles(data)
+    {
+      if(data[0])
+        data = data[0];
+      this.Status.generated_token = data.generated_token;
+      var i;
+      var files = this.Status.status_files;
+      for(i=0; i < files.length; i++ )
+      {
+        var f = files[i];
+        console.log('f is  ',f);
+        var src = f.file_src;
+        var statRequest = {
+          "host_id": this.Host.guest_id,
+          "host_token": this.Host.guest_token,
+          "host_type": "comp",
+          "has_files": i,
+          "file_value": src,
+          "api_key": this.Host.api_key === null ? "api_key" : this.Host.api_key,
+          "generated_token": data.generated_token
+        }
+        this.ServerRequest.setRequest(statRequest);
+        this.ServerRequest.serverRequest("/api/comp/status/addFile",
+          this.setUploadedFile, this.showError);
+      }
+    },
+    setUploadedFile(data)
+    {
+      if(data[0])
+        data = data[0];
+      this.successfullStatusFiles.push({
+        "file_id": data.file_id,
+        "file_src": data.file_src,
+        "file_index": data.file_index
+      });
+      if(this.successfullStatusFiles.length ===
+        this.Status.status_files.length)
+      {
+        this.setStatusInfo(data) ;
+      }
+    },
+    setStatusInfo(data)
+    {
+      var req = this.req;
+      req.status_content = this.Status.status_content;
+      req.status_type = "status";
+      req.status_generated_token = this.Status.generated_token;
+      req.has_files = this.successfullStatusFiles.length;
+
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest("/api/comp/status/setStatus",
+        this.setSavedStatus, this.showError)
+    },
+    setSavedStatus(data)
+    {
+      this.StatusList.unshift({
+        "status_text": this.Status.status_content,
+        "status_image": this.successfullStatusFiles[0].file_src,
+        "status_time": "now",
+        "status_files": this.successfullStatusFiles,
+        "uploaded_by_name": this.Host.company_name,
+        "uploaded_by_picture": this.Host.company_logo,
+        "comments": [],
+        "likes": [],
+        "post_type" : "status"
+      });
+      this.Status = new Status();
+      this.successfullStatusFiles = [];
+    },
+    removeMe(index, type="product")
     {
       console.log(index, ' to be remved');
-      this.Product.product_files.splice(index, 1);
+      var files ;
+      if(type === "product")
+        files = this.Product.product_files;
+      else
+        files = this.Status.status_files;
+      files.splice(index, 1);
       var i;
-      for(i = index; i < this.Product.product_files.length; i++)
+      for(i = index; i < files.length; i++)
       {
-        this.Product.product_files[i].index = i;
+        files[i].index = i;
       }
+      if(type === "product")
+        this.Product.product_files = files;
+      else
+        this.Status.status_files = files;
     },
     showError(error)
     {
@@ -451,15 +586,7 @@ var app = new Vue({
     {
       this.errorModal = false;
     },
-    populateProduct()
-    {
-      // this.Product =  new Product();
-      this.Product.product_name = this.$faker().commerce.productName();
-      this.Product.product_description = this.$faker().lorem.paragraph();
-      this.Product.product_currency = this.$faker().finance.currencySymbol();
-      this.Product.product_unit = "pieces";
-      this.Product.product_price = this.$faker().finance.amount(1,50);
-    },
+
 
   },
   components: {
@@ -495,12 +622,14 @@ var app = new Vue({
     host_type:-1,
     req: null,
     Product:  new Product(),
+    Status: new Status(),
     ServerRequest: new ServerRequest(),
     successfullProductFiles:[],
+    successfullStatusFiles: [],
 
   },
   mounted(){
     this.getCompanyData();
-      this.populateProduct();
+    this.Status.status_content = this.$faker().lorem.paragraph();
   },
 })
