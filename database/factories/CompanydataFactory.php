@@ -15,11 +15,11 @@ $factory->define(App\models\companies\companydataModel::class, function (Faker $
 	if(env("APP_ENV") ==="local")
   	$path = public_path("/uploads/comp/".$comp_token."/profile");
 	else
-		$path = env("APP_ROOT")."uploads/comp/profile/".$comp_token."/profile";
+		$path = env("APP_ROOT")."uploads/comp/".$comp_token."/profile";
 	if(!is_dir($path))
 		mkdir($path,0765, true);
   $filename = "/profile_me_".rand(0, 99999)."_.png";
-	$urlpath = "/uploads/comp/".$comp_token."/";
+	$urlpath = "/uploads/comp/".$comp_token."/profile/";
     return [
       "comp_token" => $comp_token,
       "comp_name" => $faker->company(),

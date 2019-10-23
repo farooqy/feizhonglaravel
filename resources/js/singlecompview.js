@@ -3,6 +3,7 @@ require("./bootstrap");
 import error from "./components/error.vue";
 import loader from "./components/loader.vue";
 import statuslist from "./components/statuslist.vue";
+import productlist from "./components/productlist.vue";
 import statuslistv2 from "./components/statuslistv2.vue";
 import trendingcompanylist from "./components/trendingcompanylist.vue";
 import companylist from "./components/companylist.vue";
@@ -13,6 +14,7 @@ import User from "./User.js";
 import Guest from "./Guest.js";
 import ServerRequest from "./ServerRequest.js";
 import Status from "./Status.js";
+import Product from "./Product.js";
 
 import BaiduMap from 'vue-baidu-map'
 window.Vue = require("vue");
@@ -40,7 +42,40 @@ var app = new Vue({
     this.getCompanyData();
   },
   methods: {
+    getProduct()
+    {
+      var req = this.req;
+      req.comp_id = this.comp_id;
+      req.comp_token = this.comp_token;
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest("/api/comp/products/list",
+        this.setProducts, this.showError);
+    },
+    setProducts(data)
+    {
+      var i;
+      for(i=0; i < data.length; i++)
+      {
+        var p = new Product();
+        p.product_id = data.id;
+        p.product_token = data.product_gen_token;
+        p.generated_token = data.product_gen_token;
+        p.product_files = data.product_files;
+        p.product_description = data.product_description;
+        p.product_name = data.product_name;
+        p.product_price = data.product_price;
+        p.product_currency = data.product_measure_currency;
+        p.product_unit = data.product_measure_unit;
+        p.product_company = data.companydata;
+        p.created_at = data.created_at;
+        p.post_type = "product";
+        // this.productList.push(p)
+        //combine product and status
+        this.productList.push(p);
+      }
 
+      console.log('products ',data);
+    },
     getStatuses()
     {
       this.ServerRequest.setRequest({
@@ -179,7 +214,7 @@ var app = new Vue({
         this.req = {
           "host_id":this.Host.guest_id,
           "host_token": this.Host.guest_token,
-          "host_type": this.host_type === 1 ? "comp": "normal",
+          "host_type": this.host_type === 0 ? "comp": "normal",
           "api_key": this.Host.api_key === null ? "apikey" : this.Host.api_key
         };
         this.getCompanyProfile();
@@ -202,7 +237,7 @@ var app = new Vue({
       this.req = {
         "host_id":this.Host.guest_id,
         "host_token": this.Host.guest_token,
-        "host_type": this.host_type === 1 ? "comp": "normal",
+        "host_type": this.host_type === 0 ? "comp": "normal",
         "api_key": this.Host.api_key === null ? "apikey" : this.Host.api_key
       };
       console.log(data);
@@ -232,6 +267,7 @@ var app = new Vue({
       this.Comp_Profile.company_type = data[0].type.comp_type;
       this.Comp_Profile.company_subtype = data[0].type.comp_subtype;
       this.getStatuses();
+      this.getProduct();
       this.hideLoader();
 
     },
@@ -313,7 +349,7 @@ var app = new Vue({
   },
   components: {
     error,loader,statuslist,trendingcompanylist,statuslistv2,
-    companylist, baidumap, compaddress
+    companylist, baidumap, compaddress, productlist
   },
   data: {
     ServerRequest: new ServerRequest(),
@@ -338,7 +374,9 @@ var app = new Vue({
       post_tab: false,
       product_tab:false,
       address_tab:false,
-    }
+    },
+    Product: new Product(),
+    productList : []
 
   }
 })

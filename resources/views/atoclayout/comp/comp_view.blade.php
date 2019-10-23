@@ -236,5 +236,14 @@
 
 <div class="container mb-3" v-show="profile_tabs.product_tab">
 
-	@include("atoclayout.error.comingsoon")
+	<div class="card">
+		<div class="card-header">Company post</div>
+		<div class="card-body" style="border-right: thin solid gray;">
+			<div class="row">
+				<productlist v-for="product in productList"
+				v-bind="product"></productlist>
+			</div>
+		</div>
+
+	</div>
 </div>

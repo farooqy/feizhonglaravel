@@ -35,6 +35,36 @@ class productController extends Controller
         $this->requestUrl = url()->current();
         $this->FileUploader = new FileUploader();
     }
+    public function getListOfCompanyProducts(Request $request)
+    {
+      $rules = [
+        "host_id" => "required|integer|min:0",
+        "host_token" => "required|string|min:25|max:350",
+        "host_type" => "required|string|in:comp, normal, guest",
+        "api_key" => "required|string",
+        "comp_id" => "required|integer|min:0",
+        "comp_token" => "required|string|min:25|max:350",
+
+      ];
+
+
+      $is_valid_request = Validator::make($request->all(), $rules, []);
+      $isNotValidRequest = $this->customValidator->isNotValidRequest($is_valid_request);
+      if($isNotValidRequest)
+        return $isNotValidRequest;
+
+      //TO DO TRACK USER REQUEST WITH API KEY
+
+      $products = productModel::where([
+        ["comp_id", $request->comp_id],
+        ["comp_token", $request->comp_token],
+      ])->get();
+      foreach ($products as $p) {
+        $p->companyProfile;
+      }
+      $this->Error->setSuccess($products);
+      return $this->Error->getSuccess();
+    }
     public function getProducts()
     {
     	$products = productModel::get();

@@ -55,6 +55,7 @@ Route::post('/comp/status/deleteComment', 'statusController@deleteComment');
 Route::post('/comp/status/unlikeStatus', 'statusController@unlikeStatus');
 
 Route::post('/comp/products', 'products\productController@getProducts');
+Route::post('/comp/products/list', 'products\productController@getListOfCompanyProducts');
 Route::post('/comp/product/addProduct', 'products\productController@newProduct');
 Route::post('/comp/product/addImage', 'products\productController@addProductImage');
 Route::post('/comp/product/genToken', 'Status_TokenGeneratorModelController@generate_Token');

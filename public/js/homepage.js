@@ -127580,6 +127580,14 @@ var app = new Vue({
     },
     disMissErrorModel: function disMissErrorModel() {
       this.errorModal = false;
+    },
+    populateProduct: function populateProduct() {
+      // this.Product =  new Product();
+      this.Product.product_name = this.$faker().commerce.productName();
+      this.Product.product_description = this.$faker().lorem.paragraph();
+      this.Product.product_currency = this.$faker().finance.currencySymbol();
+      this.Product.product_unit = "pieces";
+      this.Product.product_price = this.$faker().finance.amount(1, 50);
     }
   },
   components: {
@@ -127620,6 +127628,8 @@ var app = new Vue({
   },
   mounted: function mounted() {
     this.getCompanyData();
+    this.populateProduct();
+    this.Status.status_content = this.$faker().lorem.paragraph();
   }
 });
 
