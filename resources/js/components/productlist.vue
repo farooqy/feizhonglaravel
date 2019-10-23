@@ -95,7 +95,7 @@
         	</div>
 
         	<p>
-          {{status_text}}
+          {{status_text | truncate( 150, '...')}}
         	</p>
 
         	<div class="post-block-photo js-zoom-gallery">

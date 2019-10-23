@@ -49831,7 +49831,7 @@ function browserDetails() {
       debug = '';
   debug = {
     'os_name': e.os.name === "" ? "uknown" : e.os.name,
-    'os_version': e.os.version === null ? "uknown" : e.os.version,
+    'os_version': e.os.version === null ? -1 : parseInt(e.os.version),
     'browser_name': e.browser.name === "" ? "uknown" : e.browser.name,
     'browser_version': e.browser.version === null ? "unknown" : e.browser.version + '',
     'navigator_userAgent': navigator.userAgent === "" ? "unknown" : navigator.userAgent,

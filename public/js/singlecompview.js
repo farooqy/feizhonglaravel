@@ -38957,7 +38957,11 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("p", [
-          _vm._v("\n          " + _vm._s(_vm.status_text) + "\n        \t")
+          _vm._v(
+            "\n          " +
+              _vm._s(_vm._f("truncate")(_vm.status_text, 150, "...")) +
+              "\n        \t"
+          )
         ]),
         _vm._v(" "),
         _c(
