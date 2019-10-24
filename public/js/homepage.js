@@ -1991,15 +1991,198 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 module.exports = {
   data: function data() {
-    console.log('child ready');
     return {
       'postlist': 1,
-      'version': 2
+      'version': 2,
+      in_comment_text: this.comment_text,
+      post_id: this.product_id === undefined ? this.status_id : this.product_id,
+      post_token: this.product_token === undefined ? this.status_generated_token : this.product_token
     };
   },
-  props: ["post_type", "generated_token", "product_currency", "product_description", "product_files", "status_generated_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
+  props: ["post_type", "host_profile", "comment_text", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
   filters: {
     truncate: function truncate(text, length, suffix) {
       return text.substring(0, length) + suffix;
@@ -2028,6 +2211,11 @@ module.exports = {
     },
     isStatusProduct: function isStatusProduct() {
       return this.post_type === "product";
+    },
+    submitComment: function submitComment(type) {
+      this.post_id = this.status_id === undefined ? this.product_id : this.status_id;
+      this.post_token = this.status_generated_token;
+      this.$emit('submit-comment', type, this.post_id, this.post_token, this.in_comment_text);
     }
   }
 };
@@ -113583,7 +113771,221 @@ var render = function() {
                 )
               ])
             ]
-          )
+          ),
+          _vm._v(" "),
+          _c("ul", { staticClass: "comments-list" }, [
+            _c("li", { staticClass: "comment-item" }, [
+              _c(
+                "div",
+                { staticClass: "post__author author vcard inline-items" },
+                [
+                  _c("img", {
+                    attrs: {
+                      src: "olympus_assets/img/avatar10-sm.jpg",
+                      alt: "author"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("a", { staticClass: "more", attrs: { href: "#" } }, [
+                    _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+                      _c("use", {
+                        attrs: { "xlink:href": "#olymp-three-dots-icon" }
+                      })
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v(
+                  "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque laudantium."
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
+              _vm._m(3)
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "comment-item has-children" }, [
+              _c(
+                "div",
+                { staticClass: "post__author author vcard inline-items" },
+                [
+                  _c("img", {
+                    attrs: {
+                      src: "olympus_assets/img/avatar5-sm.jpg",
+                      alt: "author"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c("a", { staticClass: "more", attrs: { href: "#" } }, [
+                    _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+                      _c("use", {
+                        attrs: { "xlink:href": "#olymp-three-dots-icon" }
+                      })
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v(
+                  "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugiten, sed quia\n  \t\t\t\t\t\t\tconsequuntur magni dolores eos qui ratione voluptatem sequi en lod nesciunt. Neque porro\n  \t\t\t\t\t\t\tquisquam est, qui dolorem ipsum quia dolor sit amet, consectetur adipisci velit en lorem ipsum der.\n  \t\t\t\t\t\t"
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(5),
+              _vm._v(" "),
+              _vm._m(6),
+              _vm._v(" "),
+              _c("ul", { staticClass: "children" }, [
+                _c("li", { staticClass: "comment-item" }, [
+                  _c(
+                    "div",
+                    { staticClass: "post__author author vcard inline-items" },
+                    [
+                      _c("img", {
+                        attrs: {
+                          src: "olympus_assets/img/avatar8-sm.jpg",
+                          alt: "author"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm._m(7),
+                      _vm._v(" "),
+                      _c("a", { staticClass: "more", attrs: { href: "#" } }, [
+                        _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+                          _c("use", {
+                            attrs: { "xlink:href": "#olymp-three-dots-icon" }
+                          })
+                        ])
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(8)
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "comment-item" }, [
+                  _c(
+                    "div",
+                    { staticClass: "post__author author vcard inline-items" },
+                    [
+                      _c("img", {
+                        attrs: {
+                          src: "olympus_assets/img/avatar2-sm.jpg",
+                          alt: "author"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm._m(9),
+                      _vm._v(" "),
+                      _c("a", { staticClass: "more", attrs: { href: "#" } }, [
+                        _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+                          _c("use", {
+                            attrs: { "xlink:href": "#olymp-three-dots-icon" }
+                          })
+                        ])
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v("Excepteur sint occaecat cupidatat non proident.")
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(10)
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("form", { staticClass: "comment-form inline-items" }, [
+            _c(
+              "div",
+              { staticClass: "post__author author vcard inline-items" },
+              [
+                _c("img", { attrs: { src: _vm.host_profile, alt: "author" } }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form-group with-icon-right is-empty" },
+                  [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.in_comment_text,
+                          expression: "in_comment_text"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        placeholder: "What do you think about this post?"
+                      },
+                      domProps: { value: _vm.in_comment_text },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.in_comment_text = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "add-options-message" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "options-message",
+                          attrs: {
+                            href: "#",
+                            "data-toggle": "modal",
+                            "data-target": "#update-header-photo"
+                          }
+                        },
+                        [
+                          _c("svg", { staticClass: "olymp-camera-icon" }, [
+                            _c("use", {
+                              attrs: { "xlink:href": "#olymp-camera-icon" }
+                            })
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "material-input" })
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-md-2 btn-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.submitComment("product")
+                  }
+                }
+              },
+              [_vm._v("Post Comment")]
+            )
+          ])
         ]
       )
     : _c("article", { staticClass: "hentry post" }, [
@@ -113624,7 +114026,7 @@ var render = function() {
               _c("use", { attrs: { "xlink:href": "#olymp-three-dots-icon" } })
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(11)
           ])
         ]),
         _vm._v(" "),
@@ -113677,52 +114079,72 @@ var render = function() {
           0
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "post-additional-info inline-items" }, [
-          _c(
-            "a",
-            { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
-            [
-              _c("svg", { staticClass: "olymp-heart-icon" }, [
-                _c("use", { attrs: { "xlink:href": "#olymp-heart-icon" } })
+        _vm._m(12),
+        _vm._v(" "),
+        _c("form", { staticClass: "comment-form inline-items" }, [
+          _c("div", { staticClass: "post__author author vcard inline-items" }, [
+            _c("img", { attrs: { src: _vm.host_profile, alt: "author" } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group with-icon-right is-empty" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.in_comment_text,
+                    expression: "in_comment_text"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { placeholder: "What do you think about this post?" },
+                domProps: { value: _vm.in_comment_text },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.in_comment_text = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "add-options-message" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "options-message",
+                    attrs: {
+                      href: "#",
+                      "data-toggle": "modal",
+                      "data-target": "#update-header-photo"
+                    }
+                  },
+                  [
+                    _c("svg", { staticClass: "olymp-camera-icon" }, [
+                      _c("use", {
+                        attrs: { "xlink:href": "#olymp-camera-icon" }
+                      })
+                    ])
+                  ]
+                )
               ]),
               _vm._v(" "),
-              _c("span", [_vm._v("15")])
-            ]
-          ),
+              _c("span", { staticClass: "material-input" })
+            ])
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "comments-shared" }, [
-            _c(
-              "a",
-              {
-                staticClass: "post-add-icon inline-items",
-                attrs: { href: "#" }
-              },
-              [
-                _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-                  _c("use", {
-                    attrs: { "xlink:href": "#olymp-speech-balloon-icon" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("span", [_vm._v("0")])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "post-add-icon inline-items",
-                attrs: { href: "#" }
-              },
-              [
-                _c("svg", { staticClass: "olymp-share-icon" }, [
-                  _c("use", { attrs: { "xlink:href": "#olymp-share-icon" } })
-                ]),
-                _vm._v(" "),
-                _c("span", [_vm._v("16")])
-              ]
-            )
-          ])
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-md-2 btn-primary",
+              on: {
+                click: function($event) {
+                  return _vm.submitComment("status")
+                }
+              }
+            },
+            [_vm._v("Post Comment")]
+          )
         ])
       ])
 }
@@ -113747,6 +114169,174 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "author-date" }, [
+      _c(
+        "a",
+        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
+        [_vm._v("Elaine Dreyfuss")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "post__date" }, [
+        _c(
+          "time",
+          { staticClass: "published", attrs: { datetime: "2017-03-24T18:18" } },
+          [_vm._v("\n  \t\t\t\t\t\t\t\t\t\t5 mins ago\n  \t\t\t\t\t\t\t\t\t")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+      [
+        _c("i", { staticClass: "fas fa-thumbs-up" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("8")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "reply", attrs: { href: "#" } }, [
+      _c(
+        "a",
+        { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+        [
+          _c("i", { staticClass: "fas fa-comment-alt" }),
+          _vm._v(" "),
+          _c("span", {}, [_vm._v("Reply")])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "author-date" }, [
+      _c(
+        "a",
+        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
+        [_vm._v("Green Goo Rock")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "post__date" }, [
+        _c(
+          "time",
+          { staticClass: "published", attrs: { datetime: "2017-03-24T18:18" } },
+          [_vm._v("\n  \t\t\t\t\t\t\t\t\t\t1 hour ago\n  \t\t\t\t\t\t\t\t\t")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+      [
+        _c("i", { staticClass: "fas fa-thumbs-up" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("5")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "reply", attrs: { href: "#" } }, [
+      _c("i", { staticClass: "fas fa-reply-all" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "author-date" }, [
+      _c(
+        "a",
+        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
+        [_vm._v("Diana Jameson")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "post__date" }, [
+        _c(
+          "time",
+          { staticClass: "published", attrs: { datetime: "2017-03-24T18:18" } },
+          [
+            _vm._v(
+              "\n  \t\t\t\t\t\t\t\t\t\t\t\t39 mins ago\n  \t\t\t\t\t\t\t\t\t\t\t"
+            )
+          ]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+      [
+        _c("i", { staticClass: "fas fa-thumbs-up" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("2")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "author-date" }, [
+      _c(
+        "a",
+        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
+        [_vm._v("Nicholas Grisom")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "post__date" }, [
+        _c(
+          "time",
+          { staticClass: "published", attrs: { datetime: "2017-03-24T18:18" } },
+          [
+            _vm._v(
+              "\n  \t\t\t\t\t\t\t\t\t\t\t\t24 mins ago\n  \t\t\t\t\t\t\t\t\t\t\t"
+            )
+          ]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+      [
+        _c("i", { staticClass: "fas fa-thumbs-up" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("0")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("ul", { staticClass: "more-dropdown" }, [
       _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Edit Post")])]),
       _vm._v(" "),
@@ -113758,6 +114348,34 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("li", [
         _c("a", { attrs: { href: "#" } }, [_vm._v("Select as Featured")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-additional-info inline-items" }, [
+      _c("div", { staticClass: "comments-shared" }, [
+        _c(
+          "a",
+          { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+          [
+            _c("i", { staticClass: "fas fa-thumbs-up" }),
+            _vm._v(" "),
+            _c("span", {}, [_vm._v("32")])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+          [
+            _c("i", { staticClass: "fas fa-reply-all" }),
+            _vm._v(" "),
+            _c("span", [_vm._v("16")])
+          ]
+        )
       ])
     ])
   }
@@ -127234,6 +127852,8 @@ var app = new Vue({
     setStatus: function setStatus(status, comments, likes, files) {
       this.StatusList.push({
         "status_text": status.status_content,
+        'status_id': status.id,
+        'status_generated_token': status.status_generated_token,
         "status_image": files[0].file_url,
         "status_time": status.created_at,
         "status_files": files,
@@ -127241,7 +127861,8 @@ var app = new Vue({
         "uploaded_by_picture": status.company_data.comp_logo,
         "comments": comments,
         "likes": likes,
-        "post_type": "status"
+        "post_type": "status",
+        "host_profile": this.getHostProfile()
       });
     },
     setProduct: function setProduct(product, comments, likes, files) {
@@ -127257,7 +127878,8 @@ var app = new Vue({
       p.product_unit = product.product_measure_unit;
       p.product_company = product.companydata;
       p.created_at = product.created_at;
-      p.post_type = "product"; // this.productList.push(p)
+      p.post_type = "product";
+      p.host_profile = this.getHostProfile(); // this.productList.push(p)
       //combine product and status
 
       this.StatusList.push(p);
@@ -127307,6 +127929,7 @@ var app = new Vue({
       this.Host.company_subtype = data.type.comp_subtype;
       this.Host.company_description = data.type.comp_description;
       this.Host.company_hasLicense = data.hasLicense;
+      this.StatusList.host_profile = this.Host.company_logo;
       this.req = {
         "host_id": this.Host.guest_id,
         "host_token": this.Host.guest_token,
@@ -127454,7 +128077,8 @@ var app = new Vue({
         "product_files": this.successfullProductFiles,
         "product_token": this.Product.generated_token,
         "product_price": this.Product.product_price,
-        "product_unit": this.Product.product_unit
+        "product_unit": this.Product.product_unit,
+        "host_profile": this.getHostProfile()
       };
       this.StatusList.unshift(p);
       this.Product = new _Product_js__WEBPACK_IMPORTED_MODULE_11__["default"]();
@@ -127544,7 +128168,8 @@ var app = new Vue({
         "uploaded_by_picture": this.Host.company_logo,
         "comments": [],
         "likes": [],
-        "post_type": "status"
+        "post_type": "status",
+        "host_profile": this.getHostProfile()
       });
       this.Status = new _Status_js__WEBPACK_IMPORTED_MODULE_10__["default"]();
       this.successfullStatusFiles = [];
@@ -127592,6 +128217,15 @@ var app = new Vue({
       this.Product.product_currency = this.$faker().finance.currencySymbol();
       this.Product.product_unit = "pieces";
       this.Product.product_price = this.$faker().finance.amount(1, 50);
+    },
+    submitComment: function submitComment(type, id, token, text) {
+      var req = this.req;
+      req.comment = text;
+      req.status_id = id;
+      req.status_token = token;
+      this.ServerRequest.setRequest(req); // this.ServerRequest.serverRequest('')
+
+      console.log(' comment is ', req);
     }
   },
   components: {

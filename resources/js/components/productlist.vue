@@ -56,9 +56,169 @@
   							</a>
   						</div>
 
-  					   </div>
+  					 </div>
   					</div>
           </div>
+
+          <!-- Comments -->
+
+          <ul class="comments-list">
+  					<li class="comment-item">
+  						<div class="post__author author vcard inline-items">
+  							<img src="olympus_assets/img/avatar10-sm.jpg" alt="author">
+
+  							<div class="author-date">
+  								<a class="h6 post__author-name fn" href="#">Elaine Dreyfuss</a>
+  								<div class="post__date">
+  									<time class="published" datetime="2017-03-24T18:18">
+  										5 mins ago
+  									</time>
+  								</div>
+  							</div>
+
+  							<a href="#" class="more">
+  								<svg class="olymp-three-dots-icon">
+  									<use xlink:href="#olymp-three-dots-icon"></use>
+  								</svg>
+  							</a>
+
+  						</div>
+
+  						<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque laudantium.</p>
+
+  						<a href="#" class="post-add-icon inline-items">
+  							<i class="fas fa-thumbs-up"></i>
+  							<span>8</span>
+  						</a>
+  						<a href="#" class="reply">
+                <a href="#" class="post-add-icon inline-items">
+                  <i class="fas fa-comment-alt"></i>
+                  <span class="">Reply</span>
+            		</a>
+              </a>
+  					</li>
+  					<li class="comment-item has-children">
+  						<div class="post__author author vcard inline-items">
+  							<img src="olympus_assets/img/avatar5-sm.jpg" alt="author">
+
+  							<div class="author-date">
+  								<a class="h6 post__author-name fn" href="#">Green Goo Rock</a>
+  								<div class="post__date">
+  									<time class="published" datetime="2017-03-24T18:18">
+  										1 hour ago
+  									</time>
+  								</div>
+  							</div>
+
+  							<a href="#" class="more">
+  								<svg class="olymp-three-dots-icon">
+  									<use xlink:href="#olymp-three-dots-icon"></use>
+  								</svg>
+  							</a>
+
+  						</div>
+
+  						<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugiten, sed quia
+  							consequuntur magni dolores eos qui ratione voluptatem sequi en lod nesciunt. Neque porro
+  							quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur adipisci velit en lorem ipsum der.
+  						</p>
+
+  						<a href="#" class="post-add-icon inline-items">
+  							<i class="fas fa-thumbs-up"></i>
+  							<span>5</span>
+  						</a>
+			        <a href="#" class="reply"><i class="fas fa-reply-all"></i></a>
+
+						  <ul class="children">
+  							<li class="comment-item">
+  								<div class="post__author author vcard inline-items">
+  									<img src="olympus_assets/img/avatar8-sm.jpg" alt="author">
+
+  									<div class="author-date">
+  										<a class="h6 post__author-name fn" href="#">Diana Jameson</a>
+  										<div class="post__date">
+  											<time class="published" datetime="2017-03-24T18:18">
+  												39 mins ago
+  											</time>
+  										</div>
+  									</div>
+
+  									<a href="#" class="more">
+  										<svg class="olymp-three-dots-icon">
+  											<use xlink:href="#olymp-three-dots-icon"></use>
+  										</svg>
+  									</a>
+
+  								</div>
+
+  								<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+
+  								<a href="#" class="post-add-icon inline-items">
+  										<i class="fas fa-thumbs-up"></i>
+  									<span>2</span>
+  								</a>
+                </li>
+  							<li class="comment-item">
+  								<div class="post__author author vcard inline-items">
+  									<img src="olympus_assets/img/avatar2-sm.jpg" alt="author">
+
+  									<div class="author-date">
+  										<a class="h6 post__author-name fn" href="#">Nicholas Grisom</a>
+  										<div class="post__date">
+  											<time class="published" datetime="2017-03-24T18:18">
+  												24 mins ago
+  											</time>
+  										</div>
+  									</div>
+
+  									<a href="#" class="more">
+  										<svg class="olymp-three-dots-icon">
+  											<use xlink:href="#olymp-three-dots-icon"></use>
+  										</svg>
+  									</a>
+
+  								</div>
+
+  								<p>Excepteur sint occaecat cupidatat non proident.</p>
+
+  								<a href="#" class="post-add-icon inline-items">
+  									<i class="fas fa-thumbs-up"></i>
+  									<span>0</span>
+  								</a>
+  							</li>
+						</ul>
+
+					</li>
+
+				</ul>
+
+          <!-- End comments list -->
+
+          <!-- Comment form -->
+        <form class="comment-form inline-items">
+
+				<div class="post__author author vcard inline-items">
+					<img :src="host_profile" alt="author">
+
+					<div class="form-group with-icon-right is-empty">
+						<textarea class="form-control"
+            placeholder="What do you think about this post?"
+            v-model="in_comment_text" ></textarea>
+						<div class="add-options-message">
+							<a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
+								<svg class="olymp-camera-icon">
+									<use xlink:href="#olymp-camera-icon"></use>
+								</svg>
+							</a>
+						</div>
+					<span class="material-input"></span></div>
+				</div>
+
+				<button class="btn btn-md-2 btn-primary"
+        @click="submitComment('product')"
+        >Post Comment</button>
+			</form>
+
 				</article>
         <article class="hentry post" v-else="isStatusStatus()">
 
@@ -112,25 +272,46 @@
 
         	<div class="post-additional-info inline-items">
 
-        		<a href="#" class="post-add-icon inline-items">
-        			<svg class="olymp-heart-icon"><use xlink:href="#olymp-heart-icon"></use></svg>
-        			<span>15</span>
-        		</a>
+
 
         		<div class="comments-shared">
         			<a href="#" class="post-add-icon inline-items">
-        				<svg class="olymp-speech-balloon-icon"><use xlink:href="#olymp-speech-balloon-icon"></use></svg>
-        				<span>0</span>
+        				<i class="fas fa-thumbs-up"></i>
+                <span class="">32</span>
         			</a>
 
         			<a href="#" class="post-add-icon inline-items">
-        				<svg class="olymp-share-icon"><use xlink:href="#olymp-share-icon"></use></svg>
-        				<span>16</span>
+        				<i class="fas fa-reply-all"></i>
+                <span>16</span>
         			</a>
         		</div>
 
 
         	</div>
+
+
+              <!-- Comment form -->
+            <form class="comment-form inline-items">
+
+    				<div class="post__author author vcard inline-items">
+    					<img :src="host_profile" alt="author">
+
+    					<div class="form-group with-icon-right is-empty">
+    						<textarea class="form-control" v-model="in_comment_text"
+                placeholder="What do you think about this post?"></textarea>
+    						<div class="add-options-message">
+    							<a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
+    								<svg class="olymp-camera-icon">
+    									<use xlink:href="#olymp-camera-icon"></use>
+    								</svg>
+    							</a>
+    						</div>
+    					<span class="material-input"></span></div>
+    				</div>
+
+    				<button class="btn btn-md-2 btn-primary"
+            @click="submitComment('status')"  >Post Comment</button>
+    			</form>
 
         </article>
 
@@ -141,14 +322,22 @@
 <script>
 module.exports = {
   data: function(){
-  console.log('child ready');
-  return {'postlist':1,'version':2}
+    return {
+      'postlist':1,
+      'version':2,
+      in_comment_text: this.comment_text,
+      post_id: this.product_id === undefined ? this.status_id :
+      this.product_id,
+      post_token: this.product_token === undefined ? this.status_generated_token:
+      this.product_token,
+
+    }
   },
   props:[
-  "post_type",
+  "post_type", "host_profile", "comment_text",
 
   "generated_token","product_currency", "product_description",
-  "product_files", "status_generated_token", "product_id", "product_name",
+  "product_files", "product_token", "product_id", "product_name",
   "product_price", "product_unit", "product_company", "created_at",
 
   "status_image","status_text", "status_time",
@@ -194,6 +383,14 @@ module.exports = {
     isStatusProduct()
     {
       return this.post_type === "product";
+    },
+    submitComment(type)
+    {
+      this.post_id = this.status_id ===  undefined ? this.product_id :
+        this.status_id;
+      this.post_token = this.status_generated_token;
+        this.$emit('submit-comment', type, this.post_id,
+        this.post_token, this.in_comment_text);
     }
 
   }

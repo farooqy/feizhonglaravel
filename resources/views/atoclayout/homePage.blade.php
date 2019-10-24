@@ -162,7 +162,8 @@
 
 
   <div class="ui-block">
-      <productlist v-for="statProd in StatusList" v-bind="statProd"></productlist>
+      <productlist v-for="statProd in StatusList" v-bind="statProd"
+      v-on:submit-comment="submitComment" ></productlist>
   </div>
   <!-- <div class="ui-block">
       <statuslistv2 v-for="status in StatusList" v-bind="status"></statuslistv2>

@@ -148,6 +148,8 @@ var app = new Vue({
     {
       this.StatusList.push({
         "status_text": status.status_content,
+        'status_id': status.id,
+        'status_generated_token': status.status_generated_token,
         "status_image": files[0].file_url,
         "status_time": status.created_at,
         "status_files": files,
@@ -155,7 +157,8 @@ var app = new Vue({
         "uploaded_by_picture": status.company_data.comp_logo,
         "comments": comments,
         "likes": likes,
-        "post_type" : "status"
+        "post_type" : "status",
+        "host_profile": this.getHostProfile(),
       })
     },
     setProduct(product, comments, likes,files)
@@ -173,6 +176,7 @@ var app = new Vue({
       p.product_company = product.companydata;
       p.created_at = product.created_at;
       p.post_type = "product";
+      p.host_profile = this.getHostProfile();
       // this.productList.push(p)
       //combine product and status
       this.StatusList.push(p);
@@ -230,6 +234,8 @@ var app = new Vue({
         this.Host.company_subtype = data.type.comp_subtype;
         this.Host.company_description = data.type.comp_description;
         this.Host.company_hasLicense = data.hasLicense;
+
+        this.StatusList.host_profile = this.Host.company_logo;
 
         this.req = {
           "host_id":this.Host.guest_id,
@@ -414,6 +420,7 @@ var app = new Vue({
         "product_token": this.Product.generated_token,
         "product_price": this.Product.product_price,
         "product_unit": this.Product.product_unit,
+        "host_profile": this.getHostProfile(),
       }
       this.StatusList.unshift(p);
       this.Product = new Product();
@@ -526,7 +533,8 @@ var app = new Vue({
         "uploaded_by_picture": this.Host.company_logo,
         "comments": [],
         "likes": [],
-        "post_type" : "status"
+        "post_type" : "status",
+        "host_profile": this.getHostProfile(),
       });
       this.Status = new Status();
       this.successfullStatusFiles = [];
@@ -595,6 +603,16 @@ var app = new Vue({
       this.Product.product_unit = "pieces";
       this.Product.product_price = this.$faker().finance.amount(1,50);
     },
+    submitComment(type, id, token, text)
+    {
+      var req = this.req;
+      req.comment = text;
+      req.status_id = id;
+      req.status_token = token;
+      this.ServerRequest.setRequest(req);
+      // this.ServerRequest.serverRequest('')
+      console.log(' comment is ',req);
+    }
 
   },
   components: {

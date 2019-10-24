@@ -6392,8 +6392,8 @@ ol ol li {
   margin-bottom: 0; }
   .comments-list .comment-item {
     padding: 25px;
-    border-bottom: 1px solid #e6ecf5;
-    background-color: #fafbfd;
+    border-bottom: 1px solid #4e85d8;
+    background-color: #e7f7ff;
     position: relative; }
     .comments-list .comment-item.has-children {
       padding-bottom: 0; }
@@ -6435,11 +6435,11 @@ ol ol li {
       display: none; }
 
 .children {
-  border-top: 1px solid #e6ecf5;
+  border-top: 1px solid #9cb7ef;
   margin: 25px -25px 0;
   padding-left: 35px; }
   .children .comment-item {
-    border-left: 1px solid #e6ecf5; }
+    border-left: 1px solid #284065; }
     .children .comment-item:last-child {
       border-bottom: none; }
     .children .comment-item:before {

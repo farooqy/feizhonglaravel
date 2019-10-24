@@ -425,7 +425,9 @@ class statusController extends Controller
             "host_token" => "required|string",
             "host_type" => "required|in:comp,normal",
             "status_id" => "required|integer",
+            "status_token" => "required|string|min:25",
             "comment_text" => "required|string|min:2",
+            "comment_type" => "required|string|in:status,product,comment",
             "api_key" => "required|string"
         ];
         $messages = [
@@ -451,7 +453,12 @@ class statusController extends Controller
         if($apiset !== true)
             return $apiset;
         //is valid status
-        $status_valid = compStatusModel::where('id', $request->status_id)->get();
+        if($request->comment_type === 'status')
+          $status_valid = compStatusModel::where([
+            ['id', $request->status_id],
+            ['status_token', $request->status_token],
+            ['is_active', true]
+          ])->get();
         if($status_valid === null || $status_valid->count() <= 0)
             return json_encode([
                 "errorMessage" => ["The target status is not valid or doesn't exist"],
