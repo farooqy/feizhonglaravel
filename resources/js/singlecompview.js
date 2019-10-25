@@ -3,7 +3,7 @@ require("./bootstrap");
 import error from "./components/error.vue";
 import loader from "./components/loader.vue";
 import statuslist from "./components/statuslist.vue";
-import productlist from "./components/productlist.vue";
+import productviewgrid from "./components/productviewgrid.vue";
 import statuslistv2 from "./components/statuslistv2.vue";
 import trendingcompanylist from "./components/trendingcompanylist.vue";
 import companylist from "./components/companylist.vue";
@@ -57,17 +57,18 @@ var app = new Vue({
       for(i=0; i < data.length; i++)
       {
         var p = new Product();
-        p.product_id = data.id;
-        p.product_token = data.product_gen_token;
-        p.generated_token = data.product_gen_token;
-        p.product_files = data.product_files;
-        p.product_description = data.product_description;
-        p.product_name = data.product_name;
-        p.product_price = data.product_price;
-        p.product_currency = data.product_measure_currency;
-        p.product_unit = data.product_measure_unit;
-        p.product_company = data.companydata;
-        p.created_at = data.created_at;
+        var d = data[i];
+        p.product_id = d.id;
+        p.product_token = d.product_gen_token;
+        p.generated_token = d.product_gen_token;
+        p.product_files = d.product__files;
+        p.product_description = d.product_description;
+        p.product_name = d.product_name;
+        p.product_price = d.product_price;
+        p.product_currency = d.product_measure_currency;
+        p.product_unit = d.product_measure_unit;
+        p.product_company = d.companydata;
+        p.created_at = d.created_at;
         p.post_type = "product";
         // this.productList.push(p)
         //combine product and status
@@ -349,7 +350,7 @@ var app = new Vue({
   },
   components: {
     error,loader,statuslist,trendingcompanylist,statuslistv2,
-    companylist, baidumap, compaddress, productlist
+    companylist, baidumap, compaddress, productviewgrid
   },
   data: {
     ServerRequest: new ServerRequest(),

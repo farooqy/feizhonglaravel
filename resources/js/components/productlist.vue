@@ -215,7 +215,7 @@
 				</div>
 
 				<button class="btn btn-md-2 btn-primary"
-        @click="submitComment('product')"
+        @click.prevent="submitComment('product')"
         >Post Comment</button>
 			</form>
 
@@ -277,12 +277,12 @@
         		<div class="comments-shared">
         			<a href="#" class="post-add-icon inline-items">
         				<i class="fas fa-thumbs-up"></i>
-                <span class="">32</span>
+                <span class="">{{likes.length}}</span>
         			</a>
 
         			<a href="#" class="post-add-icon inline-items">
         				<i class="fas fa-reply-all"></i>
-                <span>16</span>
+                <span>{{comments.length}}</span>
         			</a>
         		</div>
 
@@ -290,6 +290,47 @@
         	</div>
 
 
+
+          <ul class="comments-list" v-for="comment in comments">
+  					<li class="comment-item">
+  						<div class="post__author author vcard inline-items">
+  							<img :src="getCommentProfile(comment)" alt="author">
+
+  							<div class="author-date">
+  								<a class="h6 post__author-name fn" href="#" >
+                    {{getCommentName(comment)}}
+                  </a>
+  								<div class="post__date">
+  									<time class="published" datetime="2017-03-24T18:18">
+  										{{comment.created_at}}
+  									</time>
+  								</div>
+  							</div>
+
+  							<a href="#" class="more">
+  								<svg class="olymp-three-dots-icon">
+  									<use xlink:href="#olymp-three-dots-icon"></use>
+  								</svg>
+  							</a>
+
+  						</div>
+
+  						<p>
+                {{comment.comment_text}}
+              </p>
+
+  						<a href="#" class="post-add-icon inline-items">
+  							<i class="fas fa-thumbs-up"></i>
+  							<span>{{comments.length}}</span>
+  						</a>
+  						<a href="#" class="reply">
+                <a href="#" class="post-add-icon inline-items">
+                  <i class="fas fa-comment-alt"></i>
+                  <span class="">Reply</span>
+            		</a>
+              </a>
+  					</li>
+          </ul>
               <!-- Comment form -->
             <form class="comment-form inline-items">
 
@@ -310,7 +351,7 @@
     				</div>
 
     				<button class="btn btn-md-2 btn-primary"
-            @click="submitComment('status')"  >Post Comment</button>
+            @click.prevent="submitComment('status')"  >Post Comment</button>
     			</form>
 
         </article>
@@ -334,7 +375,7 @@ module.exports = {
     }
   },
   props:[
-  "post_type", "host_profile", "comment_text",
+  "post_type", "host_profile", "comment_text", "comments", "likes",
 
   "generated_token","product_currency", "product_description",
   "product_files", "product_token", "product_id", "product_name",
@@ -342,7 +383,7 @@ module.exports = {
 
   "status_image","status_text", "status_time",
   "status_id", "status_generated_token", "status_files", "uploaded_by_name",
-  "uploaded_by_picture"
+  "uploaded_by_picture",
   ],
   filters: {
     truncate: function (text, length, suffix) {
@@ -391,7 +432,21 @@ module.exports = {
       this.post_token = this.status_generated_token;
         this.$emit('submit-comment', type, this.post_id,
         this.post_token, this.in_comment_text);
-    }
+    },
+    getCommentProfile(comment)
+    {
+      if(comment.host_type === "comp")
+        return comment.comp_profile.comp_logo;
+      else
+        return comment.person_profile.user_profile;
+    },
+    getCommentName(comment)
+    {
+      if(comment.host_type === "comp")
+        return comment.comp_profile.comp_name;
+      else
+        return comment.person_profile.user_frname;
+    },
 
   }
 }

@@ -48,10 +48,10 @@ Route::post('/comp/status/getCompSimpleStatus', 'statusController@simpleDetailed
 Route::post('/comp/status/setStatus', 'statusController@setStatus');
 Route::post('/comp/status/addFile', 'statusController@uploadFile');
 Route::post('/comp/status/getToken', 'Status_TokenGeneratorModelController@generate_Token');
-Route::post('/comp/status/comment', 'statusController@writeComment');
+Route::post('/comp/status/comment', 'status\commentController@writeComment');
 Route::post('/comp/status/like', 'statusController@likeStatus');
 Route::post('/comp/status/removePost', 'statusController@removePost');
-Route::post('/comp/status/deleteComment', 'statusController@deleteComment');
+Route::post('/comp/status/deleteComment', 'status\commentController@deleteComment');
 Route::post('/comp/status/unlikeStatus', 'statusController@unlikeStatus');
 
 Route::post('/comp/products', 'products\productController@getProducts');

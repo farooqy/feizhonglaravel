@@ -8,7 +8,7 @@ class tokenStatusGeneratorModel extends Model
 {
     //
     protected $table = 'status_token_generator';
-    protected $fillable = ["generated_token", "generated_for_id", 
+    protected $fillable = ["generated_token", "generated_for_id",
     "generated_for_type", "generated_for_token", "generated_completed"];
 
     public function statuses()
@@ -18,5 +18,9 @@ class tokenStatusGeneratorModel extends Model
     public function files()
     {
     	return $this->hasMany('App\models\uploadFilesModel', 'file_generated_token');
+    }
+    public function products()
+    {
+      return $this->hasMany('App\models\products\productModel', 'product_gen_token');
     }
 }

@@ -111,8 +111,8 @@ var app = new Vue({
         var statusproduct = data[i];
         var j, c_counter, l_counter;
         var files = [];
-        var comments = [];
-        var likes = [];
+        var comments = statusproduct.comments;
+        var likes = statusproduct.likes;;
         var listfiles;
         if(statusproduct.type === "product")
         {
@@ -130,14 +130,14 @@ var app = new Vue({
             "file_url": listfiles[j].file_url
           });
         }
-        for(c_counter =0; c_counter < statusproduct.comments.length; c_counter++)
-        {
-          console.log("comments ",statusproduct.comments)
-        }
-        for(l_counter =0; l_counter < statusproduct.comments.length; l_counter++)
-        {
-            console.log("lieks ",statusproduct.likes);
-        }
+        // for(c_counter =0; c_counter < statusproduct.comments.length; c_counter++)
+        // {
+        //   console.log("comments ",statusproduct.comments)
+        // }
+        // for(l_counter =0; l_counter < statusproduct.comments.length; l_counter++)
+        // {
+        //     console.log("lieks ",statusproduct.likes);
+        // }
         if(statusproduct.type === "status")
           this.setStatus(statusproduct, comments, likes, files);
         else
@@ -177,6 +177,8 @@ var app = new Vue({
       p.created_at = product.created_at;
       p.post_type = "product";
       p.host_profile = this.getHostProfile();
+      p.comments = comments;
+      p.likes = likes;
       // this.productList.push(p)
       //combine product and status
       this.StatusList.push(p);
@@ -421,6 +423,8 @@ var app = new Vue({
         "product_price": this.Product.product_price,
         "product_unit": this.Product.product_unit,
         "host_profile": this.getHostProfile(),
+        "comments": [],
+        "likes":[],
       }
       this.StatusList.unshift(p);
       this.Product = new Product();
@@ -558,6 +562,22 @@ var app = new Vue({
       else
         this.Status.status_files = files;
     },
+    submitComment(type, id, token, text)
+    {
+      var req = this.req;
+      req.type = type;
+      req.comment_text = text;
+      req.status_id = id;
+      req.status_token = token;
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest('/api/comp/status/comment',
+      this.setCommentPost, this.showError);
+      console.log(' comment is ',req);
+    },
+    setCommentPost(data)
+    {
+      console.log('data coment response ',data);
+    },
     showError(error)
     {
       this.errorObject.error_text = error;
@@ -603,16 +623,6 @@ var app = new Vue({
       this.Product.product_unit = "pieces";
       this.Product.product_price = this.$faker().finance.amount(1,50);
     },
-    submitComment(type, id, token, text)
-    {
-      var req = this.req;
-      req.comment = text;
-      req.status_id = id;
-      req.status_token = token;
-      this.ServerRequest.setRequest(req);
-      // this.ServerRequest.serverRequest('')
-      console.log(' comment is ',req);
-    }
 
   },
   components: {

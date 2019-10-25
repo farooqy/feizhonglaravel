@@ -240,8 +240,9 @@
 		<div class="card-header">Company post</div>
 		<div class="card-body" style="border-right: thin solid gray;">
 			<div class="row">
-				<productlist v-for="product in productList"
-				v-bind="product"></productlist>
+				<productviewgrid v-for="product in productList"
+				v-bind="product"
+				class="col-md-6 col-lg-6 col-xl-6" ></productviewgrid>
 			</div>
 		</div>
 

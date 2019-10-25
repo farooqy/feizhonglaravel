@@ -116,12 +116,21 @@ class statusController extends Controller
           ['status_status' ,'=', 'active']
         ])->latest()->get();
         foreach ($statusData as $key => $status) {
-          $eachStatus[$key] = [
-            "files" => $status->Status_Files,
-            "companyProfile" => $status->companyData,
-            "num_comments" => $status->comments->count(),
-            "num_likes" => $status->likes->count(),
-          ];
+          $comments = $status->comments;
+          $likes = $status->likes;
+            $eachStatus[$key] = [
+              "files" => $status->Status_Files,
+              "companyProfile" => $status->companyData,
+              "num_comments" => $comments->count(),
+              "num_likes" => $likes->count(),
+            ];
+          foreach ($comments as $ckey => $comment)
+          {
+            if($comment->host_type === "comp")
+              $comment->compProfile;
+            else
+              $comment->personProfile;
+          }
         }
 
         $this->Error->setSuccess($statusData);
@@ -155,12 +164,23 @@ class statusController extends Controller
         foreach($listProducts as $key => $eachStatus)
         {
             // return $eachStatus;
+            $comments = $eachStatus->comments;
+            $likes = $eachStatus->likes;
+            $list_comments = [];
+            foreach ($comments as $ckey => $comment)
+            {
+              if($comment->host_type === "comp")
+                $comment->compProfile;
+              else
+                $comment->personProfile;
+
+            }
             if($eachStatus->product_gen_token)
             {
                 $listProducts[$key]->type = "product";
                 $listProducts[$key]->product_files = $eachStatus->Product_Files;
-                $listProducts[$key]->num_likes = $eachStatus->likes->count();
-                $listProducts[$key]->num_comments = $eachStatus->comments->count();
+                $listProducts[$key]->num_likes = $likes->count();
+                $listProducts[$key]->num_comments = $comments->count();
 
                 $eachStatus->companydata;
 
@@ -173,11 +193,11 @@ class statusController extends Controller
                     "status" => $eachStatus,
                     "files" => $eachStatus->Status_Files,
                     "companyProfile" => $eachStatus->companyData,
-                    "num_comments" => $eachStatus->comments->count(),
-                    "num_likes" => $eachStatus->likes->count(),
+                    "num_comments" => $comments->count(),
+                    "num_likes" => $likes->count(),
                 );
-                $comments = $eachStatus->comments;
-                $likes = $eachStatus->likes;
+                // $comments = $eachStatus->comments;
+                // $likes = $eachStatus->likes;
                 foreach($comments as $comment)
                 {
                     $status["comments"] = ["comment"=>$comment, "details"=> $comment->personProfile];
@@ -418,87 +438,6 @@ class statusController extends Controller
             return [true, null];
     }
 
-    public function writeComment(Request $request)
-    {
-        $rules = [
-            "host_id" => "required|integer",
-            "host_token" => "required|string",
-            "host_type" => "required|in:comp,normal",
-            "status_id" => "required|integer",
-            "status_token" => "required|string|min:25",
-            "comment_text" => "required|string|min:2",
-            "comment_type" => "required|string|in:status,product,comment",
-            "api_key" => "required|string"
-        ];
-        $messages = [
-            "min" => "The :attribute value provided is less than 2 characters",
-            "in" => "The :attribute value given is not valid"
-        ];
-
-        $is_valid_request = Validator::make($request->all(), $rules, $messages);
-        if($is_valid_request->fails())
-        {
-            $error_list = [];
-            $errors = $is_valid_request->errors();
-            foreach($errors->all() as $error)
-                array_push($error_list, $error);
-
-            $json = json_encode(array(
-                'errorMessage' => $error_list,
-                'isSuccess' => false,
-                'successMessage' => null));
-            return $json;
-        }
-        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
-        if($apiset !== true)
-            return $apiset;
-        //is valid status
-        if($request->comment_type === 'status')
-          $status_valid = compStatusModel::where([
-            ['id', $request->status_id],
-            ['status_token', $request->status_token],
-            ['is_active', true]
-          ])->get();
-        if($status_valid === null || $status_valid->count() <= 0)
-            return json_encode([
-                "errorMessage" => ["The target status is not valid or doesn't exist"],
-                "isSuccess" => false,
-                "successMessage" => null,
-                "data" => []
-            ]);
-        //is it valid host
-        if($request->host_type === "normal")
-        {
-            $host_is_valid = normalUsersModel::where('user_id', $request->host_id)->get();
-        }
-        else
-            $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
-
-        if($host_is_valid === null || $host_is_valid->count() <= 0)
-            return json_encode([
-                "errorMessage" => ["The host provided is not valid or doesn't exist"],
-                "isSuccess" => false,
-                "successMessage" => null,
-                "data" => []
-            ]);
-        $cModel = new commentsModel;
-        $cModel->status_id = $request->status_id;
-        $cModel->host_id = $request->host_id;
-        $cModel->host_token = $request->host_token;
-        $cModel->host_type = $request->host_type;
-        $cModel->comment_text = $request->comment_text;
-        if($cModel->save())
-        {
-            // $this->ApiKey->successFullRequest();
-            $this->Error->setSuccess(["success"]);
-            return $this->Error->getSuccess();
-        }
-        else
-        {
-            $this->Error->setError(["Failed to send the comment"]);
-            return $this->Error->getError();
-        }
-    }
     public function likeStatus(Request $request)
     {
         $rules = [
@@ -625,62 +564,6 @@ class statusController extends Controller
         $this->Error->setSuccess([]);
         return $this->Error->getSuccess();
 
-
-    }
-    public function deleteComment(Request $request)
-    {
-        $rules = [
-            "comment_id" => "required|integer",
-            "status_id" => "required|integer",
-            "host_id" => "required|integer",
-            "host_token" => "required|string",
-            "host_type" => "required|in:normal,comp",
-            "api_key" => "required|string"
-        ];
-        $messages = [];
-
-        $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));
-        if($isNotValidRequest)
-            return $isNotValidRequest;
-        $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
-        if($apiset !== true)
-            return $apiset;
-        $status_valid = compStatusModel::where('id', $request->status_id)->get();
-        if($status_valid === null || $status_valid->count() <= 0)
-            return json_encode([
-                "errorMessage" => ["The target status is not valid or doesn't exist"],
-                "isSuccess" => false,
-                "successMessage" => null,
-                "data" => []
-            ]);
-        //is it valid host
-        if($request->host_type === "normal")
-        {
-            $host_is_valid = normalUsersModel::where('user_id', $request->host_id)->get();
-        }
-        else
-            $host_is_valid = companydata_model::where('comp_id', $request->host_id)->get();
-
-        if($host_is_valid === null || $host_is_valid->count() <= 0)
-            return json_encode([
-                "errorMessage" => ["The host provided is not valid or doesn't exist"],
-                "isSuccess" => false,
-                "successMessage" => null,
-                "data" => []
-            ]);
-        $comment = commentsModel::where([
-            ["id" , $request->comment_id],
-            ["status_id" , $request->status_id],
-            ["host_type" , $request->host_type],
-            ["host_id", $request->host_id],
-            ["host_token", $request->host_token],
-        ])->get();
-        foreach ($comment as $c) {
-            $c->delete();
-        }
-        $this->Error->setSuccess(["success"]);
-        // $this->ApiKey->successFullRequest();
-        return $this->Error->getSuccess();
 
     }
 

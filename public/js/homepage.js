@@ -2172,6 +2172,47 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     return {
@@ -2182,7 +2223,7 @@ module.exports = {
       post_token: this.product_token === undefined ? this.status_generated_token : this.product_token
     };
   },
-  props: ["post_type", "host_profile", "comment_text", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
+  props: ["post_type", "host_profile", "comment_text", "comments", "likes", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
   filters: {
     truncate: function truncate(text, length, suffix) {
       return text.substring(0, length) + suffix;
@@ -2216,6 +2257,12 @@ module.exports = {
       this.post_id = this.status_id === undefined ? this.product_id : this.status_id;
       this.post_token = this.status_generated_token;
       this.$emit('submit-comment', type, this.post_id, this.post_token, this.in_comment_text);
+    },
+    getCommentProfile: function getCommentProfile(comment) {
+      if (comment.host_type === "comp") return comment.comp_profile.comp_logo;else return comment.person_profile.user_profile;
+    },
+    getCommentName: function getCommentName(comment) {
+      if (comment.host_type === "comp") return comment.comp_profile.comp_name;else return comment.person_profile.user_frname;
     }
   }
 };
@@ -113979,6 +114026,7 @@ var render = function() {
                 staticClass: "btn btn-md-2 btn-primary",
                 on: {
                   click: function($event) {
+                    $event.preventDefault()
                     return _vm.submitComment("product")
                   }
                 }
@@ -113988,165 +114036,295 @@ var render = function() {
           ])
         ]
       )
-    : _c("article", { staticClass: "hentry post" }, [
-        _c("div", { staticClass: "post__author author vcard inline-items" }, [
-          _c("img", { attrs: { src: _vm.uploaded_by_picture, alt: "author" } }),
-          _vm._v(" "),
-          _c("div", { staticClass: "author-date" }, [
-            _c(
-              "a",
-              { staticClass: "h6 post__author-name fn", attrs: { href: "" } },
-              [_vm._v(_vm._s(_vm.uploaded_by_name))]
-            ),
-            _vm._v("\n              Posted  "),
-            _c("a", { attrs: { href: _vm.getStatusLink() } }, [
-              _vm._v("status")
+    : _c(
+        "article",
+        { staticClass: "hentry post" },
+        [
+          _c("div", { staticClass: "post__author author vcard inline-items" }, [
+            _c("img", {
+              attrs: { src: _vm.uploaded_by_picture, alt: "author" }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "author-date" }, [
+              _c(
+                "a",
+                { staticClass: "h6 post__author-name fn", attrs: { href: "" } },
+                [_vm._v(_vm._s(_vm.uploaded_by_name))]
+              ),
+              _vm._v("\n              Posted  "),
+              _c("a", { attrs: { href: _vm.getStatusLink() } }, [
+                _vm._v("status")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "post__date" }, [
+                _c(
+                  "time",
+                  {
+                    staticClass: "published",
+                    attrs: { datetime: _vm.status_time }
+                  },
+                  [
+                    _vm._v(
+                      "\n        \t\t\t\t\t" +
+                        _vm._s(_vm.status_time) +
+                        "\n        \t\t\t\t"
+                    )
+                  ]
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "post__date" }, [
-              _c(
-                "time",
+            _c("div", { staticClass: "more" }, [
+              _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+                _c("use", { attrs: { "xlink:href": "#olymp-three-dots-icon" } })
+              ]),
+              _vm._v(" "),
+              _vm._m(11)
+            ])
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n          " +
+                _vm._s(_vm._f("truncate")(_vm.status_text, 150, "...")) +
+                "\n        \t"
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "post-block-photo js-zoom-gallery" },
+            _vm._l(_vm.status_files.slice(0, 2), function(file) {
+              return _c(
+                "a",
                 {
-                  staticClass: "published",
-                  attrs: { datetime: _vm.status_time }
+                  staticClass: "half-width",
+                  class: _vm.addClassMorePhotos(file.file_url),
+                  attrs: { href: file.file_url }
                 },
                 [
-                  _vm._v(
-                    "\n        \t\t\t\t\t" +
-                      _vm._s(_vm.status_time) +
-                      "\n        \t\t\t\t"
+                  _c("img", { attrs: { src: file.file_url, alt: "photo" } }),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.isLastPhoto(file.file_url),
+                          expression: "isLastPhoto(file.file_url)"
+                        }
+                      ],
+                      staticClass: "h2"
+                    },
+                    [
+                      _vm._v(
+                        " +\n              " +
+                          _vm._s(_vm.status_files.length - 2) +
+                          "\n              "
+                      )
+                    ]
                   )
+                ]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "post-additional-info inline-items" }, [
+            _c("div", { staticClass: "comments-shared" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "post-add-icon inline-items",
+                  attrs: { href: "#" }
+                },
+                [
+                  _c("i", { staticClass: "fas fa-thumbs-up" }),
+                  _vm._v(" "),
+                  _c("span", {}, [_vm._v(_vm._s(_vm.likes.length))])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "post-add-icon inline-items",
+                  attrs: { href: "#" }
+                },
+                [
+                  _c("i", { staticClass: "fas fa-reply-all" }),
+                  _vm._v(" "),
+                  _c("span", [_vm._v(_vm._s(_vm.comments.length))])
                 ]
               )
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "more" }, [
-            _c("svg", { staticClass: "olymp-three-dots-icon" }, [
-              _c("use", { attrs: { "xlink:href": "#olymp-three-dots-icon" } })
-            ]),
-            _vm._v(" "),
-            _vm._m(11)
-          ])
-        ]),
-        _vm._v(" "),
-        _c("p", [
-          _vm._v(
-            "\n          " +
-              _vm._s(_vm._f("truncate")(_vm.status_text, 150, "...")) +
-              "\n        \t"
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "post-block-photo js-zoom-gallery" },
-          _vm._l(_vm.status_files.slice(0, 2), function(file) {
-            return _c(
-              "a",
-              {
-                staticClass: "half-width",
-                class: _vm.addClassMorePhotos(file.file_url),
-                attrs: { href: file.file_url }
-              },
-              [
-                _c("img", { attrs: { src: file.file_url, alt: "photo" } }),
-                _vm._v(" "),
+          _vm._l(_vm.comments, function(comment) {
+            return _c("ul", { staticClass: "comments-list" }, [
+              _c("li", { staticClass: "comment-item" }, [
                 _c(
-                  "span",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.isLastPhoto(file.file_url),
-                        expression: "isLastPhoto(file.file_url)"
-                      }
-                    ],
-                    staticClass: "h2"
-                  },
+                  "div",
+                  { staticClass: "post__author author vcard inline-items" },
                   [
-                    _vm._v(
-                      " +\n              " +
-                        _vm._s(_vm.status_files.length - 2) +
-                        "\n              "
-                    )
+                    _c("img", {
+                      attrs: {
+                        src: _vm.getCommentProfile(comment),
+                        alt: "author"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "author-date" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "h6 post__author-name fn",
+                          attrs: { href: "#" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(_vm.getCommentName(comment)) +
+                              "\n                  "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post__date" }, [
+                        _c(
+                          "time",
+                          {
+                            staticClass: "published",
+                            attrs: { datetime: "2017-03-24T18:18" }
+                          },
+                          [
+                            _vm._v(
+                              "\n  \t\t\t\t\t\t\t\t\t\t" +
+                                _vm._s(comment.created_at) +
+                                "\n  \t\t\t\t\t\t\t\t\t"
+                            )
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("a", { staticClass: "more", attrs: { href: "#" } }, [
+                      _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+                        _c("use", {
+                          attrs: { "xlink:href": "#olymp-three-dots-icon" }
+                        })
+                      ])
+                    ])
                   ]
-                )
-              ]
-            )
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _vm._m(12),
-        _vm._v(" "),
-        _c("form", { staticClass: "comment-form inline-items" }, [
-          _c("div", { staticClass: "post__author author vcard inline-items" }, [
-            _c("img", { attrs: { src: _vm.host_profile, alt: "author" } }),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group with-icon-right is-empty" }, [
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.in_comment_text,
-                    expression: "in_comment_text"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { placeholder: "What do you think about this post?" },
-                domProps: { value: _vm.in_comment_text },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.in_comment_text = $event.target.value
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "add-options-message" }, [
+                ),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(comment.comment_text) +
+                      "\n              "
+                  )
+                ]),
+                _vm._v(" "),
                 _c(
                   "a",
                   {
-                    staticClass: "options-message",
-                    attrs: {
-                      href: "#",
-                      "data-toggle": "modal",
-                      "data-target": "#update-header-photo"
-                    }
+                    staticClass: "post-add-icon inline-items",
+                    attrs: { href: "#" }
                   },
                   [
-                    _c("svg", { staticClass: "olymp-camera-icon" }, [
-                      _c("use", {
-                        attrs: { "xlink:href": "#olymp-camera-icon" }
-                      })
-                    ])
+                    _c("i", { staticClass: "fas fa-thumbs-up" }),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.comments.length))])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(12, true)
+              ])
+            ])
+          }),
+          _vm._v(" "),
+          _c("form", { staticClass: "comment-form inline-items" }, [
+            _c(
+              "div",
+              { staticClass: "post__author author vcard inline-items" },
+              [
+                _c("img", { attrs: { src: _vm.host_profile, alt: "author" } }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form-group with-icon-right is-empty" },
+                  [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.in_comment_text,
+                          expression: "in_comment_text"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        placeholder: "What do you think about this post?"
+                      },
+                      domProps: { value: _vm.in_comment_text },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.in_comment_text = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "add-options-message" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "options-message",
+                          attrs: {
+                            href: "#",
+                            "data-toggle": "modal",
+                            "data-target": "#update-header-photo"
+                          }
+                        },
+                        [
+                          _c("svg", { staticClass: "olymp-camera-icon" }, [
+                            _c("use", {
+                              attrs: { "xlink:href": "#olymp-camera-icon" }
+                            })
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "material-input" })
                   ]
                 )
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "material-input" })
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-md-2 btn-primary",
-              on: {
-                click: function($event) {
-                  return _vm.submitComment("status")
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-md-2 btn-primary",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.submitComment("status")
+                  }
                 }
-              }
-            },
-            [_vm._v("Post Comment")]
-          )
-        ])
-      ])
+              },
+              [_vm._v("Post Comment")]
+            )
+          ])
+        ],
+        2
+      )
 }
 var staticRenderFns = [
   function() {
@@ -114355,28 +114533,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-additional-info inline-items" }, [
-      _c("div", { staticClass: "comments-shared" }, [
-        _c(
-          "a",
-          { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
-          [
-            _c("i", { staticClass: "fas fa-thumbs-up" }),
-            _vm._v(" "),
-            _c("span", {}, [_vm._v("32")])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
-          [
-            _c("i", { staticClass: "fas fa-reply-all" }),
-            _vm._v(" "),
-            _c("span", [_vm._v("16")])
-          ]
-        )
-      ])
+    return _c("a", { staticClass: "reply", attrs: { href: "#" } }, [
+      _c(
+        "a",
+        { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+        [
+          _c("i", { staticClass: "fas fa-comment-alt" }),
+          _vm._v(" "),
+          _c("span", {}, [_vm._v("Reply")])
+        ]
+      )
     ])
   }
 ]
@@ -127820,8 +127986,9 @@ var app = new Vue({
         var statusproduct = data[i];
         var j, c_counter, l_counter;
         var files = [];
-        var comments = [];
-        var likes = [];
+        var comments = statusproduct.comments;
+        var likes = statusproduct.likes;
+        ;
         var listfiles;
 
         if (statusproduct.type === "product") {
@@ -127836,15 +128003,15 @@ var app = new Vue({
           files.push({
             "file_url": listfiles[j].file_url
           });
-        }
+        } // for(c_counter =0; c_counter < statusproduct.comments.length; c_counter++)
+        // {
+        //   console.log("comments ",statusproduct.comments)
+        // }
+        // for(l_counter =0; l_counter < statusproduct.comments.length; l_counter++)
+        // {
+        //     console.log("lieks ",statusproduct.likes);
+        // }
 
-        for (c_counter = 0; c_counter < statusproduct.comments.length; c_counter++) {
-          console.log("comments ", statusproduct.comments);
-        }
-
-        for (l_counter = 0; l_counter < statusproduct.comments.length; l_counter++) {
-          console.log("lieks ", statusproduct.likes);
-        }
 
         if (statusproduct.type === "status") this.setStatus(statusproduct, comments, likes, files);else this.setProduct(statusproduct, comments, likes, files);
       }
@@ -127879,7 +128046,9 @@ var app = new Vue({
       p.product_company = product.companydata;
       p.created_at = product.created_at;
       p.post_type = "product";
-      p.host_profile = this.getHostProfile(); // this.productList.push(p)
+      p.host_profile = this.getHostProfile();
+      p.comments = comments;
+      p.likes = likes; // this.productList.push(p)
       //combine product and status
 
       this.StatusList.push(p);
@@ -128078,7 +128247,9 @@ var app = new Vue({
         "product_token": this.Product.generated_token,
         "product_price": this.Product.product_price,
         "product_unit": this.Product.product_unit,
-        "host_profile": this.getHostProfile()
+        "host_profile": this.getHostProfile(),
+        "comments": [],
+        "likes": []
       };
       this.StatusList.unshift(p);
       this.Product = new _Product_js__WEBPACK_IMPORTED_MODULE_11__["default"]();
@@ -128188,6 +128359,19 @@ var app = new Vue({
 
       if (type === "product") this.Product.product_files = files;else this.Status.status_files = files;
     },
+    submitComment: function submitComment(type, id, token, text) {
+      var req = this.req;
+      req.type = type;
+      req.comment_text = text;
+      req.status_id = id;
+      req.status_token = token;
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest('/api/comp/status/comment', this.setCommentPost, this.showError);
+      console.log(' comment is ', req);
+    },
+    setCommentPost: function setCommentPost(data) {
+      console.log('data coment response ', data);
+    },
     showError: function showError(error) {
       this.errorObject.error_text = error;
       this.errorObject.errorModal = this.errorModal = true;
@@ -128217,15 +128401,6 @@ var app = new Vue({
       this.Product.product_currency = this.$faker().finance.currencySymbol();
       this.Product.product_unit = "pieces";
       this.Product.product_price = this.$faker().finance.amount(1, 50);
-    },
-    submitComment: function submitComment(type, id, token, text) {
-      var req = this.req;
-      req.comment = text;
-      req.status_id = id;
-      req.status_token = token;
-      this.ServerRequest.setRequest(req); // this.ServerRequest.serverRequest('')
-
-      console.log(' comment is ', req);
     }
   },
   components: {

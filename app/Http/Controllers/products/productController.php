@@ -56,11 +56,11 @@ class productController extends Controller
       //TO DO TRACK USER REQUEST WITH API KEY
 
       $products = productModel::where([
-        ["comp_id", $request->comp_id],
-        ["comp_token", $request->comp_token],
+        ["product_for_id", $request->comp_id]
       ])->get();
       foreach ($products as $p) {
-        $p->companyProfile;
+        $p->companydata;
+        $p->Product_Files;
       }
       $this->Error->setSuccess($products);
       return $this->Error->getSuccess();
