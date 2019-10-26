@@ -173,6 +173,19 @@ class statusController extends Controller
                 $comment->compProfile;
               else
                 $comment->personProfile;
+              //get children of comments or replies to this comment
+              $children = commentsModel::where([
+                ['status_token', $comment->comment_token],
+                ['status_id', $comment->id],
+                ['comment_type','comment']
+              ])->get();
+              foreach ($children as $childkey => $childcomment) {
+                if($childcomment->host_type === "comp")
+                  $childcomment->compProfile;
+                else
+                  $childcomment->personProfile;
+              }
+              $listProducts[$key]["comments"][$ckey]->comment_replies = $children;
 
             }
             if($eachStatus->product_gen_token)

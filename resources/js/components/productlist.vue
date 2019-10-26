@@ -188,7 +188,7 @@
   							</li>
 						</ul>
 
-					</li>
+					  </li>
 
 				</ul>
 
@@ -292,7 +292,7 @@
 
 
           <ul class="comments-list" v-for="comment in comments">
-  					<li class="comment-item">
+  					<li class="comment-item" :class="hasChildren(comment)">
   						<div class="post__author author vcard inline-items">
   							<img :src="getCommentProfile(comment)" alt="author">
 
@@ -321,15 +321,63 @@
 
   						<a href="#" class="post-add-icon inline-items">
   							<i class="fas fa-thumbs-up"></i>
-  							<span>{{comments.length}}</span>
+  							<span>{{comment.comment_replies.length}}</span>
   						</a>
-  						<a href="#" class="reply">
-                <a href="#" class="post-add-icon inline-items">
-                  <i class="fas fa-comment-alt"></i>
-                  <span class="">Reply</span>
-            		</a>
-              </a>
+              <a href="#" class="post-add-icon inline-items"
+              :style="hasCommented(comment)">
+                <i class="fas fa-comment-alt"></i>
+                <span>{{comment.comment_replies.length}}</span>
+          		</a>
+              <a href="#" class="post-add-icon inline-items"
+              @click.prevent="showCommentReplyBox(comment)">
+                <span class="">Reply</span>
+          		</a>
+              <!-- comment children comments -->
+              <ul class="children">
+                <li class="comment-item" v-for="reply in comment.comment_replies">
+                  <div class="post__author author vcard inline-items">
+                    <img :src="getCommentProfile(reply)" alt="author">
+
+                    <div class="author-date">
+                      <a class="h6 post__author-name fn" href="#">
+                        {{getCommentName(reply)}}
+                      </a>
+                      <div class="post__date">
+                        <time class="published" datetime="2017-03-24T18:18">
+                          {{reply.created_at}}
+                        </time>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p>
+                    {{reply.comment_text}}
+                  </p>
+                  <a href="#" class="post-add-icon inline-items">
+                      <i class="fas fa-thumbs-up"></i>
+                    <span>2</span>
+                  </a>
+                </li>
+              </ul>
+
+              <!-- reply to comment form -->
+              <div class="post-reply form-group" v-show="isReplyTriggered(comment.id)">
+                <textarea class="form-control" v-model="comment_reply"
+                 placeholder="Reply to comment" style="resize: none;
+                 width: 100%;" ></textarea>
+                 <div class="inline-items right">
+                   <button class="btn btn-primary"
+                   @click.prevent="submitComment('comment', comment)">Reply </button>
+                   <button class="btn btn-danger "
+                   @click.prevent="resetReplyBox()">Cancel </button>
+                 </div>
+              </div>
+
+
+
   					</li>
+
+
           </ul>
               <!-- Comment form -->
             <form class="comment-form inline-items">
@@ -371,11 +419,13 @@ module.exports = {
       this.product_id,
       post_token: this.product_token === undefined ? this.status_generated_token:
       this.product_token,
-
+      comment_reply: null,
+      show_reply_box: -1,
     }
   },
   props:[
   "post_type", "host_profile", "comment_text", "comments", "likes",
+  "host_id", "host_token",
 
   "generated_token","product_currency", "product_description",
   "product_files", "product_token", "product_id", "product_name",
@@ -425,13 +475,26 @@ module.exports = {
     {
       return this.post_type === "product";
     },
-    submitComment(type)
+    submitComment(type, comment=null)
     {
-      this.post_id = this.status_id ===  undefined ? this.product_id :
+      var comment_text;
+      if(type === "comment" && comment === null)
+        return;
+      else if(type === "comment")
+      {
+        this.post_id = comment.id;
+        this.post_token = comment.comment_token;
+        comment_text = this.comment_reply;
+      }
+      else
+      {
+        this.post_id = this.status_id ===  undefined ? this.product_id :
         this.status_id;
-      this.post_token = this.status_generated_token;
-        this.$emit('submit-comment', type, this.post_id,
-        this.post_token, this.in_comment_text);
+        this.post_token = this.status_generated_token;
+        comment_text = this.in_comment_text;
+    }
+      this.$emit('submit-comment', type, this.post_id,
+      this.post_token, comment_text);
     },
     getCommentProfile(comment)
     {
@@ -447,6 +510,42 @@ module.exports = {
       else
         return comment.person_profile.user_frname;
     },
+    showCommentReplyBox(comment)
+    {
+      this.show_reply_box = comment.id;
+    },
+    isReplyTriggered(comment_id)
+    {
+      return this.show_reply_box === comment_id;
+    },
+    resetReplyBox()
+    {
+      this.show_reply_box = -1;
+    },
+    hasChildren(comment)
+    {
+      if(comment.comment_replies.length > 0)
+        return 'has-children';
+
+      return false;
+    },
+    hasCommented(comment)
+    {
+      if(comment.host_type === "comp")
+      {
+        if(comment.comp_profile.comp_token === this.host_token)
+          return "color: #ff5e3a";
+        else
+          return 'text-decoration:none';
+      }
+      else
+      {
+        if(comment.person_profile.user_token === this.host_token)
+          return "color: #ff5e3a";
+        else
+          return 'text-decoration:none';
+      }
+    }
 
   }
 }

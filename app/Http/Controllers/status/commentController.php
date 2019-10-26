@@ -87,7 +87,7 @@ class commentController extends Controller
         }
         if($status_valid === null || $status_valid->count() <= 0)
         {
-          $this->Error->setError(["The target status is not valid or doesn't exist"]);
+          $this->Error->setError(["The target $request->type is not valid or doesn't exist"]);
           return $this->Error->getError();
         }
         //is it valid host
@@ -104,8 +104,9 @@ class commentController extends Controller
           return $this->Error->getError();
         }
         // $this->ApiKey->successFullRequest();
+        $comment_token = hash('md5', time());
         commentsModel::create([
-          "comment_token" => hash('md5', time()),
+          "comment_token" => $comment_token,
           "status_id" => $request->status_id,
           "status_token" => $request->status_token,
           "host_id" => $request->host_id,
@@ -114,7 +115,12 @@ class commentController extends Controller
           "comment_text" => $request->comment_text,
           "host_type" => $request->host_type,
         ]);
-        $this->Error->setSuccess(["success"]);
+        $comment_info = commentsModel::where([
+          ["comment_token", $comment_token],
+          ["host_token", $request->host_token],
+          ["comment_type", $request->type]
+        ])->get();
+        $this->Error->setSuccess($comment_info);
         return $this->Error->getSuccess();
     }
 

@@ -159,6 +159,8 @@ var app = new Vue({
         "likes": likes,
         "post_type" : "status",
         "host_profile": this.getHostProfile(),
+        "host_id" : this.Host.guest_id,
+        "host_token": this.Host.guest_token
       })
     },
     setProduct(product, comments, likes,files)
@@ -179,6 +181,8 @@ var app = new Vue({
       p.host_profile = this.getHostProfile();
       p.comments = comments;
       p.likes = likes;
+      p.host_id = this.Host.guest_id;
+      p.host_token= this.Host.guest_token;
       // this.productList.push(p)
       //combine product and status
       this.StatusList.push(p);
@@ -425,6 +429,8 @@ var app = new Vue({
         "host_profile": this.getHostProfile(),
         "comments": [],
         "likes":[],
+        "host_id": this.Host.guest_id,
+        "host_token": this.Host.guest_token,
       }
       this.StatusList.unshift(p);
       this.Product = new Product();
@@ -539,6 +545,8 @@ var app = new Vue({
         "likes": [],
         "post_type" : "status",
         "host_profile": this.getHostProfile(),
+        "host_id": this.Host.guest_id,
+        "host_token": this.Host.guest_token
       });
       this.Status = new Status();
       this.successfullStatusFiles = [];
@@ -576,7 +584,15 @@ var app = new Vue({
     },
     setCommentPost(data)
     {
-      console.log('data coment response ',data);
+      var i;
+      for(i=0; i < this.StatusList.length; i++)
+      {
+        if(data[0].comment_type === "status" ||
+            data[0].comment_type === "product" )
+        {
+          this.StatusList[i].comments.push(data[0]);  
+        }
+      }
     },
     showError(error)
     {
