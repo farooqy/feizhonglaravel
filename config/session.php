@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'file'),
+    'driver' => env('SESSION_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'encrypt' => false,
+    'encrypt' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -125,9 +125,7 @@ return [
     */
 
     'cookie' => env(
-        'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
-    ),
+        'SESSION_COOKIE','atocsession'),
 
     /*
     |--------------------------------------------------------------------------
@@ -166,7 +164,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE', false),
+    'secure' => env('SESSION_SECURE_COOKIE', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -179,7 +177,7 @@ return [
     |
     */
 
-    'http_only' => true,
+    'http_only' => false,
 
     /*
     |--------------------------------------------------------------------------

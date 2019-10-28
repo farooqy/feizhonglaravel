@@ -2261,6 +2261,7 @@ module.exports = {
 //
 //
 //
+//
 module.exports = {
   data: function data() {
     return {
@@ -2273,7 +2274,7 @@ module.exports = {
       show_reply_box: -1
     };
   },
-  props: ["post_type", "host_profile", "comment_text", "comments", "likes", "host_id", "host_token", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
+  props: ["post_type", "host_profile", "comment_text", "comments", "likes", "host_id", "host_token", "is_logged_in", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
   filters: {
     truncate: function truncate(text, length, suffix) {
       return text.substring(0, length) + suffix;
@@ -2342,6 +2343,9 @@ module.exports = {
       } else {
         if (comment.person_profile.user_token === this.host_token) return "color: #ff5e3a";else return 'text-decoration:none';
       }
+    },
+    isLoggedIn: function isLoggedIn() {
+      return this.is_logged_in;
     }
   }
 };
@@ -114428,155 +114432,161 @@ var render = function() {
                     0
                   ),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      directives: [
+                  _vm.isLoggedIn()
+                    ? _c(
+                        "div",
                         {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.isReplyTriggered(comment.id),
-                          expression: "isReplyTriggered(comment.id)"
-                        }
-                      ],
-                      staticClass: "post-reply form-group"
-                    },
-                    [
-                      _c("textarea", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.comment_reply,
-                            expression: "comment_reply"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        staticStyle: { resize: "none", width: "100%" },
-                        attrs: { placeholder: "Reply to comment" },
-                        domProps: { value: _vm.comment_reply },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.isReplyTriggered(comment.id),
+                              expression: "isReplyTriggered(comment.id)"
                             }
-                            _vm.comment_reply = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "inline-items right" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary",
+                          ],
+                          staticClass: "post-reply form-group"
+                        },
+                        [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.comment_reply,
+                                expression: "comment_reply"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            staticStyle: { resize: "none", width: "100%" },
+                            attrs: { placeholder: "Reply to comment" },
+                            domProps: { value: _vm.comment_reply },
                             on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.submitComment("comment", comment)
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.comment_reply = $event.target.value
                               }
                             }
-                          },
-                          [_vm._v("Reply ")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-danger ",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.resetReplyBox()
-                              }
-                            }
-                          },
-                          [_vm._v("Cancel ")]
-                        )
-                      ])
-                    ]
-                  )
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "inline-items right" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.submitComment("comment", comment)
+                                  }
+                                }
+                              },
+                              [_vm._v("Reply ")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger ",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.resetReplyBox()
+                                  }
+                                }
+                              },
+                              [_vm._v("Cancel ")]
+                            )
+                          ])
+                        ]
+                      )
+                    : _vm._e()
                 ]
               )
             ])
           }),
           _vm._v(" "),
-          _c("form", { staticClass: "comment-form inline-items" }, [
-            _c(
-              "div",
-              { staticClass: "post__author author vcard inline-items" },
-              [
-                _c("img", { attrs: { src: _vm.host_profile, alt: "author" } }),
-                _vm._v(" "),
+          _vm.isLoggedIn()
+            ? _c("form", { staticClass: "comment-form inline-items" }, [
                 _c(
                   "div",
-                  { staticClass: "form-group with-icon-right is-empty" },
+                  { staticClass: "post__author author vcard inline-items" },
                   [
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.in_comment_text,
-                          expression: "in_comment_text"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        placeholder: "What do you think about this post?"
-                      },
-                      domProps: { value: _vm.in_comment_text },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.in_comment_text = $event.target.value
-                        }
-                      }
+                    _c("img", {
+                      attrs: { src: _vm.host_profile, alt: "author" }
                     }),
                     _vm._v(" "),
-                    _c("div", { staticClass: "add-options-message" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "options-message",
+                    _c(
+                      "div",
+                      { staticClass: "form-group with-icon-right is-empty" },
+                      [
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.in_comment_text,
+                              expression: "in_comment_text"
+                            }
+                          ],
+                          staticClass: "form-control",
                           attrs: {
-                            href: "#",
-                            "data-toggle": "modal",
-                            "data-target": "#update-header-photo"
+                            placeholder: "What do you think about this post?"
+                          },
+                          domProps: { value: _vm.in_comment_text },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.in_comment_text = $event.target.value
+                            }
                           }
-                        },
-                        [
-                          _c("svg", { staticClass: "olymp-camera-icon" }, [
-                            _c("use", {
-                              attrs: { "xlink:href": "#olymp-camera-icon" }
-                            })
-                          ])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "material-input" })
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "add-options-message" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "options-message",
+                              attrs: {
+                                href: "#",
+                                "data-toggle": "modal",
+                                "data-target": "#update-header-photo"
+                              }
+                            },
+                            [
+                              _c("svg", { staticClass: "olymp-camera-icon" }, [
+                                _c("use", {
+                                  attrs: { "xlink:href": "#olymp-camera-icon" }
+                                })
+                              ])
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "material-input" })
+                      ]
+                    )
                   ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-md-2 btn-primary",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.submitComment("status")
+                      }
+                    }
+                  },
+                  [_vm._v("Post Comment")]
                 )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-md-2 btn-primary",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.submitComment("status")
-                  }
-                }
-              },
-              [_vm._v("Post Comment")]
-            )
-          ])
+              ])
+            : _vm._e()
         ],
         2
       )
@@ -128284,7 +128294,8 @@ var app = new Vue({
         "post_type": "status",
         "host_profile": this.getHostProfile(),
         "host_id": this.Host.guest_id,
-        "host_token": this.Host.guest_token
+        "host_token": this.Host.guest_token,
+        "is_logged_in": this.isLoggedIn()
       });
     },
     setProduct: function setProduct(product, comments, likes, files) {
@@ -128305,7 +128316,8 @@ var app = new Vue({
       p.comments = comments;
       p.likes = likes;
       p.host_id = this.Host.guest_id;
-      p.host_token = this.Host.guest_token; // this.productList.push(p)
+      p.host_token = this.Host.guest_token;
+      p.is_logged_in = this.isLoggedIn(); // this.productList.push(p)
       //combine product and status
 
       this.StatusList.push(p);
@@ -128385,6 +128397,8 @@ var app = new Vue({
         "host_type": this.host_type === 1 ? "comp" : "normal",
         "api_key": this.Host.api_key === null || this.Host.api_key === undefined ? "apikey" : this.Host.api_key
       };
+      var comp = new _Company_js__WEBPACK_IMPORTED_MODULE_7__["default"]();
+      this.product_sub_types = comp.types;
       this.getTrendingCompanies();
       this.getStatuses();
       this.getCompanyList();
@@ -128398,12 +128412,12 @@ var app = new Vue({
           "host": "comp"
         };
         this.serverRequest("/api/comp/data", req, "comp_data");
-      } else if (data.host_type === "user") {
+      } else if (data.host_type === "normal") {
         this.Host = new _User_js__WEBPACK_IMPORTED_MODULE_8__["default"]();
         this.host_type = 1;
         var req = {
           "platform": 1,
-          "host": "user"
+          "host": "normal"
         };
         this.serverRequest("/api/user/data", req, "user_data");
       } else {
@@ -128508,7 +128522,8 @@ var app = new Vue({
         "comments": [],
         "likes": [],
         "host_id": this.Host.guest_id,
-        "host_token": this.Host.guest_token
+        "host_token": this.Host.guest_token,
+        "is_logged_in": this.isLoggedIn()
       };
       this.StatusList.unshift(p);
       this.Product = new _Product_js__WEBPACK_IMPORTED_MODULE_11__["default"]();
@@ -128601,7 +128616,8 @@ var app = new Vue({
         "post_type": "status",
         "host_profile": this.getHostProfile(),
         "host_id": this.Host.guest_id,
-        "host_token": this.Host.guest_token
+        "host_token": this.Host.guest_token,
+        "is_logged_in": this.isLoggedIn()
       });
       this.Status = new _Status_js__WEBPACK_IMPORTED_MODULE_10__["default"]();
       this.successfullStatusFiles = [];
@@ -128668,6 +128684,20 @@ var app = new Vue({
       this.Product.product_currency = this.$faker().finance.currencySymbol();
       this.Product.product_unit = "pieces";
       this.Product.product_price = this.$faker().finance.amount(1, 50);
+    },
+    isCompany: function isCompany() {
+      return this.host_type === 0;
+    },
+    updateSelect: function updateSelect(event) {
+      console.log("type number ", event.target.options.selectedIndex);
+      this.selected_type = event.target.options.selectedIndex;
+      this.sub_type_value = this.product_sub_types[this.selected_type][0];
+
+      if (this.selected_type === 21) {
+        this.customtype = true;
+      } else {
+        this.customtype = false;
+      }
     }
   },
   components: {
@@ -128704,7 +128734,11 @@ var app = new Vue({
     Status: new _Status_js__WEBPACK_IMPORTED_MODULE_10__["default"](),
     ServerRequest: new _ServerRequest__WEBPACK_IMPORTED_MODULE_12__["default"](),
     successfullProductFiles: [],
-    successfullStatusFiles: []
+    successfullStatusFiles: [],
+    selected_type: 0,
+    product_types: null,
+    product_sub_types: null,
+    sub_type_value: null
   },
   mounted: function mounted() {
     this.getCompanyData();

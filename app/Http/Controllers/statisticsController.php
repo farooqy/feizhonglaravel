@@ -14,7 +14,8 @@ use App\models\statisticsModel;
 use App\models\products\productModel;
 use App\models\apiKeyModel;
 use App\models\browserDetailsModel;
-
+use App\models\session\SessionModel;
+use Illuminate\Support\Facades\Crypt;
 use App\customClass\ApiKeyManager;
 class statisticsController extends Controller
 {
@@ -353,21 +354,25 @@ class statisticsController extends Controller
       if($request->cookie("host_id") &&
          $request->cookie("host_token") &&
          $request->cookie("host_type") && $isbrowser)
-       {
-       $this->Error->setSuccess([
-         "host_id" => $request->cookie("host_id"),
-         "host_token" => $request->cookie("host_token"),
-         "host_type" => $request->cookie("host_type")
-       ]);
-        return response($this->Error->getSuccess());
+      {
+          $this->Error->setSuccess([
+            "host_id" => $request->cookie("host_id"),
+            "host_token" => $request->cookie("host_token"),
+            "host_type" => $request->cookie("host_type"),
+          ]);
+          return response($this->Error->getSuccess());
+
       }
       $id = random_int(100000,1000000000);
       $token = bin2hex(random_bytes(64));
+
       $this->Error->setSuccess([
         "host_id" => $id,
         "host_token" => $token,
-        "host_type" => "guest"
+        "host_type" => "guest",
+        "new_code" => true,
       ]);
+
       if($isbrowser)
         return response($this->Error->getSuccess())
         ->cookie('host_id', $id, (60*24*360))
@@ -377,7 +382,6 @@ class statisticsController extends Controller
       else
         return response($this->Error->getSuccess());
 
-        // return $response;;
     }
 
 }

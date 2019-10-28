@@ -4,7 +4,7 @@
 
     <!-- News Feed Form  -->
 
-    <div class="news-feed-form">
+    <div class="news-feed-form" v-if="isCompany()">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -143,6 +143,79 @@
         </div>
       </div>
     </div>
+    <div class="news-feed-form" v-else="!isCompany()">
+
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active inline-items" data-toggle="tab" href="#needForm" role="tab" aria-expanded="true">
+
+            <svg class="olymp-status-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-status-icon"></use></svg>
+
+            <span>Post need</span>
+          </a>
+        </li>
+      </ul>
+
+
+      <div class="tab-content">
+
+        <div class="tab-pane active" id="needForm" role="tabpanel" aria-expanded="true">
+          <div class="card">
+            <div class="card-header">What do you need?</div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="control-label">Product name</label>
+                <input class="form-control" placeholder="Product name"/ >
+              </div>
+                <div class=" row">
+                  <div class="col-md-6 col-lg-6 col-xl-6">
+                    <label class="control-label">Product Category</label>
+
+                    <select name="company_type" class="select_custom"
+                    @change="updateSelect($event)" v-model="product_types">
+                        <option value="Aerospace industry" selected >Aerospace industry</option>
+                        <option value="Agriculture" >Agriculture</option>
+                        <option value="Beautify" >Beauty Products</option>
+                        <option value="Chemical industry" >Chemical industry</option>
+                        <option value="Computer industry" >Computer industry</option>
+                        <option value="Construction industry" >Construction industry</option>
+                        <option value="Defense industry">Defense industry</option>
+                        <option value="Education industry" >Education industry</option>
+                        <option value="Energy industry" >Energy industry</option>
+                        <option value="Entertainment industry" >Entertainment industry</option>
+                        <option value="Financial services industry" >Financial services industry</option>
+                        <option value="Food production" >Food production</option>
+                        <option value="Health care industry">Health care industry</option>
+                        <option value="Hospitality industry" >Information industry</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Mass media" >Mass media</option>
+                        <option value="Mining" >Mining</option>
+                        <option value="Telecommunications industry" >Telecommunications industry</option>
+                        <option value="Transport industry">Transport industry</option>
+                        <option value="Water industry" >Water industry</option>
+                        <option value="Direct Selling industry" >Direct Selling industry</option>
+                        <option value="Other" >Other</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 col-lg-6 col-xl-6">
+                    <label class="control-label">Subcategory</label>
+                    <select  class="select_custom" name="product_sub_types"
+                    v-model="product_sub_types">
+                      <option v-for=" type in product_sub_types[selected_type]"
+                      :value="type" v-text="type" >
+                    </option>
+                    </select>
+                  </div>
+
+
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
 
     <!-- ... end News Feed Form  -->
   </div>
@@ -163,7 +236,8 @@
 
   <div class="ui-block">
       <productlist v-for="statProd in StatusList" v-bind="statProd"
-      v-on:submit-comment="submitComment" ></productlist>
+      v-on:submit-comment="submitComment"
+      v-on:is-logged-in="isLoggedIn()"></productlist>
   </div>
   <!-- <div class="ui-block">
       <statuslistv2 v-for="status in StatusList" v-bind="status"></statuslistv2>

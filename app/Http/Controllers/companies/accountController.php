@@ -18,6 +18,7 @@ use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\customClass\FileUploader;
 use App\customClass\ApiKeyManager;
+use Illuminate\Support\Facades\Crypt;
 use Log, File, Hash;
 class accountController extends Controller
 {

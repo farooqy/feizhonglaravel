@@ -361,7 +361,8 @@
               </ul>
 
               <!-- reply to comment form -->
-              <div class="post-reply form-group" v-show="isReplyTriggered(comment.id)">
+              <div class="post-reply form-group" v-if="isLoggedIn()"
+              v-show="isReplyTriggered(comment.id)">
                 <textarea class="form-control" v-model="comment_reply"
                  placeholder="Reply to comment" style="resize: none;
                  width: 100%;" ></textarea>
@@ -380,7 +381,7 @@
 
           </ul>
               <!-- Comment form -->
-            <form class="comment-form inline-items">
+          <form class="comment-form inline-items" v-if="isLoggedIn()">
 
     				<div class="post__author author vcard inline-items">
     					<img :src="host_profile" alt="author">
@@ -425,7 +426,7 @@ module.exports = {
   },
   props:[
   "post_type", "host_profile", "comment_text", "comments", "likes",
-  "host_id", "host_token",
+  "host_id", "host_token", "is_logged_in",
 
   "generated_token","product_currency", "product_description",
   "product_files", "product_token", "product_id", "product_name",
@@ -545,6 +546,10 @@ module.exports = {
         else
           return 'text-decoration:none';
       }
+    },
+    isLoggedIn()
+    {
+      return this.is_logged_in;
     }
 
   }

@@ -1,8 +1,13 @@
-@extend("atoclayout.profile")
+@extends("atoclayout.profile")
 
 @section("body")
 <h1>
   The profile could not be loaded. <br>Please
-  <a href="/logout">Log out</a> and login again
+  <a href="/profile">Refresh</a> the page
 </h1>
+<style>
+.loaderHolder {
+  display: none;
+}
+</style>
 @endsection

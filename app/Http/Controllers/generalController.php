@@ -147,7 +147,7 @@ class generalController extends Controller
             "host_type" => "required|in:normal,comp|guest",
             "search_key" => "required|string|min:4",
             "search_type" => "required|in:normal,comp",
-            "api_key"
+            "api_key" => "require|string",
         ];
         $messages = [];
         $isNotValid = $this->custom_validator->isNotValidRequest(Validator::make($request->all(), $rules, $messages));

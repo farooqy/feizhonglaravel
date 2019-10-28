@@ -40,7 +40,7 @@ class productController extends Controller
       $rules = [
         "host_id" => "required|integer|min:0",
         "host_token" => "required|string|min:25|max:350",
-        "host_type" => "required|string|in:comp, normal, guest",
+        "host_type" => "required|string|in:comp,normal,guest",
         "api_key" => "required|string",
         "comp_id" => "required|integer|min:0",
         "comp_token" => "required|string|min:25|max:350",

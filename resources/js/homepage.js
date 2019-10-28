@@ -160,7 +160,8 @@ var app = new Vue({
         "post_type" : "status",
         "host_profile": this.getHostProfile(),
         "host_id" : this.Host.guest_id,
-        "host_token": this.Host.guest_token
+        "host_token": this.Host.guest_token,
+        "is_logged_in" : this.isLoggedIn(),
       })
     },
     setProduct(product, comments, likes,files)
@@ -183,6 +184,7 @@ var app = new Vue({
       p.likes = likes;
       p.host_id = this.Host.guest_id;
       p.host_token= this.Host.guest_token;
+      p.is_logged_in = this.isLoggedIn();
       // this.productList.push(p)
       //combine product and status
       this.StatusList.push(p);
@@ -275,6 +277,8 @@ var app = new Vue({
         "api_key": (this.Host.api_key === null ||
           this.Host.api_key === undefined) ? "apikey" : this.Host.api_key
       }
+      var comp = new Company();
+      this.product_sub_types = comp.types;
       this.getTrendingCompanies();
 
       this.getStatuses();
@@ -292,13 +296,13 @@ var app = new Vue({
         };
         this.serverRequest("/api/comp/data", req, "comp_data");
       }
-      else if(data.host_type === "user")
+      else if(data.host_type === "normal")
       {
         this.Host = new User();
         this.host_type = 1;
         var req = {
           "platform" : 1,
-          "host": "user"
+          "host": "normal"
         };
         this.serverRequest("/api/user/data", req, "user_data");
       }
@@ -431,6 +435,7 @@ var app = new Vue({
         "likes":[],
         "host_id": this.Host.guest_id,
         "host_token": this.Host.guest_token,
+        "is_logged_in": this.isLoggedIn(),
       }
       this.StatusList.unshift(p);
       this.Product = new Product();
@@ -546,7 +551,8 @@ var app = new Vue({
         "post_type" : "status",
         "host_profile": this.getHostProfile(),
         "host_id": this.Host.guest_id,
-        "host_token": this.Host.guest_token
+        "host_token": this.Host.guest_token,
+        "is_logged_in" : this.isLoggedIn(),
       });
       this.Status = new Status();
       this.successfullStatusFiles = [];
@@ -590,7 +596,7 @@ var app = new Vue({
         if(data[0].comment_type === "status" ||
             data[0].comment_type === "product" )
         {
-          this.StatusList[i].comments.push(data[0]);  
+          this.StatusList[i].comments.push(data[0]);
         }
       }
     },
@@ -639,6 +645,23 @@ var app = new Vue({
       this.Product.product_unit = "pieces";
       this.Product.product_price = this.$faker().finance.amount(1,50);
     },
+    isCompany()
+    {
+      return this.host_type === 0;
+    },
+    updateSelect(event)
+    {
+      console.log("type number ", event.target.options.selectedIndex);
+      this.selected_type =event.target.options.selectedIndex;
+      this.sub_type_value = this.product_sub_types[this.selected_type][0];
+      if(this.selected_type === 21)
+      {
+        this.customtype = true;
+      }
+      else {
+        this.customtype = false;
+      }
+    },
 
   },
   components: {
@@ -678,6 +701,11 @@ var app = new Vue({
     ServerRequest: new ServerRequest(),
     successfullProductFiles:[],
     successfullStatusFiles: [],
+    selected_type:0,
+    product_types: null,
+    product_sub_types:null,
+    sub_type_value: null,
+
 
   },
   mounted(){

@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\models\apiKeyModel;
+use App\models\session\SessionModel;
 
 class browserController extends Controller
 {
@@ -30,19 +31,23 @@ class browserController extends Controller
       //Is Logged In User Account = ILIUA
       if(isset($_COOKIE["iliua"]))
       {
-        return redirect()->route("homePage");
+        if($_COOKIE["host_type"] === "comp" || $_COOKIE["host_type"] === "normal")
+          return redirect()->route("homePage");
+
+        $this->logout();
       }
-      else
-        return view('atoclayout.register_supplier');
+      return view('atoclayout.register_supplier');
     }
     public function getLoginPage()
     {
       if(isset($_COOKIE["iliua"]))
       {
-        return view("atoc_index");
+        if($_COOKIE["host_type"] === "comp" || $_COOKIE["host_type"] === "normal")
+          return redirect()->route("homePage");
+
+        $this->logout();
       }
-      else
-        return redirect()->route("registrationPage");
+      return redirect()->route("registrationPage");
     }
     public function logout()
     {
@@ -57,7 +62,7 @@ class browserController extends Controller
     {
       if(isset($_COOKIE["iliua"]) && isset($_COOKIE["host_type"]))
       {
-        if($_COOKIE["host_type"] === "user")
+        if($_COOKIE["host_type"] === "normal")
           return view("atoclayout.user.profile_page");
         else if($_COOKIE["host_type"] === "comp")
         {
@@ -65,7 +70,8 @@ class browserController extends Controller
         }
         else
         {
-          return view("atoclayout.error_profile");
+          $this->logout();
+          return view("atoclayout.error.error_profile");
         }
       }
       else {
@@ -77,7 +83,7 @@ class browserController extends Controller
     {
       if(isset($_COOKIE["iliua"]) && isset($_COOKIE["host_type"]))
       {
-        if($_COOKIE["host_type"] === "user")
+        if($_COOKIE["host_type"] === "normal")
           return view("atoclayout.user.edit_profile");
         else if($_COOKIE["host_type"])
         {
@@ -104,7 +110,7 @@ class browserController extends Controller
 
     }
 
-    public function isLoggedIn($type="user")
+    public function isLoggedIn($type="normal")
     {
       if(isset($_COOKIE["iliua"]) && isset($_COOKIE["host_type"]))
       {

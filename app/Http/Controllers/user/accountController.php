@@ -16,6 +16,7 @@ use App\models\userInterestModel;
 use App\models\userAddressModel;
 use App\Mail\userVerificationMail;
 use App\Mail\generalMailHandler;
+use Illuminate\Support\Facades\Crypt;
 use Hash, Mail;
 class accountController extends Controller
 {
@@ -209,7 +210,7 @@ class accountController extends Controller
 	{
 		$rules = [
 			"platform" => "required|integer|in:1",
-			"host" => "required|string|in:user,comp"
+			"host" => "required|string|in:normal,comp"
 		];
 		$isvalid = Validator::make($request->all(), $rules, []);
 		$isNotValidRequest = $this->custom_validator->isNotValidRequest($isvalid);
@@ -287,7 +288,7 @@ class accountController extends Controller
 				)
 				->cookie("host_id", $data[0]->user_id, $min)
 				->cookie("host_token", $data[0]->user_token, $min)
-				->cookie("host_type", "user", $min)
+				->cookie("host_type", "normal", $min)
 				->cookie("iliua", true, $min);
 				return $response;
 			}
@@ -344,8 +345,8 @@ class accountController extends Controller
 				$response = response(
 					$this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal")
 				)
-				->cookie("host_id", $data[0]->user_id, $min)
-				->cookie("host_token", $data[0]->user_token, $min)
+				->cookie("host_id", Crypt::encrypt($data[0]->user_id), $min)
+				->cookie("host_token", Crypt::encrypt($data[0]->user_token), $min)
 				->cookie("host_type", "user", $min)
 				->cookie("iliua", true, $min);
 				return $response;
