@@ -1808,12 +1808,6 @@ module.exports = {
 //
 //
 //
-//
-//
-//
-//
-//
-//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -38521,32 +38515,7 @@ var render = function() {
           [_vm._v("\n      " + _vm._s(_vm.comp_name) + " ")]
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "post-additional-info inline-items" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "names-people-likes" }, [
-            _vm._v("\n        26\n      ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "comments-shared" }, [
-            _c(
-              "a",
-              {
-                staticClass: "post-add-icon inline-items",
-                attrs: { href: "#" }
-              },
-              [
-                _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-                  _c("use", {
-                    attrs: { "xlink:href": "#olymp-speech-balloon-icon" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("span", [_vm._v("0")])
-              ]
-            )
-          ])
-        ])
+        _vm._m(0)
       ])
     ]
   )
@@ -38556,21 +38525,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "friends-harmonic" }, [
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "/olympus_assets/img/icon-chat27.png", alt: "icon" }
-          })
+    return _c("div", { staticClass: "post-additional-info inline-items" }, [
+      _c("ul", { staticClass: "friends-harmonic" }, [
+        _c("li", [
+          _c("a", { attrs: { href: "#" } }, [
+            _c("img", {
+              attrs: { src: "/olympus_assets/img/icon-chat27.png", alt: "icon" }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", { attrs: { href: "#" } }, [
+            _c("img", {
+              attrs: { src: "/olympus_assets/img/icon-chat2.png", alt: "icon" }
+            })
+          ])
         ])
       ]),
       _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "/olympus_assets/img/icon-chat2.png", alt: "icon" }
-          })
-        ])
+      _c("div", { staticClass: "names-people-likes" }, [
+        _vm._v("\n        26 Transactions\n      ")
       ])
     ])
   }

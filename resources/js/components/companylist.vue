@@ -33,15 +33,9 @@
             </li>
           </ul>
           <div class="names-people-likes">
-            26
+            26 Transactions
           </div>
 
-          <div class="comments-shared">
-            <a href="#" class="post-add-icon inline-items">
-              <svg class="olymp-speech-balloon-icon"><use xlink:href="#olymp-speech-balloon-icon"></use></svg>
-              <span>0</span>
-            </a>
-          </div>
 
         </div>
       </div>
