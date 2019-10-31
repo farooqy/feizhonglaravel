@@ -403,8 +403,8 @@ col-md-6 col-sm-12 col-12">
       </ul>
 
       <div class="date-and-place">
-        <h5 class="date">Saturday, March 26th</h5>
-        <div class="place">San Francisco, CA</div>
+        <h5 class="date" v-text="Weather.date">Saturday, March 26th</h5>
+        <div class="place" >@{{Weather.City}} , @{{Weather.Country_code}}</div>
       </div>
 
     </div>
@@ -882,7 +882,7 @@ col-md-6 col-sm-12 col-12">
     <!-- W-Activity-Feed -->
 
     <ul class="widget w-activity-feed notification-list">
-      <li>
+      <!-- <li>
         <div class="author-thumb">
           <img src="/olympus_assets/img/avatar49-sm.jpg" alt="author">
         </div>
@@ -890,7 +890,7 @@ col-md-6 col-sm-12 col-12">
           <a href="#" class="h6 notification-friend">Marina Polson</a> commented on Jason Mark’s <a href="#" class="notification-link">photo.</a>.
           <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">2 mins ago</time></span>
         </div>
-      </li>
+      </li> -->
     </ul>
 
     <!-- .. end W-Activity-Feed -->

@@ -21,6 +21,8 @@ Route::group(['middleware' => ['web']], function(){
   Route::get('/profile', 'browserController@profilePage')->name("profilePage");
   Route::get('/profile/edit', 'browserController@editProfilePage')->name("editProfilePage");
   Route::get('/issue', 'browserController@issuePage')->name('issuePage');
+  Route::get('/chat/messages', 'browserController@messagesPage')->name('messagesPage');
+  Route::get('/notifications', 'browserController@messagesPage')->name('messagesPage');
 
 
   // User routes

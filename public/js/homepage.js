@@ -128615,6 +128615,36 @@ var app = new Vue({
       var arg1 = args[0];
       arg1(data);
     },
+    getIpAddress: function getIpAddress() {
+      var ipreq = axios.create({
+        baseURL: "https://json.geoiplookup.io/api",
+        responseType: 'json',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': 'http://127.0.0.1:8000',
+          'Access-Control-Allow-Methods': 'GET'
+        }
+      });
+      ipreq.get().then(function (response) {
+        // handle success
+        this.setIpData(response);
+      })["catch"](function (error) {
+        // handle error
+        console.log('failed to get the id ', error);
+      });
+    },
+    setIpData: function setIpData(data) {
+      this.Weather.City = data.city;
+      this.Weather.Country = data.country_name;
+      this.Weather.Ip = data.ip;
+      this.Weather.Latitude = data.latitude;
+      this.Weather.Longtitude = data.longtitude;
+      this.Weather.Country_code = data.country_code;
+    },
+    getLocationData: function getLocationData() {// var ip =
+      // this.ServerRequest.serverRequest("http://api.ipstack.com/66.154.104.2?access_key=34c44b2b12ea1a34b1e3cdf9d96a4d3c")
+    },
     showError: function showError(error) {
       this.errorObject.error_text = error;
       this.errorObject.errorModal = this.errorModal = true;
@@ -128659,6 +128689,10 @@ var app = new Vue({
       } else {
         this.customtype = false;
       }
+    },
+    externalApiErrorHandler: function externalApiErrorHandler(error) {
+      // this.showError('')
+      console.log('Failed to get ip data');
     }
   },
   components: {
@@ -128709,12 +128743,20 @@ var app = new Vue({
       prod_quantity: null,
       prod_measure_unit: null,
       prod_valid_until: null
+    },
+    Weather: {
+      City: 'Nanjing',
+      Country: 'China',
+      Country_code: 'CN',
+      Latitude: '34.04302978515625',
+      Longtitude: '-118.25227355957031',
+      Description: 'Clear Sky D',
+      Ip: null
     }
   },
   mounted: function mounted() {
-    this.getCompanyData();
-    this.populateProduct();
-    this.Status.status_content = this.$faker().lorem.paragraph();
+    this.getCompanyData(); // this.populateProduct();
+    // this.Status.status_content = this.$faker().lorem.paragraph();
   }
 });
 

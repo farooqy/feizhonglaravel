@@ -187,4 +187,10 @@ class browserController extends Controller
             return view('atoclayout.comp.productPage');
         return redirect()->route('loginPage');
     }
+    public function messagesPage()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+            return view('atoclayout.chats.main');
+        return redirect()->route('loginPage');
+    }
 }
