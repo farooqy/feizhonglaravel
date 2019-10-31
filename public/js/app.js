@@ -49104,9 +49104,9 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/farooqy/Documents/Noor/sites/feizhonglaravel/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/farooqy/Documents/Noor/sites/feizhonglaravel/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /home/farooqy/Documents/Noor/sites/feizhonglaravel/resources/sass/searchfilter.scss */"./resources/sass/searchfilter.scss");
+__webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/sass/searchfilter.scss */"./resources/sass/searchfilter.scss");
 
 
 /***/ })

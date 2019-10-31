@@ -50553,7 +50553,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/farooqy/Documents/Noor/sites/feizhonglaravel/resources/js/profile/comp_profile.js */"./resources/js/profile/comp_profile.js");
+module.exports = __webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/js/profile/comp_profile.js */"./resources/js/profile/comp_profile.js");
 
 
 /***/ })

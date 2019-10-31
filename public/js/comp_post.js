@@ -50046,6 +50046,38 @@ var app = new Vue({
 
       this.hideLoader();
     },
+    getProducts: function getProducts() {
+      var req = this.req;
+      req.comp_id = this.comp_id;
+      req.comp_token = this.comp_token;
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest("/api/comp/products/list", this.setProducts, this.showError);
+    },
+    setProducts: function setProducts(data) {
+      var i;
+
+      for (i = 0; i < data.length; i++) {
+        var p = new Product();
+        var d = data[i];
+        p.product_id = d.id;
+        p.product_token = d.product_gen_token;
+        p.generated_token = d.product_gen_token;
+        p.product_files = d.product__files;
+        p.product_description = d.product_description;
+        p.product_name = d.product_name;
+        p.product_price = d.product_price;
+        p.product_currency = d.product_measure_currency;
+        p.product_unit = d.product_measure_unit;
+        p.product_company = d.companydata;
+        p.created_at = d.created_at;
+        p.post_type = "product"; // this.productList.push(p)
+        //combine product and status
+
+        this.productList.push(p);
+      }
+
+      console.log('products ', data);
+    },
     hideLoader: function hideLoader() {
       this.Loader.showLoader = this.showLoader = false;
     },
@@ -50076,7 +50108,8 @@ var app = new Vue({
       "post_image": "/atoc_assets/images/nairobi_bk.jpg",
       "post_time": "2019-10-13 02:49:18"
     }],
-    post_images: []
+    post_images: [],
+    productList: []
   }
 });
 
@@ -50089,7 +50122,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/farooqy/Documents/Noor/sites/feizhonglaravel/resources/js/profile/comp_post.js */"./resources/js/profile/comp_post.js");
+module.exports = __webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/js/profile/comp_post.js */"./resources/js/profile/comp_post.js");
 
 
 /***/ })

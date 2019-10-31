@@ -6,12 +6,12 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="/posts">
+    <a class="nav-link " href="/comp/posts">
       <i class="fas fa-edit text-blue"></i> Posts
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="/products">
+    <a class="nav-link " href="/comp/products">
       <i class="fas fa-tags text-orange"></i> Products
     </a>
   </li>
@@ -21,7 +21,7 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="/subscription">
+    <a class="nav-link " href="/comp/subscription">
       <i class="fas fa-money-bill-alt text-red"></i> My subscription
     </a>
   </li>

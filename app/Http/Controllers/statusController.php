@@ -152,11 +152,18 @@ class statusController extends Controller
         $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;
-    	$statusData = compStatusModel::where([['status_status' ,'=', 'active']])->latest()->get();
-
-        $products = productModel::get();
-        $listProducts = $statusData->merge($products);
-        $listProducts = array_reverse(array_sort($listProducts, function ($value) {
+    	$statusData = compStatusModel::where('status_status', 'active')->latest()->get();
+        $products = productModel::where('product_isactive', true)->latest()->get();
+        // $listProducts = $products->merge($statusData);
+        // return $products;
+        $collection = collect();
+        foreach ($statusData as $key => $status) {
+            $collection->push($status);
+        }
+        foreach ($products as $key => $product) {
+            $collection->push($product);
+        }
+        $listProducts = array_reverse(array_sort($collection, function ($value) {
           return $value['created_at'];
         }));
         $status = [];
@@ -167,6 +174,9 @@ class statusController extends Controller
             $comments = $eachStatus->comments;
             $likes = $eachStatus->likes;
             $list_comments = [];
+
+            $listProducts[$key]->num_likes = $likes->count();
+            $listProducts[$key]->num_comments = $comments->count();
             foreach ($comments as $ckey => $comment)
             {
               if($comment->host_type === "comp")
@@ -188,45 +198,31 @@ class statusController extends Controller
               $listProducts[$key]["comments"][$ckey]->comment_replies = $children;
 
             }
+            foreach( $likes as  $like)
+            {
+                $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
+                if($like->host_type === $request->host_type && $like->host_id === $request->host_id && $request->host_token)
+                    $listProducts[$key]->hasLiked = true;
+                else
+                    $listProducts[$key]->hasLiked = false;
+
+            }
             if($eachStatus->product_gen_token)
             {
                 $listProducts[$key]->type = "product";
                 $listProducts[$key]->product_files = $eachStatus->Product_Files;
-                $listProducts[$key]->num_likes = $likes->count();
-                $listProducts[$key]->num_comments = $comments->count();
+                $listProducts[$key]->companydata = $eachStatus->companydata;
 
-                $eachStatus->companydata;
+
 
             }
             else
             {
                 $listProducts[$key]->type = "status";
+                $listProducts[$key]->status__files = $eachStatus->Status_Files;
+                $listProducts[$key]->companydata = $eachStatus->companyData;
 
-                    $status = array(
-                    "status" => $eachStatus,
-                    "files" => $eachStatus->Status_Files,
-                    "companyProfile" => $eachStatus->companyData,
-                    "num_comments" => $comments->count(),
-                    "num_likes" => $likes->count(),
-                );
-                // $comments = $eachStatus->comments;
-                // $likes = $eachStatus->likes;
-                foreach($comments as $comment)
-                {
-                    $status["comments"] = ["comment"=>$comment, "details"=> $comment->personProfile];
-                }
-                foreach( $likes as  $like)
-                {
-                    $status["likes"] = ["like"=>$like, "details"=> $like->personProfile];
-                    if($like->host_type === $request->host_type && $like->host_id === $request->host_id && $request->host_token)
-                        $listProducts[$key]->hasLiked = true;
-                    else
-                        $listProducts[$key]->hasLiked = false;
 
-                }
-
-                $statusData[$statusCount]["num_comments"] = $comments->count();
-                $statusData[$statusCount]["num_likes"] = $likes->count();
             }
 
 

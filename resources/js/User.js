@@ -13,6 +13,7 @@ export default class User {
     this.api_key = null;
     this.is_browser = true;
     this.user_profile = "/img/logo.png";
+    this.user_needs = [];
     this.error = {
       "user_firstName" : null,
       "user_lastName"  : null,

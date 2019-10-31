@@ -207,6 +207,41 @@ var app = new Vue({
       // })
       this.hideLoader();
     },
+    getProducts()
+    {
+        var req = this.req;
+        req.comp_id = this.comp_id;
+        req.comp_token = this.comp_token;
+        this.ServerRequest.setRequest(req);
+        this.ServerRequest.serverRequest("/api/comp/products/list",
+            this.setProducts, this.showError);
+    },
+    setProducts(data)
+    {
+      var i;
+      for(i=0; i < data.length; i++)
+      {
+        var p = new Product();
+        var d = data[i];
+        p.product_id = d.id;
+        p.product_token = d.product_gen_token;
+        p.generated_token = d.product_gen_token;
+        p.product_files = d.product__files;
+        p.product_description = d.product_description;
+        p.product_name = d.product_name;
+        p.product_price = d.product_price;
+        p.product_currency = d.product_measure_currency;
+        p.product_unit = d.product_measure_unit;
+        p.product_company = d.companydata;
+        p.created_at = d.created_at;
+        p.post_type = "product";
+        // this.productList.push(p)
+        //combine product and status
+        this.productList.push(p);
+      }
+
+      console.log('products ',data);
+    },
     hideLoader()
     {
       this.Loader.showLoader = this.showLoader = false;
@@ -241,6 +276,7 @@ var app = new Vue({
     ],
     post_images: [
 
-    ]
+    ],
+    productList:[],
   }
 })

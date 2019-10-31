@@ -51439,6 +51439,9 @@ function () {
     value: function serverRequest(url, successCallback, errorCallback) {
       var _this = this;
 
+      var args = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
+      //args contains list of functions or additional properties
+      //for the successCallback
       axios.post(url, this.req).then(function (response) {
         response = response.data;
 
@@ -51450,7 +51453,7 @@ function () {
         } else if (response.isSuccess) {
           console.log('success request ', response);
           _this.data = response.data;
-          successCallback(_this.data);
+          successCallback(_this.data, args);
           return true;
         } else {
           console.log('error reposen ', response);
@@ -51556,6 +51559,7 @@ var User = function User() {
   this.api_key = null;
   this.is_browser = true;
   this.user_profile = "/img/logo.png";
+  this.user_needs = [];
   this.error = {
     "user_firstName": null,
     "user_lastName": null,
@@ -52655,7 +52659,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/farooqy/Documents/Noor/sites/feizhonglaravel/resources/js/singlecompview.js */"./resources/js/singlecompview.js");
+module.exports = __webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/js/singlecompview.js */"./resources/js/singlecompview.js");
 
 
 /***/ })

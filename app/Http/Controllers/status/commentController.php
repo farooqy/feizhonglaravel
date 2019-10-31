@@ -120,6 +120,11 @@ class commentController extends Controller
           ["host_token", $request->host_token],
           ["comment_type", $request->type]
         ])->get();
+        $comment_info[0]["comment_replies"] = [];
+        if($request->host_type === "comp")
+            $comment_info[0]["comp_profile"] = $comment_info[0]->compProfile;
+        else
+            $comment_info[0]["person_profile"] = $comment_info[0]->personProfile;
         $this->Error->setSuccess($comment_info);
         return $this->Error->getSuccess();
     }

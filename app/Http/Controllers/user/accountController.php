@@ -333,6 +333,7 @@ class accountController extends Controller
 		$normalUsersModel->user_phone = $request->user_phone;
 		$normalUsersModel->user_password = Hash::make($request->password);
 		$normalUsersModel->user_token = hash('md5', time()."".$request->user_email);
+		$normalUsersModel->user_profile = env('APP_URL').'/img/user_icon.png';
 
 		if($normalUsersModel->save())
 		{
@@ -345,9 +346,9 @@ class accountController extends Controller
 				$response = response(
 					$this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal")
 				)
-				->cookie("host_id", Crypt::encrypt($data[0]->user_id), $min)
-				->cookie("host_token", Crypt::encrypt($data[0]->user_token), $min)
-				->cookie("host_type", "user", $min)
+				->cookie("host_id", $data[0]->user_id, $min)
+				->cookie("host_token", $data[0]->user_token, $min)
+				->cookie("host_type", "normal", $min)
 				->cookie("iliua", true, $min);
 				return $response;
 			}

@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->string('product_measure_unit');
             $table->float('product_price');
             $table->string('product_measure_currency');
-            $table->string('product_isactive')->default(false);
+            $table->string('product_isactive')->default(true);
             $table->timestamps();
         });
     }

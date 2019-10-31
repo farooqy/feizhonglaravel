@@ -9,8 +9,10 @@ export default class serverRequest {
     console.log('will set request ',req);
     this.req = req;
   }
-  serverRequest(url, successCallback, errorCallback)
+  serverRequest(url, successCallback, errorCallback, args=[])
   {
+      //args contains list of functions or additional properties
+      //for the successCallback
     axios.post(url, this.req).
     then(response => {
       response = response.data;
@@ -25,7 +27,7 @@ export default class serverRequest {
       {
         console.log('success request ',response);
         this.data = response.data;
-        successCallback(this.data);
+        successCallback(this.data, args);
         return true;
       }
       else

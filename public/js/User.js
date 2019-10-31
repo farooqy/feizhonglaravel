@@ -112,6 +112,7 @@ var User = function User() {
   this.api_key = null;
   this.is_browser = true;
   this.user_profile = "/img/logo.png";
+  this.user_needs = [];
   this.error = {
     "user_firstName": null,
     "user_lastName": null,
@@ -140,7 +141,7 @@ var User = function User() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/farooqy/Documents/Noor/sites/feizhonglaravel/resources/js/User.js */"./resources/js/User.js");
+module.exports = __webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/js/User.js */"./resources/js/User.js");
 
 
 /***/ })

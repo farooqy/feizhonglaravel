@@ -21,7 +21,7 @@ class NormalUsersTable extends Migration
             $table->string("user_email", 75)->unique();
             $table->string("user_phone", 15)->unique();
             $table->string("user_password",300);
-            $table->string("user_profile", 300)->default(env("APP_URL")."img/user_icon.jpg");
+            $table->string("user_profile", 300)->default(env("APP_URL")."/img/user_icon.jpg");
             $table->string("user_token", 300);
             $table->string("user_status", 15)->default("active");
             $table->boolean("is_verified")->default(false);

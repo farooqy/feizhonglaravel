@@ -273,7 +273,7 @@ var app = new Vue({
       this.req = {
         "host_id":this.Host.guest_id,
         "host_token": this.Host.guest_token,
-        "host_type": this.host_type === 1 ? "comp": "normal",
+        "host_type": this.host_type === 0 ? "comp": "normal",
         "api_key": (this.Host.api_key === null ||
           this.Host.api_key === undefined) ? "apikey" : this.Host.api_key
       }
@@ -557,6 +557,61 @@ var app = new Vue({
       this.Status = new Status();
       this.successfullStatusFiles = [];
     },
+    userProductNeed()
+    {
+      if(this.needed_product.prod_name === "" ||
+         this.needed_product.prod_name === null)
+         return this.showError('Please provide product name');
+       if(this.needed_product.prod_type === "" ||
+          this.needed_product.type === null ||
+          this.needed_product.type === "Other")
+        return this.showError('Please provide product type');
+      if(this.needed_product.prod_subtype === "" ||
+         this.needed_product.prod_subtype === null ||
+         this.needed_product.prod_subtype === "Other")
+         return this.showError('Please provide product subtype');
+      if(this.needed_product.prod_description === "" ||
+         this.needed_product.prod_description === null)
+         return this.showError('Please provide product description');
+      if(this.needed_product.prod_quantity === 0 ||
+         this.needed_product.prod_quantity === null)
+         return this.showError('Please provide product quantity');
+      if(this.needed_product.prod_measure_unit === "" ||
+         this.needed_product.prod_measure_unit === null)
+         return this.showError('Please provide product measure unit');
+      if(this.needed_product.prod_valid_until === "" ||
+         this.needed_product.prod_valid_until === null)
+         return this.showError('Please provide product validity date');
+
+      var product = this.needed_product;
+      product.host_id = this.req.host_id;
+      product.host_token = this.req.host_token;
+      product.host_type = this.req.host_type;
+      product.api_key = this.Host.api_key === undefined ? "apikey" :
+        this.Host.api_key;
+      this.ServerRequest.setRequest(product);
+      this.ServerRequest.serverRequest("/api/user/needs/post",
+          this.userNeedPosted, this.showError);
+
+    },
+    userNeedPosted(data)
+    {
+
+      this.needed_product = {
+        prod_name: null,
+        prod_type: null,
+        prod_subtype:null,
+        prod_description:null,
+        prod_quantity:null,
+        prod_measure_unit:null,
+        prod_valid_until:null,
+      };
+      if(data[0])
+        data = data[0];
+
+        alert('You have successfully posted your need.');
+      console.log('user need ',data);
+    },
     removeMe(index, type="product")
     {
       console.log(index, ' to be remved');
@@ -576,7 +631,7 @@ var app = new Vue({
       else
         this.Status.status_files = files;
     },
-    submitComment(type, id, token, text)
+    submitComment(type, id, token, text, clearCommentText)
     {
       var req = this.req;
       req.type = type;
@@ -585,20 +640,23 @@ var app = new Vue({
       req.status_token = token;
       this.ServerRequest.setRequest(req);
       this.ServerRequest.serverRequest('/api/comp/status/comment',
-      this.setCommentPost, this.showError);
+      this.setCommentPost, this.showError, [clearCommentText]);
       console.log(' comment is ',req);
     },
-    setCommentPost(data)
+    setCommentPost(data, args)
     {
-      var i;
-      for(i=0; i < this.StatusList.length; i++)
-      {
-        if(data[0].comment_type === "status" ||
-            data[0].comment_type === "product" )
+        var i;
+        for(i=0; i < this.StatusList.length; i++)
         {
-          this.StatusList[i].comments.push(data[0]);
+            if(data[0].comment_type === "status" ||
+                data[0].comment_type === "product" )
+            {
+                this.StatusList[i].comments.push(data[0]);
+            }
         }
-      }
+        // this.$emit('clear-comment');
+        var arg1 = args[0];
+        arg1();
     },
     showError(error)
     {
@@ -653,7 +711,8 @@ var app = new Vue({
     {
       console.log("type number ", event.target.options.selectedIndex);
       this.selected_type =event.target.options.selectedIndex;
-      this.sub_type_value = this.product_sub_types[this.selected_type][0];
+      this.sub_type_value = this.product_sub_types[this.selected_type];
+      this.needed_product.prod_subtype = null;
       if(this.selected_type === 21)
       {
         this.customtype = true;
@@ -663,6 +722,7 @@ var app = new Vue({
       }
     },
 
+
   },
   components: {
     error,loader,statuslist,trendingcompanylist,statuslistv2,
@@ -671,11 +731,6 @@ var app = new Vue({
   data: {
     Host: null,
     StatusList: [
-      {
-        "status_text": "This is my status text with a lot of long text",
-        "status_image": "/olympus_assets/img/photo-album2.jpg",
-        "status_time": "2019-10-13 02:49:18"
-      }
     ],
     productList: [
 
@@ -702,9 +757,23 @@ var app = new Vue({
     successfullProductFiles:[],
     successfullStatusFiles: [],
     selected_type:0,
-    product_types: null,
+    product_types: {
+      type:null,
+      sub_type:null,
+    },
     product_sub_types:null,
     sub_type_value: null,
+    customtype: false,
+    comment_clear_handler:null,
+    needed_product: {
+      prod_name: null,
+      prod_type: null,
+      prod_subtype:null,
+      prod_description:null,
+      prod_quantity:null,
+      prod_measure_unit:null,
+      prod_valid_until:null,
+    }
 
 
   },

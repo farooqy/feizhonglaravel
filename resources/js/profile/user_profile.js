@@ -2,7 +2,10 @@
 require(".././bootstrap");
 import error from "../components/error.vue";
 import loader from "../components/loader.vue";
+import userneeds from "../components/userneeds.vue";
+import ServerRequest from '.././ServerRequest.js';
 import User from ".././User.js";
+import Product from "../Product.js";
 window.Vue = require("vue");
 Vue.use(require('vue-cookies'));
 window.Axios = require('axios');
@@ -10,19 +13,16 @@ window.Axios = require('axios');
 var app = new Vue({
   el:"#app",
   methods: {
-    getProfileData()
-    {
-      var req = {
-
-      }
-    },
     getHostInfo()
     {
       var data = {
         "platform":1,
-        "host":"user"
+        "host":"normal"
       };
-      this.serverRequest("/api/user/data", data, "hostdata");
+      this.ServerRequest.setRequest(data);
+      this.ServerRequest.serverRequest('/api/user/data',
+        this.setUserData, this.showError);
+      // this.serverRequest("/api/user/data", data, "hostdata");
     },
     setUserData(data)
     {
@@ -36,7 +36,18 @@ var app = new Vue({
       this.User.api_key = data.api_key;
       this.User.user_profile = data.user_profile;
       var req = {"user_id": this.User.guest_id, "user_token":this.User.guest_token};
-      this.serverRequest("/api/user/address", req, "user_address");
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest('/api/user/address',
+        this.setUserAddress, this.showError);
+      // this.serverRequest("/api/user/address", req, "user_address");
+     this.req = {
+         host_id: this.User.guest_id,
+         host_token: this.User.guest_token,
+         host_type: 'normal',
+         api_key:  this.User.api_key === undefined ? 'apikey':this.User.api_key,
+
+     }
+     this.getNeeds();
       console.log(data);
     },
     setUserAddress(data)
@@ -79,7 +90,11 @@ var app = new Vue({
         "updateValue": values[field]
       };
       console.log('data --- ',data);
-      this.serverRequest("/api/user/update", data, ("field_"+field));
+      // this.serverRequest("/api/user/update", data, ("field_"+field));
+      this.ServerRequest.setRequest(data);
+      this.update_field = field;
+      this.ServerRequest.serverRequest('/api/user/update',
+        this.userFieldUpdate, this.showError);
 
     },
     updateAddress()
@@ -93,7 +108,15 @@ var app = new Vue({
         "user_id": this.User.guest_id,
         "user_token": this.User.guest_token
       };
-      this.serverRequest("/api/user/update/address", req, "update_address");
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest('/api/user/update/address',
+        this.updatedAddress, this.showError);
+      // this.serverRequest("/api/user/update/address", req, "update_address");
+    },
+    updatedAddress(data)
+    {
+        alert('update successful');
+        console.log('address updated ',data);
     },
     updateAboutMe()
     {
@@ -102,29 +125,39 @@ var app = new Vue({
         "user_token": this.User.guest_token,
         "about_me": this.User.about_me
       };
-      this.serverRequest("/api/user/update/aboutMe", req, "udpate_about_me");
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest('/api/user/update/aboutMe',
+        this.updateAboutMe, this.showError);
+      // this.serverRequest("/api/user/update/aboutMe", req, "update_about_me");
     },
-    userFieldUpdate(type)
+    updateAboutMe(data)
     {
-      switch (type)
-      {
-        case "field_0":
-          alert("Your first name has been successfully updated");
-          break;
-        case "field_1":
-          alert("Your second name has been successfully updated");
-          break;
-        case "field_2":
-          alert("Your Phone number has been successfully updated");
-          break;
-        case "field_3":
-          alert("Your email has been successfully updated");
-          break;
-        default:
-          console.log("successful update of "+type);
+        alert('update successful');
+        console.log('successfully update about me');
+    },
+    userFieldUpdate()
+    {
+        var type = 'field_'+this.update_field;
+        switch (type)
+        {
+            case "field_0":
+              alert("Your first name has been successfully updated");
+              break;
+            case "field_1":
+              alert("Your second name has been successfully updated");
+              break;
+            case "field_2":
+              alert("Your Phone number has been successfully updated");
+              break;
+            case "field_3":
+              alert("Your email has been successfully updated");
+              break;
+            default:
+              console.log("successful update of "+type);
 
 
       }
+      this.update_field = -1;
       this.Loader.showLoader = this.showLoader = false;
     },
     updateUserLogo(event)
@@ -140,7 +173,9 @@ var app = new Vue({
             "user_id": this.User.guest_id,
             "user_token": this.User.guest_token
           };
-          this.serverRequest("/api/user/update/profile", req, "update_profile");
+          this.ServerRequest.setRequest(req);
+          this.ServerRequest.serverRequest('/api/user/update/profile',
+            this.setNewProfile, this.showError);
 
         }
         reader.readAsDataURL(input.files[0]);
@@ -152,6 +187,18 @@ var app = new Vue({
       this.User.user_profile = data.user_profile;
       this.Loader.showLoader = this.showLoader = false;
     },
+    getNeeds()
+    {
+        this.ServerRequest.setRequest(this.req);
+        this.ServerRequest.serverRequest('/api/user/needs',
+            this.showNeeds, this.showError);
+    },
+    showNeeds(data)
+    {
+        this.user_needs = data ;
+        console.log('user needs ',data);
+    },
+
     serverRequest(url, form, type="default")
     {
       this.Loader.showLoader = this.showLoader = true;
@@ -200,7 +247,14 @@ var app = new Vue({
       this.errorModal = false;
       this.errorObject.errorModal = this.errorModal;
       this.errorObject.error_text = "This is the default error text"
+    },
+    showError(error)
+    {
+        this.errorObject.error_text = response.errorMessage;
+        this.errorObject.errorModal = this.errorModal = true;
+        this.Loader.showLoader = this.showLoader = false;
     }
+
   },
   mounted(){
     this.getHostInfo();
@@ -209,7 +263,7 @@ var app = new Vue({
 
   },
   components: {
-    error,loader
+    error,loader, userneeds,
   },
   data: {
     User:new User(),
@@ -223,5 +277,9 @@ var app = new Vue({
     Loader: {
       showLoader:false
     },
+    ServerRequest : new ServerRequest(),
+    update_field:-1,
+    req:null,
+    user_needs:[],
   }
 });

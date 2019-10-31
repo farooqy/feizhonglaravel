@@ -265,3 +265,7 @@
     </div>
 
 @endsection
+
+@section("vuescript")
+<script src="/js/user_profile.js"></script>
+@endsection

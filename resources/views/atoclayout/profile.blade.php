@@ -22,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>
-    Africa to China - AtoC
+    AtoC - Africa to China
   </title>
   <!-- Favicon -->
   <link href="/assets/img/brand/favicon.png" rel="icon" type="image/png">
@@ -129,7 +129,7 @@
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
                   <span class="mb-0 text-sm  font-weight-bold">
-                    @if($_COOKIE["host_type"] === "user")
+                    @if($_COOKIE["host_type"] === "normal")
                     <span v-text="User.user_firstName+User.user_lastName"></span>
                     @else
                     <span v-text="Company.company_name"></span>
@@ -153,7 +153,10 @@
       <div class="row align-items-center justify-content-xl-between">
         <div class="col-xl-6">
           <div class="copyright text-center text-xl-left text-muted">
-            &copy; 2018 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+            &copy; 2019
+            <a href="https://www.drongo.tech" class="font-weight-bold ml-1" target="_blank">
+              Drongo Tech LLC
+            </a>
           </div>
         </div>
       </div>
@@ -167,15 +170,8 @@
   <script src="/assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
   <!--   Argon JS   -->
   <script src="/assets/js/argon-dashboard.min.js?v=1.1.0"></script>
-  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+
   @yield("vuescript")
-  <script>
-    window.TrackJS &&
-      TrackJS.install({
-        token: "ee6fab19c5a04ac1a32a645abde4613a",
-        application: "argon-dashboard-free"
-      });
-  </script>
 </body>
 
 </html>

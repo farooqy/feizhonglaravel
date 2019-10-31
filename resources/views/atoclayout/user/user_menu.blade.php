@@ -6,12 +6,17 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="/agents">
+    <a class="nav-link " href="/user/needs">
+      <i class="fas fa-syringe text-blue"></i> My Needs
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link " href="/user/agents">
       <i class="fas fa-hands-helping text-blue"></i> My Agents
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="/history">
+    <a class="nav-link " href="/user/history">
       <i class="fas fa-history text-orange"></i> History
     </a>
   </li>
@@ -21,7 +26,7 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="/favorites">
+    <a class="nav-link " href="/user/favorites">
       <i class="fas fa-heart text-red"></i> My Favorites
     </a>
   </li>

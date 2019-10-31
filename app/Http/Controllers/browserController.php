@@ -33,7 +33,8 @@ class browserController extends Controller
       {
         if($_COOKIE["host_type"] === "comp" || $_COOKIE["host_type"] === "normal")
           return redirect()->route("homePage");
-
+        $this->Error->setError(["The host type is not recognized ".$_COOKIE["host_type"]]);
+        return $this->Error->getError();
         $this->logout();
       }
       return view('atoclayout.register_supplier');
@@ -110,7 +111,7 @@ class browserController extends Controller
 
     }
 
-    public function isLoggedIn($type="normal")
+    public function isLoggedIn($type="comp")
     {
       if(isset($_COOKIE["iliua"]) && isset($_COOKIE["host_type"]))
       {
@@ -139,5 +140,51 @@ class browserController extends Controller
     public function listCompanies()
     {
       return view("atoclayout.listcomp_page");
+    }
+
+    public function userNeedsPage()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+        {
+            return view("atoclayout.user.needsPage");
+        }
+        else
+            return redirect()->route('loginPage');
+    }
+    public function issuePage()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+            return view('atoclayout.report_issue.issue');
+        return redirect()->route('loginPage');
+    }
+    public function historyPage()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+            return view('atoclayout.user.history');
+        return redirect()->route('loginPage');
+    }
+    public function favoritesPage()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+            return view('atoclayout.user.favorites');
+        return redirect()->route('loginPage');
+    }
+    public function agentsPage()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+            return view('atoclayout.user.agents');
+        return redirect()->route('loginPage');
+    }
+    public function compSubscription()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+            return view('atoclayout.comp.subscription');
+        return redirect()->route('loginPage');
+    }
+    public function productPage()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+            return view('atoclayout.comp.productPage');
+        return redirect()->route('loginPage');
     }
 }

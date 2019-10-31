@@ -165,14 +165,16 @@
             <div class="card-body">
               <div class="form-group">
                 <label class="control-label">Product name</label>
-                <input class="form-control" placeholder="Product name"/ >
+                <input class="form-control" placeholder="Product name"
+                v-model="needed_product.prod_name"/>
               </div>
-                <div class=" row">
+              <div class=" row">
                   <div class="col-md-6 col-lg-6 col-xl-6">
                     <label class="control-label">Product Category</label>
 
                     <select name="company_type" class="select_custom"
-                    @change="updateSelect($event)" v-model="product_types">
+                    style="height:60px;"
+                    @change="updateSelect($event)" v-model="needed_product.prod_type">
                         <option value="Aerospace industry" selected >Aerospace industry</option>
                         <option value="Agriculture" >Agriculture</option>
                         <option value="Beautify" >Beauty Products</option>
@@ -200,8 +202,8 @@
                   <div class="col-md-6 col-lg-6 col-xl-6">
                     <label class="control-label">Subcategory</label>
                     <select  class="select_custom" name="product_sub_types"
-                    v-model="product_sub_types">
-                      <option v-for=" type in product_sub_types[selected_type]"
+                    style="height:60px;" v-model="needed_product.prod_subtype">
+                      <option v-for=" type in sub_type_value"
                       :value="type" v-text="type" >
                     </option>
                     </select>
@@ -209,6 +211,49 @@
 
 
                 </div>
+              <div class=" row" v-if="customtype">
+                <div class="col-md-6 col-lg-6 col-xl-6">
+                  <label class="label">Custom product type</label>
+                  <input class="form-control" placeholder="Product Type"
+                  v-model="needed_product.prod_type"/>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-6">
+                  <label class="label">Custom product sub type</label>
+                  <input class="form-control" placeholder="Product Type"
+                  v-model="needed_product.prod_subtype"/>
+                </div>
+              </div>
+              <div class="row">
+                <label class="label" style="margin-left:15px;">Product description</label>
+                <textarea class="textarea form-control"
+                style="resize: none; border: thin solid gray; width: 100%;
+                margin-left: 15px; margin-right: 15px;"
+                placeholder="Product description"
+                v-model="needed_product.prod_description"></textarea>
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-lg-6 col-xl-6">
+                  <label class="label">Quantity</label>
+                  <input type="number" placeholder="Quantity"
+                  v-model="needed_product.prod_quantity"/>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-6">
+                  <label class="label">Measure unit</label>
+                  <input type="text" placeholder="Unit"
+                  v-model="needed_product.prod_measure_unit"/>
+                </div>
+              </div>
+              <div class="row">
+                <label class="label" style="margin-left:15px">Valid to date?</label>
+                <input type="date" placeholder="Required Date"
+                v-model="needed_product.prod_valid_until" style="margin-left:15px; margin-right:15px"/>
+              </div>
+              <div class="row mt-4">
+                <button class="btn btn-primary" style="margin-left:15px"
+                @click.prevent="userProductNeed()">
+                  Request Product
+                </button>
+              </div>
             </div>
           </div>
         </div>

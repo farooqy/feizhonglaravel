@@ -156,7 +156,7 @@ var Company = function Company() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/farooqy/Documents/Noor/sites/feizhonglaravel/resources/js/Company.js */"./resources/js/Company.js");
+module.exports = __webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/js/Company.js */"./resources/js/Company.js");
 
 
 /***/ })
