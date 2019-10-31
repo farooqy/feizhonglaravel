@@ -645,18 +645,10 @@ var app = new Vue({
     },
     setCommentPost(data, args)
     {
-        var i;
-        for(i=0; i < this.StatusList.length; i++)
-        {
-            if(data[0].comment_type === "status" ||
-                data[0].comment_type === "product" )
-            {
-                this.StatusList[i].comments.push(data[0]);
-            }
-        }
-        // this.$emit('clear-comment');
+        if(data[0])
+            data = data[0]; 
         var arg1 = args[0];
-        arg1();
+        arg1(data);
     },
     showError(error)
     {

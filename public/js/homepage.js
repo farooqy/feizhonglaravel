@@ -2206,7 +2206,8 @@ module.exports = {
       post_id: this.product_id === undefined ? this.status_id : this.product_id,
       post_token: this.product_token === undefined ? this.status_generated_token : this.product_token,
       comment_reply: null,
-      show_reply_box: -1
+      show_reply_box: -1,
+      in_comments: this.comments
     };
   },
   props: ["post_type", "host_profile", "comment_text", "comments", "likes", "host_id", "host_token", "is_logged_in", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
@@ -2246,7 +2247,7 @@ module.exports = {
     submitComment: function submitComment(type) {
       var comment = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var comment_text;
-      if (comment === null) return;else if (type === "comment") {
+      if (this.in_comment_text === null && this.comment_reply === null) return;else if (type === "comment" && comment === null) return;else if (type === "comment") {
         this.post_id = comment.id;
         this.post_token = comment.comment_token;
         comment_text = this.comment_reply;
@@ -2255,10 +2256,22 @@ module.exports = {
         this.post_token = this.status_generated_token === undefined ? this.generated_token : this.status_generated_token;
         comment_text = this.in_comment_text;
       }
-      this.$emit('submit-comment', type, this.post_id, this.post_token, comment_text, this.clearCommentText);
+      if (type === "comment") this.$emit('submit-comment', type, this.post_id, this.post_token, comment_text, this.clearCommentReplyText);else {
+        this.$emit('submit-comment', type, this.post_id, this.post_token, comment_text, this.clearCommentText);
+      }
     },
-    clearCommentText: function clearCommentText() {
+    clearCommentText: function clearCommentText(data) {
+      this.in_comments.push(data);
       this.in_comment_text = null;
+    },
+    clearCommentReplyText: function clearCommentReplyText(data) {
+      var i = 0;
+
+      for (i = 0; i < this.in_comments.length; i++) {
+        if (this.in_comments[i].comment_token === data.status_token) this.in_comments[i].comment_replies.push(data);
+      }
+
+      this.comment_reply = null;
     },
     getCommentProfile: function getCommentProfile(comment) {
       if (comment.host_type === "comp") return comment.comp_profile.comp_logo;else return comment.person_profile.user_profile;
@@ -113845,7 +113858,7 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._l(_vm.comments, function(comment) {
+          _vm._l(_vm.in_comments, function(comment) {
             return _c("ul", { staticClass: "comments-list" }, [
               _c(
                 "li",
@@ -114076,9 +114089,6 @@ var render = function() {
                               {
                                 staticClass: "btn btn-primary",
                                 on: {
-                                  "clear-comment": function($event) {
-                                    return _vm.clearCommentText()
-                                  },
                                   click: function($event) {
                                     $event.preventDefault()
                                     return _vm.submitComment("comment", comment)
@@ -114319,7 +114329,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._l(_vm.comments, function(comment) {
+          _vm._l(_vm.in_comments, function(comment) {
             return _c("ul", { staticClass: "comments-list" }, [
               _c(
                 "li",
@@ -114550,9 +114560,6 @@ var render = function() {
                               {
                                 staticClass: "btn btn-primary",
                                 on: {
-                                  "clear-comment": function($event) {
-                                    return _vm.clearCommentText()
-                                  },
                                   click: function($event) {
                                     $event.preventDefault()
                                     return _vm.submitComment("comment", comment)
@@ -128604,17 +128611,9 @@ var app = new Vue({
       console.log(' comment is ', req);
     },
     setCommentPost: function setCommentPost(data, args) {
-      var i;
-
-      for (i = 0; i < this.StatusList.length; i++) {
-        if (data[0].comment_type === "status" || data[0].comment_type === "product") {
-          this.StatusList[i].comments.push(data[0]);
-        }
-      } // this.$emit('clear-comment');
-
-
+      if (data[0]) data = data[0];
       var arg1 = args[0];
-      arg1();
+      arg1(data);
     },
     showError: function showError(error) {
       this.errorObject.error_text = error;

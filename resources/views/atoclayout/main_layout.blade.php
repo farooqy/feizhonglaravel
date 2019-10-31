@@ -12,19 +12,13 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 	<!-- Main Font -->
 	<script src="/olympus_assets/js/webfontloader.min.js"></script>
-	<script>
-		WebFont.load({
-			google: {
-				families: ['Roboto:300,400,500,700:latin']
-			}
-		});
-	</script>
+	
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" type="text/css" href="/olympus_assets/Bootstrap/dist/css/bootstrap-reboot.css">
 	<link rel="stylesheet" type="text/css" href="/olympus_assets/Bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="/olympus_assets/Bootstrap/dist/css/bootstrap-grid.css">
-
+	<link rel="stylesheet" type="text/css" href="/olympus_assets/Bootstrap/css/googlefonts.css" />
 	<!-- Main Styles CSS -->
 	<link rel="stylesheet" type="text/css" href="/olympus_assets/css/main.min.css">
   <link rel="stylesheet" type="text/css" href="/olympus_assets/css/fonts.min.css">

@@ -59,7 +59,7 @@
 
 
 
-        <ul class="comments-list" v-for="comment in comments">
+        <ul class="comments-list" v-for="comment in in_comments">
             <li class="comment-item" :class="hasChildren(comment)">
                 <div class="post__author author vcard inline-items">
                     <img :src="getCommentProfile(comment)" alt="author">
@@ -131,7 +131,7 @@
                     <textarea class="form-control" v-model="comment_reply" placeholder="Reply to comment" style="resize: none;
                          width: 100%;"></textarea>
                     <div class="inline-items right">
-                        <button class="btn btn-primary" v-on:clear-comment="clearCommentText()" @click.prevent="submitComment('comment', comment)">Reply </button>
+                        <button class="btn btn-primary"  @click.prevent="submitComment('comment', comment)">Reply </button>
                         <button class="btn btn-danger " @click.prevent="resetReplyBox()">Cancel </button>
                     </div>
                 </div>
@@ -234,7 +234,7 @@
 
 
 
-        <ul class="comments-list" v-for="comment in comments">
+        <ul class="comments-list" v-for="comment in in_comments">
             <li class="comment-item" :class="hasChildren(comment)">
                 <div class="post__author author vcard inline-items">
                     <img :src="getCommentProfile(comment)" alt="author">
@@ -306,7 +306,7 @@
                     <textarea class="form-control" v-model="comment_reply" placeholder="Reply to comment" style="resize: none;
                  width: 100%;"></textarea>
                     <div class="inline-items right">
-                        <button class="btn btn-primary" v-on:clear-comment="clearCommentText()" @click.prevent="submitComment('comment', comment)">Reply </button>
+                        <button class="btn btn-primary"  @click.prevent="submitComment('comment', comment)">Reply </button>
                         <button class="btn btn-danger " @click.prevent="resetReplyBox()">Cancel </button>
                     </div>
                 </div>
@@ -355,6 +355,7 @@
                 post_token: this.product_token === undefined ? this.status_generated_token : this.product_token,
                 comment_reply: null,
                 show_reply_box: -1,
+                in_comments : this.comments
             }
         },
         props: [
@@ -410,9 +411,11 @@
             isStatusProduct() {
                 return this.post_type === "product";
             },
-            submitComment(type, comment = null) {
+            submitComment(type, comment=null) {
                 var comment_text;
-                if (comment === null)
+                if (this.in_comment_text === null && this.comment_reply === null)
+                    return;
+                else if(type === "comment" && comment === null)
                     return;
                 else if (type === "comment") {
                     this.post_id = comment.id;
@@ -425,11 +428,28 @@
                     this.generated_token : this.status_generated_token;
                     comment_text = this.in_comment_text;
                 }
-                this.$emit('submit-comment', type, this.post_id,
-                    this.post_token, comment_text, this.clearCommentText);
+                if(type === "comment")
+                    this.$emit('submit-comment', type, this.post_id,
+                        this.post_token, comment_text, this.clearCommentReplyText);
+                else {
+                    this.$emit('submit-comment', type, this.post_id,
+                        this.post_token, comment_text, this.clearCommentText);
+                }
             },
-            clearCommentText() {
+            clearCommentText(data) {
+                this.in_comments.push(data);
                 this.in_comment_text = null;
+            },
+            clearCommentReplyText(data)
+            {
+                var i=0;
+                for(i=0; i < this.in_comments.length; i++)
+                {
+                    if(this.in_comments[i].comment_token === data.status_token)
+                        this.in_comments[i].comment_replies.push(data);
+                }
+
+                this.comment_reply = null;
             },
             getCommentProfile(comment) {
                 if (comment.host_type === "comp")

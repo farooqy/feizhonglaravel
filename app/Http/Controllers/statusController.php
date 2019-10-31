@@ -158,9 +158,11 @@ class statusController extends Controller
         // return $products;
         $collection = collect();
         foreach ($statusData as $key => $status) {
+            $status->type = "status";
             $collection->push($status);
         }
         foreach ($products as $key => $product) {
+            $product->type = "product";
             $collection->push($product);
         }
         $listProducts = array_reverse(array_sort($collection, function ($value) {
@@ -207,9 +209,8 @@ class statusController extends Controller
                     $listProducts[$key]->hasLiked = false;
 
             }
-            if($eachStatus->product_gen_token)
+            if($eachStatus->type === "product")
             {
-                $listProducts[$key]->type = "product";
                 $listProducts[$key]->product_files = $eachStatus->Product_Files;
                 $listProducts[$key]->companydata = $eachStatus->companydata;
 
@@ -218,7 +219,6 @@ class statusController extends Controller
             }
             else
             {
-                $listProducts[$key]->type = "status";
                 $listProducts[$key]->status__files = $eachStatus->Status_Files;
                 $listProducts[$key]->companydata = $eachStatus->companyData;
 

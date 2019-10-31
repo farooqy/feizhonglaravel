@@ -14,9 +14,12 @@ class commentsModel extends Model
       "comment_token", "comment_type", "is_active"];
     public function status()
     {
-    	return $this->belonsTo('App\models\compStatusModel', 'id');
+    	return $this->belonsTo('App\models\compStatusModel', 'status_generated_token', 'status_token');
     }
-
+    public function products()
+    {
+        return $this->belongsTo('App\models\products\productModel', 'product_gen_token', 'status_token');
+    }
     public function personProfile()
     {
     	return $this->belongsTo('App\models\normalUsersModel', 'host_id', 'user_id');

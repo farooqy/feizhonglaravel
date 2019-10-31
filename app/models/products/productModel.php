@@ -18,15 +18,15 @@ class productModel extends Model
     }
     public function quotations()
     {
-    	return $this->hasMany('App\models\companies\quotationModel', 'product_id', 'status_id');
+    	return $this->hasMany('App\models\companies\quotationModel', 'status_token', 'product_gen_token');
     }
     public function comments()
     {
-        return $this->hasMany('App\models\status\commentsModel', 'product_id', 'status_id');
+        return $this->hasMany('App\models\status\commentsModel', 'status_token', 'product_gen_token');
     }
     public function likes()
     {
-        return $this->hasMany('App\models\status\likesModel', 'product_id', 'status_id');
+        return $this->hasMany('App\models\status\likesModel', 'product_gen_token', 'status_token');
     }
 
 }

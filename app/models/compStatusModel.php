@@ -23,10 +23,10 @@ class compStatusModel extends Model
     }
     public function comments()
     {
-        return $this->hasMany('App\models\status\commentsModel', 'status_id');
+        return $this->hasMany('App\models\status\commentsModel', 'status_token', 'status_generated_token');
     }
     public function likes()
     {
-        return $this->hasMany('App\models\status\likesModel', 'status_id');
+        return $this->hasMany('App\models\status\likesModel', 'status_token', );
     }
 }
