@@ -404,7 +404,7 @@ col-md-6 col-sm-12 col-12">
 
       <div class="date-and-place">
         <h5 class="date" >Saturday, March 26th</h5>
-        <div class="place" >@{{Weather.City}} , @{{Weather.Country_code}}</div>
+        <div class="place" >Nanjing, China</div>
       </div>
 
     </div>
