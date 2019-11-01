@@ -1973,19 +1973,14 @@ module.exports = {
 //
 //
 //
-//
-//
-//
-//
-//
 module.exports = {
   data: function data() {
     return {
       'postlist': 1,
-      'version': 2,
-      in_comment_text: this.comment_text,
-      post_id: this.product_id === undefined ? this.status_id : this.product_id,
-      post_token: this.product_token === undefined ? this.status_generated_token : this.product_token
+      'version': 2 // in_comment_text: this.comment_text,
+      // post_id: this.product_id === undefined ? this.status_id : this.product_id,
+      // post_token: this.product_token === undefined ? this.status_generated_token : this.product_token,
+
     };
   },
   props: ["generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at"],
@@ -38696,7 +38691,7 @@ var render = function() {
                 ])
               ]
             ),
-            _vm._v("\n      Posted  "),
+            _vm._v("\n            Posted "),
             _c("a", { attrs: { href: _vm.getStatusLink() } }, [
               _vm._v("product")
             ]),
@@ -38710,9 +38705,9 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n          " +
+                    "\n                    " +
                       _vm._s(" at " + _vm.created_at) +
-                      "\n        "
+                      "\n                "
                   )
                 ]
               )
@@ -38751,16 +38746,20 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "post-content" }, [
             _c("a", { staticClass: "h3 post-title", attrs: { href: "#" } }, [
-              _vm._v("\n        " + _vm._s(_vm.product_name) + "\n      ")
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.product_name) +
+                  "\n            "
+              )
             ]),
             _vm._v(" "),
             _c("p", [
               _vm._v(
-                "\n        " +
+                "\n                " +
                   _vm._s(
                     _vm._f("truncate")(_vm.product_description, 45, "...")
                   ) +
-                  "\n      "
+                  "\n            "
               )
             ]),
             _vm._v(" "),
@@ -38774,13 +38773,13 @@ var render = function() {
                 _c("b", [
                   _c("u", [
                     _vm._v(
-                      "\n          " +
+                      "\n                            " +
                         _vm._s(_vm.product_currency) +
                         " " +
                         _vm._s(_vm.product_price) +
                         " / " +
                         _vm._s(_vm.product_unit) +
-                        "\n\n          "
+                        "\n\n                        "
                     )
                   ])
                 ])
