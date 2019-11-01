@@ -429,7 +429,7 @@ class accountController extends Controller
     			"comp_phone" => $request->company_phone,
     			"comp_token" => $comp_token,
     			"comp_pass" => Hash::make($request->company_password),
-    			"comp_logo" => $logo_url,
+    			"comp_logo" => env('APP_URL').$logo_url,
     		]);
     		registrationTrackerModel::create(["comp_token"=>$comp_token, "stage" => 'basicinfo']);
     		phoneVerificationModel::where([
@@ -639,7 +639,7 @@ class accountController extends Controller
         }
         else
         {
-            return $file_url;
+            return env('APP_URL').$file_url;
         }
     }
     protected function doCheckAndUpdate($targetField, $request, $model)

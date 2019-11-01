@@ -145,7 +145,7 @@ class productController extends Controller
   		$product_file_id = $productFilesModel::where([
   			['file_uploaded_by_id', $request->host_id],
   			['product_gen_token', $request->product_gen_token],
-  			['file_url', $fileUrl]
+  			['file_url', env('APP_URL').$fileUrl]
   		])->get()[0]->id;
       $this->Error->setSuccess([
         "product_file_id" => $product_file_id,

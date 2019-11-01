@@ -109,7 +109,7 @@ class companyLicenseController extends Controller
 
         $licenseModel->comp_id = $request->comp_id;
         $licenseModel->comp_token = $request->comp_token;
-        $licenseModel->license_url = $license_url;
+        $licenseModel->license_url = evn('APP_URL').$license_url;
 
         if($licenseModel->save())
         {

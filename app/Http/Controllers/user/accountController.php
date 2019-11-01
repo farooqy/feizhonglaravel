@@ -891,9 +891,9 @@ class accountController extends Controller
 					["user_id", $request->user_id],
 					["user_token", $request->user_token]
 				])->update([
-					"user_profile" => $file_url
+					"user_profile" => env('APP_URL').$file_url
 				]);
-				$this->Error->setSuccess(["user_profile" => $file_url]);
+				$this->Error->setSuccess(["user_profile" => env('APP_URL').$file_url]);
 				return $this->Error->getSuccess();
 		}
 

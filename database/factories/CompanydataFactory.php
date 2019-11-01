@@ -19,7 +19,7 @@ $factory->define(App\models\companies\companydataModel::class, function (Faker $
 	if(!is_dir($path))
 		mkdir($path,0765, true);
   $filename = "/profile_me_".rand(0, 99999)."_.png";
-	$urlpath = "/uploads/comp/".$comp_token."/profile/";
+	$urlpath = env('APP_URL')."/uploads/comp/".$comp_token."/profile/";
     return [
       "comp_token" => $comp_token,
       "comp_name" => $faker->company(),

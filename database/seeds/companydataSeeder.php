@@ -22,5 +22,10 @@ class companydataSeeder extends Seeder
         	"comp_token" => $token
         ]);
 
+        $populatedSaver = factory(App\models\companies\populatedCompaniesModel::class)->create([
+            "comp_id" => $ID,
+            "comp_token" => $token
+        ]);
+
     }
 }
