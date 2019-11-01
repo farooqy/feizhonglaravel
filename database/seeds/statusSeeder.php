@@ -14,7 +14,7 @@ class statusSeeder extends Seeder
     {
         echo "[*] Generating status token for random company \n";
 
-        $num_files = rand(1,5);
+        $num_files = rand(2,5);
         echo "[*] Selected $num_files files to generate for the status /product \n";
         $tokenGenerator = factory(App\models\tokenStatusGeneratorModel::class)->create();
         $generated_token = $tokenGenerator->generated_token;
