@@ -30,7 +30,7 @@
                     {{product_name}}
                 </a>
                 <p>
-                    {{product_description | truncate(45, "...")}}
+                    {{truncate(product_description) }}
                 </p>
 
                 <div class="post-additional-info inline-items">
@@ -200,7 +200,7 @@
         </div>
 
         <p>
-            {{status_text | truncate( 150, '...')}}
+            {{truncate(status_text) }}
         </p>
 
         <div class="post-block-photo js-zoom-gallery">
@@ -371,9 +371,9 @@
             "uploaded_by_picture",
         ],
         filters: {
-            truncate: function(text, length, suffix) {
-                return text.substring(0, length) + suffix;
-            },
+            // truncate: function(text, length, suffix) {
+            //     return text.substring(0, length) + suffix;
+            // },
             addClassMorePhotos: function(url) {
                 if (isLastPhoto(url))
                     return "more-photos";
@@ -381,7 +381,12 @@
             },
         },
         methods: {
-
+            truncate(status)
+            {
+                if(status.length > 150)
+                    return status.substring(0, 150) + '...';
+                return status;
+            },
             getStatusFiles() {
                 if (this.status_files.length > 2)
                     return this.status_files.slice(0, 2);

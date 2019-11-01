@@ -51,14 +51,14 @@ class statusSeeder extends Seeder
 
         $num_files = rand(2,5);
         $product_files = $this->generate_files($num_files, $comp_id, $comp_token, "technics");
-        for($i=0; $i < count($product_files); $i++)
+        for($j=0; $j < count($product_files); $j++)
         {
             $uploaded_files = factory(App\models\products\productFilesModel::class)->create([
-              'file_url' => $product_files[$i],
+              'file_url' => $product_files[$j],
               'file_uploaded_by_id' => $comp_id,
               'product_gen_token' => $generated_token
             ]);
-            echo "[*] Saved product file with url: ".$files[$i]."\n";
+            echo "[*] Saved product file with url: ".$files[$j]."\n";
         }
         echo "[*] Adding product for the same company \n";
 

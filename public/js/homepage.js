@@ -2206,15 +2206,19 @@ module.exports = {
   },
   props: ["post_type", "host_profile", "comment_text", "comments", "likes", "host_id", "host_token", "is_logged_in", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
   filters: {
-    truncate: function truncate(text, length, suffix) {
-      return text.substring(0, length) + suffix;
-    },
+    // truncate: function(text, length, suffix) {
+    //     return text.substring(0, length) + suffix;
+    // },
     addClassMorePhotos: function addClassMorePhotos(url) {
       if (isLastPhoto(url)) return "more-photos";
       return "invalidclass";
     }
   },
   methods: {
+    truncate: function truncate(status) {
+      if (status.length > 150) return status.substring(0, 150) + '...';
+      return status;
+    },
     getStatusFiles: function getStatusFiles() {
       if (this.status_files.length > 2) return this.status_files.slice(0, 2);
       return this.status_files;
@@ -113794,9 +113798,7 @@ var render = function() {
                 _c("p", [
                   _vm._v(
                     "\n                " +
-                      _vm._s(
-                        _vm._f("truncate")(_vm.product_description, 45, "...")
-                      ) +
+                      _vm._s(_vm.truncate(_vm.product_description)) +
                       "\n            "
                   )
                 ]),
@@ -114227,9 +114229,7 @@ var render = function() {
           _vm._v(" "),
           _c("p", [
             _vm._v(
-              "\n        " +
-                _vm._s(_vm._f("truncate")(_vm.status_text, 150, "...")) +
-                "\n    "
+              "\n        " + _vm._s(_vm.truncate(_vm.status_text)) + "\n    "
             )
           ]),
           _vm._v(" "),
