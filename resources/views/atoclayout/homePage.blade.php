@@ -403,7 +403,7 @@ col-md-6 col-sm-12 col-12">
       </ul>
 
       <div class="date-and-place">
-        <h5 class="date" v-text="Weather.Date">Saturday, March 26th</h5>
+        <h5 class="date" >Saturday, March 26th</h5>
         <div class="place" >@{{Weather.City}} , @{{Weather.Country_code}}</div>
       </div>
 
