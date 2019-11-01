@@ -17,7 +17,7 @@
       </div>
 
       <div class="content">
-        <a href="#" class="title h5" > {{status_text | truncate(15, '...')}} </a>
+        <a href="#" class="title h5" > {{(status_text)}} </a>
         <span class="sub-title" v-text="status_time"></span>
       </div>
 
@@ -34,9 +34,17 @@ module.exports = {
   props:["status_image","status_text", "status_time",
   "status_id", "status_token"],
   filters: {
-    truncate: function (text, length, suffix) {
-            return text.substring(0, length) + suffix;
+    // truncate: function (text, length, suffix) {
+    //         return text.substring(0, length) + suffix;
+    // },
     },
-  }
+    methods: {
+        truncate(text)
+        {
+            if(text.length > 150)
+                    return text.substring(0,150) + '...';
+            return text;
+        },
+    }
 }
 </script>

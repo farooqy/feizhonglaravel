@@ -30,7 +30,7 @@
                 {{product_name}}
             </a>
             <p>
-                {{product_description | truncate(45, "...")}}
+                {{truncate(product_description) }}
             </p>
 
             <div class="post-additional-info inline-items">
@@ -78,9 +78,9 @@ module.exports = {
         "product_price", "product_unit", "product_company", "created_at",
     ],
     filters: {
-        truncate: function(text, length, suffix) {
-            return text.substring(0, length) + suffix;
-        },
+        // truncate: function(text, length, suffix) {
+        //     return text.substring(0, length) + suffix;
+        // },
         addClassMorePhotos: function(url) {
             if (isLastPhoto(url))
                 return "more-photos";
@@ -88,7 +88,12 @@ module.exports = {
         },
     },
     methods: {
-
+        truncate(text)
+        {
+            if(text.length > 150)
+                    return text.substring(0,150) + '...';
+            return text;
+        },
         isLastPhoto: function(url) {
             var l = this.status_files.length;
             if (l <= 1)

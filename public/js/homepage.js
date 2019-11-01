@@ -2348,9 +2348,14 @@ module.exports = {
     };
   },
   props: ["status_image", "status_text", "status_time", "status_id", "status_token"],
-  filters: {
-    truncate: function truncate(text, length, suffix) {
-      return text.substring(0, length) + suffix;
+  filters: {// truncate: function (text, length, suffix) {
+    //         return text.substring(0, length) + suffix;
+    // },
+  },
+  methods: {
+    truncate: function truncate(text) {
+      if (text.length > 150) return text.substring(0, 150) + '...';
+      return text;
     }
   }
 };
@@ -2447,15 +2452,6 @@ module.exports = {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -2466,15 +2462,19 @@ module.exports = {
   },
   props: ["status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
   filters: {
-    truncate: function truncate(text, length, suffix) {
-      return text.substring(0, length) + suffix;
-    },
+    // truncate: function(text, length, suffix) {
+    // 	return text.substring(0, length) + suffix;
+    // },
     addClassMorePhotos: function addClassMorePhotos(url) {
       if (isLastPhoto(url)) return "more-photos";
       return "invalidclass";
     }
   },
   methods: {
+    truncate: function truncate(text) {
+      if (text.length > 150) return text.substring(0, 150) + '...';
+      return text;
+    },
     isLastPhoto: function isLastPhoto(url) {
       var l = this.status_files.length;
       if (l <= 1) return false;
@@ -114774,11 +114774,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "content" }, [
             _c("a", { staticClass: "title h5", attrs: { href: "#" } }, [
-              _vm._v(
-                " " +
-                  _vm._s(_vm._f("truncate")(_vm.status_text, 15, "...")) +
-                  " "
-              )
+              _vm._v(" " + _vm._s(_vm.status_text) + " ")
             ]),
             _vm._v(" "),
             _c("span", {
@@ -114823,7 +114819,7 @@ var render = function() {
           { staticClass: "h6 post__author-name fn", attrs: { href: "" } },
           [_vm._v(_vm._s(_vm.uploaded_by_name))]
         ),
-        _vm._v("\n      Posted  "),
+        _vm._v("\n\t\t\tPosted "),
         _c("a", { attrs: { href: _vm.getStatusLink() } }, [_vm._v("Status")]),
         _vm._v(" "),
         _c("div", { staticClass: "post__date" }, [
@@ -114844,7 +114840,9 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("p", [_vm._v("\n  " + _vm._s(_vm.status_text) + "\n\t")]),
+    _c("p", [
+      _vm._v("\n\t\t" + _vm._s(_vm.truncate(_vm.status_text)) + "\n\t")
+    ]),
     _vm._v(" "),
     _c(
       "div",
@@ -114875,9 +114873,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  " +\n      " +
+                  " +\n\t\t\t\t" +
                     _vm._s(_vm.status_files.length - 2) +
-                    "\n      "
+                    "\n\t\t\t"
                 )
               ]
             )

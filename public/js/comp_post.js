@@ -1788,9 +1788,14 @@ module.exports = {
     };
   },
   props: ["post_title", "post_text", "post_image", "post_time"],
-  filters: {
-    truncate: function truncate(text, length, suffix) {
-      return text.substring(0, length) + suffix;
+  filters: {// truncate: function (text, length, suffix) {
+    //         return text.substring(0, length) + suffix;
+    // },
+  },
+  methods: {
+    truncate: function truncate(text) {
+      if (text.length > 150) return text.substring(0, 150) + '...';
+      return text;
     }
   }
 };
@@ -37322,7 +37327,7 @@ var render = function() {
       _c("div", { staticClass: "card-body" }, [
         _c("div", {}, [
           _c("p", { staticClass: "card-text" }, [
-            _vm._v(_vm._s(_vm._f("truncate")(_vm.post_text, 30, "...")))
+            _vm._v(_vm._s(_vm.truncate(_vm.post_text)))
           ])
         ])
       ]),
