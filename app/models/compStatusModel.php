@@ -27,6 +27,6 @@ class compStatusModel extends Model
     }
     public function likes()
     {
-        return $this->hasMany('App\models\status\likesModel', 'status_token', );
+        return $this->hasMany('App\models\status\likesModel', 'status_token' );
     }
 }
