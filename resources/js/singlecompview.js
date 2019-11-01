@@ -350,7 +350,7 @@ var app = new Vue({
   },
   components: {
     error,loader,statuslist,trendingcompanylist,statuslistv2,
-    companylist, baidumap, compaddress, productviewgrid
+    companylist, baidumap, compaddress, productviewgrid,
   },
   data: {
     ServerRequest: new ServerRequest(),
