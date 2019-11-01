@@ -19,13 +19,14 @@
             </div>
 
         </div>
-        <div style="display: flex;margin-bottom: 15px;padding-left: 25px;">
-            <div class="post-thumb">
+        <div style="display: flex;margin-bottom: 15px;padding-left: 25px;"
+            class="row">
+            <div class="post-thumb xs-12">
                 <img :src="product_files[0].file_url" alt="Product photo">
                 <a href="#" class="post-category bg-blue-light">Product</a>
             </div>
 
-            <div class="post-content">
+            <div class="post-content xs-12">
                 <a href="#" class="h3 post-title">
                     {{product_name}}
                 </a>

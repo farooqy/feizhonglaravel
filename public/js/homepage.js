@@ -2191,6 +2191,7 @@ module.exports = {
 //
 //
 //
+//
 module.exports = {
   data: function data() {
     return {
@@ -113757,6 +113758,7 @@ var render = function() {
           _c(
             "div",
             {
+              staticClass: "row",
               staticStyle: {
                 display: "flex",
                 "margin-bottom": "15px",
@@ -113764,7 +113766,7 @@ var render = function() {
               }
             },
             [
-              _c("div", { staticClass: "post-thumb" }, [
+              _c("div", { staticClass: "post-thumb xs-12" }, [
                 _c("img", {
                   attrs: {
                     src: _vm.product_files[0].file_url,
@@ -113782,7 +113784,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "post-content" }, [
+              _c("div", { staticClass: "post-content xs-12" }, [
                 _c(
                   "a",
                   { staticClass: "h3 post-title", attrs: { href: "#" } },
