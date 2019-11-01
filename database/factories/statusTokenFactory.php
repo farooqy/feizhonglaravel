@@ -5,7 +5,7 @@ use App\models\companies\companydataModel;
 $factory->define(App\models\tokenStatusGeneratorModel::class, function (Faker $faker) {
   $token = hash('md5', time().rand(0,9999));
   $companies = companydataModel::get();
-  $random_comp = rand(0, $companies->count());
+  $random_comp = rand(0, ($companies->count()-1));
   $comp_id = $companies[$random_comp]->comp_id;
   $comp_token = $companies[$random_comp]->comp_token;
 
