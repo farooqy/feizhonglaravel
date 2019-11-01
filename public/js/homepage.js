@@ -128726,7 +128726,8 @@ var app = new Vue({
       Latitude: '34.04302978515625',
       Longtitude: '-118.25227355957031',
       Description: 'Clear Sky D',
-      Ip: null
+      Ip: null,
+      Date: null
     }
   },
   mounted: function mounted() {

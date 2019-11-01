@@ -744,6 +744,7 @@ var app = new Vue({
             Longtitude: '-118.25227355957031',
             Description: 'Clear Sky D',
             Ip:null,
+            Date: null,
 
 
         }
