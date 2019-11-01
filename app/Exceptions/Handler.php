@@ -46,8 +46,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        
-        if ($exception instanceof \Illuminate\Database\Eloquent\RelationNotFoundException) 
+
+        if ($exception instanceof \Illuminate\Database\Eloquent\RelationNotFoundException)
         {
             return response(json_encode(array(
                 "error_message" => "RelationNotFoundException ",
@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
                 "error_line" => $exception->getLine(),
             )), 500);
         }
-        if ($exception instanceof \BadMethodCallException) 
+        if ($exception instanceof \BadMethodCallException)
         {
             return response(json_encode(array(
                 "error_message" => "Bad method call exception",
@@ -67,7 +67,7 @@ class Handler extends ExceptionHandler
                 "error_line" => $exception->getLine(),
             )), 500);
         }
-        if ($exception instanceof \Illuminate\Http\Exceptions\PostTooLargeException) 
+        if ($exception instanceof \Illuminate\Http\Exceptions\PostTooLargeException)
         {
             return response(json_encode(array(
                 "error_message" => "The post contains content larger than allowed",
@@ -76,7 +76,7 @@ class Handler extends ExceptionHandler
                 "error_code" => 422
             )), 422);
         }
-        if ($exception instanceof \ErrorException) 
+        if ($exception instanceof \ErrorException)
         {
             return response(json_encode(array(
                 "error_message" => "Error Exception",
@@ -107,7 +107,7 @@ class Handler extends ExceptionHandler
                 "error_file" => $exception->getFile(),
                 "error_status" => true,
                 "error_code" => 500
-            )), 500);        
+            )), 500);
         }
         if($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException)
         {
@@ -117,7 +117,7 @@ class Handler extends ExceptionHandler
                 "error_status" => true,
                 "error_file" => $exception->getFile(),
                 "error_code" => 500
-            )), 500);        
+            )), 500);
         }
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
         {
@@ -126,7 +126,7 @@ class Handler extends ExceptionHandler
                 "error_description" => $exception->getMessage(),
                 "error_status" => true,
                 "error_code" => 404
-            )), 404);        
+            )), 404);
         }
         if ($exception instanceof \UnexpectedValueException)
         {
@@ -137,7 +137,7 @@ class Handler extends ExceptionHandler
                 "error_file" => $exception->getFile(),
                 "error_status" => true,
                 "error_code" => 422
-            )), 422);        
+            )), 422);
         }
         if ($exception instanceof \Illuminate\Database\QueryException)
         {
@@ -147,7 +147,7 @@ class Handler extends ExceptionHandler
                 "error_file" => $exception->getFile(),
                 "error_status" => true,
                 "error_code" => 500
-            )), 500);        
+            )), 500);
         }
         if ($exception instanceof \Exception)
         {
@@ -157,7 +157,7 @@ class Handler extends ExceptionHandler
                 "error_file" => $exception->getFile(),
                 "error_status" => true,
                 "error_code" => 500
-            )), 500);        
+            )), 500);
         }
         return parent::render($request, $exception);
     }
