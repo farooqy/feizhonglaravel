@@ -1,34 +1,40 @@
 <template>
-<div class="modal" tabindex="-1" role="dialog" style="display:block;" >
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title"> Error </h5>
-      <button type="button" class="close" data-dismiss="modal"
-      aria-label="Close" @click="disMissErrorModel">
-        <span aria-hidden="true">&times;</span>
-      </button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style="display:block;">
+
+        <!-- Modal content -->
+
+        <div class="modal-content">
+            <div class="error-header">
+                <h4 style="color:red">Error! <span class="close-modal" @click.prevent="disMissErrorModel">&times;</span></h4>
+            </div>
+            <div class="">
+                <p v-text="error_text"></p>
+            </div>
+
+        </div>
+
     </div>
-    <div class="modal-body" >
-      <p v-text="error_text"></p>
-    </div>
-  </div>
-</div>
-</div>
 </template>
 
 <script>
-module.exports = {
-  data: function(){
-  console.log('child ready');
-  return {'child':1,'version':1}
-  },
-  methods: {
-    disMissErrorModel()
-    {
-      this.$emit('close-error-modal');
+    module.exports = {
+        data: function() {
+            console.log('child ready');
+            return {
+                'child': 1,
+                'version': 1,
+
+            }
+        },
+        methods: {
+            disMissErrorModel() {
+                this.showModel = false;
+                this.$emit('close-error-modal');
+            }
+
+        },
+        props: ["error_text"]
     }
-  },
-  props: ["error_text"]
-}
 </script>

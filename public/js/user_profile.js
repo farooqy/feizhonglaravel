@@ -1714,6 +1714,7 @@ module.exports = {
 //
 //
 //
+//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -1724,6 +1725,7 @@ module.exports = {
   },
   methods: {
     disMissErrorModel: function disMissErrorModel() {
+      this.showModel = false;
       this.$emit('close-error-modal');
     }
   },
@@ -37233,32 +37235,31 @@ var render = function() {
     {
       staticClass: "modal",
       staticStyle: { display: "block" },
-      attrs: { tabindex: "-1", role: "dialog" }
+      attrs: { id: "myModal" }
     },
     [
-      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "modal-header" }, [
-            _c("h5", { staticClass: "modal-title" }, [_vm._v(" Error ")]),
-            _vm._v(" "),
+      _c("div", { staticClass: "modal-content" }, [
+        _c("div", { staticClass: "error-header" }, [
+          _c("h4", { staticStyle: { color: "red" } }, [
+            _vm._v("Error! "),
             _c(
-              "button",
+              "span",
               {
-                staticClass: "close",
-                attrs: {
-                  type: "button",
-                  "data-dismiss": "modal",
-                  "aria-label": "Close"
-                },
-                on: { click: _vm.disMissErrorModel }
+                staticClass: "close-modal",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.disMissErrorModel($event)
+                  }
+                }
               },
-              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+              [_vm._v("×")]
             )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _c("p", { domProps: { textContent: _vm._s(_vm.error_text) } })
           ])
+        ]),
+        _vm._v(" "),
+        _c("div", {}, [
+          _c("p", { domProps: { textContent: _vm._s(_vm.error_text) } })
         ])
       ])
     ]
