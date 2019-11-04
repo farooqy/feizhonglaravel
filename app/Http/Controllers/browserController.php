@@ -56,7 +56,7 @@ class browserController extends Controller
       \Cookie::queue(\Cookie::forget("host_id"));
       \Cookie::queue(\Cookie::forget("host_token"));
       \Cookie::queue(\Cookie::forget("host_type"));
-      $this->Error->setSuccess([]);
+      $this->Error->setSuccess(['request' =>"logout"]);
       return $this->Error->getSuccess();
     }
     public function profilePage()
@@ -191,6 +191,12 @@ class browserController extends Controller
     {
         if($this->isLoggedIn($_COOKIE["host_type"]))
             return view('atoclayout.chats.main');
+        return redirect()->route('loginPage');
+    }
+    public function compMatchedNeedsPage()
+    {
+        if($this->isLoggedIn($_COOKIE["host_type"]))
+            return view('atoclayout.comp.needsPage');
         return redirect()->route('loginPage');
     }
 }

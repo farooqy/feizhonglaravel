@@ -112,6 +112,7 @@ var Company = function Company() {
   this.guest_id = null;
   this.guest_token = null;
   this.api_key = null;
+  this.company_needs = [];
   this.company_address_one = null;
   this.company_address_two = null;
   this.company_province = null;

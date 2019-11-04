@@ -37,6 +37,7 @@ Route::group(['middleware' => ['web']], function(){
   Route::get('/comp/subscription', 'browserController@compSubscription');
   Route::get('/comp/posts', 'browserController@showPostPage')->name("showPostPage");
   Route::get('/comp/products', 'browserController@productPage')->name("productPage");
+  Route::get('/comp/needs', 'browserController@compMatchedNeedsPage')->name("compMatchedNeedsPage");
 
   Route::get('/exhibition', 'generalController@getExhbitionPdf');
   Route::get('/whatsapp', 'generalController@whatsAppLink');

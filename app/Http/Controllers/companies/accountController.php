@@ -108,15 +108,15 @@ class accountController extends Controller
 		else
 			$data[0]->hasLicense = true;
 
-		$domain = substr($data[0]->comp_email,
-			strpos($data[0]->comp_email, "@"),  -1);
-		$numrepeat = str_repeat("*", (strlen($data[0]->comp_email)-
-			strlen($domain)));
-		$hidden_email = $numrepeat.$domain;
-		$data[0]->comp_email = $hidden_email;
-		$numrepeat = str_repeat("*",strlen($data[0]->comp_phone) - 4);
-		$hidden_phone = $numrepeat.substr($data[0]->comp_phone, -5, -1);
-		$data[0]->comp_phone = $hidden_phone;
+		// $domain = substr($data[0]->comp_email,
+		// 	strpos($data[0]->comp_email, "@"),  -1);
+		// $numrepeat = str_repeat("*", (strlen($data[0]->comp_email)-
+		// 	strlen($domain)));
+		// $hidden_email = $numrepeat.$domain;
+		// $data[0]->comp_email = $hidden_email;
+		// $numrepeat = str_repeat("*",strlen($data[0]->comp_phone) - 4);
+		// $hidden_phone = $numrepeat.substr($data[0]->comp_phone, -5, -1);
+		// $data[0]->comp_phone = $hidden_phone;
 		$this->Error->setSuccess($data);
 		return $this->Error->getSuccess();
 

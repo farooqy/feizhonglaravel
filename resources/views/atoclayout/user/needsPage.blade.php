@@ -7,29 +7,11 @@
 
 @section("body")
 
-<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-style="min-height: 600px; background-image: url('/atoc_assets/images/black-handshake.jpg');
- background-size: cover; background-position: center top;">
-  <!-- Mask -->
-  <span class="mask bg-gradient-default opacity-8"></span>
-  <!-- Header container -->
-  <div class="container-fluid d-flex align-items-center">
-    <div class="row">
-      <div class="col-lg-7 col-md-10">
-        <h4 class="display-2 text-white" style="font-size:30px">
-          Welcome  <span v-text="User.user_firstName+User.user_lastName">John</span>
-        </h4>
-        <p class="text-white mt-0 mb-5">
-          This is your profile page.
-          You can see the progress you've made with your work and
-          manage your interactions with companies</p>
-      </div>
-    </div>
-  </div>
+
+<div class="container-fluid">
+<div class="row" style="background-color: #3f4257;height: 70px;">
+
 </div>
-
-
-<div class="container-fluid mt--9">
   <div class="row">
       <div class="card"style="width: -webkit-fill-available;">
           <div class="card-header">
@@ -56,6 +38,9 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
                       <th>
                           Valid until
                       </th>
+                      <th>
+                          Action
+                      </th>
                   </thead>
                   <tbody v-for="(need, key ) in user_needs">
                      <tr>
@@ -73,10 +58,15 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
                              <span v-text="need.product_measure_unit" ></span>
                          </td>
                          <td>
-                             <span v-text="need.product_type" ></span> - 
+                             <span v-text="need.product_type" ></span> -
                              <span v-text="need.product_sub_types" ></span>
                          </td>
                          <td v-text="need.product_valid_until">
+                         </td>
+                         <td>
+                             <a class="btn btn-primary" @click.prevent="">
+                                 Get Companies
+                             </a>
                          </td>
                      </tr>
                   </tbody>

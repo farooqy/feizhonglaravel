@@ -38,9 +38,17 @@
                         <select name="country_code" class="select_custom"
                         v-model="Company.country_code">
                           <option value="+86" selected>China + 86</option>
+                          <option value="+252">Djibouti +253</option>
                           <option value="+251">Ethiopia +251</option>
                           <option value="+254">Kenya +254</option>
+                          <option value="+263">Mozambique +263</option>
+                          <option value="+264">Namibia +254</option>
+                          <option value="+234">Nigeria +234</option>
                           <option value="+252">Somalia +252</option>
+                          <option value="+27">South Africa +27</option>
+                          <option value="+255">Tanzania +255</option>
+                          <option value="+260">Zambia +260</option>
+                          <option value="+263">Zimbabwe +263</option>
                         </select>
                       </div>
                         <div class="col-sm-9 col-md-5 col-lg-5">
@@ -198,7 +206,18 @@
 
               <div class="row">
                 <select class="select_custom col-md-4 col-lg-4">
-                  <option value="+86">China +86</option>
+                  <option value="+86" selected>China + 86</option>
+                  <option value="+252">Djibouti +253</option>
+                  <option value="+251">Ethiopia +251</option>
+                  <option value="+254">Kenya +254</option>
+                  <option value="+263">Mozambique +263</option>
+                  <option value="+264">Namibia +254</option>
+                  <option value="+234">Nigeria +234</option>
+                  <option value="+252">Somalia +252</option>
+                  <option value="+27">South Africa +27</option>
+                  <option value="+255">Tanzania +255</option>
+                  <option value="+260">Zambia +260</option>
+                  <option value="+263">Zimbabwe +263</option>
                 </select>
                 <input class="input col-md-6 col-lg-6" placeholder="telephone"
                 v-model="Company.company_phone" />

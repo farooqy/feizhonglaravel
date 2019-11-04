@@ -6,6 +6,11 @@
     </a>
   </li>
   <li class="nav-item">
+    <a class="nav-link " href="/comp/needs">
+      <i class="fas fa-edit text-blue"></i> Matched Needs
+    </a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link " href="/comp/posts">
       <i class="fas fa-edit text-blue"></i> Posts
     </a>
