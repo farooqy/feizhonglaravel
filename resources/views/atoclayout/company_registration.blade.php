@@ -38,8 +38,10 @@
                         <select name="country_code" class="select_custom"
                         v-model="Company.country_code">
                           <option value="+86" selected>China + 86</option>
+                          <option value="+244" >Congo + 244</option>
                           <option value="+252">Djibouti +253</option>
                           <option value="+251">Ethiopia +251</option>
+                          <option value="+233">Ghana +233</option>
                           <option value="+254">Kenya +254</option>
                           <option value="+263">Mozambique +263</option>
                           <option value="+264">Namibia +254</option>
@@ -207,8 +209,10 @@
               <div class="row">
                 <select class="select_custom col-md-4 col-lg-4">
                   <option value="+86" selected>China + 86</option>
+                  <option value="+244" >Congo + 244</option>
                   <option value="+252">Djibouti +253</option>
                   <option value="+251">Ethiopia +251</option>
+                  <option value="+233">Ghana +233</option>
                   <option value="+254">Kenya +254</option>
                   <option value="+263">Mozambique +263</option>
                   <option value="+264">Namibia +254</option>
