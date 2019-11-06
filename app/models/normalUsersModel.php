@@ -60,6 +60,16 @@ class normalUsersModel extends Model
 			return false;
 
 	}
+	public function userNeeds()
+	{
+		return $this->hasMany('App\models\users\userNeedsModel',
+				'host_id', 'user_id', 'host_token',  'user_token');
+	}
+	public function userLocation()
+	{
+		return $this->hasOne('App\models\userAddressModel',
+			'user_id', 'user_id', 'user_token', 'user_token');
+	}
 
 	public function searchUsers($keywords)
 	{
@@ -68,7 +78,7 @@ class normalUsersModel extends Model
 			["user_phone", "LIKE", "%keywords%"],
 			["user_email", "LIKE", "%keywords%"],
 		])->get();
-		
-		return $items;	
+
+		return $items;
 	}
 }

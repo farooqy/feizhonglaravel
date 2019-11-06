@@ -13,6 +13,16 @@ class companydataModel extends Model
      "comp_email", "comp_phone", "comp_pass", "comp_token"];
     public $hidden = ["comp_pass"];
 
+    public function verificationData()
+    {
+        return $this->hasOne('App\models\companies\verifiedCompaniesModel',
+                'comp_id', 'comp_id', 'comp_token', 'comp_token');
+    }
+    public function matchedNeeds()
+    {
+        return $this->hasMany('App\models\companies\matchedNeedsModel',
+            'matched_comp_id', 'comp_id', 'matched_comp_token', 'comp_token');
+    }
     public function address()
     {
     	return $this->hasOne('App\models\companies\companyAddressModel', 'comp_id', 'comp_id');
@@ -37,7 +47,7 @@ class companydataModel extends Model
     {
     	return $this->hasMany('App\models\registrationTrackerModel', 'comp_token', 'comp_token');
     }
-    
+
 
     public function favoritedby()
     {
@@ -77,7 +87,7 @@ class companydataModel extends Model
         // ->orWhere("type", function($q) use($keywords){
         //     $q->where("comp_description" , "LIKE" , "%".$keywords."%");
         // })
-        
+
         // ->orWhere("address", function($q) use($keywords){
         //     $q->where("comp_addr_one", "LIKE" , "%".$keywords."%")->orWhere([
         //         ["comp_addr_two", "LIKE" , "%".$keywords."%"],

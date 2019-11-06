@@ -101,12 +101,19 @@ class accountController extends Controller
 			$this->forgetAuthenticationCookies();
 			return $this->Error->getError();
 		}
-		$data[0]->type;
-		$data[0]->address;
+		$type = $data[0]->type;
+		$address = $data[0]->address;
 		if($data[0]->license === null)
-			$data[0]->hasLicense = false;
+			$hasLicense = $data[0]->hasLicense = false;
 		else
-			$data[0]->hasLicense = true;
+			$hasLicense =$data[0]->hasLicense = true;
+		$verification_data = $data[0]->verificationData;
+		if($verification_data === null || $verification_data->count() <= 0)
+			$is_verified = $data[0]->is_verified = false;
+		else if($verification_data->is_revoked)
+			$is_verified = $data[0]->is_verified = false;
+		else
+			$is_verified = $data[0]->is_verified = true;
 
 		// $domain = substr($data[0]->comp_email,
 		// 	strpos($data[0]->comp_email, "@"),  -1);
@@ -117,7 +124,31 @@ class accountController extends Controller
 		// $numrepeat = str_repeat("*",strlen($data[0]->comp_phone) - 4);
 		// $hidden_phone = $numrepeat.substr($data[0]->comp_phone, -5, -1);
 		// $data[0]->comp_phone = $hidden_phone;
-		$this->Error->setSuccess($data);
+		$comp_matched_needs = $data[0]->matchedNeeds;
+		$Company = [
+			"comp_id" => $data[0]->comp_id,
+			"comp_token" => $data[0]->comp_token,
+			"comp_email" => $data[0]->comp_email,
+			"comp_phone" => $data[0]->comp_phone,
+			"comp_logo" => $data[0]->comp_logo,
+			"comp_name" => $data[0]->comp_name,
+			"hasLicense" => $hasLicense,
+			"is_verified" => $is_verified,
+			"matched_needs" => [],
+			"updated_at" => $data[0]->updated_at,
+			"address" => $address,
+			"type" => $type,
+		];
+		// $data[0]->needs= [];
+		foreach ($comp_matched_needs as $key => $match) {
+			// code...
+			$need = $match->needsData;
+			$user_data = $need->needUserData;
+			$user_address = $user_data->userLocation;
+			// array_push($data[0]->needs, $need);
+			$Company["matched_needs"][$key] = $need;
+		}
+		$this->Error->setSuccess($Company);
 		return $this->Error->getSuccess();
 
 	}

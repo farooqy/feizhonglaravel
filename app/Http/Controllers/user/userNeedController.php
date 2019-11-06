@@ -115,8 +115,35 @@ class userNeedController extends Controller
             ['host_id', $request->host_id],
             ['host_token', $request->host_token],
         ])->get();
+        $NeedData = [
+        ];
+        foreach ($needs as $key => $need) {
+            // code...
+            $matched_needs = $need->needMatches;
+            $NeedData[$key]["matched_companies"] = [];
+            foreach ($matched_needs as $matchkey => $match) {
+                // code...
+                $need_comp_data = $match->needCompData;
+                $NeedData[$key]["matched_companies"][$matchkey]["company_data"] = $need_comp_data;
+            }
+            $NeedData[$key]["created_at"] = $need->created_at;
+            $NeedData[$key]["host_id"] = $need->host_id;
+            $NeedData[$key]["host_token"] = $need->host_token;
+            $NeedData[$key]["host_type"] = $need->host_type;
+            $NeedData[$key]["id"] = $need->id;
+            $NeedData[$key]["need_token"] = $need->need_token;
+            $NeedData[$key]["is_active_need"] = $need->is_active_need;
+            $NeedData[$key]["product_description"] = $need->product_description;
+            $NeedData[$key]["product_name"] = $need->product_name;
+            $NeedData[$key]["product_measure_unit"] = $need->product_measure_unit;
+            $NeedData[$key]["product_quantity"] = $need->product_quantity;
+            $NeedData[$key]["product_type"] = $need->product_type;
+            $NeedData[$key]["product_sub_types"] = $need->product_sub_types;
+            $NeedData[$key]["product_valid_until"]= $need->product_valid_until;
 
-        $this->Error->setSuccess($needs);
+        }
+
+        $this->Error->setSuccess($NeedData);
         return $this->Error->getSuccess();
     }
 }

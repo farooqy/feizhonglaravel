@@ -12,10 +12,10 @@
 <div class="row mt-3" >
     <div class="card ml-5" style="width: 70vw;">
         <div class="card-header">
-            Your post needs
+            Matched Demands
         </div>
         <div class="card-content pl-3">
-            <div class="" v-if="!Company.is_verified">
+            <div class="" v-if="!companyIsVerified()">
                 <h4><u>Your company is not verified</u></h4>
                  We are sorry, your company can not be matched with any customer need
                  at the moment.<br/>
@@ -50,30 +50,33 @@
                             Action
                         </th>
                     </thead>
-                    <tbody v-for="(need , key) in Company.company_needs">
-                        <tr>
-                            @{{(key+1)}}
-                        </tr>
-                        <tr >
-                            need.product_name
-                        </tr>
-                        <tr>
-                            need.product_description
-                        </tr>
-                        <tr>
-                            product_quantity
-                        </tr>
-                        <tr>
-                            product_type product_sub_types
-                        </tr>
-                        <tr>
-                            product_valid_until
-                        </tr>
-                        <tr>
-                            <button class="btn btn-primary"
-                            @click.prevent="">
-                            View demand
-                            </button>
+                    <tbody  >
+                        <tr v-for="(need,key) in Company.company_needs">
+                            <td>
+                                @{{(key+1)}}
+                            </td>
+                            <td>
+                                @{{need.product_name}}
+                            </td>
+                            <td>
+                                @{{need.product_description}}
+                            </td>
+                            <td>
+                                @{{need.product_quantity}} @{{need.product_measure_unit}}
+                            </td>
+                            <td>
+                                @{{need.product_type}}
+                            </td>
+                            <td>
+                                @{{need.product_valid_until}}
+                            </td>
+                            <td>
+                                <button class="btn btn-primary"
+                                @click.prevent="NeedsModal(need.id, need.need_token)">
+                                View demand
+                                </button>
+                            </td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -81,7 +84,9 @@
         </div>
     </div>
 </div>
-
+<div class="">
+    <needdetails v-if="needs_modal.visible" v-bind="needs_modal.need"></needdetails>
+</div>
 @endsection
 
 @section('vuescript')

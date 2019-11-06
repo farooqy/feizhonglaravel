@@ -9,9 +9,9 @@
 
 
 <div class="container-fluid">
-<div class="row" style="background-color: #3f4257;height: 70px;">
+    <div class="row" style="background-color: #3f4257;height: 70px;">
 
-</div>
+    </div>
   <div class="row">
       <div class="card"style="width: -webkit-fill-available;">
           <div class="card-header">
@@ -64,7 +64,8 @@
                          <td v-text="need.product_valid_until">
                          </td>
                          <td>
-                             <a class="btn btn-primary" @click.prevent="">
+                             <a class="btn btn-primary"
+                             @click.prevent="getNeedMatches(need.id,need.need_token)">
                                  Get Companies
                              </a>
                          </td>
@@ -76,7 +77,10 @@
       </div>
   </div>
 </div>
+<div class="">
 
+    <userneeds v-bind="needs_modal" v-if="needs_modal.visible"></userneeds>
+</div>
 @endsection
 
 @section("vuescript")

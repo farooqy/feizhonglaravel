@@ -2,6 +2,7 @@
 require(".././bootstrap");
 import error from "../components/error.vue";
 import loader from "../components/loader.vue";
+import needdetails from "../components/needdetails.vue";
 import ServerRequest from ".././ServerRequest.js";
 import Company from ".././Company.js";
 window.Vue = require("vue");
@@ -41,9 +42,31 @@ var app = new Vue({
       this.Company.company_subtype = data.type.comp_subtype;
       this.Company.company_description = data.type.comp_description;
       this.Company.company_hasLicense = data.hasLicense;
+      this.Company.is_verified = data.is_verified;
+      this.Company.company_needs = data.matched_needs;
       console.log(data);
       this.hideLoader();
 
+    },
+    NeedsModal(need_id, need_token)
+    {
+        var all_needs = this.Company.company_needs;
+        var i;
+        for(i=0; i< all_needs.length; i++)
+        {
+            if(all_needs[i].id === need_id && all_needs[i].need_token === need_token)
+            {
+                this.needs_modal.need = all_needs[i];
+                this.needs_modal.visible = true;
+                break;
+            }
+        }
+    },
+
+    // static
+    companyIsVerified()
+    {
+        return this.Company.is_verified === true;
     },
     showError(error) {
         this.errorObject.error_text = error;
@@ -76,7 +99,7 @@ var app = new Vue({
 
   },
   components: {
-    error,loader,
+    error,loader,needdetails,
   },
   data: {
     Company:new Company(),
@@ -89,6 +112,18 @@ var app = new Vue({
     Loader: {
       showLoader:false
     },
-    ServerRequest: new ServerRequest()
+    ServerRequest: new ServerRequest(),
+    needs_modal: {
+        visible:false,
+        need:null,
+        Error: {
+            visible:false,
+            error_text:null,
+        },
+        success:{
+            visible:false,
+            success_text:null,
+        }
+    }
   }
 })

@@ -198,7 +198,20 @@ var app = new Vue({
         this.user_needs = data ;
         console.log('user needs ',data);
     },
-
+    getNeedMatches(need_id, need_token)
+    {
+        var all_needs = this.user_needs;
+        var i;
+        for(i=0; i<all_needs.length; i++)
+        {
+            if(all_needs[i].id === need_id && all_needs[i].need_token === need_token)
+            {
+                this.needs_modal.matched_companies = all_needs[i].matched_companies;
+                this.needs_modal.visible = true;
+                break; 
+            }
+        }
+    },
     serverRequest(url, form, type="default")
     {
       this.Loader.showLoader = this.showLoader = true;
@@ -281,5 +294,9 @@ var app = new Vue({
     update_field:-1,
     req:null,
     user_needs:[],
+    needs_modal: {
+        visible:false,
+        matched_companies:[],
+    }
   }
 });

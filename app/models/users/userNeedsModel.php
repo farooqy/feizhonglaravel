@@ -14,4 +14,15 @@ class userNeedsModel extends Model
         "product_quantity", "product_measure_unit",
         "product_type", "product_sub_types"    , "need_token"
     ];
+
+    public function needUserData()
+    {
+        return $this->belongsTo('App\models\normalUsersModel',
+            'host_id','user_id', 'host_token', 'user_token');
+    }
+    public function needMatches()
+    {
+        return $this->hasMany('App\models\companies\matchedNeedsModel',
+            'matched_need_id', 'id', 'matched_need_token', 'need_token');
+    }
 }

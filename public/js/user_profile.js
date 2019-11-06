@@ -1792,6 +1792,28 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -1800,7 +1822,12 @@ module.exports = {
       'version': 1
     };
   },
-  props: ["product_valid_until", "product_type", "product_sub_types", "product_quantity", "product_measure_unit", "product_name", "product_description"],
+  methods: {
+    getCompLink: function getCompLink(company) {
+      return "/comp/view/" + company.comp_id + "/" + company.comp_token;
+    }
+  },
+  props: ["matched_companies"],
   filters: {
     truncate: function truncate(text, length, suffix) {
       return text.substring(0, length) + suffix;
@@ -37322,43 +37349,118 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("td", [_vm._v("\n        1\n    ")]),
-    _vm._v(" "),
-    _c("td", [_vm._v("\n        " + _vm._s(_vm.product_name) + "\n    ")]),
-    _vm._v(" "),
-    _c("td", [
-      _vm._v(
-        "\n        " +
-          _vm._s(_vm._f("truncate")(_vm.product_description, 30, "...")) +
-          "\n    "
-      )
-    ]),
-    _vm._v(" "),
-    _c("td", [
-      _vm._v(
-        "\n        " +
-          _vm._s(_vm.product_quantity) +
-          " " +
-          _vm._s(_vm.product_measure_unit) +
-          "\n    "
-      )
-    ]),
-    _vm._v(" "),
-    _c("td", [
-      _vm._v(
-        "\n        " +
-          _vm._s(_vm.product_type) +
-          " / " +
-          _vm._s(_vm.product_sub_types) +
-          "\n    "
-      )
-    ]),
-    _vm._v(" "),
-    _c("td", [
-      _vm._v("\n        " + _vm._s(_vm.product_valid_until) + "\n    ")
-    ])
-  ])
+  return _c(
+    "div",
+    {
+      staticClass: "modal",
+      staticStyle: { display: "block" },
+      attrs: { id: "myModal" }
+    },
+    [
+      _c("div", { staticClass: "modal-content" }, [
+        _c("div", { staticClass: "error-header" }, [
+          _c("h4", { staticStyle: { color: "red" } }, [
+            _c(
+              "span",
+              {
+                staticClass: "close-modal",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.disMissErrorModel($event)
+                  }
+                }
+              },
+              [_vm._v("×")]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v(
+              "\n                Your need is matched with these companies\n            "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body" },
+            _vm._l(_vm.matched_companies, function(Company) {
+              return _c(
+                "div",
+                {
+                  staticClass: "card ",
+                  staticStyle: { width: "100%", display: "inline-block" }
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "card-body",
+                      staticStyle: { display: "flex" }
+                    },
+                    [
+                      _c("div", { staticClass: "col-md-4 col-lg-4" }, [
+                        _c("img", {
+                          staticClass: "card-img-top",
+                          attrs: {
+                            src: Company.company_data.comp_logo,
+                            alt: "Card image cap"
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-4 col-lg-4" }, [
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href: _vm.getCompLink(Company.company_data),
+                              target: "_blank"
+                            }
+                          },
+                          [
+                            _c("h5", {
+                              staticClass: "card-title",
+                              domProps: {
+                                textContent: _vm._s(
+                                  Company.company_data.comp_name
+                                )
+                              }
+                            })
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-4 col-lg-4" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: {
+                              href: _vm.getCompLink(Company.company_data),
+                              target: "_blank"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                              Contact info\n                          "
+                            )
+                          ]
+                        )
+                      ])
+                    ]
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -50147,6 +50249,17 @@ var app = new Vue({
   }), _defineProperty(_methods, "showNeeds", function showNeeds(data) {
     this.user_needs = data;
     console.log('user needs ', data);
+  }), _defineProperty(_methods, "getNeedMatches", function getNeedMatches(need_id, need_token) {
+    var all_needs = this.user_needs;
+    var i;
+
+    for (i = 0; i < all_needs.length; i++) {
+      if (all_needs[i].id === need_id && all_needs[i].need_token === need_token) {
+        this.needs_modal.matched_companies = all_needs[i].matched_companies;
+        this.needs_modal.visible = true;
+        break;
+      }
+    }
   }), _defineProperty(_methods, "serverRequest", function serverRequest(url, form) {
     var _this2 = this;
 
@@ -50209,7 +50322,11 @@ var app = new Vue({
     ServerRequest: new _ServerRequest_js__WEBPACK_IMPORTED_MODULE_3__["default"](),
     update_field: -1,
     req: null,
-    user_needs: []
+    user_needs: [],
+    needs_modal: {
+      visible: false,
+      matched_companies: []
+    }
   }
 });
 

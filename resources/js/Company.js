@@ -12,6 +12,7 @@ export default class Company {
     this.guest_token = null;
     this.api_key = null;
     this.company_needs =[];
+    this.is_verified = false;
 
     this.company_address_one = null;
     this.company_address_two = null;
