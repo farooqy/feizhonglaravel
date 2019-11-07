@@ -2281,7 +2281,7 @@ module.exports = {
       if (comment.host_type === "comp") return comment.comp_profile.comp_logo;else return comment.person_profile.user_profile;
     },
     getCommentName: function getCommentName(comment) {
-      if (comment.host_type === "comp") return comment.comp_profile.comp_name;else return comment.person_profile.user_frname;
+      if (comment.host_type === "comp") return comment.comp_profile.comp_name;else return comment.person_profile.user_fname + ' ' + comment.person_profile.user_sname;
     },
     showCommentReplyBox: function showCommentReplyBox(comment) {
       this.show_reply_box = comment.id;

@@ -470,7 +470,8 @@
                 if (comment.host_type === "comp")
                     return comment.comp_profile.comp_name;
                 else
-                    return comment.person_profile.user_frname;
+                    return comment.person_profile.user_fname+' '+
+                            comment.person_profile.user_sname;
             },
             showCommentReplyBox(comment) {
                 this.show_reply_box = comment.id;
