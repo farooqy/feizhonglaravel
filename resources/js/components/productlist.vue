@@ -173,7 +173,10 @@
             <img :src="uploaded_by_picture" alt="author">
 
             <div class="author-date">
-                <a class="h6 post__author-name fn" href="">{{uploaded_by_name}}</a>
+                <a class="h6 post__author-name fn"
+                :href="'/comp/view/'+product_company.comp_id+'/'+product_company.comp_token">
+                    {{uploaded_by_name}}
+                </a>
                 Posted <a :href="getStatusLink()">status</a>
                 <div class="post__date">
                     <time class="published" :datetime="status_time">

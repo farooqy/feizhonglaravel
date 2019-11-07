@@ -2197,6 +2197,9 @@ module.exports = {
 //
 //
 //
+//
+//
+//
 module.exports = {
   data: function data() {
     return {
@@ -114203,8 +114206,23 @@ var render = function() {
             _c("div", { staticClass: "author-date" }, [
               _c(
                 "a",
-                { staticClass: "h6 post__author-name fn", attrs: { href: "" } },
-                [_vm._v(_vm._s(_vm.uploaded_by_name))]
+                {
+                  staticClass: "h6 post__author-name fn",
+                  attrs: {
+                    href:
+                      "/comp/view/" +
+                      _vm.product_company.comp_id +
+                      "/" +
+                      _vm.product_company.comp_token
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.uploaded_by_name) +
+                      "\n            "
+                  )
+                ]
               ),
               _vm._v("\n            Posted "),
               _c("a", { attrs: { href: _vm.getStatusLink() } }, [
