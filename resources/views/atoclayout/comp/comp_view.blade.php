@@ -90,7 +90,7 @@
 			<div class="ui-block">
 
 					<div class="ui-block-title">
-						<div class="h6 title">Single Two Bar Graphic</div>
+						<div class="h6 title">Customer Interactions</div>
 						<span class="more">
 							<i class="fas fa-bars"></i>
 						</span>
@@ -111,7 +111,7 @@
 			<div class="ui-block">
 
 				<div class="ui-block-title">
-					<div class="h6 title">Single Two Bar Graphic</div>
+					<div class="h6 title">Company Visitors</div>
 					<span class="more">
 						<i class="fas fa-chart-bar"></i>
 					</span>
