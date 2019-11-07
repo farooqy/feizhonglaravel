@@ -85,10 +85,15 @@
     </div>
 </div>
 <div class="">
-    <needdetails v-if="needs_modal.visible" v-bind="needs_modal.need"></needdetails>
+    <needdetails v-if="needs_modal.visible" v-bind="needs_modal.need"
+     v-on:close-comp-match-modal="disMissNeedModal()"></needdetails>
 </div>
 @endsection
 
 @section('vuescript')
-<script src="/js/comp_needs.js" type="text/javascript"></script>
+@php
+$hash = hash('md5', file_get_contents(public_path()."/js/comp_needs.js"));
+$file_name = "/js/comp_needs.js?".$hash;
+ @endphp
+<script src="{{$file_name}}" type="text/javascript"></script>
 @endsection

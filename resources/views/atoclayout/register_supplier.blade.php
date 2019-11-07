@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>@yield("pageTitle")</title>
+    <title>AtoC — Register</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -41,25 +41,14 @@
       v-bind="errorObject"></errormodal>
 
       <popmodel v-on:hide-modal="continueVerificationCode"  v-show="showPopModel"  v-bind="modal_content"></popmodel>
-        <div class="breadcrumb-area bg-img" style="background-image:url(/atoc_assets/images/nairobi_bk.jpg);
+        <div class="breadcrumb-area bg-img" style="background-image:url(/olympus_assets/img/top-header3_.png);
          height:50vh; width:100vw; background-size:100% contain;">
-            <div class="container" style="background-color: rgba(255,255,255,0.7);position: absolute;
-            top: 0px;left: 0px;right: 0px;height: inherit;">
-                <div class="breadcrumb-content text-center">
-                  <div class="logo">
-                    <img src="/atoc_assets/images/logo/logo-1.png">
-                  </div>
-                    <h2>Login or Register</h2>
-                    <ul>
-                        <li>
-                            <a href="/">Home</a>
-                        </li>
-                        <li class="active">Register </li>
-                    </ul>
-                </div>
-            </div>
+
         </div>
         <div class="registration_for_who center" style="text-align:center; margin-top:10vh;">
+            <div class="" style="margin-bottom: 45px; font-size: 35px;font-family: sans-serif;">
+                <span><a href="/" >Home</a> / <a href="/register" style="color: #b64747;">Register</a></span>
+            </div>
           <button class="btn" :class="{'btn-primary': comp_registration | comp_login,
           'btn-secondary': user_registration | user_login}"
           style="height:45px; "
@@ -184,7 +173,9 @@
                             <div class="footer-widget mb-30">
                                 <a href="#"><img src="/atoc_assets/images/logo/logo-1.png" alt="logo"></a>
                                 <div class="footer-about">
-                                    <p>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms. </p>
+                                    <p>
+                                        AtoC - The bridge between continents
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -195,10 +186,8 @@
                                 </div>
                                 <div class="footer-list-3">
                                     <ul>
-                                        <li><a href="about-us.html">About US</a></li>
-                                        <li><a href="blog.html">Blogs</a></li>
-                                        <li><a href="#">Careers</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
+                                        <li><a href="https://atoc.drongo.tech">About US</a></li>
+                                        <li><a href="https://atoc.drongo.tech">Blogs</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -210,10 +199,8 @@
                                 </div>
                                 <div class="footer-list-3">
                                     <ul>
-                                        <li><a href="#">Pricing</a></li>
-                                        <li><a href="#">Features</a></li>
-                                        <li><a href="#">Customers</a></li>
-                                        <li><a href="#">Demos</a></li>
+                                        <li><a href="https://atoc.drongo.tech">Pricing</a></li>
+                                        <li><a href="https://atoc.drongo.tech">Features</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -225,10 +212,8 @@
                                 </div>
                                 <div class="footer-list-3">
                                     <ul>
-                                        <li><a href="#">Introduction</a></li>
-                                        <li><a href="#">Feedback</a></li>
-                                        <li><a href="#">Referrals</a></li>
-                                        <li><a href="#">Network Status</a></li>
+                                    <li><a href="https://drongo.tech/careers">Careers</a></li>
+                                    <li><a href="https://atoc.drongo.tech">Contact</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -240,8 +225,8 @@
                                 </div>
                                 <div class="footer-list-3">
                                     <ul>
-                                        <li><a href="#">Facebook</a></li>
-                                        <li><a href="#">Telegram</a></li>
+                                        <li><a href="https://facebook.com/atocGlobal" target="_blank">Facebook</a></li>
+                                        <li><a href="https://instagram.com/official_atoc" target="_blank">Instagram</a></li>
                                     </ul>
                                 </div>
                             </div>

@@ -64,6 +64,22 @@ var app = new Vue({
     },
 
     // static
+    disMissNeedModal()
+    {
+        this.needs_modal.visible = false;
+        this.needs_modal = {
+            visible:false,
+            need:null,
+            Error: {
+                visible:false,
+                error_text:null,
+            },
+            success:{
+                visible:false,
+                success_text:null,
+            }
+        };
+    },
     companyIsVerified()
     {
         return this.Company.is_verified === true;

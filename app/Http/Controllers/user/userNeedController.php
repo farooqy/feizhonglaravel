@@ -12,6 +12,8 @@ use App\customClass\ApiKeyManager;
 use App\customClass\FileUploader;
 use App\models\normalUsersModel;
 use App\models\users\userNeedsModel;
+
+use App\Http\Controllers\user\normalUserController;
 class userNeedController extends Controller
 {
     //
@@ -29,18 +31,20 @@ class userNeedController extends Controller
       	$this->ip_address = \Request::ip();
       	$this->requestUrl = url()->current();
   			$this->FileUploader = new FileUploader();
-
+        $this->normalUser = new normalUserController();
   	}
 
     public function postNeed(Request $request)
     {
+
+
         $rules = [
             "host_id" => "required|integer",
             "host_token" => "required|string",
             "host_type" => "required|string|in:normal",
             "api_key" => "required|string",
             "prod_name" => "required|string|min:5",
-            "prod_description" => "required|string|min:25",
+            "prod_description" => "required|string|min:2",
             "prod_type" => "required|string",
             "prod_subtype" => "required|string",
             "prod_quantity" => "required|integer|min:1",
@@ -60,6 +64,13 @@ class userNeedController extends Controller
         if(!$user_exist)
         {
             $this->Error->setError(["The user provided is not not active or doesnt exist"]);
+            return $this->Error->getError();
+        }
+        $has_address = $this->normalUser->hasSetAddress($request->host_id, $request->host_token);
+        if(!$has_address)
+        {
+            $this->Error->setError(["Please visit your profile page and add your address information
+            before posting a need." ]);
             return $this->Error->getError();
         }
         $need_token = hash('md5', time());

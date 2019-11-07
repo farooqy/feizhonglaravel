@@ -2194,6 +2194,9 @@ module.exports = {
 //
 //
 //
+//
+//
+//
 module.exports = {
   data: function data() {
     return {
@@ -2372,16 +2375,6 @@ module.exports = {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -113723,7 +113716,14 @@ var render = function() {
                   "a",
                   {
                     staticClass: "h6 post__author-name fn",
-                    attrs: { href: "" }
+                    attrs: {
+                      target: "_blank",
+                      href:
+                        "/comp/view/" +
+                        _vm.product_company.comp_id +
+                        "/" +
+                        _vm.product_company.comp_token
+                    }
                   },
                   [
                     _c("h6", [
@@ -113844,7 +113844,8 @@ var render = function() {
                 "li",
                 {
                   staticClass: "comment-item",
-                  class: _vm.hasChildren(comment)
+                  class: _vm.hasChildren(comment),
+                  staticStyle: { "background-color": "aliceblue" }
                 },
                 [
                   _c(
@@ -113960,67 +113961,74 @@ var render = function() {
                     "ul",
                     { staticClass: "children" },
                     _vm._l(comment.comment_replies, function(reply) {
-                      return _c("li", { staticClass: "comment-item" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "post__author author vcard inline-items"
-                          },
-                          [
-                            _c("img", {
-                              attrs: {
-                                src: _vm.getCommentProfile(reply),
-                                alt: "author"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "author-date" }, [
-                              _c(
-                                "a",
-                                {
-                                  staticClass: "h6 post__author-name fn",
-                                  attrs: { href: "#" }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(_vm.getCommentName(reply)) +
-                                      "\n                            "
-                                  )
-                                ]
-                              ),
+                      return _c(
+                        "li",
+                        {
+                          staticClass: "comment-item",
+                          staticStyle: { "background-color": "aliceblue" }
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "post__author author vcard inline-items"
+                            },
+                            [
+                              _c("img", {
+                                attrs: {
+                                  src: _vm.getCommentProfile(reply),
+                                  alt: "author"
+                                }
+                              }),
                               _vm._v(" "),
-                              _c("div", { staticClass: "post__date" }, [
+                              _c("div", { staticClass: "author-date" }, [
                                 _c(
-                                  "time",
+                                  "a",
                                   {
-                                    staticClass: "published",
-                                    attrs: { datetime: "2017-03-24T18:18" }
+                                    staticClass: "h6 post__author-name fn",
+                                    attrs: { href: "#" }
                                   },
                                   [
                                     _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(reply.created_at) +
-                                        "\n                                "
+                                      "\n                                " +
+                                        _vm._s(_vm.getCommentName(reply)) +
+                                        "\n                            "
                                     )
                                   ]
-                                )
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "post__date" }, [
+                                  _c(
+                                    "time",
+                                    {
+                                      staticClass: "published",
+                                      attrs: { datetime: "2017-03-24T18:18" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(reply.created_at) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                ])
                               ])
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("p", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(reply.comment_text) +
-                              "\n                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _vm._m(1, true)
-                      ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("p", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(reply.comment_text) +
+                                "\n                    "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _vm._m(1, true)
+                        ]
+                      )
                     }),
                     0
                   ),
@@ -114680,7 +114688,7 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "fas fa-thumbs-up" }),
         _vm._v(" "),
-        _c("span", [_vm._v("2")])
+        _c("span", [_vm._v("0")])
       ]
     )
   },
@@ -114888,47 +114896,7 @@ var render = function() {
       0
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "post-additional-info inline-items" }, [
-      _c(
-        "a",
-        { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
-        [
-          _c("svg", { staticClass: "olymp-heart-icon" }, [
-            _c("use", { attrs: { "xlink:href": "#olymp-heart-icon" } })
-          ]),
-          _vm._v(" "),
-          _c("span", [_vm._v("15")])
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "comments-shared" }, [
-        _c(
-          "a",
-          { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
-          [
-            _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-              _c("use", {
-                attrs: { "xlink:href": "#olymp-speech-balloon-icon" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("span", [_vm._v("0")])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
-          [
-            _c("svg", { staticClass: "olymp-share-icon" }, [
-              _c("use", { attrs: { "xlink:href": "#olymp-share-icon" } })
-            ]),
-            _vm._v(" "),
-            _c("span", [_vm._v("16")])
-          ]
-        )
-      ])
-    ])
+    _vm._m(1)
   ])
 }
 var staticRenderFns = [
@@ -114947,6 +114915,43 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("li", [
         _c("a", { attrs: { href: "#" } }, [_vm._v("Select as Featured")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-additional-info inline-items" }, [
+      _c("div", { staticClass: "comments-shared" }, [
+        _c(
+          "a",
+          { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+          [
+            _c("i", { staticClass: "fas fa-thumbs-up" }),
+            _vm._v(" "),
+            _c("span", [_vm._v("0")])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+          [
+            _c(
+              "a",
+              {
+                staticClass: "post-add-icon inline-items",
+                attrs: { href: "#" }
+              },
+              [
+                _c("i", { staticClass: "fas fa-eye" }),
+                _vm._v(" "),
+                _c("span", [_vm._v("0")])
+              ]
+            )
+          ]
+        )
       ])
     ])
   }

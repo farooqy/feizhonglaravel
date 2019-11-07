@@ -6,7 +6,7 @@
         <div class="modal-content">
             <div class="error-header">
                 <h4 style="">Demand Details!
-                    <span class="close-modal" @click.prevent="">&times;</span>
+                    <span class="close-modal" @click.prevent="disMissNeedModal()">&times;</span>
                 </h4>
             </div>
             <div class="">
@@ -109,7 +109,10 @@
             };
         },
         methods: {
-
+            disMissNeedModal()
+            {
+                return this.$emit('close-comp-match-modal');
+            }
         },
         props: ["product_name", "product_description", "product_quantity",
                 "product_measure_unit", "product_type", "product_sub_types",

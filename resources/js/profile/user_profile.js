@@ -208,7 +208,7 @@ var app = new Vue({
             {
                 this.needs_modal.matched_companies = all_needs[i].matched_companies;
                 this.needs_modal.visible = true;
-                break; 
+                break;
             }
         }
     },
@@ -254,6 +254,15 @@ var app = new Vue({
         this.errorObject.errorModal = this.errorModal = true;
         this.Loader.showLoader = this.showLoader = false;
       })
+    },
+    //static
+    closeNeedsModal()
+    {
+        this.needs_modal.visible = false;
+        this.needs_modal = {
+            visible:false,
+            matched_companies:[],
+        };
     },
     disMissErrorModel()
     {

@@ -50,27 +50,17 @@
 		</div>
 
 		<div class="post-additional-info inline-items">
-
-			<a href="#" class="post-add-icon inline-items">
-				<svg class="olymp-heart-icon">
-					<use xlink:href="#olymp-heart-icon"></use>
-				</svg>
-				<span>15</span>
-			</a>
-
 			<div class="comments-shared">
 				<a href="#" class="post-add-icon inline-items">
-					<svg class="olymp-speech-balloon-icon">
-						<use xlink:href="#olymp-speech-balloon-icon"></use>
-					</svg>
+					<i class="fas fa-thumbs-up"></i>
 					<span>0</span>
 				</a>
 
 				<a href="#" class="post-add-icon inline-items">
-					<svg class="olymp-share-icon">
-						<use xlink:href="#olymp-share-icon"></use>
-					</svg>
-					<span>16</span>
+					<a href="#" class="post-add-icon inline-items">
+						<i class="fas fa-eye"></i>
+						<span>0</span>
+					</a>
 				</a>
 			</div>
 

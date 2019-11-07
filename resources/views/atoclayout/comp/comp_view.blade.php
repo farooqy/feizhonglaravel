@@ -98,8 +98,8 @@
 				<div class="ui-block-content">
 					<div class="monthly-indicator">
 						<div class="monthly-count">
-							522.670 New Favourites
-							<span class="indicator positive"> + 78.546</span>
+							0 New Favourites
+							<span class="indicator positive"> + 0</span>
 							<span class="period">Last Month</span>
 						</div>
 					</div>
@@ -119,8 +119,8 @@
 				<div class="ui-block-content">
 					<div class="monthly-indicator">
 						<div class="monthly-count">
-							208.341 New Visitors
-							<span class="indicator negative"> - 47.052</span>
+							0 New Visitors
+							<span class="indicator negative"> + 0</span>
 							<span class="period">Last Month</span>
 						</div>
 					</div>

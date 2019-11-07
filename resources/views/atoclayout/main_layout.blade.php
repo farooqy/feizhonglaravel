@@ -3,7 +3,7 @@
 
 <head>
 
-	<title>Atoc</title>
+	<title>AtoC — Africa to China</title>
 
 	<!-- Required meta tags always come first -->
 	<meta charset="utf-8">
@@ -24,6 +24,7 @@
 	<link rel="stylesheet" type="text/css" href="/olympus_assets/css/fonts.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app.css">
 
+	<link rel="shortcut icon" type="image/x-icon" href="/atoc_assets/images/favicon.png">
 
 </head>
 
@@ -224,6 +225,13 @@
 							</div>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#profile" role="tab">
+							<div class="control-icon has-items">
+								<img src="/img/user_icon.png" style="height:35px"/>
+							</div>
+						</a>
+					</li>
 
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#search" role="tab">
@@ -310,11 +318,6 @@
 										<use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-comments-post-icon"></use>
 									</svg>
 								</span>
-<!--
-								<div class="comment-photo">
-									<img src="/olympus_assets/img/comment-photo1.jpg" alt="photo">
-									<span></span>
-								</div> -->
 
 								<div class="more">
 									<svg class="olymp-three-dots-icon">
@@ -332,7 +335,52 @@
 					</div>
 
 				</div>
+				<div class="tab-pane " id="profile" role="tabpanel">
 
+					<div class="mCustomScrollbar" data-mcs-theme="dark">
+
+						<ul class="notification-list chat-message">
+							<li>
+								<div class="author-thumb">
+									<img src="/img/logo.png" alt="author" style="height: 30px;">
+								</div>
+								<div class="notification-event">
+									<a href="#" class="h6 notification-friend">Main Menu</a>
+									<ul>
+										<li>
+											<a href="/">
+												<span class="chat-message-item">
+													<i class="fas fa-home"></i>
+													Home
+												</span>
+											</a>
+										</li>
+										<li>
+											<a href="/profile">
+												<span class="chat-message-item">
+													<i class="fas fa-user"></i>
+													Profile
+												</span>
+											</a>
+										</li>
+										<li>
+											<a href="/">
+												<span class="chat-message-item">
+													<i class="fas fa-user"></i>
+													Log out
+												</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</li>
+
+						</ul>
+
+						<a href="#" class="view-all bg-purple">View All Messages</a>
+					</div>
+
+				</div>
 				<div class="tab-pane " id="search" role="tabpanel">
 
 
@@ -392,25 +440,14 @@
 					<span class="icon-status online"></span>
 					<h6 class="title">Chat</h6>
 					<div class="more">
-						<svg class="olymp-three-dots-icon">
-							<use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-						</svg>
-						<svg class="olymp-little-delete js-chat-open">
-							<use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-little-delete"></use>
-						</svg>
+						COMING SOON
 					</div>
 				</div>
 				<div class="modal-body">
 					<div class="mCustomScrollbar">
 						<ul class="notification-list chat-message chat-message-field">
 							<li>
-								<div class="author-thumb">
-									<img src="/olympus_assets/img/avatar14-sm.jpg" alt="author" class="mCS_img_loaded">
-								</div>
-								<div class="notification-event">
-									<span class="chat-message-item">Hi James! Please remember to buy the food for tomorrow! I’m gonna be handling the gifts and Jake’s gonna get the drinks</span>
-									<span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 8:10pm</time></span>
-								</div>
+								COMING SOON
 							</li>
 
 						</ul>

@@ -7,7 +7,8 @@
             <img :src="product_company.comp_logo" alt="company logo">
 
             <div class="author-date">
-                <a class="h6 post__author-name fn" href="">
+                <a class="h6 post__author-name fn" target="_blank"
+                :href="'/comp/view/'+product_company.comp_id+'/'+product_company.comp_token">
                     <h6> {{product_company.comp_name}} </h6>
                 </a>
                 Posted <a :href="getStatusLink()">product</a>
@@ -61,7 +62,8 @@
 
 
         <ul class="comments-list" v-for="comment in in_comments">
-            <li class="comment-item" :class="hasChildren(comment)">
+            <li class="comment-item" :class="hasChildren(comment)"
+                style="background-color: aliceblue;">
                 <div class="post__author author vcard inline-items">
                     <img :src="getCommentProfile(comment)" alt="author">
 
@@ -101,7 +103,8 @@
                 </a>
                 <!-- comment children comments -->
                 <ul class="children">
-                    <li class="comment-item" v-for="reply in comment.comment_replies">
+                    <li class="comment-item" v-for="reply in comment.comment_replies"
+                        style="background-color: aliceblue;">
                         <div class="post__author author vcard inline-items">
                             <img :src="getCommentProfile(reply)" alt="author">
 
@@ -122,7 +125,7 @@
                         </p>
                         <a href="#" class="post-add-icon inline-items">
                             <i class="fas fa-thumbs-up"></i>
-                            <span>2</span>
+                            <span>0</span>
                         </a>
                     </li>
                 </ul>

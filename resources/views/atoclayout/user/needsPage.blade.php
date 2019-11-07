@@ -19,28 +19,30 @@
           </div>
           <div class="card-body">
               <table class="table">
-                  <thead>
-                      <th>
-                          #
-                      </th>
-                      <th>
-                           Name
-                      </th>
-                      <th>
-                           Description
-                      </th>
-                      <th>
-                          Quantity
-                      </th>
-                      <th>
-                          Category
-                      </th>
-                      <th>
-                          Valid until
-                      </th>
-                      <th>
-                          Action
-                      </th>
+                  <thead class="tbhead-dark">
+                      <tr>
+                          <th scope="col">
+                              #
+                          </th>
+                          <th scope="col">
+                               Name
+                          </th>
+                          <th scope="col">
+                               Description
+                          </th>
+                          <th scope="col">
+                              Quantity
+                          </th>
+                          <th scope="col">
+                              Category
+                          </th>
+                          <th scope="col">
+                              Valid until
+                          </th>
+                          <th scope="col">
+                              Action
+                          </th>
+                      </tr>
                   </thead>
                   <tbody v-for="(need, key ) in user_needs">
                      <tr>
@@ -79,10 +81,13 @@
 </div>
 <div class="">
 
-    <userneeds v-bind="needs_modal" v-if="needs_modal.visible"></userneeds>
+    <userneeds v-bind="needs_modal" v-if="needs_modal.visible"
+    v-on:close-user-need-modal="closeNeedsModal()"></userneeds>
 </div>
 @endsection
 
 @section("vuescript")
-<script src="/js/user_profile.js"></script>
+@php $hash = hash('md5', file_get_contents(public_path()."/js/user_profile.js"));
+$file_name = "/js/user_profile.js?".$hash ;@endphp
+<script src="{{$file_name}}"></script>
 @endsection

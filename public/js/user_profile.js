@@ -1814,6 +1814,10 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -1825,6 +1829,12 @@ module.exports = {
   methods: {
     getCompLink: function getCompLink(company) {
       return "/comp/view/" + company.comp_id + "/" + company.comp_token;
+    },
+    disMissNeedModal: function disMissNeedModal() {
+      this.$emit('close-user-need-modal');
+    },
+    hasMatchedCompanies: function hasMatchedCompanies() {
+      return this.matched_companies.length;
     }
   },
   props: ["matched_companies"],
@@ -37367,7 +37377,7 @@ var render = function() {
                 on: {
                   click: function($event) {
                     $event.preventDefault()
-                    return _vm.disMissErrorModel($event)
+                    return _vm.disMissNeedModal()
                   }
                 }
               },
@@ -37377,11 +37387,17 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v(
-              "\n                Your need is matched with these companies\n            "
-            )
-          ]),
+          _vm.hasMatchedCompanies()
+            ? _c("div", { staticClass: "card-header" }, [
+                _vm._v(
+                  "\n                Your need is matched with these companies\n            "
+                )
+              ])
+            : _c("div", { staticClass: "card-header" }, [
+                _vm._v(
+                  "\n                    We are still searching for the right companies to serve your need.\n                    Please come back soon.\n                "
+                )
+              ]),
           _vm._v(" "),
           _c(
             "div",
@@ -50289,6 +50305,12 @@ var app = new Vue({
       _this2.errorObject.errorModal = _this2.errorModal = true;
       _this2.Loader.showLoader = _this2.showLoader = false;
     });
+  }), _defineProperty(_methods, "closeNeedsModal", function closeNeedsModal() {
+    this.needs_modal.visible = false;
+    this.needs_modal = {
+      visible: false,
+      matched_companies: []
+    };
   }), _defineProperty(_methods, "disMissErrorModel", function disMissErrorModel() {
     this.errorModal = false;
     this.errorObject.errorModal = this.errorModal;

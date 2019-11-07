@@ -1876,7 +1876,11 @@ module.exports = {
       version: 1
     };
   },
-  methods: {},
+  methods: {
+    disMissNeedModal: function disMissNeedModal() {
+      return this.$emit('close-comp-match-modal');
+    }
+  },
   props: ["product_name", "product_description", "product_quantity", "product_measure_unit", "product_type", "product_sub_types", "product_valid_until", "need_user_data"]
 };
 
@@ -37413,6 +37417,7 @@ var render = function() {
                 on: {
                   click: function($event) {
                     $event.preventDefault()
+                    return _vm.disMissNeedModal()
                   }
                 }
               },
@@ -50076,6 +50081,21 @@ var app = new Vue({
       }
     },
     // static
+    disMissNeedModal: function disMissNeedModal() {
+      this.needs_modal.visible = false;
+      this.needs_modal = {
+        visible: false,
+        need: null,
+        Error: {
+          visible: false,
+          error_text: null
+        },
+        success: {
+          visible: false,
+          success_text: null
+        }
+      };
+    },
     companyIsVerified: function companyIsVerified() {
       return this.Company.is_verified === true;
     },

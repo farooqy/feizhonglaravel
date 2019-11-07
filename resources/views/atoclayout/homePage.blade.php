@@ -281,7 +281,7 @@
 
   <div class="ui-block">
       <productlist v-for="statProd in StatusList" v-bind="statProd"
-      v-on:submit-comment="submitComment()"
+      v-on:submit-comment="submitComment"
       v-on:is-logged-in="isLoggedIn()"></productlist>
   </div>
   <!-- <div class="ui-block">
