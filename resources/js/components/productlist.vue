@@ -174,7 +174,7 @@
 
             <div class="author-date">
                 <a class="h6 post__author-name fn"
-                :href="'/comp/view/'+product_company.comp_id+'/'+product_company.comp_token">
+                :href="'/comp/view/'+uploaded_by_company.comp_id+'/'+uploaded_by_company.comp_token">
                     {{uploaded_by_name}}
                 </a>
                 Posted <a :href="getStatusLink()">status</a>
@@ -375,7 +375,7 @@
 
             "status_image", "status_text", "status_time",
             "status_id", "status_generated_token", "status_files", "uploaded_by_name",
-            "uploaded_by_picture",
+            "uploaded_by_picture","uploaded_by_company"
         ],
         filters: {
             // truncate: function(text, length, suffix) {

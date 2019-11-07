@@ -2213,7 +2213,7 @@ module.exports = {
       in_comments: this.comments
     };
   },
-  props: ["post_type", "host_profile", "comment_text", "comments", "likes", "host_id", "host_token", "is_logged_in", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture"],
+  props: ["post_type", "host_profile", "comment_text", "comments", "likes", "host_id", "host_token", "is_logged_in", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture", "uploaded_by_company"],
   filters: {
     // truncate: function(text, length, suffix) {
     //     return text.substring(0, length) + suffix;
@@ -114211,9 +114211,9 @@ var render = function() {
                   attrs: {
                     href:
                       "/comp/view/" +
-                      _vm.product_company.comp_id +
+                      _vm.uploaded_by_company.comp_id +
                       "/" +
-                      _vm.product_company.comp_token
+                      _vm.uploaded_by_company.comp_token
                   }
                 },
                 [
@@ -128224,6 +128224,7 @@ var app = new Vue({
         "status_files": files,
         "uploaded_by_name": status.company_data.comp_name,
         "uploaded_by_picture": status.company_data.comp_logo,
+        "uploaded_by_company": status.company_data,
         "comments": comments,
         "likes": likes,
         "post_type": "status",
@@ -128546,6 +128547,10 @@ var app = new Vue({
         "status_files": this.successfullStatusFiles,
         "uploaded_by_name": this.Host.company_name,
         "uploaded_by_picture": this.Host.company_logo,
+        "uploaded_by_company": {
+          "comp_id": this.Host.guest_id,
+          "comp_token": this.Host.guest_token
+        },
         "comments": [],
         "likes": [],
         "post_type": "status",

@@ -140,6 +140,7 @@ var app = new Vue({
                 "status_files": files,
                 "uploaded_by_name": status.company_data.comp_name,
                 "uploaded_by_picture": status.company_data.comp_logo,
+                "uploaded_by_company": status.company_data,
                 "comments": comments,
                 "likes": likes,
                 "post_type": "status",
@@ -488,6 +489,10 @@ var app = new Vue({
                 "status_files": this.successfullStatusFiles,
                 "uploaded_by_name": this.Host.company_name,
                 "uploaded_by_picture": this.Host.company_logo,
+                "uploaded_by_company": {
+                    "comp_id": this.Host.guest_id,
+                    "comp_token": this.Host.guest_token
+                },
                 "comments": [],
                 "likes": [],
                 "post_type": "status",
