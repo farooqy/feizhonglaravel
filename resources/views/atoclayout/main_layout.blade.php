@@ -185,7 +185,7 @@
 					</div>
 
 				</div>
-				<div class="control-block" v-if="!isLoggedIn()">
+				<div class="control-block" v-if="!isLoggedIn()" style="margin-top: 5px;">
 					<a href="/register" class="btn btn-primary mr-2">Register</a>
 					<a href="/login" class="btn btn-success">Login</a>
 				</div>
