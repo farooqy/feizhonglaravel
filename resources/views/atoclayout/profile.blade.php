@@ -22,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>
-    AtoC - Africa to China
+    AtoC — Africa to China
   </title>
   <!-- Favicon -->
   <link href="/atoc_assets/images/favicon.png" rel="icon" type="image/png">
@@ -154,8 +154,8 @@
         <div class="col-xl-6">
           <div class="copyright text-center text-xl-left text-muted">
             &copy; 2019
-            <a href="https://www.drongo.tech" class="font-weight-bold ml-1" target="_blank">
-              Drongo Tech LLC
+            <a href="https://www.atoc.drongo.tech" class="font-weight-bold ml-1" target="_blank">
+              AtoC — Africa to China
             </a>
           </div>
         </div>
