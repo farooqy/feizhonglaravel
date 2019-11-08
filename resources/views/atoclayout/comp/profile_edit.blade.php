@@ -56,13 +56,13 @@ style="min-height: 600px; background-image: url('/atoc_assets/images/black-hands
                 </div>
                 <div>
                   <span class="heading">
-                    <i class="fas fa-users"></i><br>10
+                    <i class="fas fa-users"></i><br>0
                   </span>
                   <span class="description">Interactions</span>
                 </div>
                 <div>
                   <span class="heading">
-                    <i class="fas fa-comments"></i><br>12
+                    <i class="fas fa-comments"></i><br>0
                   </span>
                   <span class="description">Comments</span>
                 </div>
