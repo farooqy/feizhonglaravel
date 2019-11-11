@@ -6,6 +6,7 @@ import statuslistv2 from "./components/statuslistv2.vue";
 import productlist from "./components/productlist.vue";
 import trendingcompanylist from "./components/trendingcompanylist.vue";
 import companylist from "./components/companylist.vue";
+import viewpostdetails from "./components/viewpostdetails.vue";
 import Company from "./Company.js";
 import User from "./User.js";
 import Guest from "./Guest.js";
@@ -504,6 +505,61 @@ var app = new Vue({
             this.Status = new Status();
             this.successfullStatusFiles = [];
         },
+        viewProductDetails(product_id, product_token)
+        {
+            console.log('view details ',product_id, ' token ',product_token);
+            var products = this.StatusList;
+            var num_products = products.length;
+            var i=0;
+            for(i=0; i<num_products; i++)
+            {
+                var p = products[i];
+                if(p.post_type !== "product")
+                    continue;
+                else if(p.product_id === product_id && p.generated_token === product_token)
+                {
+                    this.product_modal = {
+                        visible: true,
+                        data: p,
+                        errorModal: {
+                            error_text:null,
+                            visible: false,
+                        },
+                        successModal: {
+                            success_text :null,
+                            visible: false,
+                        }
+                    }
+                }
+            }
+        },
+        viewStatusDetails(status_id, status_generated_token)
+        {
+            var statuses = this.StatusList;
+            var num_products = statuses.length;
+            var i=0;
+            for(i=0; i<num_products; i++)
+            {
+                var p = statuses[i];
+                if(p.post_type !== "status")
+                    continue;
+                if(p.status_id === status_id && p.status_generated_token === status_generated_token)
+                {
+                    this.product_modal = {
+                        visible: true,
+                        data: p,
+                        errorModal: {
+                            error_text:null,
+                            visible: false,
+                        },
+                        successModal: {
+                            success_text :null,
+                            visible: false,
+                        }
+                    }
+                }
+            }
+        },
         userProductNeed() {
             if (this.needed_product.prod_name === "" ||
                 this.needed_product.prod_name === null)
@@ -684,6 +740,21 @@ var app = new Vue({
         {
             // this.showError('')
             console.log('Failed to get ip data');
+        },
+        disMissPostDetailsModal()
+        {
+            this.product_modal = this.status_modal = {
+                visible: false,
+                data: null,
+                errorModal: {
+                    error_text:null,
+                    visible: false,
+                },
+                successModal: {
+                    success_text :null,
+                    visible: false,
+                }
+            };
         }
 
 
@@ -696,6 +767,7 @@ var app = new Vue({
         statuslistv2,
         companylist,
         productlist,
+        viewpostdetails,
     },
     data: {
         Host: null,
@@ -752,7 +824,37 @@ var app = new Vue({
             Date: null,
 
 
-        }
+        },
+        Demands: {
+            demand_text: "Demands From Africa ",
+            demand_title: "2,445 Active Demands",
+            number_demands: " ",
+            demand_served: "1,430 demands have been successfully served"
+        },
+        product_modal: {
+            visible: false,
+            data: null,
+            errorModal: {
+                error_text:null,
+                visible: false,
+            },
+            successModal: {
+                success_text :null,
+                visible: false,
+            }
+        },
+        status_modal: {
+            visible: false,
+            data: null,
+            errorModal: {
+                error_text:null,
+                visible: false,
+            },
+            successModal: {
+                success_text :null,
+                visible: false,
+            }
+        },
 
 
     },

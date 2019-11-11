@@ -11,7 +11,7 @@
                 :href="'/comp/view/'+product_company.comp_id+'/'+product_company.comp_token">
                     <h6> {{product_company.comp_name}} </h6>
                 </a>
-                Posted <a :href="getStatusLink()">product</a>
+                Posted <a :href="getProductLink()" @click.prevent="viewProduct()">product</a>
                 <div class="post__date">
                     <time class="published" :datetime="created_at">
                         {{" at "+created_at}}
@@ -61,7 +61,7 @@
 
 
 
-        <ul class="comments-list" v-for="comment in in_comments">
+        <ul class="comments-list" v-for="(comment,key) in in_comments" v-bind:key="key">
             <li class="comment-item" :class="hasChildren(comment)"
                 style="background-color: aliceblue;">
                 <div class="post__author author vcard inline-items">
@@ -103,8 +103,8 @@
                 </a>
                 <!-- comment children comments -->
                 <ul class="children">
-                    <li class="comment-item" v-for="reply in comment.comment_replies"
-                        style="background-color: aliceblue;">
+                    <li class="comment-item" v-for="(reply,key) in comment.comment_replies"
+                        style="background-color: aliceblue;" v-bind:key="key">
                         <div class="post__author author vcard inline-items">
                             <img :src="getCommentProfile(reply)" alt="author">
 
@@ -167,7 +167,7 @@
             <button class="btn btn-md-2 btn-primary" @click.prevent="submitComment('product')">Post Comment</button>
         </form>
     </article>
-    <article class="hentry post" v-else="isStatusStatus()">
+    <article class="hentry post" v-else>
 
         <div class="post__author author vcard inline-items">
             <img :src="uploaded_by_picture" alt="author">
@@ -177,7 +177,7 @@
                 :href="'/comp/view/'+uploaded_by_company.comp_id+'/'+uploaded_by_company.comp_token">
                     {{uploaded_by_name}}
                 </a>
-                Posted <a :href="getStatusLink()">status</a>
+                Posted <a :href="getStatusLink()" @click.prevent="viewStatus()">status</a>
                 <div class="post__date">
                     <time class="published" :datetime="status_time">
                         {{status_time}}
@@ -212,7 +212,8 @@
 
         <div class="post-block-photo js-zoom-gallery">
 
-            <a v-for="file in getStatusFiles()" :href="file.file_url" class="half-width" :class="addClassMorePhotos(file.file_url)">
+            <a v-for="(file,key) in getStatusFiles()" :href="file.file_url" class="half-width" 
+            :class="addClassMorePhotos(file.file_url)" v-bind:key="key">
                 <img :src="file.file_url" alt="photo">
                 <span class="h2" v-show="isLastPhoto(file.file_url)"> +
                     {{status_files.length - 2}}
@@ -241,7 +242,7 @@
 
 
 
-        <ul class="comments-list" v-for="comment in in_comments">
+        <ul class="comments-list" v-for="(comment,key) in in_comments" v-bind:key="key">
             <li class="comment-item" :class="hasChildren(comment)">
                 <div class="post__author author vcard inline-items">
                     <img :src="getCommentProfile(comment)" alt="author">
@@ -282,7 +283,7 @@
                 </a>
                 <!-- comment children comments -->
                 <ul class="children">
-                    <li class="comment-item" v-for="reply in comment.comment_replies">
+                    <li class="comment-item" v-for="(reply,key) in comment.comment_replies" v-bind:key="key">
                         <div class="post__author author vcard inline-items">
                             <img :src="getCommentProfile(reply)" alt="author">
 
@@ -506,6 +507,18 @@
             },
             isLoggedIn() {
                 return this.is_logged_in;
+            },
+            getProductLink()
+            {
+                return "/product/"+this.product_id+"/"+this.product_token;
+            },
+            viewProduct()
+            {
+                this.$emit('view-product-details', this.post_id, this.post_token);
+            },
+            viewStatus()
+            {
+                this.$emit('view-status-details', this.post_id, this.post_token);
             }
 
         }

@@ -282,11 +282,20 @@
   <div class="ui-block">
       <productlist v-for="statProd in StatusList" v-bind="statProd"
       v-on:submit-comment="submitComment"
-      v-on:is-logged-in="isLoggedIn()"></productlist>
+      v-on:is-logged-in="isLoggedIn()"
+      v-on:view-product-details="viewProductDetails"
+      v-on:view-status-details="viewStatusDetails"></productlist>
   </div>
-  <!-- <div class="ui-block">
-      <statuslistv2 v-for="status in StatusList" v-bind="status"></statuslistv2>
-  </div> -->
+  <div class="ui-block">
+      <viewpostdetails v-bind="product_modal.data" 
+      v-if="product_modal.visible"
+      v-on:close-postdetail-modal="disMissPostDetailsModal"></viewpostdetails>
+  </div>
+  <div class="ui-block">
+      <viewpostdetails v-bind="status_modal.data" 
+      v-if="status_modal.visible"
+      v-on:close-postdetail-modal="disMissPostDetailsModal"></viewpostdetails>
+  </div>
 
 
     <!-- Load more icon -->
@@ -832,20 +841,51 @@ col-md-6 col-sm-12 col-12">
   <div class="ui-block">
 
     <!-- W-Birthsday-Alert -->
-
-    <div class="widget w-birthday-alert">
-      <div class="icons-block">
-        <svg class="olymp-cupcake-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-cupcake-icon"></use></svg>
-        <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
+    <div class="ui-block">
+      <div class="ui-block-title">
+        <h6 class="title">Menu</h6>
+        <a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
       </div>
 
-      <div class="content">
-        <div class="author-thumb">
-          <img src="/olympus_assets/img/avatar48-sm.jpg" alt="author">
+      <div class="ui-block-content">
+
+        
+        <!-- Widget List -->
+        
+        <div class="widget w-list">
+          <ul>
+            <li >
+              <a href="/" target="_blank"><i class="fas fa-home mr-3"></i> Home</a>
+            </li>
+            <li>
+              <a href="/user/needs" target="_blank"><i class="fab fa-connectdevelop mr-3"></i>My Needs</a>
+            </li>
+            <li>
+              <a href="/profile" target="_blank"><i class="fas fa-user mr-3"></i>Profile</a>
+            </li>
+            <li>
+              <a href="https://atoc.drongo.tech" target="_blank"> <i class="far fa-address-card mr-3 "></i>About Us</i>
+            </li>
+          </ul>
         </div>
-        <span>Company of the week</span>
-        <a href="#" class="h4 title">Drongo LLC</a>
-        <p>Drongo LLC has served 123 Customers in 7 days</p>
+        
+        <!-- ... end Widget List -->
+
+      </div>
+
+    </div>
+    <div class="widget w-build-fav">
+				
+      <a href="#" class="more"><i class="fas fa-more"></i></a>
+    
+      <div class="widget-thumb">
+        <img src="/img/growth_icon.png" alt="notebook" style="height:70px">
+      </div>
+    
+      <div class="content">
+        <strong><u><span v-text="Demands.demand_text">Company of the week</span></u></strong>
+         <a href="#" class="h4 title" v-text="Demands.demand_title">Drongo LLC</a>
+         <p v-text="Demands.number_demands+Demands.demand_served">Drongo LLC has served 123 Customers in 7 days</p>
       </div>
     </div>
 
