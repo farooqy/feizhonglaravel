@@ -239,7 +239,7 @@ class accountController extends Controller
 		$rules= [
 			"company_type" => "required|string|max:75",
 			"company_subtype" => "required|string|max:50",
-			"company_description" => "required|string|min:45",
+			"company_description" => "required|string|min:45|max:1200",
 			"company_token" => "required|string|max:330",
       "api_key" => "required|string",
       "company_id" => "required|integer",

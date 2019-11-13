@@ -2734,6 +2734,138 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -2745,7 +2877,9 @@ module.exports = {
       post_token: this.product_token === undefined ? this.status_generated_token : this.product_token,
       comment_reply: null,
       show_reply_box: -1,
-      in_comments: this.comments
+      in_comments: this.comments,
+      postIsStatus: this.post_type === "status",
+      postIsProduct: this.post_type === "product"
     };
   },
   methods: {
@@ -114066,6 +114200,12 @@ var render = function() {
                   attrs: {
                     src: _vm.product_files[0].file_url,
                     alt: "Product photo"
+                  },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.viewProduct()
+                    }
                   }
                 }),
                 _vm._v(" "),
@@ -114073,7 +114213,13 @@ var render = function() {
                   "a",
                   {
                     staticClass: "post-category bg-blue-light",
-                    attrs: { href: "#" }
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.viewProduct()
+                      }
+                    }
                   },
                   [_vm._v("Product")]
                 )
@@ -114574,7 +114720,13 @@ var render = function() {
                   key: key,
                   staticClass: "half-width",
                   class: _vm.addClassMorePhotos(file.file_url),
-                  attrs: { href: file.file_url }
+                  attrs: { href: file.file_url },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.viewStatus()
+                    }
+                  }
                 },
                 [
                   _c("img", { attrs: { src: file.file_url, alt: "photo" } }),
@@ -115401,479 +115553,966 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("\n                Posted by "),
-              _c("span", {
-                domProps: { textContent: _vm._s(_vm.product_company.comp_name) }
-              }),
-              _vm._v(" "),
-              _c("span", {
-                staticClass: "ml-3",
-                domProps: { textContent: _vm._s(_vm.created_at) }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "carousel slide",
-                  attrs: {
-                    id: "carouselExampleControls",
-                    "data-ride": "carousel"
-                  }
-                },
-                [
+          _vm.postIsProduct
+            ? _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-header" }, [
+                  _vm._v("\n                Posted by "),
+                  _c("span", {
+                    domProps: {
+                      textContent: _vm._s(_vm.product_company.comp_name)
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", {
+                    staticClass: "ml-3",
+                    domProps: { textContent: _vm._s(_vm.created_at) }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
                   _c(
-                    "ol",
-                    { staticClass: "carousel-indicators" },
-                    _vm._l(_vm.product_files, function(file, key) {
-                      return _c("li", {
-                        key: key,
-                        class: _vm.isActive(key),
-                        attrs: {
-                          "data-target": "#carouselExampleIndicators",
-                          "data-slide-to": key
-                        }
-                      })
-                    }),
-                    0
+                    "div",
+                    {
+                      staticClass: "carousel slide",
+                      attrs: {
+                        id: "carouselExampleControls",
+                        "data-ride": "carousel"
+                      }
+                    },
+                    [
+                      _c(
+                        "ol",
+                        { staticClass: "carousel-indicators" },
+                        _vm._l(_vm.product_files, function(file, key) {
+                          return _c("li", {
+                            key: key,
+                            class: _vm.isActive(key),
+                            attrs: {
+                              "data-target": "#carouselExampleIndicators",
+                              "data-slide-to": key
+                            }
+                          })
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "carousel-inner" },
+                        _vm._l(_vm.product_files, function(file, key) {
+                          return _c(
+                            "div",
+                            {
+                              key: key,
+                              staticClass: "carousel-item ",
+                              class: _vm.isActive(key)
+                            },
+                            [
+                              _c("img", {
+                                staticClass: "d-block w-100",
+                                attrs: { src: file.file_url, alt: "..." }
+                              })
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _vm._m(0),
+                      _vm._v(" "),
+                      _vm._m(1)
+                    ]
                   ),
+                  _vm._v(" "),
+                  _c("div", {}, [
+                    _c("div", { staticClass: "mt-3 row" }, [
+                      _c("div", { staticClass: "col-md-8 col-lg-8" }, [
+                        _c("label", { staticClass: "label" }, [
+                          _vm._v("Product name:")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "input disabled",
+                          attrs: { disabled: "" },
+                          domProps: { value: _vm.product_name }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(2)
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "mt-3", staticStyle: { display: "flex" } },
+                      [
+                        _c("div", { staticClass: "col-md-6 col-lg-6" }, [
+                          _c("label", { staticClass: "label" }, [
+                            _vm._v("Product Price:")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "input disabled",
+                            attrs: { disabled: "" },
+                            domProps: {
+                              value:
+                                _vm.product_price + " " + _vm.product_currency
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6 col-lg-6" }, [
+                          _c("label", { staticClass: "label" }, [
+                            _vm._v("Product Measure Unit:")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "input disabled",
+                            attrs: { disabled: "" },
+                            domProps: { value: _vm.product_unit }
+                          })
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mt-3" }, [
+                      _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                        _c("label", { staticClass: "label" }, [
+                          _vm._v("Product Description:")
+                        ]),
+                        _vm._v(" "),
+                        _c("p", {
+                          staticStyle: {
+                            border: "thin solid gray",
+                            padding: "10px",
+                            "background-color": "aliceblue"
+                          },
+                          domProps: {
+                            textContent: _vm._s(_vm.product_description)
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "carousel-inner" },
-                    _vm._l(_vm.product_files, function(file, key) {
-                      return _c(
-                        "div",
-                        {
-                          key: key,
-                          staticClass: "carousel-item ",
-                          class: _vm.isActive(key)
-                        },
-                        [
-                          _c("img", {
-                            staticClass: "d-block w-100",
-                            attrs: { src: file.file_url, alt: "..." }
-                          })
-                        ]
-                      )
-                    }),
-                    0
-                  ),
-                  _vm._v(" "),
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _vm._m(1)
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", {}, [
-                _c("div", { staticClass: "mt-3 row" }, [
-                  _c("div", { staticClass: "col-md-8 col-lg-8" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Product name:")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "input disabled",
-                      attrs: { disabled: "" },
-                      domProps: { value: _vm.product_name }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(2)
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "mt-3", staticStyle: { display: "flex" } },
-                  [
-                    _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-                      _c("label", { staticClass: "label" }, [
-                        _vm._v("Product Price:")
-                      ]),
+                    { staticClass: "col-md-12 col-lg-12 mt-3 p-3" },
+                    [
+                      _vm._m(3),
                       _vm._v(" "),
-                      _c("input", {
-                        staticClass: "input disabled",
-                        attrs: { disabled: "" },
-                        domProps: {
-                          value: _vm.product_price + " " + _vm.product_currency
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-                      _c("label", { staticClass: "label" }, [
-                        _vm._v("Product Measure Unit:")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "input disabled",
-                        attrs: { disabled: "" },
-                        domProps: { value: _vm.product_unit }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "mt-3" }, [
-                  _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Product Description:")
-                    ]),
-                    _vm._v(" "),
-                    _c("p", {
-                      staticStyle: {
-                        border: "thin solid gray",
-                        padding: "10px",
-                        "background-color": "aliceblue"
-                      },
-                      domProps: { textContent: _vm._s(_vm.product_description) }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col-md-12 col-lg-12 mt-3 p-3" },
-                [
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _vm._l(_vm.comments, function(comment, key) {
-                    return _c(
-                      "ul",
-                      {
-                        key: key,
-                        staticClass: "comments-list",
-                        staticStyle: { border: "thin solid gray" }
-                      },
-                      [
-                        _c(
-                          "li",
+                      _vm._l(_vm.comments, function(comment, key) {
+                        return _c(
+                          "ul",
                           {
-                            staticClass: "comment-item",
-                            class: _vm.hasChildren(comment),
-                            staticStyle: { "background-color": "aliceblue" }
+                            key: key,
+                            staticClass: "comments-list",
+                            staticStyle: { border: "thin solid gray" }
                           },
                           [
                             _c(
-                              "div",
+                              "li",
                               {
-                                staticClass:
-                                  "post__author author vcard inline-items"
+                                staticClass: "comment-item",
+                                class: _vm.hasChildren(comment),
+                                staticStyle: { "background-color": "aliceblue" }
                               },
                               [
-                                _c("img", {
-                                  attrs: {
-                                    src: _vm.getCommentProfile(comment),
-                                    alt: "author"
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "author-date" }, [
-                                  _c(
-                                    "a",
-                                    {
-                                      staticClass: "h6 post__author-name fn",
-                                      attrs: { href: "#" }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                    " +
-                                          _vm._s(_vm.getCommentName(comment)) +
-                                          "\n                                "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "post__date" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "post__author author vcard inline-items"
+                                  },
+                                  [
+                                    _c("img", {
+                                      attrs: {
+                                        src: _vm.getCommentProfile(comment),
+                                        alt: "author"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "author-date" }, [
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "h6 post__author-name fn",
+                                          attrs: { href: "#" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                    " +
+                                              _vm._s(
+                                                _vm.getCommentName(comment)
+                                              ) +
+                                              "\n                                "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "post__date" }, [
+                                        _c(
+                                          "time",
+                                          {
+                                            staticClass: "published",
+                                            attrs: {
+                                              datetime: "2017-03-24T18:18"
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                        " +
+                                                _vm._s(comment.created_at) +
+                                                "\n                                    "
+                                            )
+                                          ]
+                                        )
+                                      ])
+                                    ]),
+                                    _vm._v(" "),
                                     _c(
-                                      "time",
+                                      "a",
                                       {
-                                        staticClass: "published",
-                                        attrs: { datetime: "2017-03-24T18:18" }
+                                        staticClass: "more",
+                                        attrs: { href: "#" }
                                       },
                                       [
-                                        _vm._v(
-                                          "\n                                        " +
-                                            _vm._s(comment.created_at) +
-                                            "\n                                    "
+                                        _c(
+                                          "svg",
+                                          {
+                                            staticClass: "olymp-three-dots-icon"
+                                          },
+                                          [
+                                            _c("use", {
+                                              attrs: {
+                                                "xlink:href":
+                                                  "#olymp-three-dots-icon"
+                                              }
+                                            })
+                                          ]
                                         )
                                       ]
                                     )
-                                  ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("p", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(comment.comment_text) +
+                                      "\n                        "
+                                  )
                                 ]),
                                 _vm._v(" "),
                                 _c(
                                   "a",
-                                  { staticClass: "more", attrs: { href: "#" } },
-                                  [
-                                    _c(
-                                      "svg",
-                                      { staticClass: "olymp-three-dots-icon" },
-                                      [
-                                        _c("use", {
-                                          attrs: {
-                                            "xlink:href":
-                                              "#olymp-three-dots-icon"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("p", [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(comment.comment_text) +
-                                  "\n                        "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass: "post-add-icon inline-items",
-                                attrs: { href: "#" }
-                              },
-                              [
-                                _c("i", { staticClass: "fas fa-thumbs-up" }),
-                                _vm._v(" "),
-                                _c("span", [
-                                  _vm._v(_vm._s(comment.comment_replies.length))
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass: "post-add-icon inline-items",
-                                style: _vm.hasCommented(comment),
-                                attrs: { href: "#" }
-                              },
-                              [
-                                _c("i", { staticClass: "fas fa-comment-alt" }),
-                                _vm._v(" "),
-                                _c("span", [
-                                  _vm._v(_vm._s(comment.comment_replies.length))
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass: "post-add-icon inline-items",
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.showCommentReplyBox(comment)
-                                  }
-                                }
-                              },
-                              [_c("span", {}, [_vm._v("Reply")])]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "ul",
-                              { staticClass: "children" },
-                              _vm._l(comment.comment_replies, function(
-                                reply,
-                                key
-                              ) {
-                                return _c(
-                                  "li",
                                   {
-                                    key: key,
-                                    staticClass: "comment-item",
-                                    staticStyle: {
-                                      "background-color": "aliceblue"
-                                    }
+                                    staticClass: "post-add-icon inline-items",
+                                    attrs: { href: "#" }
                                   },
                                   [
-                                    _c(
-                                      "div",
+                                    _c("i", {
+                                      staticClass: "fas fa-thumbs-up"
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", [
+                                      _vm._v(
+                                        _vm._s(comment.comment_replies.length)
+                                      )
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "post-add-icon inline-items",
+                                    style: _vm.hasCommented(comment),
+                                    attrs: { href: "#" }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-comment-alt"
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", [
+                                      _vm._v(
+                                        _vm._s(comment.comment_replies.length)
+                                      )
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "post-add-icon inline-items",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.showCommentReplyBox(comment)
+                                      }
+                                    }
+                                  },
+                                  [_c("span", {}, [_vm._v("Reply")])]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "ul",
+                                  { staticClass: "children" },
+                                  _vm._l(comment.comment_replies, function(
+                                    reply,
+                                    key
+                                  ) {
+                                    return _c(
+                                      "li",
                                       {
-                                        staticClass:
-                                          "post__author author vcard inline-items"
+                                        key: key,
+                                        staticClass: "comment-item",
+                                        staticStyle: {
+                                          "background-color": "aliceblue"
+                                        }
                                       },
                                       [
-                                        _c("img", {
-                                          attrs: {
-                                            src: _vm.getCommentProfile(reply),
-                                            alt: "author"
-                                          }
-                                        }),
-                                        _vm._v(" "),
                                         _c(
                                           "div",
-                                          { staticClass: "author-date" },
+                                          {
+                                            staticClass:
+                                              "post__author author vcard inline-items"
+                                          },
                                           [
-                                            _c(
-                                              "a",
-                                              {
-                                                staticClass:
-                                                  "h6 post__author-name fn",
-                                                attrs: { href: "#" }
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "\n                                            " +
-                                                    _vm._s(
-                                                      _vm.getCommentName(reply)
-                                                    ) +
-                                                    "\n                                        "
-                                                )
-                                              ]
-                                            ),
+                                            _c("img", {
+                                              attrs: {
+                                                src: _vm.getCommentProfile(
+                                                  reply
+                                                ),
+                                                alt: "author"
+                                              }
+                                            }),
                                             _vm._v(" "),
                                             _c(
                                               "div",
-                                              { staticClass: "post__date" },
+                                              { staticClass: "author-date" },
                                               [
                                                 _c(
-                                                  "time",
+                                                  "a",
                                                   {
-                                                    staticClass: "published",
-                                                    attrs: {
-                                                      datetime:
-                                                        "2017-03-24T18:18"
-                                                    }
+                                                    staticClass:
+                                                      "h6 post__author-name fn",
+                                                    attrs: { href: "#" }
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                                                " +
+                                                      "\n                                            " +
                                                         _vm._s(
-                                                          reply.created_at
+                                                          _vm.getCommentName(
+                                                            reply
+                                                          )
                                                         ) +
-                                                        "\n                                            "
+                                                        "\n                                        "
+                                                    )
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  { staticClass: "post__date" },
+                                                  [
+                                                    _c(
+                                                      "time",
+                                                      {
+                                                        staticClass:
+                                                          "published",
+                                                        attrs: {
+                                                          datetime:
+                                                            "2017-03-24T18:18"
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                                " +
+                                                            _vm._s(
+                                                              reply.created_at
+                                                            ) +
+                                                            "\n                                            "
+                                                        )
+                                                      ]
                                                     )
                                                   ]
                                                 )
                                               ]
                                             )
                                           ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("p", [
+                                          _vm._v(
+                                            "\n                                    " +
+                                              _vm._s(reply.comment_text) +
+                                              "\n                                "
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _vm._m(4, true)
+                                      ]
+                                    )
+                                  }),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _vm.isLoggedIn()
+                                  ? _c(
+                                      "div",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "show",
+                                            rawName: "v-show",
+                                            value: _vm.isReplyTriggered(
+                                              comment.id
+                                            ),
+                                            expression:
+                                              "isReplyTriggered(comment.id)"
+                                          }
+                                        ],
+                                        staticClass: "post-reply form-group"
+                                      },
+                                      [
+                                        _c("textarea", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.comment_reply,
+                                              expression: "comment_reply"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          staticStyle: {
+                                            resize: "none",
+                                            width: "100%"
+                                          },
+                                          attrs: {
+                                            placeholder: "Reply to comment"
+                                          },
+                                          domProps: {
+                                            value: _vm.comment_reply
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.comment_reply =
+                                                $event.target.value
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "inline-items right" },
+                                          [
+                                            _c(
+                                              "button",
+                                              {
+                                                staticClass: "btn btn-primary",
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.preventDefault()
+                                                    return _vm.submitComment(
+                                                      "comment",
+                                                      comment
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v("Reply ")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "button",
+                                              {
+                                                staticClass: "btn btn-danger ",
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.preventDefault()
+                                                    return _vm.resetReplyBox()
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v("Cancel ")]
+                                            )
+                                          ]
                                         )
                                       ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("p", [
-                                      _vm._v(
-                                        "\n                                    " +
-                                          _vm._s(reply.comment_text) +
-                                          "\n                                "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm._m(4, true)
-                                  ]
-                                )
-                              }),
-                              0
-                            ),
-                            _vm._v(" "),
-                            _vm.isLoggedIn()
-                              ? _c(
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.postIsStatus
+            ? _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-header" }, [
+                  _vm._v("\n                Posted by "),
+                  _c("span", {
+                    domProps: {
+                      textContent: _vm._s(_vm.uploaded_by_company.comp_name)
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", {
+                    staticClass: "ml-3",
+                    domProps: { textContent: _vm._s(_vm.created_at) }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "carousel slide",
+                      attrs: {
+                        id: "carouselExampleControls",
+                        "data-ride": "carousel"
+                      }
+                    },
+                    [
+                      _c(
+                        "ol",
+                        { staticClass: "carousel-indicators" },
+                        _vm._l(_vm.status_files, function(file, key) {
+                          return _c("li", {
+                            key: key,
+                            class: _vm.isActive(key),
+                            attrs: {
+                              "data-target": "#carouselExampleIndicators",
+                              "data-slide-to": key
+                            }
+                          })
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "carousel-inner" },
+                        _vm._l(_vm.status_files, function(file, key) {
+                          return _c(
+                            "div",
+                            {
+                              key: key,
+                              staticClass: "carousel-item ",
+                              class: _vm.isActive(key)
+                            },
+                            [
+                              _c("img", {
+                                staticClass: "d-block w-100",
+                                attrs: { src: file.file_url, alt: "..." }
+                              })
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _vm._m(5),
+                      _vm._v(" "),
+                      _vm._m(6)
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", {}, [
+                    _c("div", { staticClass: "mt-3" }, [
+                      _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                        _c("p", {
+                          staticStyle: {
+                            border: "thin solid gray",
+                            padding: "10px",
+                            "background-color": "aliceblue"
+                          },
+                          domProps: { textContent: _vm._s(_vm.status_text) }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-12 col-lg-12 mt-3 p-3" },
+                    [
+                      _vm._m(7),
+                      _vm._v(" "),
+                      _vm._l(_vm.comments, function(comment, key) {
+                        return _c(
+                          "ul",
+                          {
+                            key: key,
+                            staticClass: "comments-list",
+                            staticStyle: { border: "thin solid gray" }
+                          },
+                          [
+                            _c(
+                              "li",
+                              {
+                                staticClass: "comment-item",
+                                class: _vm.hasChildren(comment),
+                                staticStyle: { "background-color": "aliceblue" }
+                              },
+                              [
+                                _c(
                                   "div",
                                   {
-                                    directives: [
-                                      {
-                                        name: "show",
-                                        rawName: "v-show",
-                                        value: _vm.isReplyTriggered(comment.id),
-                                        expression:
-                                          "isReplyTriggered(comment.id)"
-                                      }
-                                    ],
-                                    staticClass: "post-reply form-group"
+                                    staticClass:
+                                      "post__author author vcard inline-items"
                                   },
                                   [
-                                    _c("textarea", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.comment_reply,
-                                          expression: "comment_reply"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      staticStyle: {
-                                        resize: "none",
-                                        width: "100%"
-                                      },
+                                    _c("img", {
                                       attrs: {
-                                        placeholder: "Reply to comment"
-                                      },
-                                      domProps: { value: _vm.comment_reply },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.comment_reply =
-                                            $event.target.value
-                                        }
+                                        src: _vm.getCommentProfile(comment),
+                                        alt: "author"
                                       }
                                     }),
                                     _vm._v(" "),
+                                    _c("div", { staticClass: "author-date" }, [
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "h6 post__author-name fn",
+                                          attrs: { href: "#" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                    " +
+                                              _vm._s(
+                                                _vm.getCommentName(comment)
+                                              ) +
+                                              "\n                                "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "post__date" }, [
+                                        _c(
+                                          "time",
+                                          {
+                                            staticClass: "published",
+                                            attrs: {
+                                              datetime: "2017-03-24T18:18"
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                        " +
+                                                _vm._s(comment.created_at) +
+                                                "\n                                    "
+                                            )
+                                          ]
+                                        )
+                                      ])
+                                    ]),
+                                    _vm._v(" "),
                                     _c(
-                                      "div",
-                                      { staticClass: "inline-items right" },
+                                      "a",
+                                      {
+                                        staticClass: "more",
+                                        attrs: { href: "#" }
+                                      },
                                       [
                                         _c(
-                                          "button",
+                                          "svg",
                                           {
-                                            staticClass: "btn btn-primary",
-                                            on: {
-                                              click: function($event) {
-                                                $event.preventDefault()
-                                                return _vm.submitComment(
-                                                  "comment",
-                                                  comment
-                                                )
-                                              }
-                                            }
+                                            staticClass: "olymp-three-dots-icon"
                                           },
-                                          [_vm._v("Reply ")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass: "btn btn-danger ",
-                                            on: {
-                                              click: function($event) {
-                                                $event.preventDefault()
-                                                return _vm.resetReplyBox()
+                                          [
+                                            _c("use", {
+                                              attrs: {
+                                                "xlink:href":
+                                                  "#olymp-three-dots-icon"
                                               }
-                                            }
-                                          },
-                                          [_vm._v("Cancel ")]
+                                            })
+                                          ]
                                         )
                                       ]
                                     )
                                   ]
-                                )
-                              : _vm._e()
+                                ),
+                                _vm._v(" "),
+                                _c("p", [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(comment.comment_text) +
+                                      "\n                        "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "post-add-icon inline-items",
+                                    attrs: { href: "#" }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-thumbs-up"
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", [
+                                      _vm._v(
+                                        _vm._s(comment.comment_replies.length)
+                                      )
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "post-add-icon inline-items",
+                                    style: _vm.hasCommented(comment),
+                                    attrs: { href: "#" }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-comment-alt"
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", [
+                                      _vm._v(
+                                        _vm._s(comment.comment_replies.length)
+                                      )
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "post-add-icon inline-items",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.showCommentReplyBox(comment)
+                                      }
+                                    }
+                                  },
+                                  [_c("span", {}, [_vm._v("Reply")])]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "ul",
+                                  { staticClass: "children" },
+                                  _vm._l(comment.comment_replies, function(
+                                    reply,
+                                    key
+                                  ) {
+                                    return _c(
+                                      "li",
+                                      {
+                                        key: key,
+                                        staticClass: "comment-item",
+                                        staticStyle: {
+                                          "background-color": "aliceblue"
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "post__author author vcard inline-items"
+                                          },
+                                          [
+                                            _c("img", {
+                                              attrs: {
+                                                src: _vm.getCommentProfile(
+                                                  reply
+                                                ),
+                                                alt: "author"
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              { staticClass: "author-date" },
+                                              [
+                                                _c(
+                                                  "a",
+                                                  {
+                                                    staticClass:
+                                                      "h6 post__author-name fn",
+                                                    attrs: { href: "#" }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                            " +
+                                                        _vm._s(
+                                                          _vm.getCommentName(
+                                                            reply
+                                                          )
+                                                        ) +
+                                                        "\n                                        "
+                                                    )
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  { staticClass: "post__date" },
+                                                  [
+                                                    _c(
+                                                      "time",
+                                                      {
+                                                        staticClass:
+                                                          "published",
+                                                        attrs: {
+                                                          datetime:
+                                                            "2017-03-24T18:18"
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                                " +
+                                                            _vm._s(
+                                                              reply.created_at
+                                                            ) +
+                                                            "\n                                            "
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("p", [
+                                          _vm._v(
+                                            "\n                                    " +
+                                              _vm._s(reply.comment_text) +
+                                              "\n                                "
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _vm._m(8, true)
+                                      ]
+                                    )
+                                  }),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _vm.isLoggedIn()
+                                  ? _c(
+                                      "div",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "show",
+                                            rawName: "v-show",
+                                            value: _vm.isReplyTriggered(
+                                              comment.id
+                                            ),
+                                            expression:
+                                              "isReplyTriggered(comment.id)"
+                                          }
+                                        ],
+                                        staticClass: "post-reply form-group"
+                                      },
+                                      [
+                                        _c("textarea", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.comment_reply,
+                                              expression: "comment_reply"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          staticStyle: {
+                                            resize: "none",
+                                            width: "100%"
+                                          },
+                                          attrs: {
+                                            placeholder: "Reply to comment"
+                                          },
+                                          domProps: {
+                                            value: _vm.comment_reply
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.comment_reply =
+                                                $event.target.value
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "inline-items right" },
+                                          [
+                                            _c(
+                                              "button",
+                                              {
+                                                staticClass: "btn btn-primary",
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.preventDefault()
+                                                    return _vm.submitComment(
+                                                      "comment",
+                                                      comment
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v("Reply ")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "button",
+                                              {
+                                                staticClass: "btn btn-danger ",
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.preventDefault()
+                                                    return _vm.resetReplyBox()
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v("Cancel ")]
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
                           ]
                         )
-                      ]
-                    )
-                  })
-                ],
-                2
-              )
-            ])
-          ])
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            : _vm._e()
         ]
       )
     ]
@@ -115941,6 +116580,74 @@ var staticRenderFns = [
         attrs: { type: "submit", value: "Generate Quotation" }
       })
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", [_c("strong", [_c("u", [_vm._v("Comments")])])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      { staticClass: "post-add-icon inline-items", attrs: { href: "#" } },
+      [
+        _c("i", { staticClass: "fas fa-thumbs-up" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("0")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "carousel-control-prev",
+        attrs: {
+          href: "#carouselExampleControls",
+          role: "button",
+          "data-slide": "prev"
+        }
+      },
+      [
+        _c("span", {
+          staticClass: "carousel-control-prev-icon",
+          attrs: { "aria-hidden": "true" }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "sr-only" }, [_vm._v("Previous")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "carousel-control-next",
+        attrs: {
+          href: "#carouselExampleControls",
+          role: "button",
+          "data-slide": "next"
+        }
+      },
+      [
+        _c("span", {
+          staticClass: "carousel-control-next-icon",
+          attrs: { "aria-hidden": "true" }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "sr-only" }, [_vm._v("Next")])
+      ]
+    )
   },
   function() {
     var _vm = this

@@ -105,4 +105,11 @@ class companydataModel extends Model
             return $items;
         }
     }
+
+    public function freePackagePlan()
+    {
+        return $this->hasOne('App\models\plans\freePackagePlanModel',
+            'comp_id', 'comp_id', 'comp_token', 'comp_token');
+            
+    }
 }

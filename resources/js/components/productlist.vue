@@ -23,8 +23,8 @@
         <div style="display: flex;margin-bottom: 15px;padding-left: 25px;"
             class="row">
             <div class="post-thumb xs-12">
-                <img :src="product_files[0].file_url" alt="Product photo">
-                <a href="#" class="post-category bg-blue-light">Product</a>
+                <img :src="product_files[0].file_url" alt="Product photo" @click.prevent="viewProduct()">
+                <a href="#" class="post-category bg-blue-light"  @click.prevent="viewProduct()">Product</a>
             </div>
 
             <div class="post-content xs-12">
@@ -213,8 +213,8 @@
         <div class="post-block-photo js-zoom-gallery">
 
             <a v-for="(file,key) in getStatusFiles()" :href="file.file_url" class="half-width" 
-            :class="addClassMorePhotos(file.file_url)" v-bind:key="key">
-                <img :src="file.file_url" alt="photo">
+            :class="addClassMorePhotos(file.file_url)" v-bind:key="key" @click.prevent="viewStatus()">
+                <img :src="file.file_url" alt="photo" >
                 <span class="h2" v-show="isLastPhoto(file.file_url)"> +
                     {{status_files.length - 2}}
                 </span>

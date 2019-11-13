@@ -70,15 +70,20 @@ class generalController extends Controller
         }
         $isValidCompany[0]->address;
         $isValidCompany[0]->type;
-				$domain = substr($isValidCompany[0]->comp_email,
-					strpos($isValidCompany[0]->comp_email, "@"),  -1);
-				$numrepeat = str_repeat("*", (strlen($isValidCompany[0]->comp_email)-
-					strlen($domain)));
-				$hidden_email = $numrepeat.$domain;
-				$isValidCompany[0]->comp_email = $hidden_email;
-				$numrepeat = str_repeat("*",(strlen($isValidCompany[0]->comp_phone) - 4));
-				$hidden_phone = $numrepeat.substr($isValidCompany[0]->comp_phone, -5, -1);
-				$isValidCompany[0]->comp_phone = $hidden_phone;
+        $freeplan = $isValidCompany[0]->freePackagePlan;
+        if($freeplan === null)
+        {
+            $domain = substr($isValidCompany[0]->comp_email,
+                strpos($isValidCompany[0]->comp_email, "@"),  -1);
+            $numrepeat = str_repeat("*", (strlen($isValidCompany[0]->comp_email)-
+                strlen($domain)));
+            $hidden_email = $numrepeat.$domain;
+            $isValidCompany[0]->comp_email = $hidden_email;
+            $numrepeat = str_repeat("*",(strlen($isValidCompany[0]->comp_phone) - 4));
+            $hidden_phone = $numrepeat.substr($isValidCompany[0]->comp_phone, -5, -1);
+            $isValidCompany[0]->comp_phone = $hidden_phone;
+        }
+        
         // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess($isValidCompany);
         return $this->Error->getSuccess();

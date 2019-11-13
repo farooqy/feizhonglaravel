@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompTypeTable extends Migration
+class CreateFreePackagePlanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateCompTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('comp_type', function (Blueprint $table) {
+        Schema::create('free_package_plan', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('plan_token', 330);
             $table->bigInteger('comp_id');
-            $table->string('comp_token', 330);
-            $table->string('comp_type', 170);
-            $table->string('comp_subtype',180);
-            $table->string('comp_description',1200);
+            $table->string('comp_token',330);
+            $table->bigInteger('setby_staff_id');
+            $table->string('setby_staff_token',330);
+            $table->boolean('is_active_plan')->default(true);
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateCompTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comp_type');
+        Schema::dropIfExists('free_package_plan');
     }
 }

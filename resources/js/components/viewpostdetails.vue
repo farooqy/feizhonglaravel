@@ -11,7 +11,7 @@
                 </h4>
 
             </div>
-            <div class="card">
+            <div class="card" v-if="postIsProduct">
                 <div class="card-header">
                     Posted by <span v-text="product_company.comp_name"></span>
                     <span class="ml-3" v-text="created_at"></span>
@@ -167,6 +167,138 @@
                     </div>
 
                 </div>
+            </div> <div class="card" v-if="postIsStatus">
+                <div class="card-header">
+                    Posted by <span v-text="uploaded_by_company.comp_name"></span>
+                    <span class="ml-3" v-text="created_at"></span>
+                </div>
+                <div class="card-body">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" :data-slide-to="key" :class="isActive(key)"
+                                v-for="(file, key) in status_files" v-bind:key="key"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item " :class="isActive(key)" v-for="(file, key) in status_files"
+                                v-bind:key="key">
+                                <img :src="file.file_url" class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    <div class="">
+                        <div class="mt-3">
+                            <div class="col-md-12 col-lg-12">
+                                <p v-text="status_text" style="border: thin solid gray; padding: 10px; 
+                                    background-color: aliceblue;"></p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12 col-lg-12 mt-3 p-3" >
+                        <h3><strong><u>Comments</u></strong></h3>
+                        <ul class="comments-list" v-for="(comment,key) in comments" v-bind:key="key" style="border:thin solid gray">
+                        <li class="comment-item" :class="hasChildren(comment)" style="background-color: aliceblue;">
+                            <div class="post__author author vcard inline-items">
+                                <img :src="getCommentProfile(comment)" alt="author">
+
+                                <div class="author-date">
+                                    <a class="h6 post__author-name fn" href="#">
+                                        {{getCommentName(comment)}}
+                                    </a>
+                                    <div class="post__date">
+                                        <time class="published" datetime="2017-03-24T18:18">
+                                            {{comment.created_at}}
+                                        </time>
+                                    </div>
+                                </div>
+
+                                <a href="#" class="more">
+                                    <svg class="olymp-three-dots-icon">
+                                        <use xlink:href="#olymp-three-dots-icon"></use>
+                                    </svg>
+                                </a>
+
+                            </div>
+
+                            <p>
+                                {{comment.comment_text}}
+                            </p>
+
+                            <a href="#" class="post-add-icon inline-items">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span>{{comment.comment_replies.length}}</span>
+                            </a>
+                            <a href="#" class="post-add-icon inline-items" :style="hasCommented(comment)">
+                                <i class="fas fa-comment-alt"></i>
+                                <span>{{comment.comment_replies.length}}</span>
+                            </a>
+                            <a href="#" class="post-add-icon inline-items"
+                                @click.prevent="showCommentReplyBox(comment)">
+                                <span class="">Reply</span>
+                            </a>
+                            <!-- comment children comments -->
+                            <ul class="children">
+                                <li class="comment-item" v-for="(reply,key) in comment.comment_replies"
+                                    style="background-color: aliceblue;" v-bind:key="key">
+                                    <div class="post__author author vcard inline-items">
+                                        <img :src="getCommentProfile(reply)" alt="author">
+
+                                        <div class="author-date">
+                                            <a class="h6 post__author-name fn" href="#">
+                                                {{getCommentName(reply)}}
+                                            </a>
+                                            <div class="post__date">
+                                                <time class="published" datetime="2017-03-24T18:18">
+                                                    {{reply.created_at}}
+                                                </time>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p>
+                                        {{reply.comment_text}}
+                                    </p>
+                                    <a href="#" class="post-add-icon inline-items">
+                                        <i class="fas fa-thumbs-up"></i>
+                                        <span>0</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- reply to comment form -->
+                            <div class="post-reply form-group" v-if="isLoggedIn()"
+                                v-show="isReplyTriggered(comment.id)">
+                                <textarea class="form-control" v-model="comment_reply" placeholder="Reply to comment"
+                                    style="resize: none;
+                        width: 100%;"></textarea>
+                                <div class="inline-items right">
+                                    <button class="btn btn-primary"
+                                        @click.prevent="submitComment('comment', comment)">Reply </button>
+                                    <button class="btn btn-danger " @click.prevent="resetReplyBox()">Cancel </button>
+                                </div>
+                            </div>
+
+
+
+                        </li>
+
+
+                        </ul>
+                    </div>
+
+                </div>
             </div>
 
         </div>
@@ -186,8 +318,9 @@
                 post_token: this.product_token === undefined ? this.status_generated_token : this.product_token,
                 comment_reply: null,
                 show_reply_box: -1,
-                in_comments : this.comments
-
+                in_comments : this.comments,
+                postIsStatus: this.post_type === "status",
+                postIsProduct: this.post_type === "product"
             }
         },
         methods: {
