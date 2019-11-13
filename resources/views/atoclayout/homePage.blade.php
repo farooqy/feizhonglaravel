@@ -858,7 +858,9 @@ col-md-6 col-sm-12 col-12">
               <a href="/" target="_blank"><i class="fas fa-home mr-3"></i> Home</a>
             </li>
             <li>
-              <a href="/user/needs" target="_blank"><i class="fab fa-connectdevelop mr-3"></i>My Needs</a>
+
+              <a href="/comp/needs" target="_blank" v-if="isCompany()"><i class="fab fa-connectdevelop mr-3"></i>View Demands</a>
+              <a href="/user/needs" target="_blank" v-else"><i class="fab fa-connectdevelop mr-3"></i>My Needs</a>
             </li>
             <li>
               <a href="/profile" target="_blank"><i class="fas fa-user mr-3"></i>Profile</a>
