@@ -74,13 +74,13 @@ class generalController extends Controller
         if($freeplan === null)
         {
             $domain = substr($isValidCompany[0]->comp_email,
-                strpos($isValidCompany[0]->comp_email, "@"),  -1);
+                strpos($isValidCompany[0]->comp_email, "@"),  strlen($isValidCompany[0]->comp_email));
             $numrepeat = str_repeat("*", (strlen($isValidCompany[0]->comp_email)-
                 strlen($domain)));
             $hidden_email = $numrepeat.$domain;
             $isValidCompany[0]->comp_email = $hidden_email;
             $numrepeat = str_repeat("*",(strlen($isValidCompany[0]->comp_phone) - 4));
-            $hidden_phone = $numrepeat.substr($isValidCompany[0]->comp_phone, -5, -1);
+            $hidden_phone = $numrepeat.substr($isValidCompany[0]->comp_phone, -5, strlen($isValidCompany[0]->comp_phone));
             $isValidCompany[0]->comp_phone = $hidden_phone;
         }
         
