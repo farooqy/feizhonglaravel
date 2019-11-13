@@ -13,6 +13,7 @@ use App\models\status\commentsModel;
 use App\models\status\likesModel;
 use App\models\companies\companyLicenseModel;
 use App\models\products\productModel;
+use App\models\companies\suspendedCompaniesModel;
 use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\customClass\ApiKeyManager;
@@ -81,6 +82,16 @@ class statusController extends Controller
         $apiset = $this->apiHandleSet($request->host_id, $request->host_token, $request->api_key);
         if($apiset !== true)
             return $apiset;
+        $is_suspended = suspendedCompaniesModel::where([
+            ["comp_id", $request->host_id],
+            ["comp_token", $request->host_token],
+            ["is_revoked", false]
+        ])->exists();
+        if($is_suspended)
+        {
+            $this->Error->setError(["The company is suspended. Cannot view its information"]);
+            return $this->Error->geError();
+        }
         $statusData = compStatusModel::where([
           ['status_status' ,'=', 'active'],
           ['comp_id', $request->host_id],
@@ -115,25 +126,46 @@ class statusController extends Controller
       	$statusData = compStatusModel::where([
           ['status_status' ,'=', 'active']
         ])->latest()->get();
+        $status_list = [];
+        $status_count = 0;
         foreach ($statusData as $key => $status) {
-          $comments = $status->comments;
-          $likes = $status->likes;
-            $eachStatus[$key] = [
-              "files" => $status->Status_Files,
-              "companyProfile" => $status->companyData,
-              "num_comments" => $comments->count(),
-              "num_likes" => $likes->count(),
-            ];
-          foreach ($comments as $ckey => $comment)
-          {
-            if($comment->host_type === "comp")
-              $comment->compProfile;
-            else
-              $comment->personProfile;
-          }
+            $is_suspended = false;
+            $company_profile = $status->companyData;
+            if($company_profile === null && $company_profile->count() <= 0)
+                continue;
+            $suspensions = $company_profile->companySuspensions;
+            if($suspensions !== null && $suspensions > 0)
+            {
+                foreach ($suspensions as $key => $suspension) {
+                    if(!$suspension->is_revoked)
+                    {
+                        $is_suspended = true;
+                        break;
+                    }
+                }
+            }
+            if($is_suspended)
+                continue;
+            
+            $comments = $status->comments;
+            $status_list[$status_count]["comments"]= $comments;
+            $likes = $status->likes;
+            $status_list[$status_count]["likes"]=$likes;
+            foreach ($comments as $ckey => $comment)
+            {
+                if($comment->host_type === "comp")
+                $status_list[$status_count]["comp_profile"]=$comment->compProfile;
+                else
+                $status_list[$status_count]["person_profile"]=$comment->personProfile;
+            }
+            $status_list[$status_count]["files"]=$status->Status_Files;
+            $status_list[$status_count]["company_profile"] = $status->companyData;
+
+            $status_count +=1;
+          
         }
 
-        $this->Error->setSuccess($statusData);
+        $this->Error->setSuccess($status_list);
         return $this->Error->getSuccess();
 
     }
@@ -159,10 +191,45 @@ class statusController extends Controller
         $collection = collect();
         foreach ($statusData as $key => $status) {
             $status->type = "status";
+            $profile = $status->companydata;
+            $suspensions = $profile->companySuspensions;
+            $is_suspended = false;
+            if($suspensions !== null && $suspensions->count() > 0)
+            {
+                foreach($suspensions as $key => $suspension)
+                {    
+                    if(!$suspension->is_revoked)
+                    {
+                        $is_suspended = true;
+                        break;
+                    }
+                }
+            }
+            if($is_suspended)
+                continue;
+            $status->company_data = $profile;
             $collection->push($status);
         }
         foreach ($products as $key => $product) {
             $product->type = "product";
+
+            $profile = $status->companydata;
+            $suspensions = $profile->companySuspensions;
+            $is_suspended = false;
+            if($suspensions !== null && $suspensions->count() > 0)
+            {
+                foreach($suspensions as $key => $suspension)
+                {    
+                    if(!$suspension->is_revoked)
+                    {
+                        $is_suspended = true;
+                        break;
+                    }
+                }
+            }
+            if($is_suspended)
+                continue;
+            $product->company_data = $profile;
             $collection->push($product);
         }
         $listProducts = array_reverse(array_sort($collection, function ($value) {
@@ -173,12 +240,15 @@ class statusController extends Controller
         foreach($listProducts as $key => $eachStatus)
         {
             // return $eachStatus;
+            $listProducts[$key]->companydata = $eachStatus->companydata;
+
             $comments = $eachStatus->comments;
             $likes = $eachStatus->likes;
             $list_comments = [];
 
             $listProducts[$key]->num_likes = $likes->count();
             $listProducts[$key]->num_comments = $comments->count();
+            
             foreach ($comments as $ckey => $comment)
             {
               if($comment->host_type === "comp")
@@ -212,7 +282,7 @@ class statusController extends Controller
             if($eachStatus->type === "product")
             {
                 $listProducts[$key]->product_files = $eachStatus->Product_Files;
-                $listProducts[$key]->companydata = $eachStatus->companydata;
+                
 
 
 
@@ -220,7 +290,6 @@ class statusController extends Controller
             else
             {
                 $listProducts[$key]->status__files = $eachStatus->Status_Files;
-                $listProducts[$key]->companydata = $eachStatus->companyData;
 
 
             }

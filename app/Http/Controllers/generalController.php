@@ -9,6 +9,7 @@ use App\customClass\Error;
 use App\customClass\CustomRequestValidator;
 use App\customClass\ApiKeyManager;
 use App\models\registrationTrackerModel;
+use App\models\companies\suspendedCompaniesModel;
 
 use App\models\normalUsersModel;
 class generalController extends Controller
@@ -68,6 +69,17 @@ class generalController extends Controller
             $this->Error->setError(["The company you are viewing is doesn't exit or has been suspended"]);
             return $this->Error->getError();
         }
+        $company_suspensions = $isValidCompany[0]->companySuspensions;
+        if($company_suspensions !== null && $company_suspensions->count() > 0)
+        {
+            foreach ($company_suspensions as $key => $suspension) {
+                if(!$suspension->is_revoked)
+                {
+                    $this->Error->setError(["The company has been suspended and its account cannot be accessed"]);
+                    return $this->Error->getError();
+                }
+            }
+        }
         $isValidCompany[0]->address;
         $isValidCompany[0]->type;
         $freeplan = $isValidCompany[0]->freePackagePlan;
@@ -117,6 +129,23 @@ class generalController extends Controller
     		$comp_list = [];
     		foreach($list as $ckey => $company)
     		{
+                $company_suspensions = $company->companySuspensions;
+                $is_suspended = false;
+                if($company_suspensions !== null && $company_suspensions->count() > 0)
+                {
+                    
+                    foreach($company_suspensions as $suspension)
+                    {
+                        if(!$suspension->is_revoked)
+                            $is_suspended = true;  
+                        if($is_suspended)
+                            break; 
+                        
+                    }
+                    
+                }
+                if($is_suspended)
+                    continue;
                 if($company->address === null || $company->type === null )
                 {
                     unset($list[$ckey]);

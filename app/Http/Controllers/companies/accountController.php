@@ -202,7 +202,19 @@ class accountController extends Controller
                 }
 
                 return $this->error;
-            }
+			}
+			$suspensions = $data[0]->companySuspensions;
+			if($suspensions !== null && $suspensions->count() > 0)
+			{
+				foreach($suspensions as $suspension)
+				{
+					if(!$suspension->is_revoked)
+					{
+						$this->Error->setError(["This company is suspended, and cannot access the account"]);
+						return $this->Error->getError();
+					}
+				}
+			}
             $data[0]->address;
             $data[0]->type;
             $data[0]->products;

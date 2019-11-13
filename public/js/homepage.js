@@ -129866,7 +129866,7 @@ var app = new Vue({
         this.comp_list.push({
           "comp_id": data[i].comp_id,
           "comp_token": data[i].comp_token,
-          "comp_name": data[i].comp_name,
+          "comp_name": this.shortenName(data[i].comp_name),
           "comp_logo": data[i].comp_logo,
           "comp_type": data[i].comp_type,
           "is_verified": data[i].hasLicense,
@@ -129971,7 +129971,7 @@ var app = new Vue({
       for (i = 0; i < data.length; i++) {
         var d = data[i];
         this.trending_list.push({
-          "company_name": d.comp_name,
+          "company_name": this.shortenName(d.comp_name),
           "company_id": d.comp_id,
           "company_logo": d.comp_logo,
           "company_type": d.comp_type,
@@ -129992,7 +129992,7 @@ var app = new Vue({
     setCompanyDetails: function setCompanyDetails(data) {
       if (data[0]) data = data[0];
       this.Host.company_logo = data.comp_logo;
-      this.Host.company_name = data.comp_name;
+      this.Host.company_name = this.shortenName(data.comp_name);
       this.Host.company_email = data.comp_email;
       this.Host.company_phone = data.comp_phone;
       this.Host.guest_id = data.comp_id;
@@ -130464,6 +130464,10 @@ var app = new Vue({
           visible: false
         }
       };
+    },
+    shortenName: function shortenName(name) {
+      if (name.length > 30) return name.substr(0, 30);
+      return name;
     }
   },
   components: {

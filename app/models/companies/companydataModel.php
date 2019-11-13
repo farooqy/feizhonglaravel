@@ -110,6 +110,11 @@ class companydataModel extends Model
     {
         return $this->hasOne('App\models\plans\freePackagePlanModel',
             'comp_id', 'comp_id', 'comp_token', 'comp_token');
-            
+
+    }
+    public function companySuspensions()
+    {
+        return $this->hasMany('App\models\companies\suspendedCompaniesModel',
+            'comp_id', 'comp_id', 'comp_token', 'comp_token');
     }
 }

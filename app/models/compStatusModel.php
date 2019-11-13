@@ -19,7 +19,7 @@ class compStatusModel extends Model
     }
     public function companyData()
     {
-    	return $this->belongsTo('App\models\companydata_model', 'comp_id', 'comp_id');
+    	return $this->belongsTo('App\models\companies\companydataModel', 'comp_id', 'comp_id');
     }
     public function comments()
     {
