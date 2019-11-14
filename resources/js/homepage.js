@@ -759,7 +759,7 @@ var app = new Vue({
         shortenName(name)
         {
             if(name.length > 10)
-                return name.substr(0, 30);
+                return name.substr(0, 10);
             return name;
         }
 
