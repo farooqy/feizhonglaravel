@@ -19,7 +19,7 @@
 
 					</div>
 
-					<div class="profile-section">
+					<div class="profile-section" style="z-index:0">
 						<div class="row">
 							<div class="col col-lg-5 col-md-5 col-sm-12 col-12">
 								<ul class="profile-menu">
@@ -61,7 +61,7 @@
 						</div>
 
 					</div>
-					<div class="top-header-author">
+					<div class="top-header-author" style="z-index:0">
 						<a href="02-ProfilePage.html" class="author-thumb">
 							<img :src="Comp_Profile.company_logo" alt="author"
 							style="height: 100%;">

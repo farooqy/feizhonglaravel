@@ -67,6 +67,7 @@ export default class Company {
         "Fishing industry",
         "Timer Industry",
         "Tobacco Industry",
+        "Coffee industry"
       ],
       [
         "Face make up",
