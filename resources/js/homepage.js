@@ -1,24 +1,4 @@
-require("./bootstrap");
-import error from "./components/error.vue";
-import loader from "./components/loader.vue";
-import statuslist from "./components/statuslist.vue";
-import statuslistv2 from "./components/statuslistv2.vue";
-import productlist from "./components/productlist.vue";
-import trendingcompanylist from "./components/trendingcompanylist.vue";
-import companylist from "./components/companylist.vue";
-import viewpostdetails from "./components/viewpostdetails.vue";
-import Company from "./Company.js";
-import User from "./User.js";
-import Guest from "./Guest.js";
-import Status from "./Status.js";
-import Product from "./Product.js";
-import ServerRequest from "./ServerRequest";
-window.Vue = require("vue");
-Vue.use(require('vue-cookies'));
-Vue.use(require('vue-faker'), {
-    locale: 'zh_CN'
-});
-window.Axios = require('axios');
+
 
 var app = new Vue({
     el: "#app",
@@ -518,6 +498,7 @@ var app = new Vue({
                     continue;
                 else if(p.product_id === product_id && p.generated_token === product_token)
                 {
+                    p.host_type = this.host_type;
                     this.product_modal = {
                         visible: true,
                         data: p,
@@ -529,7 +510,7 @@ var app = new Vue({
                             success_text :null,
                             visible: false,
                         }
-                    }
+                    };
                 }
             }
         },
@@ -545,6 +526,7 @@ var app = new Vue({
                     continue;
                 if(p.status_id === status_id && p.status_generated_token === status_generated_token)
                 {
+                    p.host_type = this.host_type;
                     this.product_modal = {
                         visible: true,
                         data: p,
@@ -556,9 +538,13 @@ var app = new Vue({
                             success_text :null,
                             visible: false,
                         }
-                    }
+                    };
                 }
             }
+        },
+        toggleBargainModel(product_id, product_token)
+        {
+            
         },
         userProductNeed() {
             if (this.needed_product.prod_name === "" ||

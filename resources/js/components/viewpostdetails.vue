@@ -47,8 +47,10 @@
                             </div>
                             <div class="col-md-4 col-lg-4">
                                 <label class="label">Bargain?</label>
-                                <input class="input btn btn-primary" type="submit"
-                                    value="Generate Quotation" style="height:60px"/>
+                                <input class="input btn btn-primary" type="submit" v-if="host_type === 1"
+                                    value="Generate Quotation" style="height:60px" @click.prevent="bargainModel(product_id, product_token)"/>
+                                <input class="input btn btn-primary" type="submit" v-else
+                                    value="Generate Quotation" style="height:60px" disabled/>
                                 
                             </div>
                         </div>
@@ -417,11 +419,15 @@
             resetReplyBox() {
                 this.show_reply_box = -1;
             },
+            bargainModel(product_id, product_token)
+            {
+                this.$emit('toggle-bargain-model',product_id, product_token);
+            }
 
         },
         props: [
             "post_type", "host_profile", "comment_text", "comments", "likes",
-            "host_id", "host_token", "is_logged_in",
+            "host_id", "host_token", "is_logged_in", "host_type",
 
             "generated_token", "product_currency", "product_description",
             "product_files", "product_token", "product_id", "product_name",

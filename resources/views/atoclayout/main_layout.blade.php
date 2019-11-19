@@ -659,7 +659,14 @@
 	<script defer src="/olympus_assets/fonts/fontawesome-all.js"></script>
 
 	<script src="/olympus_assets/Bootstrap/dist/js/bootstrap.bundle.js"></script>
-
+	@php
+	$hash1 = hash('md5', file_get_contents(public_path().'/js/required_scripts.js'));
+	$hash2 = hash('md5', file_get_contents(public_path().'/js/required_components.js'));
+	$required_scripts = '/js/required_scripts.js?'.$hash1;
+	$required_components = '/js/required_components.js?'.$hash2;
+	@endphp
+	<script src="{{$required_scripts}}" type="text/javascript"></script>
+	<script src="{{$required_components}}" type="text/javascript"></script>
 	@yield("vuescript")
 
 </body>

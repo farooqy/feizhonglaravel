@@ -280,8 +280,8 @@
 
 
   <div class="ui-block">
-      <productlist v-for="statProd in StatusList" v-bind="statProd"
-      v-on:submit-comment="submitComment"
+      <productlist v-for="(statProd, key) in StatusList" v-bind="statProd"
+      v-on:submit-comment="submitComment" 
       v-on:is-logged-in="isLoggedIn()"
       v-on:view-product-details="viewProductDetails"
       v-on:view-status-details="viewStatusDetails"></productlist>
@@ -289,7 +289,8 @@
   <div class="ui-block">
       <viewpostdetails v-bind="product_modal.data" 
       v-if="product_modal.visible"
-      v-on:close-postdetail-modal="disMissPostDetailsModal"></viewpostdetails>
+      v-on:close-postdetail-modal="disMissPostDetailsModal"
+      v-on:toggle-bargain-model="toggleBargainModel"></viewpostdetails>
   </div>
   <div class="ui-block">
       <viewpostdetails v-bind="status_modal.data" 
@@ -327,8 +328,8 @@ col-md-6 col-sm-12 col-12">
           <!-- W-Friend-Pages-Added -->
 
           <ul class="widget w-friend-pages-added notification-list friend-requests">
-            <trendingcompanylist v-for="comp in trending_list"
-            v-bind="comp">
+            <trendingcompanylist v-for="(comp, key) in trending_list"
+            v-bind="comp" >
             </trendingcompanylist>
           </ul>
 

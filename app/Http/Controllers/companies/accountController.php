@@ -19,7 +19,7 @@ use App\customClass\CustomRequestValidator;
 use App\customClass\FileUploader;
 use App\customClass\ApiKeyManager;
 use Illuminate\Support\Facades\Crypt;
-use Log, File, Hash;
+use Log, File, Hash, Mail;
 class accountController extends Controller
 {
     //
@@ -553,19 +553,21 @@ class accountController extends Controller
             }
         }
 
-				$new_code = phoneVerificationModel::generateVerifCode();
-    		phoneVerificationModel::create(
+		$new_code = phoneVerificationModel::generateVerifCode();
+    	phoneVerificationModel::create(
     			["target_phone" => $request->telephone, "verification_code" =>$new_code]
-    		);
-				$body = "[AtoC] ".$new_code." is your verification code. This code will expire in 5 minutes.
+    	);
+		$body = "[AtoC] ".$new_code." is your verification code. This code will expire in 5 minutes.
 				Please do not disclose it for security purposes.";
-
-				return $this->twilioSendMessage($request->telephone, $body);
+		
+		Mail::to(["noor@drongo", "neud@drongo.tech"])
+		->send(new \App\Mail\companies\registrationCodeMail($new_code, $request->telephone));
+		return $this->twilioSendMessage($request->telephone, $body);
 
     }
-		public function twilioSendMessage($telephone, $body)
-		{
-			$TwilioClient = new Client(env('TWILIO_SID'), env('TWILIO_AUTH'));
+	public function twilioSendMessage($telephone, $body)
+	{
+		$TwilioClient = new Client(env('TWILIO_SID'), env('TWILIO_AUTH'));
     	try
     	{
 
@@ -595,7 +597,7 @@ class accountController extends Controller
     			"extra" => "I am cause 4"
     		]);
     	}
-		}
+	}
 
     protected function isNotValidRequest($validator)
     {

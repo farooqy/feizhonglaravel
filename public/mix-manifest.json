@@ -9,6 +9,8 @@
     "/js/comp_profile.js": "/js/comp_profile.js",
     "/js/homepage.js": "/js/homepage.js",
     "/js/registration.js": "/js/registration.js",
+    "/js/required_components.js": "/js/required_components.js",
+    "/js/required_scripts.js": "/js/required_scripts.js",
     "/js/singlecompview.js": "/js/singlecompview.js",
     "/js/user_profile.js": "/js/user_profile.js"
 }
