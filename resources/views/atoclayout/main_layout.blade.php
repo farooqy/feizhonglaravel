@@ -176,7 +176,7 @@
 						</div>
 						<a href="/profile" class="author-name fn">
 							<div class="author-title">
-								@{{getHostName()}} <svg class="olymp-dropdown-arrow-icon">
+								@{{shortenName(getHostName())}} <svg class="olymp-dropdown-arrow-icon">
 									<use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use>
 								</svg>
 							</div>

@@ -6,7 +6,7 @@
     </div>
     <div class="notification-event">
       <a :href="'/comp/view/'+this.company_id+'/'+this.company_token" class="h6 notification-friend"
-      v-text="company_name"></a>
+      v-text="shortenName(company_name)"></a>
       <span class="chat-message-item"> {{company_type}}</span>
     </div>
     <span class="notification-icon" data-toggle="tooltip" data-placement="top"
@@ -34,6 +34,15 @@ module.exports = {
     truncate: function (text, length, suffix) {
             return text.substring(0, length) + suffix;
     },
+  },
+  methods: {
+
+      shortenName(name)
+      {
+          if(name.length > 15)
+              return name.substr(0, 15);
+          return name;
+      }
   }
 }
 </script>

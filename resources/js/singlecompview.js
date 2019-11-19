@@ -347,6 +347,12 @@ var app = new Vue({
     {
       this.errorModal = false;
     },
+    shortenName(name)
+    {
+        if(name.length > 15)
+            return name.substr(0, 15);
+        return name;
+    }
   },
   components: {
     error,loader,statuslist,trendingcompanylist,statuslistv2,

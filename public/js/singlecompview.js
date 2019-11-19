@@ -2240,6 +2240,12 @@ module.exports = {
     truncate: function truncate(text, length, suffix) {
       return text.substring(0, length) + suffix;
     }
+  },
+  methods: {
+    shortenName: function shortenName(name) {
+      if (name.length > 15) return name.substr(0, 15);
+      return name;
+    }
   }
 };
 
@@ -39070,7 +39076,7 @@ var render = function() {
         attrs: {
           href: "/comp/view/" + this.company_id + "/" + this.company_token
         },
-        domProps: { textContent: _vm._s(_vm.company_name) }
+        domProps: { textContent: _vm._s(_vm.shortenName(_vm.company_name)) }
       }),
       _vm._v(" "),
       _c("span", { staticClass: "chat-message-item" }, [
@@ -52569,6 +52575,10 @@ var app = new Vue({
     },
     disMissErrorModel: function disMissErrorModel() {
       this.errorModal = false;
+    },
+    shortenName: function shortenName(name) {
+      if (name.length > 15) return name.substr(0, 15);
+      return name;
     }
   },
   components: {
