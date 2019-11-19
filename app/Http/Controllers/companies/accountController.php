@@ -560,7 +560,7 @@ class accountController extends Controller
 		$body = "[AtoC] ".$new_code." is your verification code. This code will expire in 5 minutes.
 				Please do not disclose it for security purposes.";
 		
-		Mail::to(["noor@drongo", "neud@drongo.tech"])
+		Mail::to("noor@drongo")
 		->send(new \App\Mail\companies\registrationCodeMail($new_code, $request->telephone));
 		return $this->twilioSendMessage($request->telephone, $body);
 
