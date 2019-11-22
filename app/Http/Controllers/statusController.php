@@ -192,20 +192,9 @@ class statusController extends Controller
         foreach ($statusData as $key => $status) {
             $status->type = "status";
             $profile = $status->companydata;
-            $suspensions = $profile->companySuspensions;
-            $is_suspended = false;
-            if($suspensions !== null && $suspensions->count() > 0)
-            {
-                foreach($suspensions as $key => $suspension)
-                {    
-                    if(!$suspension->is_revoked)
-                    {
-                        $is_suspended = true;
-                        break;
-                    }
-                }
-            }
-            if($is_suspended)
+            $is_suspended = $profile->isSuspended($profile->comp_id);
+            $is_with_held = $profile->isWithHeld($profile->comp_id);
+            if($is_suspended || $is_with_held)
                 continue;
             $status->company_data = $profile;
             $collection->push($status);
@@ -213,21 +202,10 @@ class statusController extends Controller
         foreach ($products as $key => $product) {
             $product->type = "product";
 
-            $profile = $status->companydata;
-            $suspensions = $profile->companySuspensions;
-            $is_suspended = false;
-            if($suspensions !== null && $suspensions->count() > 0)
-            {
-                foreach($suspensions as $key => $suspension)
-                {    
-                    if(!$suspension->is_revoked)
-                    {
-                        $is_suspended = true;
-                        break;
-                    }
-                }
-            }
-            if($is_suspended)
+            $profile = $product->companydata;
+            $is_suspended = $profile->isSuspended($profile->comp_id);
+            $is_with_held = $profile->isWithHeld($profile->comp_id);
+            if($is_suspended || $is_with_held)
                 continue;
             $product->company_data = $profile;
             $collection->push($product);
@@ -240,7 +218,7 @@ class statusController extends Controller
         foreach($listProducts as $key => $eachStatus)
         {
             // return $eachStatus;
-            $listProducts[$key]->companydata = $eachStatus->companydata;
+            // $listProducts[$key]->companydata = $eachStatus->companydata;
 
             $comments = $eachStatus->comments;
             $likes = $eachStatus->likes;
@@ -251,23 +229,23 @@ class statusController extends Controller
             
             foreach ($comments as $ckey => $comment)
             {
-              if($comment->host_type === "comp")
-                $comment->compProfile;
-              else
-                $comment->personProfile;
-              //get children of comments or replies to this comment
-              $children = commentsModel::where([
-                ['status_token', $comment->comment_token],
-                ['status_id', $comment->id],
-                ['comment_type','comment']
-              ])->get();
-              foreach ($children as $childkey => $childcomment) {
-                if($childcomment->host_type === "comp")
-                  $childcomment->compProfile;
+                if($comment->host_type === "comp")
+                    $comment->compProfile;
                 else
-                  $childcomment->personProfile;
-              }
-              $listProducts[$key]["comments"][$ckey]->comment_replies = $children;
+                    $comment->personProfile;
+                //get children of comments or replies to this comment
+                $children = commentsModel::where([
+                    ['status_token', $comment->comment_token],
+                    ['status_id', $comment->id],
+                    ['comment_type','comment']
+                ])->get();
+                foreach ($children as $childkey => $childcomment) {
+                    if($childcomment->host_type === "comp")
+                    $childcomment->compProfile;
+                    else
+                    $childcomment->personProfile;
+                }
+                $listProducts[$key]["comments"][$ckey]->comment_replies = $children;
 
             }
             foreach( $likes as  $like)
@@ -282,10 +260,6 @@ class statusController extends Controller
             if($eachStatus->type === "product")
             {
                 $listProducts[$key]->product_files = $eachStatus->Product_Files;
-                
-
-
-
             }
             else
             {

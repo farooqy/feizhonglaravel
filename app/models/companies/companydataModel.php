@@ -117,4 +117,18 @@ class companydataModel extends Model
         return $this->hasMany('App\models\companies\suspendedCompaniesModel',
             'comp_id', 'comp_id', 'comp_token', 'comp_token');
     }
+    public function isSuspended($comp_id)
+    {
+        return \App\models\companies\suspendedCompaniesModel::where([
+            ["comp_id", $comp_id],
+            ["is_revoked", false]
+        ])->exists();
+    }
+    public function isWithHeld($comp_id)
+    {
+        return \App\models\companies\withHeldCompaniesModel::where([
+            ["with_held_comp_id", $comp_id],
+            ["is_active", true]
+        ])->exists();
+    }
 }

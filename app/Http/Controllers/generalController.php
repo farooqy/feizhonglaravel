@@ -130,21 +130,10 @@ class generalController extends Controller
     		foreach($list as $ckey => $company)
     		{
                 $company_suspensions = $company->companySuspensions;
-                $is_suspended = false;
-                if($company_suspensions !== null && $company_suspensions->count() > 0)
-                {
-                    
-                    foreach($company_suspensions as $suspension)
-                    {
-                        if(!$suspension->is_revoked)
-                            $is_suspended = true;  
-                        if($is_suspended)
-                            break; 
-                        
-                    }
-                    
-                }
-                if($is_suspended)
+                $is_suspended = $company->isSuspended($company->comp_id);
+                
+                $is_with_held = $company->isWithHeld($company->comp_id);
+                if($is_suspended || $is_with_held)
                     continue;
                 if($company->address === null || $company->type === null )
                 {

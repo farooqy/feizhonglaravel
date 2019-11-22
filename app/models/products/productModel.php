@@ -14,7 +14,7 @@ class productModel extends Model
     }
     public function companydata()
     {
-    	return $this->belongsTo('App\models\companydata_model', 'product_for_id', 'comp_id');
+    	return $this->belongsTo('App\models\companies\companydataModel', 'product_for_id', 'comp_id');
     }
     public function quotations()
     {
