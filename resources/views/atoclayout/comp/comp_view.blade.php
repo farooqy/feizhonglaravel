@@ -64,7 +64,7 @@
 					<div class="top-header-author" style="z-index:0">
 						<a href="02-ProfilePage.html" class="author-thumb">
 							<img :src="Comp_Profile.company_logo" alt="author"
-							style="height: 100%;">
+							style="height: 100%; margin-left:-15px">
 						</a>
 						<div class="author-content">
 							<a href="02-ProfilePage.html" class="h4 author-name">

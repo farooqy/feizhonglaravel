@@ -2,3 +2,26 @@
 /* CUSTOM CSS (ADD YOUR CSS HERE!) */
 /*//////////////////////////////////////////////////////////////////////////////////////////*/
 
+
+.reg_phases {
+    height: 50px;
+    width: 50px;
+    border: thin solid gray;
+    border-radius: 50%;
+    line-height: 50px;
+    text-align: center;
+    margin-right: 30px;
+  }
+  
+  .phases-container {
+    display: inline-flex;
+    text-align: center;
+    margin-left: 30%;
+    margin-bottom: 25px;
+    margin-top: 15px;
+  }
+  
+  .show_flex {
+    display: flex;
+    background-color: white;
+  }

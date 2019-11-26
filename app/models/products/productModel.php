@@ -10,7 +10,16 @@ class productModel extends Model
     protected $table = "products";
     public function Product_Files()
     {
-    	return $this->hasMany('App\models\products\productFilesModel', 'product_gen_token','product_gen_token');
+        // echo $this->hasMany('App\models\products\productFilesModel', 'product_gen_token','product_gen_token',
+        //  'file_uploaded_by_id','product_for_id')->toSql();
+        return $this->hasMany('App\models\products\productFilesModel', 'product_gen_token','product_gen_token');
+    }
+    public function Product_Files_By_Token_Id($generated_token, $company_id)
+    {
+        return \App\models\products\productFilesModel::where([
+            ['product_gen_token' , $generated_token],
+            ['file_uploaded_by_id', $company_id]
+        ])->get();
     }
     public function companydata()
     {

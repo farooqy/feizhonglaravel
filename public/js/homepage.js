@@ -418,13 +418,15 @@ var app = new Vue({
           "product_gen_token": this.Product.generated_token
         };
         console.log('req for product is ', req);
+        if (this.successfullProductFiles.length >= this.Product.product_files.length) return this.setProductFileUrl({}, true);
         this.ServerRequest.setRequest(req);
         this.ServerRequest.serverRequest("/api/comp/product/addImage", this.setProductFileUrl, this.showError);
       }
     },
     setProductFileUrl: function setProductFileUrl(data) {
+      var is_retry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       if (data[0] !== undefined) data = data[0];
-      this.successfullProductFiles.push({
+      if (is_retry) this.successfullProductFiles.push({
         "file_url": data.product_file_src,
         "file_id": data.product_file_id
       });
