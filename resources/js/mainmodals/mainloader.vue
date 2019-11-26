@@ -19,7 +19,7 @@
                 </g>
             </svg>
 
-            <div class="text">{{text}}</div>
+            <div class="text" style="color: white; font-size: 32px;">{{text}}</div>
         </div>
     </div>
 </template>

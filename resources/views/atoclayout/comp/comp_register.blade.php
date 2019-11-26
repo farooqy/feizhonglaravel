@@ -15,6 +15,14 @@
         </div>
         <div class="card-body" v-if="Navigation.stage_one">
             <div class="row">
+                    <div class="form-group label-floating is-empty col-md-12 col-lg-12" style="text-align: center;">
+                        <img :src="Company.company_logo" style="height:170px" @click.prevent="$refs.comp_logo.click()"/>
+                    </div>
+            </div>
+            <div class="row">
+                <input v-show="false" ref="comp_logo" v-on:change="previewComplogo($event)" type="file">
+            </div>
+            <div class="row">
                 <div class="form-group label-floating is-empty col-md-8 col-lg-8">
                     <label class="control-label">Company Email</label>
                     <input class="form-control" placeholder="" type="email" style="padding-top: 40px;"
@@ -29,7 +37,8 @@
             <div class="row">
                 <div class="form-group label-floating is-empty col-md-12 col-lg-12">
                     <label class="control-label">Enter code here</label>
-                    <input class="form-control" placeholder="" type="number" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="number" style="padding-top: 40px;"
+                    v-model="Company.verification_code">
                     <span class="material-input"></span>
                 </div>
             </div>
@@ -38,7 +47,7 @@
             <div class="row">
                 <div class="form-group label-floating is-select col-md-4 col-lg-4">
                     <label class="control-label">Your Telephone</label>
-                    <select class="form-control" live-search="true">
+                    <select class="form-control" live-search="true" v-model="Company.country_code">
                         <option value="+86" selected>China + 86</option>
                         <option value="+244">Congo + 244</option>
                         <option value="+252">Djibouti +253</option>
@@ -57,28 +66,32 @@
                 </div>
                 <div class="form-group label-floating is-select col-md-8 col-lg-8">
                     <label class="control-label">Your Telephone</label>
-                    <input class="form-control" placeholder="" type="number" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="number" style="padding-top: 40px;"
+                    v-model="Company.company_phone">
                     <span class="material-input"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group label-floating is-empty col-md-12 col-lg-12">
                     <label class="control-label">Enter Company name</label>
-                    <input class="form-control" placeholder="" type="text" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="text" style="padding-top: 40px;"
+                    v-model="Company.company_name">
                     <span class="material-input"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group label-floating is-empty col-md-12 col-lg-12">
                     <label class="control-label">Enter Company password</label>
-                    <input class="form-control" placeholder="" type="password" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="password" style="padding-top: 40px;"
+                    v-model="Company.company_password   ">
                     <span class="material-input"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group label-floating is-empty col-md-12 col-lg-12">
                     <label class="control-label">Verify password</label>
-                    <input class="form-control" placeholder="" type="password" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="password" style="padding-top: 40px;"
+                    v-model="Company.company_password_verification">
                     <span class="material-input"></span>
                 </div>
             </div>
@@ -87,24 +100,28 @@
             <div class="row">
                 <div class="form-group label-floating is-empty col-md-6 col-lg-6">
                     <label class="control-label">Enter Company address one, city</label>
-                    <input class="form-control" placeholder="" type="text" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="text" style="padding-top: 40px;"
+                    v-model="Company.company_address_one">
                     <span class="material-input"></span>
                 </div>
                 <div class="form-group label-floating is-empty col-md-6 col-lg-6">
                     <label class="control-label">Enter Company address two</label>
-                    <input class="form-control" placeholder="" type="text" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="text" style="padding-top: 40px;"
+                    v-model="Company.company_address_two">
                     <span class="material-input"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group label-floating is-empty col-md-6 col-lg-6">
                     <label class="control-label">Enter Company province</label>
-                    <input class="form-control" placeholder="" type="text" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="text" style="padding-top: 40px;"
+                    v-model="Company.company_province">
                     <span class="material-input"></span>
                 </div>
                 <div class="form-group label-floating is-empty col-md-6 col-lg-6">
                     <label class="control-label">Enter Company Country</label>
-                    <input class="form-control" placeholder="" type="text" value="China" style="padding-top: 40px;">
+                    <input class="form-control" placeholder="" type="text" value="China" style="padding-top: 40px;"
+                    v-model="Company.company_city">
                     <span class="material-input"></span>
                 </div>
             </div>

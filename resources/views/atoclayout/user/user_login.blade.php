@@ -3,7 +3,7 @@
         <h3 class="title">Log in as a buyer</h3>
     </div>
     <div class="card-body">
-            <div id="lg1" class="tab-pane" :class="{'active':user_login}">
+            <div id="lg1" class="tab-pane" >
                     <div class="login-form-container">
                         <div class="login-register-form">
                             <form action="#" method="post">
@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="row mt-3">
                                         <div class="col-md-12 col-lg-12">
-                                                <button type="submit" @click.prevent="userLogin"
+                                                <button type="submit" @click.prevent="loginUser"
                                                 class="btn btn-md btn-primary">Login</button>
                                         </div>
                                 </div>

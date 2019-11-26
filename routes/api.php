@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -11,7 +9,7 @@ use Illuminate\Http\Request;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -80,6 +78,8 @@ Route::post('/comp/edit/province', 'companies\accountController@updateCompProvin
 Route::post('/comp/edit/email', 'companies\accountController@updateCompEmail');
 Route::post('/comp/edit/description', 'companies\accountController@updateCompDescription');
 
+Route::post('/comp/send/email/verification', 'companies\accountController@sendVerificationMail');
+
 Route::post('/favorites/doFavorite', 'favoritesController@favoriteCompany');
 Route::post('/favorites/getFavorites', 'favoritesController@getFavorites');
 Route::post('/favorites/unFavorite', 'favoritesController@removeFavorite');
@@ -94,7 +94,6 @@ Route::post('message/markasread', 'chatController@MarkMessageStatusRead');
 Route::post('/list/companies', 'generalController@listCompanies');
 Route::post('/list/getCompanyData', 'generalController@getCompanyData');
 Route::post('/search', 'generalController@getSearchItem');
-
 
 Route::get('/quote', 'generalController@showQuote');
 

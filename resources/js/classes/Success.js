@@ -1,6 +1,6 @@
 export default class {
     constructor() {
-        this.success_title = null;
+        this.success_title = 'Success';
         this.success_text = null;
         this.visible = false;
     }
@@ -14,7 +14,7 @@ export default class {
     resetSuccessModal()
     {
         this.success_title = "Success";
-        this.success_text = null;
+        this.success_text = 'Success';
         this.visible = false;
     }
 }

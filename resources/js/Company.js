@@ -149,4 +149,42 @@ export default class Company {
       ],
     ];
   }
+
+  getBasicInfo()
+  {
+    return {
+      company_logo: this.company_logo,
+      company_name: this.company_name,
+      company_email : this.company_email,
+      company_phone: this.country_code+this.company_phone,
+      verification_code: this.verification_code,
+      company_password: this.company_password,
+      company_password_verification: this.company_password_verification,
+      
+    }
+  }
+  getAddresInfo()
+  {
+    return {
+      company_address_one: this.company_address_one,
+      company_address_two: this.company_address_two,
+      company_province: this.company_province,
+      company_country: this.company_city,
+    }
+  }
+  getTypeInfo()
+  {
+    return {
+      company_type : this.company_type,
+      company_subtype : this.company_subtype,
+      company_description: this.company_description,
+    }
+  }
+  getLoginInfo()
+  {
+    return {
+      company_email: this.company_email,
+      company_password: this.company_password
+    }
+  }
 }

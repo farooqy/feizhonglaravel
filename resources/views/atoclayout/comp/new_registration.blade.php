@@ -110,6 +110,8 @@ position: absolute;top: 0;bottom: 0;left: 0;right: 0;"></div>
     <div class="header-spacer--standard"></div>
 
     <div class="container" id="App">
+        <infomodal v-bind="Success" v-if="Success.visible" v-on:close-info-modal="Success.resetSuccessModal()"></infomodal>
+        <errormodal v-bind="Error" v-if="Error.visible" v-on:close-error-modal="Error.resetErrorModal()"></errormodal>
         <mainloader v-bind="Loader" v-if="Loader.visible" ></mainloader>
         <authtypemodal v-if="auth_type.visible" v-on:toggle-type-modal="showAuthType" 
         v-on:toggle-auth-modal="auth_type.visible = false"></authtypemodal>

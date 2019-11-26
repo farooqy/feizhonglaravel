@@ -6,10 +6,10 @@
     </div>
 
     <div class="card-body">
-        <div id="lg2" class="tab-pane" :class="{'active':user_registration}">
+        <div id="lg2" class="tab-pane" >
             <div class="login-form-container">
                 <div class="login-register-form">
-                    <form action="/api/user/register" method="post" @submit.prevent="userRegistration">
+                    <form action="/api/user/register" method="post" >
                         @csrf
 
                         <div class="row">
@@ -63,7 +63,8 @@
                         
                         <div class="row mt-2">
                                 <div class="col-md-12 col-lg-12">
-                                        <button type="submit" class="btn btn-md btn-primary col-lg-12 col-md-12">Register</button>
+                                        <button type="submit" class="btn btn-md btn-primary col-lg-12 col-md-12"
+                                         @click.prevent="UserRegistration()">Register</button>
                                 </div>
                             
                         </div>
