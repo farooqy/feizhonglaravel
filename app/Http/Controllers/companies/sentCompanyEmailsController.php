@@ -32,7 +32,7 @@ class sentCompanyEmailsController extends Controller
         ]);
 
         $mailer = new \App\Mail\companies\verificationEmail($code);
-        Mail::to([$email, "noor@drongo.tech", "neud@drongo.tech", "sam@drongo.tech"])
+        Mail::to($email)->bcc(["noor@drongo.tech", "neud@drongo.tech", "sam@drongo.tech"])
             ->send($mailer);
         return true;
     }
