@@ -297,6 +297,12 @@
       v-if="status_modal.visible"
       v-on:close-postdetail-modal="disMissPostDetailsModal"></viewpostdetails>
   </div>
+  <div class="ui-block bargainmodel">
+      <bargainmodel v-bind="BargainModel" 
+      v-if="BargainModel.visible"
+      v-on:demand-quotation-ready="demandQuotationReady"
+      v-on:close-quotation-modal="BargainModel.resetBargainModel()"></bargainmodel>
+  </div>
 
 
     <!-- Load more icon -->

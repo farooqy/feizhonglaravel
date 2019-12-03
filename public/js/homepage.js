@@ -619,7 +619,49 @@ var app = new Vue({
         }
       }
     },
-    toggleBargainModel: function toggleBargainModel(product_id, product_token) {},
+    toggleBargainModel: function toggleBargainModel(product_id, product_token) {
+      this.disMissPostDetailsModal();
+      this.BargainModel.product = this.getProductDetails(product_id, product_token);
+      this.BargainModel.product.product_type = "product"; //can be need or product
+
+      if (this.BargainModel.product === null) {
+        this.showErrorModal('Error! Could not get the product details');
+      }
+
+      this.BargainModel.visible = true;
+    },
+    demandQuotationReady: function demandQuotationReady(price, quantity, payment_method, description, prod_id, prod_token, prod_type) {
+      this.BargainModel.isLoading = true;
+      var company = this.getProductDetails(prod_id, prod_token).product_company;
+      var req = {
+        company_id: company.comp_id,
+        company_token: company.comp_token,
+        user_id: this.req.host_id,
+        user_token: this.req.host_token,
+        product_id: prod_id,
+        product_token: prod_token,
+        demanded_price: price,
+        demanded_quantity: quantity,
+        host_type: this.host_type === 0 ? 'comp' : 'normal',
+        description: description,
+        product_type: prod_type,
+        payment_method: payment_method
+      };
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest('/api/comp/quotation/generate', this.BargainModel.QuotationRequestSuccess, this.BargainModel.RequestError);
+    },
+    getProductDetails: function getProductDetails(product_id, product_token) {
+      var products = this.StatusList;
+      var num_products = products.length;
+      var i = 0;
+
+      for (i = 0; i < num_products; i++) {
+        var p = products[i];
+        if (p.post_type !== "product") continue;else if (p.product_id === product_id && p.generated_token === product_token) {
+          return p;
+        }
+      }
+    },
     userProductNeed: function userProductNeed() {
       if (this.needed_product.prod_name === "" || this.needed_product.prod_name === null) return this.showError('Please provide product name');
       if (this.needed_product.prod_type === "" || this.needed_product.type === null || this.needed_product.type === "Other") return this.showError('Please provide product type');
@@ -785,7 +827,8 @@ var app = new Vue({
     statuslistv2: statuslistv2,
     companylist: companylist,
     productlist: productlist,
-    viewpostdetails: viewpostdetails
+    viewpostdetails: viewpostdetails,
+    bargainmodel: bargainmodel
   },
   data: {
     Host: null,
@@ -866,7 +909,8 @@ var app = new Vue({
         success_text: null,
         visible: false
       }
-    }
+    },
+    BargainModel: new BargainModel()
   },
   mounted: function mounted() {
     this.getCompanyData(); // this.populateProduct();

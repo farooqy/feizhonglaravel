@@ -7,6 +7,7 @@ import productlist from "../components/productlist.vue";
 import trendingcompanylist from "../components/trendingcompanylist.vue";
 import companylist from "../components/companylist.vue";
 import viewpostdetails from "../components/viewpostdetails.vue";
+import bargainmodel from "../components/bargainmodel.vue"
 
 
 window.error = error;
@@ -17,3 +18,4 @@ window.productlist = productlist;
 window.trendingcompanylist = trendingcompanylist;
 window.companylist = companylist;
 window.viewpostdetails = viewpostdetails;
+window.bargainmodel = bargainmodel;

@@ -50566,6 +50566,8 @@ function () {
     value: function showErrorModal() {
       var error_text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'null';
       var error_title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Error!';
+      if (error_text.hasOwnProperty('response')) error_text = error_text.response;
+      if (error_text.hasOwnProperty('data')) error_text = error_text.data;
       if (error_text.hasOwnProperty('error_message')) error_text = error_text.error_message + ' ' + error_text.error_description;
       this.error_text = error_text;
       this.error_title = error_title;

@@ -125099,6 +125099,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var self;
+
 var _default =
 /*#__PURE__*/
 function () {
@@ -125109,24 +125111,152 @@ function () {
     this.Success = new Success();
     this.Product = null;
     this.visible = false;
+    this.isLoading = false;
+    this.quotation_file = {
+      url: null,
+      visible: false
+    };
+    self = this;
   }
 
   _createClass(_default, [{
     key: "setBargainForProduct",
     value: function setBargainForProduct(product) {
-      this.Product = product;
+      self.Product = product;
     }
   }, {
     key: "showBargainModel",
     value: function showBargainModel() {
-      this.visible = true;
+      self.visible = true;
     }
   }, {
     key: "resetBargainModel",
     value: function resetBargainModel() {
-      this.Error = new Error();
-      this.Success = new Success();
-      this.Product = null;
+      self.Error = new Error();
+      self.Success = new Success();
+      self.Product = null;
+      self.visible = false;
+    }
+  }, {
+    key: "QuotationRequestSuccess",
+    value: function QuotationRequestSuccess(data) {
+      if (data[0]) data = data[0];
+      self.quotation_file.url = data['pdf_file'];
+      self.quotation_file.visible = true;
+      self.Success.showSuccessModal('Successfully generated and sent quotation.');
+      self.isLoading = false;
+    }
+  }, {
+    key: "RequestError",
+    value: function RequestError(error) {
+      self.Error.showErrorModal(error);
+      self.isLoading = false;
+    }
+  }]);
+
+  return _default;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/js/classes/Error.js":
+/*!***************************************!*\
+  !*** ./resources/js/classes/Error.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _default =
+/*#__PURE__*/
+function () {
+  function _default() {
+    _classCallCheck(this, _default);
+
+    this.error_title = null;
+    this.error_text = null;
+    this.visible = false;
+  }
+
+  _createClass(_default, [{
+    key: "showErrorModal",
+    value: function showErrorModal() {
+      var error_text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'null';
+      var error_title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Error!';
+      if (error_text.hasOwnProperty('response')) error_text = error_text.response;
+      if (error_text.hasOwnProperty('data')) error_text = error_text.data;
+      if (error_text.hasOwnProperty('error_message')) error_text = error_text.error_message + ' ' + error_text.error_description;
+      this.error_text = error_text;
+      this.error_title = error_title;
+      this.visible = true;
+    }
+  }, {
+    key: "resetErrorModal",
+    value: function resetErrorModal() {
+      this.error_title = "Error";
+      this.error_text = null;
+      this.visible = false;
+    }
+  }]);
+
+  return _default;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/js/classes/Success.js":
+/*!*****************************************!*\
+  !*** ./resources/js/classes/Success.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _default =
+/*#__PURE__*/
+function () {
+  function _default() {
+    _classCallCheck(this, _default);
+
+    this.success_title = 'Success';
+    this.success_text = null;
+    this.visible = false;
+  }
+
+  _createClass(_default, [{
+    key: "showSuccessModal",
+    value: function showSuccessModal() {
+      var success_text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'null';
+      var success_title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Success!';
+      this.success_text = success_text;
+      this.success_title = success_title;
+      this.visible = true;
+    }
+  }, {
+    key: "resetSuccessModal",
+    value: function resetSuccessModal() {
+      this.success_title = "Success";
+      this.success_text = 'Success';
       this.visible = false;
     }
   }]);
@@ -125153,8 +125283,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Status_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Status.js */ "./resources/js/Status.js");
 /* harmony import */ var _Product_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Product.js */ "./resources/js/Product.js");
 /* harmony import */ var _ServerRequest__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ServerRequest */ "./resources/js/ServerRequest.js");
-/* harmony import */ var _classes_BargainModel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../classes/BargainModel */ "./resources/js/classes/BargainModel.js");
+/* harmony import */ var _classes_Error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../classes/Error */ "./resources/js/classes/Error.js");
+/* harmony import */ var _classes_Success__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../classes/Success */ "./resources/js/classes/Success.js");
+/* harmony import */ var _classes_BargainModel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../classes/BargainModel */ "./resources/js/classes/BargainModel.js");
 __webpack_require__(/*! ../bootstrap */ "./resources/js/bootstrap.js");
+
+
 
 
 
@@ -125169,7 +125303,9 @@ window.Guest = _Guest_js__WEBPACK_IMPORTED_MODULE_2__["default"];
 window.Status = _Status_js__WEBPACK_IMPORTED_MODULE_3__["default"];
 window.Product = _Product_js__WEBPACK_IMPORTED_MODULE_4__["default"];
 window.ServerRequest = _ServerRequest__WEBPACK_IMPORTED_MODULE_5__["default"];
-window.BargainModel = _classes_BargainModel__WEBPACK_IMPORTED_MODULE_6__["default"];
+window.BargainModel = _classes_BargainModel__WEBPACK_IMPORTED_MODULE_8__["default"];
+window.Success = _classes_Success__WEBPACK_IMPORTED_MODULE_7__["default"];
+window.Error = _classes_Error__WEBPACK_IMPORTED_MODULE_6__["default"];
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.use(__webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js"));
 Vue.use(__webpack_require__(/*! vue-faker */ "./node_modules/vue-faker/vue-faker.js"), {

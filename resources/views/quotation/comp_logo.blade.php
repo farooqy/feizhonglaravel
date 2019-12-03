@@ -1,0 +1,2 @@
+<img src='http://127.0.0.1:8000/uploads/comp/646d0142f1967efe374750b00aa354b1/profile/profile_646d0142f1967efe374750b00aa354b1_pic.jpeg'
+                                    style="width:100%; max-width:300px;" alt="{{$productDetails["comp_logo"]}}">
