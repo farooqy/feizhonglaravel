@@ -128,23 +128,27 @@ class quotationController extends Controller
             "product_unit" => $targetProduct[0]->product_measure_unit,
             "payment_method" => $request->payment_method,
             "user_address" => $user_address->address . ", " . $user_address->city . ", " . $user_address->country,
-        ];
+		];
+		
         if ($request->host_type === "comp") {
+			$path = 'uploads/comp/' . $comp_data[0]->comp_token . '/quotation/';
             if (env('APP_ENV') === "production") {
-                $path = "/feizhonglaravel/public/uploads/comp/$comp_data[0]->comp_token" . "/quotation/";
+                $pdfpath = env('APP_ROOT').$path;
             } else {
-                $path = "/uploads/comp/$comp_data[0]->comp_token" . "/quotation/";
+				$pdfpath = public_path($path);
             }
 
         } else {
+			$path = 'uploads/user/' . $user_is_valid[0]->user_token . '/quotation/';
             if (env('APP_ENV') === "production") {
-                $path = '/feizhonglaravel/public/uploads/user/' . $user_is_valid[0]->user_token . '/quotation/';
+				$pdfpath = env('APP_ROOT').$path;
+				
             } else {
-                $path = '/uploads/user/' . $user_is_valid[0]->user_token . '/quotation/';
+				$pdfpath = public_path($path);
             }
 
         }
-        $pdfpath = public_path($path);
+        
         $mpdf = new \Mpdf\Mpdf(['tempDir' => $pdfpath]);
         $mpdf->WriteHTML(($html = view('quotation.quotation', compact('productDetails'))->render()));
         $filename = 'quotation_' . time() . '_.pdf';
@@ -154,7 +158,7 @@ class quotationController extends Controller
         //     $filepath = public_path('/uploads/temppdf/').$filename;
         $mpdf->Output($pdfpath . $filename, \Mpdf\Output\Destination::FILE);
         // $pdfile = env('APP_URL').$path.$filename;
-        $pdfile = env('APP_URL') . $path . $filename;
+        $pdfile = env('APP_URL') . '/'.$path . $filename;
         quotationModel::create([
             "comp_id" => $request->company_id,
             "comp_token" => $request->company_token,
