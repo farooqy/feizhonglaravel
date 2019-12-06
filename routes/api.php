@@ -27,6 +27,7 @@ Route::post('/user/update', 'user\accountController@updateUserInfo');
 Route::post('/user/resetPassword', 'user\accountController@resetPassword');
 Route::post('/user/data', 'user\accountController@getUserData');
 Route::post('/user/address', 'user\accountController@getUserAddress');
+Route::post('/user/quotations', 'user\accountController@getUserQuotations');
 Route::post('/user/needs/post', 'user\userNeedController@postNeed');
 Route::post('/user/needs', 'user\userNeedController@getUserNeeds');
 Route::post('/user/needs/matches', 'user\userNeedController@getNeedMatches');

@@ -6,10 +6,21 @@ import userneeds from "../components/userneeds.vue";
 import ServerRequest from '.././ServerRequest.js';
 import User from ".././User.js";
 import Product from "../Product.js";
+import Error from "../classes/Error";
+import Success from "../classes/Success";
+
+import quotationsmodel from "../components/quotationsmodel.vue";
+import BargainModel from "../classes/BargainModel";
+
+//chart
+import usertotalorder from "../charts/usertotalorder.vue";
+import userpurchasevalue from "../charts/userpurchasevalue.vue";
+
 window.Vue = require("vue");
 Vue.use(require('vue-cookies'));
 window.Axios = require('axios');
-
+window.Error = Error; //ussed in bargain model
+window.Success = Success; //used in bargain model
 var app = new Vue({
   el:"#app",
   methods: {
@@ -35,6 +46,7 @@ var app = new Vue({
       this.User.guest_token = data.user_token;
       this.User.api_key = data.api_key;
       this.User.user_profile = data.user_profile;
+      this.User.num_quotations = data.num_quotations;
       var req = {"user_id": this.User.guest_id, "user_token":this.User.guest_token};
       this.ServerRequest.setRequest(req);
       this.ServerRequest.serverRequest('/api/user/address',
@@ -272,9 +284,36 @@ var app = new Vue({
     },
     showError(error)
     {
-        this.errorObject.error_text = response.errorMessage;
+        this.errorObject.error_text = error.errorMessage;
         this.errorObject.errorModal = this.errorModal = true;
         this.Loader.showLoader = this.showLoader = false;
+    },
+    getUserQuotations()
+    {
+      var req = this.req;
+      this.ServerRequest.setRequest(req);
+      this.ServerRequest.serverRequest('/api/user/quotations',this.quotationModel, this.showError);
+    },
+    quotationModel(data)
+    {
+      console.log('data ',data);
+      if(data[0])
+        data = data[0];
+      data.forEach(quotation => {
+        var quotationDetails = new BargainModel();
+        quotationDetails.Product = quotation;
+        quotationDetails.quotation_file.url = quotation.quotation_file;
+        quotationDetails.quotation_file.visible = true;
+        this.Quotations.list.push(quotationDetails);
+        this.Quotations.visible = true;
+      })
+    },
+    resetQuotaionList()
+    {
+      this.Quotations = {
+        lis :  [],
+        visible : false,
+      }
     }
 
   },
@@ -285,7 +324,7 @@ var app = new Vue({
 
   },
   components: {
-    error,loader, userneeds,
+    error,loader, userneeds, quotationsmodel,usertotalorder, userpurchasevalue
   },
   data: {
     User:new User(),
@@ -306,6 +345,10 @@ var app = new Vue({
     needs_modal: {
         visible:false,
         matched_companies:[],
-    }
+    },
+    Quotations: {
+      list: [],
+      visible: false,
+    },
   }
 });

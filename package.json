@@ -24,8 +24,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "chart.js": "^2.9.3",
         "vue-azure-maps": "0.0.27",
         "vue-baidu-map": "^0.21.22",
+        "vue-chartjs": "^3.5.0",
         "vue-cookies": "^1.5.13",
         "vue-faker": "^1.0.1"
     }

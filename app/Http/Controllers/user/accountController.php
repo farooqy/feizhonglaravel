@@ -226,6 +226,7 @@ class accountController extends Controller
             $this->Error->setError(["The Authentication details is invalid"]);
             return $this->Error->getError();
         }
+        $data[0]->num_quotations = $data[0]->numberOfQuotations($data[0]->user_id);
         $this->Error->setSuccess($data);
         return $this->Error->getSuccess();
     }
@@ -417,6 +418,32 @@ class accountController extends Controller
             return $this->Error->getError();
         }
 
+    }
+
+    public function getUserQuotations(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "host_type" => "required|string|in:normal,comp"
+        ];
+        $is_valid = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($is_valid);
+        if($isNotValidRequest)
+            return $isNotValidRequest;
+        $is_valid_user = normalUsersModel::where([
+            ["user_id", $request->host_id],
+            ["user_token", $request->host_token],
+        ])->get();
+        if($is_valid_user === null || $is_valid_user->count() <= 0)
+        {
+            $this->Error->setError(["The user profile could not be verified to get quotations"]);
+            return $this->Error->getError();
+        }
+        $quotations = $is_valid_user[0]->userQuotations;
+
+        $this->Error->setSuccess([$quotations]);
+        return $this->Error->getSuccess();
     }
 
     public function updateUserInfo(Request $request)
