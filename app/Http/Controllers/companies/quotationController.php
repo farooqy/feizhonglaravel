@@ -38,7 +38,7 @@ class quotationController extends Controller
             "product_id" => "required|integer",
             "product_token" => "required|string",
             "demanded_quantity" => "required|integer|min:1",
-            "demanded_price" => "required|integer",
+            "demanded_price" => "required|numeric",
             "host_type" => "required|in:normal,comp",
             "product_type" => "required|string|in:product,need",
             "payment_method" => "required|string|in:Cheque,Wire Transfer,Wechat Pay,AliPay",
@@ -128,27 +128,27 @@ class quotationController extends Controller
             "product_unit" => $targetProduct[0]->product_measure_unit,
             "payment_method" => $request->payment_method,
             "user_address" => $user_address->address . ", " . $user_address->city . ", " . $user_address->country,
-		];
-		
+        ];
+
         if ($request->host_type === "comp") {
-			$path = 'uploads/comp/' . $comp_data[0]->comp_token . '/quotation/';
+            $path = 'uploads/comp/' . $comp_data[0]->comp_token . '/quotation/';
             if (env('APP_ENV') === "production") {
-                $pdfpath = env('APP_ROOT').$path;
+                $pdfpath = env('APP_ROOT') . $path;
             } else {
-				$pdfpath = public_path($path);
+                $pdfpath = public_path($path);
             }
 
         } else {
-			$path = 'uploads/user/' . $user_is_valid[0]->user_token . '/quotation/';
+            $path = 'uploads/user/' . $user_is_valid[0]->user_token . '/quotation/';
             if (env('APP_ENV') === "production") {
-				$pdfpath = env('APP_ROOT').$path;
-				
+                $pdfpath = env('APP_ROOT') . $path;
+
             } else {
-				$pdfpath = public_path($path);
+                $pdfpath = public_path($path);
             }
 
         }
-        
+
         $mpdf = new \Mpdf\Mpdf(['tempDir' => $pdfpath]);
         $mpdf->WriteHTML(($html = view('quotation.quotation', compact('productDetails'))->render()));
         $filename = 'quotation_' . time() . '_.pdf';
@@ -158,7 +158,7 @@ class quotationController extends Controller
         //     $filepath = public_path('/uploads/temppdf/').$filename;
         $mpdf->Output($pdfpath . $filename, \Mpdf\Output\Destination::FILE);
         // $pdfile = env('APP_URL').$path.$filename;
-        $pdfile = env('APP_URL') . '/'.$path . $filename;
+        $pdfile = env('APP_URL') . '/' . $path . $filename;
         quotationModel::create([
             "comp_id" => $request->company_id,
             "comp_token" => $request->company_token,
@@ -174,7 +174,7 @@ class quotationController extends Controller
             "product_type" => $request->product_type,
         ]);
         $filepath = [
-            "url" => $pdfpath.$filename,
+            "url" => $pdfpath . $filename,
             "name" => $filename,
         ];
         $comp_mailer = new quotationGeneratedMail($productDetails['company_name'], $filepath);

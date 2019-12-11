@@ -28,6 +28,10 @@ export default class {
         self.Success = new Success();
         self.Product = null;
         self.visible = false;
+        self.quotation_file =  {
+            url: null,
+            visible:false,
+        };
     }
     QuotationRequestSuccess(data)
     {

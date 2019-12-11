@@ -163,7 +163,7 @@ class productController extends Controller
             "product_name" => "required|min:5",
             "product_description" => "required|string|min:50, max:999",
             "product_measure_unit" => "required|string",
-            "product_price" => "required|integer",
+            "product_price" => "required|numeric",
             "product_measure_currency" => "required|string",
         ];
         $message = [

@@ -84624,6 +84624,10 @@ function () {
       self.Success = new Success();
       self.Product = null;
       self.visible = false;
+      self.quotation_file = {
+        url: null,
+        visible: false
+      };
     }
   }, {
     key: "QuotationRequestSuccess",
