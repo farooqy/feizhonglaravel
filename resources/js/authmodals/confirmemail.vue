@@ -22,8 +22,8 @@
                             <div class="row">
                                 <div class="col-md-8 col-lg-8">
                                     <input class="input " :value="email" disabled
-                                    style="border: 3px solid #0d7218; background-color: #e4e7e5;
-                                    color: black; font-weight: 800; font-size: x-large;  height: 40px;" />
+                                    style="border: 1px solid rgb(255, 255, 255);background-color: rgb(254, 255, 254);
+                                    color: black;font-weight: 800;font-size: x-large;height: 40px;" />
                                 </div>
                             </div>
                             <div class="row mt-4">
