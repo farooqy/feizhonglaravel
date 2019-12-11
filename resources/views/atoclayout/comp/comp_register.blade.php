@@ -16,7 +16,9 @@
         <div class="card-body" v-if="Navigation.stage_one">
             <div class="row">
                     <div class="form-group label-floating is-empty col-md-12 col-lg-12" style="text-align: center;">
+                        
                         <img :src="Company.company_logo" style="height:170px" @click.prevent="$refs.comp_logo.click()"/>
+                        <div style="color: black;"> <strong>Upload company logo</strong> </div>
                     </div>
             </div>
             <div class="row">
