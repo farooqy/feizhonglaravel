@@ -6,6 +6,7 @@ use App\customClass\CustomRequestValidator;
 use App\customClass\Error;
 use App\customClass\FileUploader;
 use App\Http\Controllers\Controller;
+use App\Mail\companies\completedRegistrationMailer;
 use App\models\companies\companyAddressModel;
 use App\models\companies\companyChangesModel;
 use App\models\companies\companydataModel;
@@ -121,7 +122,7 @@ class accountController extends Controller
             $this
                 ->Status
                 ->setError(["Authentication failed. Could not get company
-			information. Please log in back"]);
+			information. Please log in back", ]);
             $this->forgetAuthenticationCookies();
             return $this
                 ->Status
@@ -175,11 +176,11 @@ class accountController extends Controller
     public function companyLogin(Request $request)
     {
         $rules = [
-			"company_email" => "required|email",
-			"company_password" => "required|string", 
-			"guest_id" => "required|integer", 
-			"guest_token" => "required|string", 
-			"api_key" => "required|string"];
+            "company_email" => "required|email",
+            "company_password" => "required|string",
+            "guest_id" => "required|integer",
+            "guest_token" => "required|string",
+            "api_key" => "required|string"];
 
         $messages = ["required" => "The :attribute is required"];
 
@@ -264,13 +265,13 @@ class accountController extends Controller
     }
     public function companyTypeRegistration(Request $request)
     {
-		$rules = [
-			"company_type" => "required|string|max:75", 
-			"company_subtype" => "required|string|max:50", 
-			"company_description" => "required|string|min:45|max:1200", 
-			"company_token" => "required|string|max:330", 
-			"api_key" => "required|string", 
-			"company_id" => "required|integer"];
+        $rules = [
+            "company_type" => "required|string|max:75",
+            "company_subtype" => "required|string|max:50",
+            "company_description" => "required|string|min:45|max:1200",
+            "company_token" => "required|string|max:330",
+            "api_key" => "required|string",
+            "company_id" => "required|integer"];
         $messages = ["required" => "The :attribute is required", "max:" => "The :attribute exceeds the allowed length", "min" => "The :attribute must be at least 45 characters"];
 
         $valid_request = Validator::make($request->all(), $rules, $messages);
@@ -323,6 +324,8 @@ class accountController extends Controller
 
             // $this->ApiKey->successFullRequest();
             $this->setSucces(["comp_token" => $request->company_token, "process" => "final"]);
+            $mailer = new completedRegistrationMailer($company_id);
+            Mail::to($company_id[0]->comp_email)->bcc(["noor@drongo.tech", "neud@drongo.tech"])->send($mailer);
             return $this->success;
         } catch (\Illuminate\Database\QueryException $exception) {
             $this->setError([$exception->errorInfo]);
@@ -336,12 +339,12 @@ class accountController extends Controller
     public function addressRegistration(Request $request)
     {
         $rules = [
-			"company_address_one" => "required|string|max:75", 
-			"company_province" => "required|string|max:50", 
-			"company_country" => "required|string|max:45", 
-			"company_token" => "required|string|max:330", 
-			"company_id" => "required|integer", 
-			"api_key" => "required|string"];
+            "company_address_one" => "required|string|max:75",
+            "company_province" => "required|string|max:50",
+            "company_country" => "required|string|max:45",
+            "company_token" => "required|string|max:330",
+            "company_id" => "required|integer",
+            "api_key" => "required|string"];
         $messages = ["required" => "The :attribute is required", "max:" => "The :attribute exceeds the allowed length"];
 
         $valid_request = Validator::make($request->all(), $rules, $messages);
@@ -370,12 +373,12 @@ class accountController extends Controller
         {
 
             companyAddressModel::create([
-				"comp_id" => $company_id[0]->comp_id, 
-				"comp_addr_one" => $request->company_address_one, 
-				"comp_addr_two" => $request->company_address_two, 
-				"comp_city" => $request->company_country, 
-				"comp_province" => $request->company_province, 
-				"comp_token" => $request->company_token]);
+                "comp_id" => $company_id[0]->comp_id,
+                "comp_addr_one" => $request->company_address_one,
+                "comp_addr_two" => $request->company_address_two,
+                "comp_city" => $request->company_country,
+                "comp_province" => $request->company_province,
+                "comp_token" => $request->company_token]);
 
             registrationTrackerModel::where('comp_token', $request->company_token)
                 ->update(["stage" => "address"]);
@@ -393,17 +396,17 @@ class accountController extends Controller
     }
     public function basicInfoRegister(Request $request)
     {
-		$rules = [
-			"company_logo" => "required|string",
-			"company_name" => "required|string", 
-			"company_phone" => "required|string", 
-			"company_password" => "required|string|min:8", 
-			"company_password_verification" => "required|string|min:8|same:company_password", 
-			"company_email" => "required|email", 
-			"verification_code" => "required|integer", 
-			"guest_id" => "required|integer", 
-			"guest_token" => "required|string", 
-			"api_key" => "required|string",
+        $rules = [
+            "company_logo" => "required|string",
+            "company_name" => "required|string",
+            "company_phone" => "required|string",
+            "company_password" => "required|string|min:8",
+            "company_password_verification" => "required|string|min:8|same:company_password",
+            "company_email" => "required|email",
+            "verification_code" => "required|integer",
+            "guest_id" => "required|integer",
+            "guest_token" => "required|string",
+            "api_key" => "required|string",
 
         ];
         $messages = ["required" => "The :attribute is required", "string" => "The :attribute type is not valid", "email" => "The :attribute is not valid"];
@@ -429,37 +432,36 @@ class accountController extends Controller
         //isvalid code
         $verification_code = phoneVerificationModel::where([['target_phone', $request
                 ->company_phone]])
-				->get();
+                ->get();
         if ($verification_code === null || $verification_code->count() <= 0) {
-			$verification_code = \App\models\companies\compEmailVerificationModel::where([
-				["verification_code" , $request->verification_code],
-				['comp_email', $request->company_email],
-				['is_expired', false]
-			])->get();
-			if($verification_code === null || $verification_code->count() <= 0)
-            {
-				$this->setError(['Please verify your email or phone before continuing']);
-            	return $this->error;
-			}
-			else if($verification_code->count() < 0)
-			{
-				foreach($verification_code as $key => $code)
-				{
-					if($key === 0)
-						continue;
-					$code->delete();
-				}
-			}
+            $verification_code = \App\models\companies\compEmailVerificationModel::where([
+                ["verification_code", $request->verification_code],
+                ['comp_email', $request->company_email],
+                ['is_expired', false],
+            ])->get();
+            if ($verification_code === null || $verification_code->count() <= 0) {
+                $this->setError(['Please verify your email or phone before continuing']);
+                return $this->error;
+            } else if ($verification_code->count() < 0) {
+                foreach ($verification_code as $key => $code) {
+                    if ($key === 0) {
+                        continue;
+                    }
 
+                    $code->delete();
+                }
+            }
 
         } else if ($verification_code->count() > 1) {
             //collsion verification code
             $existing = phoneVerificationModel::where('target_phone', $request->company_phone)
                 ->get();
-            foreach ($existing as $key => $excode ) {
+            foreach ($existing as $key => $excode) {
 
-				if($key === 0)
-					continue;
+                if ($key === 0) {
+                    continue;
+                }
+
                 $excode->delete();
             }
 
@@ -503,12 +505,12 @@ class accountController extends Controller
             }
 
             companydataModel::create([
-				"comp_name" => $request->company_name, 
-				"comp_email" => $request->company_email, 
-				"comp_phone" => $request->company_phone, 
-				"comp_token" => $comp_token, 
-				"comp_pass" => Hash::make($request->company_password), 
-				"comp_logo" => $logo_url]);
+                "comp_name" => $request->company_name,
+                "comp_email" => $request->company_email,
+                "comp_phone" => $request->company_phone,
+                "comp_token" => $comp_token,
+                "comp_pass" => Hash::make($request->company_password),
+                "comp_logo" => $logo_url]);
             registrationTrackerModel::create(["comp_token" => $comp_token, "stage" => 'basicinfo']);
             phoneVerificationModel::where([['target_phone', $request->company_phone], ['verification_code', $request
                     ->verification_code]])
@@ -602,53 +604,52 @@ class accountController extends Controller
     }
     public function sendVerificationMail(Request $request)
     {
-		$rules = [
-			"email_address" => "required|email|max:75",
-		];
-		$is_valid = Validator::make($request->all(), $rules, []);
-		$isNotValidRequest = $this->custom_validator->isNotValidRequest($is_valid);
-		if($isNotValidRequest)
-			return $isNotValidRequest;
-		
-		$email_taken = companydataModel::where([
-			['comp_email' , $request->email_address]
-		])->exists();
-		
-		$email_register_to_user = \App\models\normalUsersModel::where([
-			["user_email" , $request->email_address]
-		])->exists();
-		if($email_taken || $email_register_to_user)
-		{
-			$this->Status->setError(["The email address has been taken and is not valid"]);
-			return $this->Status->getError();
-		}
-		$has_existing_code = \App\models\companies\compEmailVerificationModel::where([
-			['comp_email', $request->email_address],
-			['is_expired', false]
-		])->get();
-		if($has_existing_code !== null && $has_existing_code->count() > 0)
-		{
-			$code = $has_existing_code[0]->verification_code;
-		}
-		else
-		{
-			$token = hash('md5', time());
-			$code = phoneVerificationModel::generateVerifCode();
-			\App\models\companies\compEmailVerificationModel::create([
-				'verification_token' => $token,
-				'verification_code' => $code,
-				'comp_email' => $request->email_address,
-			]);
-		}	
+        $rules = [
+            "email_address" => "required|email|max:75",
+        ];
+        $is_valid = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($is_valid);
+        if ($isNotValidRequest) {
+            return $isNotValidRequest;
+        }
 
-		$Mailer = new \App\Http\Controllers\companies\sentCompanyEmailsController();
-		
-		$mail_sent = $Mailer->sendVerificationEmail($request->email_address, $code);
+        $email_taken = companydataModel::where([
+            ['comp_email', $request->email_address],
+        ])->exists();
 
-		if($mail_sent !== true)
-			return $mail_sent;
-		$this->Status->setSuccess(["Email confirmation code has been sent"]);
-		return $this->Status->getSuccess();
+        $email_register_to_user = \App\models\normalUsersModel::where([
+            ["user_email", $request->email_address],
+        ])->exists();
+        if ($email_taken || $email_register_to_user) {
+            $this->Status->setError(["The email address has been taken and is not valid"]);
+            return $this->Status->getError();
+        }
+        $has_existing_code = \App\models\companies\compEmailVerificationModel::where([
+            ['comp_email', $request->email_address],
+            ['is_expired', false],
+        ])->get();
+        if ($has_existing_code !== null && $has_existing_code->count() > 0) {
+            $code = $has_existing_code[0]->verification_code;
+        } else {
+            $token = hash('md5', time());
+            $code = phoneVerificationModel::generateVerifCode();
+            \App\models\companies\compEmailVerificationModel::create([
+                'verification_token' => $token,
+                'verification_code' => $code,
+                'comp_email' => $request->email_address,
+            ]);
+        }
+
+        $Mailer = new \App\Http\Controllers\companies\sentCompanyEmailsController();
+
+        $mail_sent = $Mailer->sendVerificationEmail($request->email_address, $code);
+
+        if ($mail_sent !== true) {
+            return $mail_sent;
+        }
+
+        $this->Status->setSuccess(["Email confirmation code has been sent"]);
+        return $this->Status->getSuccess();
     }
     protected function isNotValidRequest($validator)
     {
@@ -734,7 +735,7 @@ class accountController extends Controller
                         ->getError());
             return false;
         } else {
-            return  $file_url;
+            return $file_url;
         }
     }
     protected function doCheckAndUpdate($targetField, $request, $model)

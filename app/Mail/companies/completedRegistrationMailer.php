@@ -15,9 +15,15 @@ class completedRegistrationMailer extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public $comp_name;
+    public $comp_email;
+    public $comp_phone;
+    public function __construct($company)
     {
         //
+        $this->comp_name = $company[0]->comp_name;
+        $this->comp_email = $company[0]->comp_email;
+        $this->comp_phone = $company[0]->comp_phone;
     }
 
     /**
@@ -27,6 +33,6 @@ class completedRegistrationMailer extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->subject('Welcom — Africa to China')->view('mails.companies.welcome');
     }
 }
