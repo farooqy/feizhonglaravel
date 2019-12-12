@@ -122,7 +122,7 @@ class accountController extends Controller
             $this
                 ->Status
                 ->setError(["Authentication failed. Could not get company
-			information. Please log in back"]);
+			information. Please log in back", ]);
             $this->forgetAuthenticationCookies();
             return $this
                 ->Status
@@ -470,7 +470,7 @@ class accountController extends Controller
             // return $this->error;
         } else if ($verification_code[0]->verification_code !== (int) $request->verification_code) {
 
-            $this->setError(['The verification code is not valid ' . $verification_code[0]->verification_code . ' ' . $request->verification_code]);
+            $this->setError(['The verification code is not valid ']);
             return $this->error;
         }
         try
