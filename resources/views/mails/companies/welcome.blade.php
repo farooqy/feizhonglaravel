@@ -64,7 +64,7 @@
                 <table class="content" align="center" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td style="font-size: 13px; padding: 0 15px;">
-                            <p style="font-size: 16px; font-weight: 600; color: #34a3de;">Dear {{$comp_name}}</p>
+                            <p style="font-size: 16px; font-weight: 600; color: #34a3de;">Dear {{$comp_name}},</p>
                             <p>Thank you for becoming an <a href="{{env('APP_URL')}}" target="_blank">AtoC — Africa to
                                     China</a> member!</p>
                             <p>Please keep a record of your important member information listed below:</p>
@@ -77,7 +77,7 @@
                                     <td>
                                         Company name: <strong>{{$comp_name}}</strong>
                                         <br>
-                                        Company phone:{{$comp_phone}}
+                                        Company phone: {{$comp_phone}}
                                         <br>
                                         Company email: <a href="mailto:email@email.com">{{$comp_email}}</a>
                                         <br><br>
@@ -85,6 +85,7 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <br>
                                         &#x25cf;
                                         <br>
                                         &#x25cf;
@@ -107,10 +108,15 @@
                                 <tr>
                                     <td>Best Regards,
                                         <br>Web Operations Department
-                                        <br>AtoC — Africa to China ltd.
+                                        <br>AtoC — Africa to China Ltd.
                                         <br>
                                         <br>For more information: <a href="mailto:info@drongo.tech">info@drongo.tech</a>
                                         <br><a href="{{env("APP_URL")}}" target="_blank">{{env('APP_URL')}}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img src="{{env('APP_URL')}}/assets/mail/footer.png" alt="Email footer" style="width: 700px;" />
                                     </td>
                                 </tr>
                             </table>
