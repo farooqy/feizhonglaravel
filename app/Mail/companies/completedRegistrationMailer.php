@@ -33,6 +33,6 @@ class completedRegistrationMailer extends Mailable
      */
     public function build()
     {
-        return $this->subject('Welcom — Africa to China')->view('mails.companies.welcome');
+        return $this->subject('Welcome — Africa to China')->view('mails.companies.welcome');
     }
 }
