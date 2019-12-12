@@ -37484,8 +37484,8 @@ var render = function() {
                       _c("input", {
                         staticClass: "input ",
                         staticStyle: {
-                          border: "3px solid #0d7218",
-                          "background-color": "#e4e7e5",
+                          border: "1px solid rgb(255, 255, 255)",
+                          "background-color": "rgb(254, 255, 254)",
                           color: "black",
                           "font-weight": "800",
                           "font-size": "x-large",
