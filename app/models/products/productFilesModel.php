@@ -11,6 +11,6 @@ class productFilesModel extends Model
     
     public function products()
     {
-    	return $this->belongsTo('App\models\products\productModel', 'product_gen_token', 'product_gen_token');
+        return $this->belongsTo('App\models\products\productModel', 'product_gen_token', 'product_gen_token');
     }
 }
