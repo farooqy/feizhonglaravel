@@ -1504,6 +1504,9 @@ module.exports = {
     },
     bargainModel: function bargainModel(product_id, product_token) {
       this.$emit('toggle-bargain-model', product_id, product_token);
+    },
+    makeLineText: function makeLineText(text) {
+      return text.replace(/\n/g, "<br />");
     }
   },
   props: ["post_type", "host_profile", "comment_text", "comments", "likes", "host_id", "host_token", "is_logged_in", "host_type", "generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at", "status_image", "status_text", "status_time", "status_id", "status_generated_token", "status_files", "uploaded_by_name", "uploaded_by_picture", "uploaded_by_company"]
@@ -3667,7 +3670,9 @@ var render = function() {
                             "background-color": "aliceblue"
                           },
                           domProps: {
-                            textContent: _vm._s(_vm.product_description)
+                            innerHTML: _vm._s(
+                              _vm.makeLineText(_vm.product_description)
+                            )
                           }
                         })
                       ])
@@ -4121,7 +4126,9 @@ var render = function() {
                             padding: "10px",
                             "background-color": "aliceblue"
                           },
-                          domProps: { textContent: _vm._s(_vm.status_text) }
+                          domProps: {
+                            innerHTML: _vm._s(_vm.makeLineText(_vm.status_text))
+                          }
                         })
                       ])
                     ])

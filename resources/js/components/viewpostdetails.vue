@@ -68,7 +68,7 @@
                         <div class="mt-3">
                             <div class="col-md-12 col-lg-12">
                                 <label class="label">Product Description:</label>
-                                <p v-text="product_description" style="border: thin solid gray; padding: 10px; 
+                                <p v-html="makeLineText(product_description)" style="border: thin solid gray; padding: 10px; 
                                     background-color: aliceblue;"></p>
                             </div>
 
@@ -200,7 +200,7 @@
                     <div class="">
                         <div class="mt-3">
                             <div class="col-md-12 col-lg-12">
-                                <p v-text="status_text" style="border: thin solid gray; padding: 10px; 
+                                <p v-html="makeLineText(status_text)" style="border: thin solid gray; padding: 10px; 
                                     background-color: aliceblue;"></p>
                             </div>
 
@@ -422,6 +422,10 @@
             bargainModel(product_id, product_token)
             {
                 this.$emit('toggle-bargain-model',product_id, product_token);
+            },
+            makeLineText(text)
+            {
+                return text.replace(/\n/g, "<br />");
             }
 
         },
