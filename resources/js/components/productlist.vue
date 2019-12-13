@@ -31,8 +31,7 @@
                 <a href="#" class="h3 post-title">
                     {{product_name}}
                 </a>
-                <p>
-                    {{truncate(product_description) }}
+                <p v-html="makeLineText(product_description)">
                 </p>
 
                 <div class="post-additional-info inline-items">
@@ -206,8 +205,8 @@
 
         </div>
 
-        <p>
-            {{truncate(status_text) }}
+        <p v-html="makeLineText(status_text)">
+            
         </p>
 
         <div class="post-block-photo js-zoom-gallery">
@@ -519,6 +518,10 @@
             viewStatus()
             {
                 this.$emit('view-status-details', this.post_id, this.post_token);
+            },
+            makeLineText(text)
+            {
+                return truncate(status_text).replace(/\n/g, "<br />");
             }
 
         }

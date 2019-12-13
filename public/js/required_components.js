@@ -744,7 +744,6 @@ module.exports = {
 //
 //
 //
-//
 module.exports = {
   data: function data() {
     return {
@@ -862,6 +861,9 @@ module.exports = {
     },
     viewStatus: function viewStatus() {
       this.$emit('view-status-details', this.post_id, this.post_token);
+    },
+    makeLineText: function makeLineText(text) {
+      return truncate(status_text).replace(/\n/g, "<br />");
     }
   }
 };
@@ -2189,13 +2191,11 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("p", [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.truncate(_vm.product_description)) +
-                      "\n            "
-                  )
-                ]),
+                _c("p", {
+                  domProps: {
+                    innerHTML: _vm._s(_vm.makeLineText(_vm.product_description))
+                  }
+                }),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -2655,11 +2655,9 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "\n        " + _vm._s(_vm.truncate(_vm.status_text)) + "\n    "
-            )
-          ]),
+          _c("p", {
+            domProps: { innerHTML: _vm._s(_vm.makeLineText(_vm.status_text)) }
+          }),
           _vm._v(" "),
           _c(
             "div",
