@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProductsTable extends Migration
 {
@@ -15,10 +15,10 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('product_gen_token',330);
+            $table->string('product_gen_token', 330);
             $table->bigInteger('product_for_id');
-            $table->string('product_name',250);
-            $table->text('product_description',1000);
+            $table->string('product_name', 250);
+            $table->text('product_description', 1000);
             $table->string('product_measure_unit');
             $table->float('product_price');
             $table->string('product_measure_currency');

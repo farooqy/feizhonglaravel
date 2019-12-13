@@ -435,10 +435,11 @@ var app = new Vue({
         var req = this.req;
         req.product_gen_token = this.Product.generated_token;
         req.product_name = this.Product.product_name;
-        req.product_description = this.Product.product_description;
+        req.product_description = this.Product.product_description.replace(/\r?\n/g, '<br />');
+        ;
         req.product_measure_unit = this.Product.product_unit;
         req.product_measure_currency = this.Product.product_currency;
-        req.product_price = parseInt(this.Product.product_price);
+        req.product_price = this.Product.product_price;
         this.ServerRequest.setRequest(req);
         this.ServerRequest.serverRequest("/api/comp/product/addProduct", this.setProductInfo, this.showError);
       }
@@ -538,7 +539,8 @@ var app = new Vue({
     },
     setStatusInfo: function setStatusInfo(data) {
       var req = this.req;
-      req.status_content = this.Status.status_content;
+      req.status_content = this.Status.status_content.replace(/\r?\n/g, '<br />');
+      ;
       req.status_type = "status";
       req.status_generated_token = this.Status.generated_token;
       req.has_files = this.successfullStatusFiles.length;

@@ -67,6 +67,7 @@ class productController extends Controller
         $products = productModel::get();
         $product_list = [];
         foreach ($products as $product) {
+            // $product->product_description =
             array_push($product_list, ["product" => $product, "product_files" => $product->Product_Files]);
         }
 
@@ -163,7 +164,7 @@ class productController extends Controller
             "product_name" => "required|min:5",
             "product_description" => "required|string|min:50, max:999",
             "product_measure_unit" => "required|string",
-            "product_price" => "required|numeric",
+            "product_price" => "required|numeric|between:0.0001,999,999.99",
             "product_measure_currency" => "required|string",
         ];
         $message = [
@@ -215,7 +216,7 @@ class productController extends Controller
             ['generated_for_token', $request->host_token],
         ])->update(['generated_completed' => true]);
 
-        $this->Error->setSuccess([]);
+        $this->Error->setSuccess([$request->product_price]);
         return $this->Error->getSuccess();
 
     }
