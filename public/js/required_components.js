@@ -863,7 +863,7 @@ module.exports = {
       this.$emit('view-status-details', this.post_id, this.post_token);
     },
     makeLineText: function makeLineText(text) {
-      return this.truncate(status_text).replace(/\n/g, "<br />");
+      return this.truncate(text).replace(/\n/g, "<br />");
     }
   }
 };
