@@ -521,7 +521,7 @@
             },
             makeLineText(text)
             {
-                return truncate(status_text).replace(/\n/g, "<br />");
+                return this.truncate(status_text).replace(/\n/g, "<br />");
             }
 
         }
