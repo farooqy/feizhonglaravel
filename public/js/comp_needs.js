@@ -1869,6 +1869,10 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     return {
@@ -1881,7 +1885,7 @@ module.exports = {
       return this.$emit('close-comp-match-modal');
     }
   },
-  props: ["product_name", "product_description", "product_quantity", "product_measure_unit", "product_type", "product_sub_types", "product_valid_until", "need_user_data"]
+  props: ["product_name", "product_description", "product_quantity", "product_measure_unit", "product_type", "product_sub_types", "product_valid_until", "need_user_data", "need_images"]
 };
 
 /***/ }),
@@ -37406,229 +37410,269 @@ var render = function() {
       attrs: { id: "myModal" }
     },
     [
-      _c("div", { staticClass: "modal-content" }, [
-        _c("div", { staticClass: "error-header" }, [
-          _c("h4", {}, [
-            _vm._v("Demand Details!\n                "),
-            _c(
-              "span",
-              {
-                staticClass: "close-modal",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.disMissNeedModal()
+      _c(
+        "div",
+        { staticClass: "modal-content", staticStyle: { width: "60%" } },
+        [
+          _c("div", { staticClass: "error-header" }, [
+            _c("h4", {}, [
+              _vm._v("Demand Details!\n                "),
+              _c(
+                "span",
+                {
+                  staticClass: "close-modal",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.disMissNeedModal()
+                    }
                   }
-                }
-              },
-              [_vm._v("×")]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", {}, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { attrs: { clss: "card-header" } }),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-                    _c(
-                      "label",
-                      { staticClass: "label", staticStyle: { width: "100%" } },
-                      [_vm._v("Product name")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "input",
-                      staticStyle: { width: "100%" },
-                      attrs: { disabled: "" },
-                      domProps: { value: _vm.product_name }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row mt-3" }, [
-                  _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Product Description")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "textarea",
-                      {
-                        staticStyle: { width: "100%", resize: "none" },
-                        attrs: { disabled: "", value: "Product Description" }
-                      },
-                      [_vm._v(_vm._s(_vm.product_description))]
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row mt-3" }, [
-                  _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Product type")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      attrs: { disabled: "" },
-                      domProps: { value: _vm.product_type }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Product subtype")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      attrs: { disabled: "" },
-                      domProps: { value: _vm.product_sub_types }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row mt-3" }, [
-                  _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-                    _c(
-                      "label",
-                      { staticClass: "label", staticStyle: { width: "100%" } },
-                      [_vm._v("Quantity")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "input",
-                      staticStyle: { width: "100%" },
-                      attrs: { disabled: "" },
-                      domProps: {
-                        value:
-                          _vm.product_quantity + " " + _vm.product_measure_unit
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Valid until")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      attrs: { disabled: "" },
-                      domProps: { value: _vm.product_valid_until }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
-                _vm._m(0),
-                _vm._v(" "),
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-                    _c(
-                      "label",
-                      { staticClass: "label", staticStyle: { width: "100%" } },
-                      [_vm._v("customer name")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "input",
-                      staticStyle: { width: "100%" },
-                      attrs: { disabled: "" },
-                      domProps: {
-                        value:
-                          _vm.need_user_data.user_fname +
-                          " " +
-                          _vm.need_user_data.user_sname
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row mt-3" }, [
-                  _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-                    _c(
-                      "label",
-                      { staticClass: "label", staticStyle: { width: "100%" } },
-                      [_vm._v("Email")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "input",
-                      staticStyle: { width: "100%" },
-                      attrs: { disabled: "" },
-                      domProps: { value: _vm.need_user_data.user_email }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-                    _c("label", { staticClass: "label" }, [_vm._v("Phone")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      attrs: { disabled: "" },
-                      domProps: { value: _vm.need_user_data.user_phone }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm.need_user_data.user_location
-                  ? _c("div", { staticClass: "row mt-3" }, [
-                      _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "label",
-                            staticStyle: { width: "100%" }
-                          },
-                          [_vm._v("Address")]
-                        ),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticClass: "input",
-                          staticStyle: { width: "100%" },
-                          attrs: { disabled: "" },
-                          domProps: {
-                            value: _vm.need_user_data.user_location.address
-                          }
-                        })
-                      ])
+                },
+                [_vm._v("×")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", {}, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { attrs: { clss: "card-header" } }),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "label",
+                          staticStyle: { width: "100%" }
+                        },
+                        [_vm._v("Product name")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "input",
+                        staticStyle: { width: "100%" },
+                        attrs: { disabled: "" },
+                        domProps: { value: _vm.product_name }
+                      })
                     ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.need_user_data.user_location
-                  ? _c("div", { staticClass: "row mt-3" }, [
-                      _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "label",
-                            staticStyle: { width: "100%" }
-                          },
-                          [_vm._v("Country")]
-                        ),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticStyle: { width: "100%" },
-                          attrs: { disabled: "" },
-                          domProps: {
-                            value:
-                              _vm.need_user_data.user_location.city +
-                              " ," +
-                              _vm.need_user_data.user_location.province_state +
-                              ", " +
-                              _vm.need_user_data.user_location.country
-                          }
-                        })
-                      ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row mt-3" }, [
+                    _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                      _c("label", { staticClass: "label" }, [
+                        _vm._v("Product Description")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "textarea",
+                        {
+                          staticStyle: { width: "100%", resize: "none" },
+                          attrs: { disabled: "", value: "Product Description" }
+                        },
+                        [_vm._v(_vm._s(_vm.product_description))]
+                      )
                     ])
-                  : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row mt-3" }, [
+                    _c("div", { staticClass: "col-md-6 col-lg-6" }, [
+                      _c("label", { staticClass: "label" }, [
+                        _vm._v("Product type")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { disabled: "" },
+                        domProps: { value: _vm.product_type }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6 col-lg-6" }, [
+                      _c("label", { staticClass: "label" }, [
+                        _vm._v("Product subtype")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { disabled: "" },
+                        domProps: { value: _vm.product_sub_types }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row mt-3" }, [
+                    _c("div", { staticClass: "col-md-6 col-lg-6" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "label",
+                          staticStyle: { width: "100%" }
+                        },
+                        [_vm._v("Quantity")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "input",
+                        staticStyle: { width: "100%" },
+                        attrs: { disabled: "" },
+                        domProps: {
+                          value:
+                            _vm.product_quantity +
+                            " " +
+                            _vm.product_measure_unit
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6 col-lg-6" }, [
+                      _c("label", { staticClass: "label" }, [
+                        _vm._v("Valid until")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { disabled: "" },
+                        domProps: { value: _vm.product_valid_until }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "row mt-3" },
+                    _vm._l(_vm.need_images, function(image, ikey) {
+                      return _c("img", {
+                        key: ikey,
+                        staticStyle: {
+                          border: "thin solid gray",
+                          margin: "7px"
+                        },
+                        attrs: {
+                          src: image.file_url,
+                          alt: "",
+                          height: "100px",
+                          width: "110px"
+                        }
+                      })
+                    }),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "label",
+                          staticStyle: { width: "100%" }
+                        },
+                        [_vm._v("customer name")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "input",
+                        staticStyle: { width: "100%" },
+                        attrs: { disabled: "" },
+                        domProps: {
+                          value:
+                            _vm.need_user_data.user_fname +
+                            " " +
+                            _vm.need_user_data.user_sname
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row mt-3" }, [
+                    _c("div", { staticClass: "col-md-6 col-lg-6" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "label",
+                          staticStyle: { width: "100%" }
+                        },
+                        [_vm._v("Email")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "input",
+                        staticStyle: { width: "100%" },
+                        attrs: { disabled: "" },
+                        domProps: { value: _vm.need_user_data.user_email }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6 col-lg-6" }, [
+                      _c("label", { staticClass: "label" }, [_vm._v("Phone")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { disabled: "" },
+                        domProps: { value: _vm.need_user_data.user_phone }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.need_user_data.user_location
+                    ? _c("div", { staticClass: "row mt-3" }, [
+                        _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "label",
+                              staticStyle: { width: "100%" }
+                            },
+                            [_vm._v("Address")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "input",
+                            staticStyle: { width: "100%" },
+                            attrs: { disabled: "" },
+                            domProps: {
+                              value: _vm.need_user_data.user_location.address
+                            }
+                          })
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.need_user_data.user_location
+                    ? _c("div", { staticClass: "row mt-3" }, [
+                        _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "label",
+                              staticStyle: { width: "100%" }
+                            },
+                            [_vm._v("Country")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticStyle: { width: "100%" },
+                            attrs: { disabled: "" },
+                            domProps: {
+                              value:
+                                _vm.need_user_data.user_location.city +
+                                " ," +
+                                _vm.need_user_data.user_location
+                                  .province_state +
+                                ", " +
+                                _vm.need_user_data.user_location.country
+                            }
+                          })
+                        ])
+                      ])
+                    : _vm._e()
+                ])
               ])
             ])
           ])
-        ])
-      ])
+        ]
+      )
     ]
   )
 }

@@ -598,6 +598,11 @@ var app = new Vue({
             }
         },
         userProductNeed() {
+            if(this.needed_product.need_posted && this.needed_product.data !== null)
+            {
+                this.postNeedImage(this.needed_product.data)
+                return;
+            }    
             if (this.needed_product.prod_name === "" ||
                 this.needed_product.prod_name === null)
                 return this.showError('Please provide product name');
@@ -621,7 +626,8 @@ var app = new Vue({
             if (this.needed_product.prod_valid_until === "" ||
                 this.needed_product.prod_valid_until === null)
                 return this.showError('Please provide product validity date');
-
+            
+            this.requestLoading = true;
             var product = this.needed_product;
             product.host_id = this.req.host_id;
             product.host_token = this.req.host_token;
@@ -634,29 +640,85 @@ var app = new Vue({
 
         },
         userNeedPosted(data) {
-
-            this.needed_product = {
-                prod_name: null,
-                prod_type: null,
-                prod_subtype: null,
-                prod_description: null,
-                prod_quantity: null,
-                prod_measure_unit: null,
-                prod_valid_until: null,
+            this.needed_product.need_posted = true;
+            this.needed_product.data = data;
+            this.postNeedImage(data);
+           
+        },
+        postNeedImage(data)
+        {
+            
+            var images = this.needed_product.need_images;
+            console.log('images before splice ',images.length)
+            if(this.needed_product.uploaded_images !== 0)
+                images.splice(0, this.needed_product.uploaded_images);
+            var num_images = images.length;
+            console.log('images after splice ',images.length)
+            var i=-0;
+            for(i=0; i< num_images; i++) {
+                var image = images[i];
+                console.log('will post image');
+                var req= this.req;
+                req.need_id = data[0].id,
+                req.need_token = data[0].need_token;
+                req.file_url = image.file_url;
+                this.ServerRequest.setRequest(req);
+                this.ServerRequest.serverRequest('/api/user/needs/post/images',
+                    this.userNeedImagesPosted, this.showError);
             };
-            if (data[0])
-                data = data[0];
+            
 
-            alert('You have successfully posted your need.');
-            console.log('user need ', data);
+        },
+        userNeedImagesPosted(data)
+        {
+            this.needed_product.uploaded_images +=1;
+            if(this.needed_product.uploaded_images === this.needed_product.need_images.length)
+            {
+                this.needed_product = {
+                    prod_name: null,
+                    prod_type: null,
+                    prod_subtype: null,
+                    prod_description: null,
+                    prod_quantity: null,
+                    prod_measure_unit: null,
+                    prod_valid_until: null,
+                    need_images :[],
+                    uploaded_images: 0,
+                };
+                if (data[0])
+                    data = data[0];
+    
+                alert('You have successfully posted your need.');
+                console.log('user need ', data);
+                this.requestLoading = false;
+            }
+        },
+        prepareNeedImage(event)
+        {
+            console.log(event);
+            var input = event.target;
+            this.ServerRequest.previewFile(input, this.previewNeedImage,
+                this.showError);
+        },
+        previewNeedImage(src)
+        {
+            this.needed_product.need_images.push({
+                "file_url": src.target.result,
+                "alt": "Status file",
+                "index": this.Status.status_files.length
+            })
         },
         removeMe(index, type = "product") {
             console.log(index, ' to be remved');
             var files;
             if (type === "product")
                 files = this.Product.product_files;
-            else
+            else if(type === 'status')
                 files = this.Status.status_files;
+            else if(type === 'need')
+                files = this.needed_product.need_images;
+            else
+                return;
             files.splice(index, 1);
             var i;
             for (i = index; i < files.length; i++) {
@@ -725,6 +787,7 @@ var app = new Vue({
         showError(error) {
             this.errorObject.error_text = error;
             this.errorObject.errorModal = this.errorModal = true;
+            this.requestLoading = false;
         },
         getHostProfile() {
             if (this.host_type === 0)
@@ -856,6 +919,10 @@ var app = new Vue({
             prod_quantity: null,
             prod_measure_unit: null,
             prod_valid_until: null,
+            need_images: [],
+            uploaded_images:0,
+            need_posted : false,
+            data: null,
         },
         Weather: {
             City: 'Nanjing',
@@ -900,6 +967,7 @@ var app = new Vue({
             }
         },
         BargainModel:  new BargainModel(),
+        requestLoading: false,
 
 
     },

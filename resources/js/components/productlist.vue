@@ -28,7 +28,7 @@
             </div>
 
             <div class="post-content xs-12">
-                <a href="#" class="h3 post-title">
+                <a href="#" @click.prevent="viewProduct()" class="h3 post-title">
                     {{product_name}}
                 </a>
                 <p v-html="makeLineText(product_description)">

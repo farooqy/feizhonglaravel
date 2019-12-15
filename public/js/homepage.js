@@ -665,6 +665,11 @@ var app = new Vue({
       }
     },
     userProductNeed: function userProductNeed() {
+      if (this.needed_product.need_posted && this.needed_product.data !== null) {
+        this.postNeedImage(this.needed_product.data);
+        return;
+      }
+
       if (this.needed_product.prod_name === "" || this.needed_product.prod_name === null) return this.showError('Please provide product name');
       if (this.needed_product.prod_type === "" || this.needed_product.type === null || this.needed_product.type === "Other") return this.showError('Please provide product type');
       if (this.needed_product.prod_subtype === "" || this.needed_product.prod_subtype === null || this.needed_product.prod_subtype === "Other") return this.showError('Please provide product subtype');
@@ -672,6 +677,7 @@ var app = new Vue({
       if (this.needed_product.prod_quantity === 0 || this.needed_product.prod_quantity === null) return this.showError('Please provide product quantity');
       if (this.needed_product.prod_measure_unit === "" || this.needed_product.prod_measure_unit === null) return this.showError('Please provide product measure unit');
       if (this.needed_product.prod_valid_until === "" || this.needed_product.prod_valid_until === null) return this.showError('Please provide product validity date');
+      this.requestLoading = true;
       var product = this.needed_product;
       product.host_id = this.req.host_id;
       product.host_token = this.req.host_token;
@@ -681,24 +687,68 @@ var app = new Vue({
       this.ServerRequest.serverRequest("/api/user/needs/post", this.userNeedPosted, this.showError);
     },
     userNeedPosted: function userNeedPosted(data) {
-      this.needed_product = {
-        prod_name: null,
-        prod_type: null,
-        prod_subtype: null,
-        prod_description: null,
-        prod_quantity: null,
-        prod_measure_unit: null,
-        prod_valid_until: null
-      };
-      if (data[0]) data = data[0];
-      alert('You have successfully posted your need.');
-      console.log('user need ', data);
+      this.needed_product.need_posted = true;
+      this.needed_product.data = data;
+      this.postNeedImage(data);
+    },
+    postNeedImage: function postNeedImage(data) {
+      var images = this.needed_product.need_images;
+      console.log('images before splice ', images.length);
+      if (this.needed_product.uploaded_images !== 0) images.splice(0, this.needed_product.uploaded_images);
+      var num_images = images.length;
+      console.log('images after splice ', images.length);
+      var i = -0;
+
+      for (i = 0; i < num_images; i++) {
+        var image = images[i];
+        console.log('will post image');
+        var req = this.req;
+        req.need_id = data[0].id, req.need_token = data[0].need_token;
+        req.file_url = image.file_url;
+        this.ServerRequest.setRequest(req);
+        this.ServerRequest.serverRequest('/api/user/needs/post/images', this.userNeedImagesPosted, this.showError);
+      }
+
+      ;
+    },
+    userNeedImagesPosted: function userNeedImagesPosted(data) {
+      this.needed_product.uploaded_images += 1;
+
+      if (this.needed_product.uploaded_images === this.needed_product.need_images.length) {
+        this.needed_product = {
+          prod_name: null,
+          prod_type: null,
+          prod_subtype: null,
+          prod_description: null,
+          prod_quantity: null,
+          prod_measure_unit: null,
+          prod_valid_until: null,
+          need_images: [],
+          uploaded_images: 0
+        };
+        if (data[0]) data = data[0];
+        alert('You have successfully posted your need.');
+        console.log('user need ', data);
+        this.requestLoading = false;
+      }
+    },
+    prepareNeedImage: function prepareNeedImage(event) {
+      console.log(event);
+      var input = event.target;
+      this.ServerRequest.previewFile(input, this.previewNeedImage, this.showError);
+    },
+    previewNeedImage: function previewNeedImage(src) {
+      this.needed_product.need_images.push({
+        "file_url": src.target.result,
+        "alt": "Status file",
+        "index": this.Status.status_files.length
+      });
     },
     removeMe: function removeMe(index) {
       var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "product";
       console.log(index, ' to be remved');
       var files;
-      if (type === "product") files = this.Product.product_files;else files = this.Status.status_files;
+      if (type === "product") files = this.Product.product_files;else if (type === 'status') files = this.Status.status_files;else if (type === 'need') files = this.needed_product.need_images;else return;
       files.splice(index, 1);
       var i;
 
@@ -756,6 +806,7 @@ var app = new Vue({
     showError: function showError(error) {
       this.errorObject.error_text = error;
       this.errorObject.errorModal = this.errorModal = true;
+      this.requestLoading = false;
     },
     getHostProfile: function getHostProfile() {
       if (this.host_type === 0) return this.Host.company_logo;else return this.Host.user_profile;
@@ -870,7 +921,11 @@ var app = new Vue({
       prod_description: null,
       prod_quantity: null,
       prod_measure_unit: null,
-      prod_valid_until: null
+      prod_valid_until: null,
+      need_images: [],
+      uploaded_images: 0,
+      need_posted: false,
+      data: null
     },
     Weather: {
       City: 'Nanjing',
@@ -912,7 +967,8 @@ var app = new Vue({
         visible: false
       }
     },
-    BargainModel: new BargainModel()
+    BargainModel: new BargainModel(),
+    requestLoading: false
   },
   mounted: function mounted() {
     this.getCompanyData(); // this.populateProduct();

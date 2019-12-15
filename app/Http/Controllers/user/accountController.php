@@ -425,18 +425,19 @@ class accountController extends Controller
         $rules = [
             "host_id" => "required|integer",
             "host_token" => "required|string",
-            "host_type" => "required|string|in:normal,comp"
+            "host_type" => "required|string|in:normal,comp",
         ];
         $is_valid = Validator::make($request->all(), $rules, []);
         $isNotValidRequest = $this->custom_validator->isNotValidRequest($is_valid);
-        if($isNotValidRequest)
+        if ($isNotValidRequest) {
             return $isNotValidRequest;
+        }
+
         $is_valid_user = normalUsersModel::where([
             ["user_id", $request->host_id],
             ["user_token", $request->host_token],
         ])->get();
-        if($is_valid_user === null || $is_valid_user->count() <= 0)
-        {
+        if ($is_valid_user === null || $is_valid_user->count() <= 0) {
             $this->Error->setError(["The user profile could not be verified to get quotations"]);
             return $this->Error->getError();
         }
@@ -852,9 +853,9 @@ class accountController extends Controller
                 ["user_id", $request->user_id],
                 ["user_token", $request->user_token],
             ])->update([
-                "user_profile" => env('APP_URL') . $file_url,
+                "user_profile" => $file_url,
             ]);
-            $this->Error->setSuccess(["user_profile" => env('APP_URL') . $file_url]);
+            $this->Error->setSuccess(["user_profile" => $file_url]);
             return $this->Error->getSuccess();
         }
 

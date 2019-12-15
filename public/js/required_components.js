@@ -2181,7 +2181,16 @@ var render = function() {
               _c("div", { staticClass: "post-content xs-12" }, [
                 _c(
                   "a",
-                  { staticClass: "h3 post-title", attrs: { href: "#" } },
+                  {
+                    staticClass: "h3 post-title",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.viewProduct()
+                      }
+                    }
+                  },
                   [
                     _vm._v(
                       "\n                " +

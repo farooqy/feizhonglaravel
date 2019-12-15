@@ -31,7 +31,7 @@ class Error{
     		"error_code_number" => $error_code,
     	];
 			// print_r($this->getError());
-    	Log::channel('customlog')->info("[-ERROR-] ::  ".implode(" - ",$this->getError()["errorMessage"])." - IP:: ".\Request::ip()." - URL: ".url()->current(). " - Params:: ".implode(\Request::route()->parameters()));
+    	// Log::channel('customlog')->info("[-ERROR-] ::  ".implode(" - ",$this->getError()["errorMessage"])." - IP:: ".\Request::ip()." - URL: ".url()->current(). " - Params:: ".implode(\Request::route()->parameters()));
 
 	}
 	public function setSuccess($data=[])

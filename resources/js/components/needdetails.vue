@@ -3,7 +3,7 @@
 
         <!-- Modal content -->
 
-        <div class="modal-content">
+        <div class="modal-content" style="width: 60%;">
             <div class="error-header">
                 <h4 style="">Demand Details!
                     <span class="close-modal" @click.prevent="disMissNeedModal()">&times;</span>
@@ -49,6 +49,10 @@
                                     <label class="label">Valid until</label>
                                     <input disabled :value="product_valid_until" />
                                 </div>
+                            </div>
+                            <div class="row mt-3">
+                                <img v-for="(image, ikey) in need_images" :key="ikey" :src="image.file_url" alt=""
+                                    height="100px" width="110px" style="border:thin solid gray; margin:7px">
                             </div>
                             <hr />
                             <div class="row ml-3">
@@ -116,6 +120,6 @@
         },
         props: ["product_name", "product_description", "product_quantity",
                 "product_measure_unit", "product_type", "product_sub_types",
-                "product_valid_until", "need_user_data"],
+                "product_valid_until", "need_user_data", "need_images"],
     }
 </script>

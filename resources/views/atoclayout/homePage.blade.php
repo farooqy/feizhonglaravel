@@ -113,14 +113,14 @@
                 </div>
                 <div class="form-group" v-show="false">
                   <input type="file" name="status_file" ref="status_file"
-                  @change="prepareStatusFile($event)">
+                  @change.prevent="prepareStatusFile($event)">
                 </div>
                 <div class="form-group">
                   <img v-for="file in Status.status_files" :src="file.file_src"
                   class="post_image_preview" :alt="file.alt"
                   style="height:60px;width:60px;
                   background-image:url(olympus_assets/img/danger.png)"
-                  @click="removeMe(file.index, 'status')"/>
+                  @click.prevent="removeMe(file.index, 'status')"/>
                   <div class="">
                     <span class="hint">Click on the photo to remove it</span>
                   </div>
@@ -244,13 +244,36 @@
                 </div>
               </div>
               <div class="row">
-                <label class="label" style="margin-left:15px">Valid to date?</label>
+                <label class="label" style="margin-left:15px">You have any photos of the product??</label>
+                <input type="file" ref="need_image" 
+                @change.prevent="prepareNeedImage($event)" style="margin-left:15px; margin-right:15px; display:none"/>
+                  
+              </div>
+              <div class="row ml-1">
+                <img v-for="file in needed_product.need_images" :src="file.file_url"
+                  class="post_image_preview" :alt="file.alt"
+                  style="height:60px;width:60px;
+                  background-image:url(olympus_assets/img/danger.png)"
+                  @click.prevent="removeMe(file.index, 'need')"/>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <span class="hint">Click on the photo to remove it</span>
+                </div>
+                  
+              </div>
+              <div class="row mb-3">
+                <button @click.prevent="$refs.need_image.click()" class="ml-3 btn btn-primary">
+                  <i class="fas fa-camera pointer" style=""></i> Add Photo
+                </button>
+              </div>
+              <div class="row">
+                <label class="label" style="margin-left:15px">When do you need?</label>
                 <input type="date" placeholder="Required Date"
                 v-model="needed_product.prod_valid_until" style="margin-left:15px; margin-right:15px"/>
               </div>
+
               <div class="row mt-4">
-                <button class="btn btn-primary" style="margin-left:15px"
-                @click.prevent="userProductNeed()">
+                <button class="btn btn-primary" style="margin-left:15px" 
+                @click.prevent="userProductNeed()" :disabled="requestLoading">
                   Request Product
                 </button>
               </div>

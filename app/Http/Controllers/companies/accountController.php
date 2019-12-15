@@ -162,7 +162,9 @@ class accountController extends Controller
             $need = $match->needsData;
             $user_data = $need->needUserData;
             $user_address = $user_data->userLocation;
+            
             // array_push($data[0]->needs, $need);
+            $need->needImages;
             $Company["matched_needs"][$key] = $need;
         }
         $this
