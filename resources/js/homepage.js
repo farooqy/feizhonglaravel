@@ -637,6 +637,7 @@ var app = new Vue({
             this.ServerRequest.setRequest(product);
             this.ServerRequest.serverRequest("/api/user/needs/post",
                 this.userNeedPosted, this.showError);
+            // this.postNeedImage([{id:2, need_token: 'sdfasd'}])
 
         },
         userNeedPosted(data) {
@@ -657,12 +658,18 @@ var app = new Vue({
             var i=-0;
             for(i=0; i< num_images; i++) {
                 var image = images[i];
-                console.log('will post image');
-                var req= this.req;
-                req.need_id = data[0].id,
-                req.need_token = data[0].need_token;
-                req.file_url = image.file_url;
-                this.ServerRequest.setRequest(req);
+                console.log('will post image ',image);
+                var src= image.file_url;
+                var need_image_req= {
+                    need_id: data[0].id,
+                    need_token: data[0].need_token,
+                    file_url: src,
+                    host_id: this.req.host_id,
+                    host_token: this.req.host_token,
+                    api_key: this.req.api_key,
+                }
+               
+                this.ServerRequest.setRequest(need_image_req);
                 this.ServerRequest.serverRequest('/api/user/needs/post/images',
                     this.userNeedImagesPosted, this.showError);
             };

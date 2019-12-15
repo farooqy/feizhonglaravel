@@ -138,8 +138,8 @@ class userNeedController extends Controller
         } else {
             $user_directory = env("APP_ROOT") . $dir;
         }
-
-        $filename = hash('md5', time()) . "_need_.";
+        $rand = random_bytes(15);
+        $filename = hash('md5', time().$rand) . "_need_.";
 
         $this->FileUploader->setFilePath($user_directory);
         $this->FileUploader->setFileDirectory($dir); //path with url
