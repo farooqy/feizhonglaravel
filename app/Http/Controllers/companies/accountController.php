@@ -122,7 +122,7 @@ class accountController extends Controller
             $this
                 ->Status
                 ->setError(["Authentication failed. Could not get company
-			information. Please log in back", ]);
+			information. Please log in back"]);
             $this->forgetAuthenticationCookies();
             return $this
                 ->Status
@@ -162,7 +162,7 @@ class accountController extends Controller
             $need = $match->needsData;
             $user_data = $need->needUserData;
             $user_address = $user_data->userLocation;
-            
+
             // array_push($data[0]->needs, $need);
             $need->needImages;
             $Company["matched_needs"][$key] = $need;
@@ -830,7 +830,12 @@ class accountController extends Controller
     }
     protected function checkUpdateFields($request, $targetField = '')
     {
-        $rules = ["company_id" => "required|integer", "company_token" => "required|string|max:330|min:20", "company_target_change" => "required|string|min:6", "company_password" => "required|string", "api_key" => "required|string"];
+        $rules = [
+            "company_id" => "required|integer",
+            "company_token" => "required|string|max:330|min:20",
+            "company_target_change" => "required|string|min:6",
+            "company_password" => "required|string",
+            "api_key" => "required|string"];
         $valid_request = Validator::make($request->all(), $rules, []);
         if ($notValid = $this
             ->custom_validator

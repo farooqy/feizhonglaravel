@@ -7,28 +7,20 @@
 @section("body")
 
 
-<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-style="min-height: 600px; background-image: url('/atoc_assets/images/black-handshake.jpg');
+<div class="header d-flex align-items-center"
+style="min-height: 80px; background-image: url('/atoc_assets/images/black-handshake.jpg');
  background-size: cover; background-position: center top;">
   <!-- Mask -->
   <span class="mask bg-gradient-default opacity-8"></span>
   <!-- Header container -->
-  <div class="container-fluid d-flex align-items-center">
-    <div class="row">
-      <div class="col-lg-7 col-md-10">
-        <h4 class="display-2 text-white" style="font-size:30px">
-          Welcome  <span v-text="Company.comp_name">John</span>
-        </h4>
-        <p class="text-white mt-0 mb-5">
-          This is your profile page.
-          You can see the progress you've made with your work and
-          manage your interactions with companies</p>
-      </div>
-    </div>
-  </div>
 </div>
 
-@include('atoclayout.error.comingsoon')
+<div class="card">
+  <div class="card-header"></div>
+  <div class="card-body">
+    
+  </div>
+</div>
 
 @endsection
 

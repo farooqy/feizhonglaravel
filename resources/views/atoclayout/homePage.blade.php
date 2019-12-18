@@ -8,7 +8,15 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active inline-items" data-toggle="tab" href="#status_form" role="tab" aria-expanded="true">
+          <a class="nav-link active inline-items" data-toggle="tab" href="#top_companies" role="tab" aria-expanded="true">
+
+            <svg class="olymp-status-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-status-icon"></use></svg>
+
+            <span>Top Companies</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link inline-items" data-toggle="tab" href="#status_form" role="tab" aria-expanded="true">
 
             <svg class="olymp-status-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-status-icon"></use></svg>
 
@@ -28,6 +36,41 @@
       <!-- Tab panes -->
       <div class="tab-content">
 
+        <div class="tab-pane active" id="top_companies" role="tabpanel" aria-expanded="true">
+          <div class="card">
+            {{-- <div class="card-header">Africa to China</div> --}}
+            <div class="card-body">
+
+                <div id="topCompaniesCarousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                      <li data-target="#topCompaniesCarousel" data-slide-to="0" class="active"></li>
+                      <li data-target="#topCompaniesCarousel" data-slide-to="1"></li>
+                      <li data-target="#topCompaniesCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <img class="d-block w-100" src="/atoc_assets/images/atoc_feature.png" alt="First slide">
+                      </div>
+                      <div class="carousel-item">
+                        <img class="d-block w-100" src="/atoc_assets/images/atoc_feature.png" alt="Second slide">
+                      </div>
+                      <div class="carousel-item">
+                        <img class="d-block w-100" src="/atoc_assets/images/atoc_feature.png" alt="Third slide">
+                      </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#topCompaniesCarousel" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#topCompaniesCarousel" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+
+            </div>
+          </div>
+        </div>
         <div class="tab-pane" id="product_form" role="tabpanel" aria-expanded="true">
           <div class="card">
             <div class="card-header">
@@ -95,7 +138,7 @@
           </div>
         </div>
 
-        <div class="tab-pane active" id="status_form" role="tabpanel" aria-expanded="true">
+        <div class="tab-pane" id="status_form" role="tabpanel" aria-expanded="true">
           <div class="card">
             <div class="card-header">Add New Post</div>
             <div class="card-body">
