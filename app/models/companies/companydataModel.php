@@ -10,13 +10,13 @@ class companydataModel extends Model
     protected $table = "companydata";
     protected $primaryKey = "comp_id";
     public $fillable = ["comp_name", "comp_logo",
-     "comp_email", "comp_phone", "comp_pass", "comp_token"];
+        "comp_email", "comp_phone", "comp_pass", "comp_token"];
     public $hidden = ["comp_pass"];
 
     public function verificationData()
     {
         return $this->hasOne('App\models\companies\verifiedCompaniesModel',
-                'comp_id', 'comp_id', 'comp_token', 'comp_token');
+            'comp_id', 'comp_id', 'comp_token', 'comp_token');
     }
     public function matchedNeeds()
     {
@@ -25,19 +25,19 @@ class companydataModel extends Model
     }
     public function address()
     {
-    	return $this->hasOne('App\models\companies\companyAddressModel', 'comp_id', 'comp_id');
+        return $this->hasOne('App\models\companies\companyAddressModel', 'comp_id', 'comp_id');
     }
     public function type()
     {
-    	return $this->hasOne('App\models\companies\companyTypeModel', 'comp_id', 'comp_id');
+        return $this->hasOne('App\models\companies\companyTypeModel', 'comp_id', 'comp_id');
     }
     public function chats()
     {
-    	return $this->hasMany('App\models\chats\chatUserModel', 'comp_id', ['chat_destination_id', 'chat_destination_id'])->orWhere('chat_origin_id', $this->chat_origin_id)->latest();
+        return $this->hasMany('App\models\chats\chatUserModel', 'comp_id', ['chat_destination_id', 'chat_destination_id'])->orWhere('chat_origin_id', $this->chat_origin_id)->latest();
     }
-    public function companyStatus ()
+    public function companyStatus()
     {
-    	return $this->hasMany('App\models\compStatusModel', 'comp_id', 'comp_id');
+        return $this->hasMany('App\models\compStatusModel', 'comp_id', 'comp_id');
     }
     public function products()
     {
@@ -45,9 +45,8 @@ class companydataModel extends Model
     }
     public function registrationStatus()
     {
-    	return $this->hasMany('App\models\registrationTrackerModel', 'comp_token', 'comp_token');
+        return $this->hasMany('App\models\registrationTrackerModel', 'comp_token', 'comp_token');
     }
-
 
     public function favoritedby()
     {
@@ -68,22 +67,22 @@ class companydataModel extends Model
     public function isCompany($comp_id)
     {
         $comp = companydataModel::where("comp_id", $comp_id)->get();
-        if($comp !== null && $comp->count() > 0)
-        {
+        if ($comp !== null && $comp->count() > 0) {
             return true;
-        }
-        else
+        } else {
             return false;
+        }
+
     }
     public function searchCompanies($keywords)
     {
-        $items = companydataModel::with("type", "address")->where("comp_name", "LIKE","%".$keywords."%")->orWhere([
-            ["comp_phone", "LIKE", "%".$keywords."%"],
+        $items = companydataModel::with("type", "address")->where("comp_name", "LIKE", "%" . $keywords . "%")->orWhere([
+            ["comp_phone", "LIKE", "%" . $keywords . "%"],
         ])->orWhere([
-            ["comp_email", "LIKE", "%".$keywords."%"],
-        ])->whereHas("type",function($q) use($keywords){
-             $q->where("comp_description" , "LIKE" , "%".$keywords."%");
-         })
+            ["comp_email", "LIKE", "%" . $keywords . "%"],
+        ])->whereHas("type", function ($q) use ($keywords) {
+            $q->where("comp_description", "LIKE", "%" . $keywords . "%");
+        })
         // ->orWhere("type", function($q) use($keywords){
         //     $q->where("comp_description" , "LIKE" , "%".$keywords."%");
         // })
@@ -95,13 +94,12 @@ class companydataModel extends Model
         //         ["comp_province", "LIKE" , "%".$keywords."%"],
         //     ]);
         // })
-        ->get();
+            ->get();
         return $items;
 
-        if($items === null || $items->count() <= 0)
+        if ($items === null || $items->count() <= 0) {
             return [];
-        else
-        {
+        } else {
             return $items;
         }
     }
@@ -121,14 +119,21 @@ class companydataModel extends Model
     {
         return \App\models\companies\suspendedCompaniesModel::where([
             ["comp_id", $comp_id],
-            ["is_revoked", false]
+            ["is_revoked", false],
         ])->exists();
     }
     public function isWithHeld($comp_id)
     {
         return \App\models\companies\withHeldCompaniesModel::where([
             ["with_held_comp_id", $comp_id],
-            ["is_active", true]
+            ["is_active", true],
+        ])->exists();
+    }
+    public function isPopulated($comp_id, $comp_token)
+    {
+        return populatedCompaniesModel::where([
+            ["comp_id", $comp_id],
+            ["comp_token", $comp_token],
         ])->exists();
     }
 }
