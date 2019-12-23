@@ -58,7 +58,12 @@ class featuredPackagePlan extends Controller
         }
         $dir = "uploads/comp/".$request->comp_token."/plan/";
         $filename = time()."_featured_";
-        $path = public_path($dir);
+        if(env("APP_ENV") === "production")
+        {
+            $path = env("APP_ROOT").$dir;
+        }
+        else
+            $path = public_path($dir);
         $this->FileUploader->setFilePath($path);
         $this->FileUploader->setFileDirectory($dir);
         $this->FileUploader->setFileName($filename);
