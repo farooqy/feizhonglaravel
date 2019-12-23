@@ -2,7 +2,7 @@
 
     <div class="tab-pane active" id="top_companies" role="tabpanel" aria-expanded="true">
       <div class="card">
-        <div class="card-header"> You want your company at the front page?
+        <div class="card-header" v-if="isCompany()"> You want your company at the front page?
           <a href="/comp/subscription" class="btn btn-success "target="_blank">
             <h5 style="color:white">Yes,put my company at the front page</h5>
           </a>
