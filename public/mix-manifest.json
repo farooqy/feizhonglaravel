@@ -13,5 +13,6 @@
     "/js/required_components.js": "/js/required_components.js",
     "/js/required_scripts.js": "/js/required_scripts.js",
     "/js/singlecompview.js": "/js/singlecompview.js",
+    "/js/subscription.js": "/js/subscription.js",
     "/js/user_profile.js": "/js/user_profile.js"
 }

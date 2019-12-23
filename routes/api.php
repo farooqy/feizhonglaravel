@@ -66,6 +66,8 @@ Route::post('/comp/product/genToken', 'Status_TokenGeneratorModelController@gene
 Route::post('/comp/featureCompany', 'companies\featuredCompaniesController@requestToBeFeatured');
 Route::post('/comp/getFeaturedImages', 'companies\featuredCompaniesController@getFeaturedCompanies');
 Route::post('/comp/allowFeatureCompany', 'companies\featuredCompaniesController@approveFeatureCompany');
+Route::post('/comp/package/new/featured', 'plans\featuredPackagePlan@subscribeToPlan');
+Route::post('/comp/package/list/featured', 'plans\featuredPackagePlan@getSubscribedToPlan');
 
 Route::post('/comp/quotation/generate', 'companies\quotationController@generateQuotation');
 

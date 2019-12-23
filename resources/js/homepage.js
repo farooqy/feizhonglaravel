@@ -848,6 +848,19 @@ var app = new Vue({
             // this.showError('')
             console.log('Failed to get ip data');
         },
+        getFeaturedCompanies()
+        {
+            this.ServerRequest.setRequest({
+                default:1,
+                type: 0,
+            });
+            this.ServerRequest.serverRequest('/api/comp/package/list/featured', this.setFeaturedCompanies,
+            this.showErrorModal);
+        },
+        setFeaturedCompanies(data)
+        {
+            this.featuredCompanies = data;
+        },
         disMissPostDetailsModal()
         {
             this.product_modal = this.status_modal = {
@@ -975,6 +988,7 @@ var app = new Vue({
         },
         BargainModel:  new BargainModel(),
         requestLoading: false,
+        featuredCompanies : [],
 
 
     },
@@ -982,5 +996,6 @@ var app = new Vue({
         this.getCompanyData();
         // this.populateProduct();
         // this.Status.status_content = this.$faker().lorem.paragraph();
+        this.getFeaturedCompanies();
     },
 })

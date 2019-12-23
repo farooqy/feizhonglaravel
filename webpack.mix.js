@@ -23,6 +23,7 @@ mix.js('resources/js/app.js', 'public/js')
   .js('resources/js/profile/comp_post.js', 'public/js')
   .js('resources/js/homepage.js', 'public/js')
   .js('resources/js/comp/comp_needs.js', 'public/js')
+  .js('resources/js/comp/subscription.js', 'public/js')
   .js('resources/js/new_registration.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
   .sass('resources/sass/searchfilter.scss', 'public/css');

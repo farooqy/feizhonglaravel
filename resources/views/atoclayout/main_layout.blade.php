@@ -404,12 +404,12 @@
 
 		<div class="container">
 
-			<div class="loaderHolder" v-show="showLoader">
+			<div class="loaderHolder" v-if="showLoader">
 				<loader v-bind="Loader"></loader>
 			</div>
 
 			<!-- Errormodal -->
-			<error v-show="errorModal" v-bind="errorObject" v-on:close-error-modal="disMissErrorModel"></error>
+			<error v-if="errorModal" v-bind="errorObject" v-on:close-error-modal="disMissErrorModel"></error>
 			<div class="row">
 
 				<!-- Main Content -->

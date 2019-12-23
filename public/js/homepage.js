@@ -859,6 +859,16 @@ var app = new Vue({
       // this.showError('')
       console.log('Failed to get ip data');
     },
+    getFeaturedCompanies: function getFeaturedCompanies() {
+      this.ServerRequest.setRequest({
+        "default": 1,
+        type: 0
+      });
+      this.ServerRequest.serverRequest('/api/comp/package/list/featured', this.setFeaturedCompanies, this.showErrorModal);
+    },
+    setFeaturedCompanies: function setFeaturedCompanies(data) {
+      this.featuredCompanies = data;
+    },
     disMissPostDetailsModal: function disMissPostDetailsModal() {
       this.product_modal = this.status_modal = {
         visible: false,
@@ -974,11 +984,14 @@ var app = new Vue({
       }
     },
     BargainModel: new BargainModel(),
-    requestLoading: false
+    requestLoading: false,
+    featuredCompanies: []
   },
   mounted: function mounted() {
     this.getCompanyData(); // this.populateProduct();
     // this.Status.status_content = this.$faker().lorem.paragraph();
+
+    this.getFeaturedCompanies();
   }
 });
 

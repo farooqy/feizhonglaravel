@@ -1862,8 +1862,6 @@ module.exports = {
 //
 //
 //
-//
-//
 module.exports = {
   data: function data() {
     this.field_change_password = null;
@@ -37566,9 +37564,9 @@ var render = function() {
                 ],
                 staticClass: "form-control form-control-alternative",
                 attrs: {
-                  type: "password",
+                  type: "number",
                   id: "input-first-name",
-                  placeholder: "Enter password"
+                  placeholder: "Enter code"
                 },
                 domProps: { value: _vm.verification_code },
                 on: {
@@ -37628,7 +37626,7 @@ var render = function() {
                 attrs: { type: "button" },
                 on: { click: _vm.saveChanges }
               },
-              [_vm._v("\n        Save\n      ")]
+              [_vm._v("\n                    Save\n                ")]
             ),
             _vm._v(" "),
             _c(

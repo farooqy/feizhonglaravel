@@ -76,7 +76,7 @@ class FileUploader
             $this->Error->setError(['The file types should be provided in array format']);
             return false;
         }
-        $this->allowed_file_types = $type;
+        $this->allowed_file_types = $types;
     }
     public function setFileDirectory($dir)
     {
@@ -103,5 +103,52 @@ class FileUploader
     public function getError()
     {
         return $this->Error->getError();
+    }
+
+
+    protected function validDirectory()
+    {
+        if (!is_dir($this->publicpath)) {
+            if (!mkdir($this->publicpath, 0765, true)) {
+                $this->Error->setError(["Failed to create upload directory. Please contact support"]);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function uploadFileDirect($request)
+    {
+        if (!$this->validDirectory()) {
+            return false;
+        }
+
+        $fextension = $request->file('file_src')->getClientOriginalExtension();
+        if (($type_key = array_search($fextension, $this->file_extension)) === false) {
+            $this->Error->setError(["The file extension is not valid " . $type_key. " given ".$fextension]);
+            return false;
+        }
+        $filename = $this->filename .'.'. $fextension;
+        $this->filename = $filename;
+        if (!$request->file('file_src')->move($this->publicpath . '/', $filename)) {
+            $this->Error->setError(["Failed to to upload the fail into the server"]);
+            return false;
+        } else {
+            if ($fextension === ".mp4" || $fextension === "mp4") {
+                $type = "videoFile";
+            } else {
+                $type = "newDoc";
+            }
+
+            $this->Error->setSuccess([
+                "file_src" =>  $filename,
+                "file_type" => $type,
+            ]);
+            return $this->Error->getSuccess();
+        }
+    }
+    public function getFileName()
+    {
+        return $this->filename;
     }
 }

@@ -34,43 +34,11 @@
       </ul>
 
       <!-- Tab panes -->
+      
+      @include('atoclayout.featured_companies')
       <div class="tab-content">
+        
 
-        <div class="tab-pane active" id="top_companies" role="tabpanel" aria-expanded="true">
-          <div class="card">
-            {{-- <div class="card-header">Africa to China</div> --}}
-            <div class="card-body">
-
-                <div id="topCompaniesCarousel" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                      <li data-target="#topCompaniesCarousel" data-slide-to="0" class="active"></li>
-                      <li data-target="#topCompaniesCarousel" data-slide-to="1"></li>
-                      <li data-target="#topCompaniesCarousel" data-slide-to="2"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                      <div class="carousel-item active">
-                        <img class="d-block w-100" src="/atoc_assets/images/atoc_feature.png" alt="First slide">
-                      </div>
-                      <div class="carousel-item">
-                        <img class="d-block w-100" src="/atoc_assets/images/atoc_feature.png" alt="Second slide">
-                      </div>
-                      <div class="carousel-item">
-                        <img class="d-block w-100" src="/atoc_assets/images/atoc_feature.png" alt="Third slide">
-                      </div>
-                    </div>
-                    <a class="carousel-control-prev" href="#topCompaniesCarousel" role="button" data-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#topCompaniesCarousel" role="button" data-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </div>
-
-            </div>
-          </div>
-        </div>
         <div class="tab-pane" id="product_form" role="tabpanel" aria-expanded="true">
           <div class="card">
             <div class="card-header">
@@ -93,17 +61,17 @@
                     <div class="col-md-3 col-lg-3">
                         <label for="product_name" class="label"> Price</label>
                         <input type="text" placeholder=" Price"
-                         v-model="Product.product_price"/>
+                        v-model="Product.product_price"/>
                     </div>
                     <div class="col-md-3 col-lg-3">
                       <label for="product_name" class="label">Currency</label>
                       <input type="text" placeholder="Currency"
-                       v-model="Product.product_currency"/>
+                      v-model="Product.product_currency"/>
                     </div>
                     <div class="col-md-6 col-lg-6">
                       <label for="product_name" class="label">Measuring unit</label>
                       <input type="text" placeholder="Measuring unit i.e grams"
-                       v-model="Product.product_unit"/>
+                      v-model="Product.product_unit"/>
                     </div>
                   </div>
                 </div>
@@ -121,23 +89,23 @@
                     <span class="hint">Click on the photo to remove it</span>
                   </div>
                 </div>
-
+    
                 <div class="add-options-message">
                   <span @click.prevent="$refs.product_file.click()">
                   <i class="fas fa-camera pointer" style="font-size:30px;
                   cursor:pointer"
                   ></i></span>
-
-
+    
+    
                   <button class="btn btn-primary btn-md-2"
                   @click.prevent="prepareProduct()" >Post Product</button>
-
+    
                 </div>
               </form>
             </div>
           </div>
         </div>
-
+    
         <div class="tab-pane" id="status_form" role="tabpanel" aria-expanded="true">
           <div class="card">
             <div class="card-header">Add New Post</div>
@@ -173,24 +141,33 @@
                   <i class="fas fa-camera pointer" style="font-size:30px;
                   cursor:pointer"
                   ></i></span>
-
-
+    
+    
                   <button class="btn btn-primary btn-md-2"
                   @click.prevent="preparePostStaus()">Post Status</button>
-
+    
                 </div>
-
+    
               </form>
             </div>
           </div>
         </div>
+
       </div>
     </div>
-    <div class="news-feed-form" v-else="!isCompany()">
+    <div class="news-feed-form" v-else-if="!isCompany()">
 
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active inline-items" data-toggle="tab" href="#needForm" role="tab" aria-expanded="true">
+          <a class="nav-link active inline-items" data-toggle="tab" href="#top_companies" role="tab" aria-expanded="true">
+
+            <svg class="olymp-status-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-status-icon"></use></svg>
+
+            <span>Top Companies</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link inline-items" data-toggle="tab" href="#needForm" role="tab" aria-expanded="true">
 
             <svg class="olymp-status-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-status-icon"></use></svg>
 
@@ -201,8 +178,8 @@
 
 
       <div class="tab-content">
-
-        <div class="tab-pane active" id="needForm" role="tabpanel" aria-expanded="true">
+        @include('atoclayout.featured_companies')
+        <div class="tab-pane" id="needForm" role="tabpanel" aria-expanded="true">
           <div class="card">
             <div class="card-header">What do you need?</div>
             <div class="card-body">
@@ -327,22 +304,40 @@
 
 
     </div>
+    
 
     <!-- ... end News Feed Form  -->
   </div>
-  <div class="ui-block" v-else="!isLoggedIn()">
-    <div class="card">
-      <div class="card-header">
-        LOGIN / REGISTER
-      </div>
-      <div class="card-body">
-        In order to post status or product, first <br>
-        <a href="/login" class="btn btn-primary">Login</a>
+  <div class="news-feed-form" v-else>
+      <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active inline-items" data-toggle="tab" href="#top_companies" role="tab" aria-expanded="true">
+  
+              <svg class="olymp-status-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-status-icon"></use></svg>
+  
+              <span>Top Companies</span>
+            </a>
+          </li>
+      </ul>
+      <div class="tab-content">
+        @include('atoclayout.featured_companies')
 
-        <a href="/register" class="btn btn-success">Register</a>
       </div>
-    </div>
+      <div class="ui-block" >
+          <div class="card">
+            <div class="card-header">
+              LOGIN / REGISTER
+            </div>
+            <div class="card-body">
+              In order to post status or product, first <br>
+              <a href="/login" class="btn btn-primary">Login</a>
+      
+              <a href="/register" class="btn btn-success">Register</a>
+            </div>
+          </div>
+        </div>
   </div>
+  
 
 
   <div class="ui-block">

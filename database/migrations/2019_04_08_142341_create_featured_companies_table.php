@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateFeaturedCompaniesTable extends Migration
 {
@@ -19,7 +19,7 @@ class CreateFeaturedCompaniesTable extends Migration
             $table->string('feature_file_url');
             $table->string('feature_file_type');
             $table->boolean('feature_approved')->default(false);
-            $table->string('feature_status',15)->default('requested');
+            $table->string('feature_status', 15)->default('requested');
             $table->timestamps();
         });
     }
