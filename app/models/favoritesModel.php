@@ -11,6 +11,6 @@ class favoritesModel extends Model
 
     public function companyData()
     {
-    	return $this->belongsTo('App\models\companies\companyDataModel','favorited_comp_id', 'comp_id');
+        return $this->belongsTo('App\models\companies\companydataModel', 'favorited_comp_id', 'comp_id');
     }
 }

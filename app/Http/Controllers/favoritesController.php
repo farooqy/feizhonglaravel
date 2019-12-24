@@ -134,7 +134,7 @@ class favoritesController extends Controller
             "errorMessage" => null,
             "isSuccess" => true,
             "successMessage" => "success",
-            "data" => $favorited_companies
+            "data" => $favorited_companies,
         ]);
 
     }
