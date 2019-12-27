@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-header" v-if="isCompany()"> You want your company at the front page?
           <a href="/comp/subscription" class="btn btn-success "target="_blank">
-            <h5 style="color:white">Yes,put my company at the front page</h5>
+            <h5 style="color: white;height: 19px;line-height: 25px;">Yes,put my company at the front page</h5>
           </a>
         </div>
         <div class="card-body">
