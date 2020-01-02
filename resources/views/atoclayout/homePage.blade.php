@@ -16,7 +16,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link inline-items" data-toggle="tab" href="#status_form" role="tab" aria-expanded="true">
+          <a class="nav-link inline-items" data-toggle="tab" href="#status_form" role="tab" aria-expanded="false">
 
             <svg class="olymp-status-icon"><use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-status-icon"></use></svg>
 
@@ -35,11 +35,11 @@
 
       <!-- Tab panes -->
       
-      @include('atoclayout.featured_companies')
+      
       <div class="tab-content">
         
-
-        <div class="tab-pane" id="product_form" role="tabpanel" aria-expanded="true">
+        @include('atoclayout.featured_companies')
+        <div class="tab-pane" id="product_form" role="tabpanel" aria-expanded="false">
           <div class="card">
             <div class="card-header">
               Adding New Product
@@ -106,7 +106,7 @@
           </div>
         </div>
     
-        <div class="tab-pane" id="status_form" role="tabpanel" aria-expanded="true">
+        <div class="tab-pane" id="status_form" role="tabpanel" aria-expanded="false">
           <div class="card">
             <div class="card-header">Add New Post</div>
             <div class="card-body">

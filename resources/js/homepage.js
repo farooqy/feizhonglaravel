@@ -318,6 +318,7 @@ var app = new Vue({
                     "host_type": "comp",
                     "product_file": file_src,
                     "product_gen_token": this.Product.generated_token,
+                    "file_index" : i
                 }
                 console.log('req for product is ', req);
                 if(this.successfullProductFiles.length >= this.Product.product_files.length)
@@ -859,7 +860,9 @@ var app = new Vue({
         },
         setFeaturedCompanies(data)
         {
-            this.featuredCompanies = data;
+            this.featuredCompanies = data["featured"];
+            this.Demands.demand_title = data["demand_info"]["active_demands"] + " Active demands ";
+            this.Demands.demand_served = data["demand_info"]["served_demands"] + " demands have been successfully served ";
         },
         disMissPostDetailsModal()
         {

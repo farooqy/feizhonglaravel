@@ -2038,6 +2038,13 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     console.log('child ready');
@@ -71913,114 +71920,146 @@ var render = function() {
       attrs: { id: "myModal" }
     },
     [
-      _c("div", { staticClass: "modal-content" }, [
-        _c("div", { staticClass: "error-header" }, [
-          _c("h4", { staticStyle: { color: "red" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "modal-content",
+          staticStyle: { width: "100%", background: "transparent" }
+        },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-2 col-lg-2" }),
+            _vm._v(" "),
             _c(
-              "span",
+              "div",
               {
-                staticClass: "close-modal",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.disMissNeedModal()
-                  }
-                }
+                staticClass: "col-md-8 col-lg-8 col-sm-12 col-xs-12",
+                staticStyle: { "background-color": "white" }
               },
-              [_vm._v("×")]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card" }, [
-          _vm.hasMatchedCompanies()
-            ? _c("div", { staticClass: "card-header" }, [
-                _vm._v(
-                  "\n                Your need is matched with these companies\n            "
-                )
-              ])
-            : _c("div", { staticClass: "card-header" }, [
-                _vm._v(
-                  "\n                    We are still searching for the right companies to serve your need.\n                    Please come back soon.\n                "
-                )
-              ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "card-body" },
-            _vm._l(_vm.matched_companies, function(Company) {
-              return _c(
-                "div",
-                {
-                  staticClass: "card ",
-                  staticStyle: { width: "100%", display: "inline-block" }
-                },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "card-body",
-                      staticStyle: { display: "flex" }
-                    },
-                    [
-                      _c("div", { staticClass: "col-md-4 col-lg-4" }, [
-                        _c("img", {
-                          staticClass: "card-img-top",
-                          attrs: {
-                            src: Company.company_data.comp_logo,
-                            alt: "Card image cap"
+              [
+                _c("div", { staticClass: "error-header" }, [
+                  _c("h4", { staticStyle: { color: "red" } }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "close-modal",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.disMissNeedModal()
                           }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-4 col-lg-4" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href: _vm.getCompLink(Company.company_data),
-                              target: "_blank"
-                            }
-                          },
-                          [
-                            _c("h5", {
-                              staticClass: "card-title",
-                              domProps: {
-                                textContent: _vm._s(
-                                  Company.company_data.comp_name
-                                )
-                              }
-                            })
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-4 col-lg-4" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "btn btn-primary",
-                            attrs: {
-                              href: _vm.getCompLink(Company.company_data),
-                              target: "_blank"
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                              Contact info\n                          "
-                            )
-                          ]
+                        }
+                      },
+                      [_vm._v("×")]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card" }, [
+                  _vm.hasMatchedCompanies()
+                    ? _c("div", { staticClass: "card-header" }, [
+                        _vm._v(
+                          "\n                        Your need is matched with these companies\n                    "
                         )
                       ])
-                    ]
+                    : _c("div", { staticClass: "card-header" }, [
+                        _vm._v(
+                          "\n                        We are still searching for the right companies to serve your need.\n                        Please come back soon.\n                    "
+                        )
+                      ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "card-body" },
+                    _vm._l(_vm.matched_companies, function(Company, ckey) {
+                      return _c(
+                        "div",
+                        {
+                          key: ckey,
+                          staticClass: "card ",
+                          staticStyle: {
+                            width: "100%",
+                            display: "inline-block"
+                          }
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "card-body",
+                              staticStyle: { display: "flex" }
+                            },
+                            [
+                              _c("div", { staticClass: "col-md-4 col-lg-4" }, [
+                                _c("img", {
+                                  staticClass: "card-img-top thumbnail",
+                                  staticStyle: {
+                                    height: "50px",
+                                    width: "50px"
+                                  },
+                                  attrs: {
+                                    src: Company.company_data.comp_logo,
+                                    alt: "Card image cap"
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-4 col-lg-4" }, [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: {
+                                      href: _vm.getCompLink(
+                                        Company.company_data
+                                      ),
+                                      target: "_blank"
+                                    }
+                                  },
+                                  [
+                                    _c("h5", {
+                                      staticClass: "card-title",
+                                      domProps: {
+                                        textContent: _vm._s(
+                                          Company.company_data.comp_name
+                                        )
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-4 col-lg-4" }, [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "btn btn-primary",
+                                    attrs: {
+                                      href: _vm.getCompLink(
+                                        Company.company_data
+                                      ),
+                                      target: "_blank"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                        Contact info\n                                    "
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]
+                          )
+                        ]
+                      )
+                    }),
+                    0
                   )
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
+                ])
+              ]
+            )
+          ])
+        ]
+      )
     ]
   )
 }

@@ -19,7 +19,7 @@ class productModel extends Model
         return \App\models\products\productFilesModel::where([
             ['product_gen_token' , $generated_token],
             ['file_uploaded_by_id', $company_id]
-        ])->get();
+        ])->orderBy('file_index', 'asc')->get();
     }
     public function companydata()
     {

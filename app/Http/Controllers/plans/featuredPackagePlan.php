@@ -7,8 +7,10 @@ use App\customClass\Error;
 use App\customClass\FileUploader;
 use App\Http\Controllers\Controller;
 use App\models\companies\companydataModel;
+use App\models\companies\matchedNeedsModel;
 use App\models\plans\featuredPlanModel;
 use App\models\plans\packageUploadsModel;
+use App\models\users\userNeedsModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -112,8 +114,19 @@ class featuredPackagePlan extends Controller
             $comp->compData->created_at = null;
             $comp->compData->updated_at = null;
         }
-        $this->Status->setSuccess($companies);
+        $this->Status->setSuccess(["featured"=>$companies, "demand_info" =>$this->getDemandInformation()]);
         return $this->Status->getSuccess();
+    }
+
+    public function getDemandInformation()
+    {
+        // this is for the front end to dispaly different number of demands 
+        $num_matched = matchedNeedsModel::get()->count() + 1430;
+        $num_needs = userNeedsModel::get()->count() - $num_matched + 2445;
+        return [
+            "active_demands" => $num_needs,
+            "served_demands" => $num_matched
+        ];
     }
 
 }

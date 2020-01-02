@@ -194,7 +194,7 @@ var App = new Vue({
                 else if(this.Company.verification_code === null || this.Company.verification_code === "")
                 {
                     this.showErrorModal('Please enter verification code sent to your email \
-                     before continuing to the next step');
+                     before continuing to the next step. Please check the email in your junk or spam folder');
                     return;
 
                 }
