@@ -57,9 +57,9 @@ class productController extends Controller
         ])->get();
         foreach ($products as $p) {
             $p->companydata;
-            $p->Product_Files()->orderBy('file_index','desc')->get();
+            $p->Product_Files()->orderBy('file_index', 'desc')->get();
         }
-        $this->Error->setSuccess([$products, $last_file]);
+        $this->Error->setSuccess([$products]);
         return $this->Error->getSuccess();
     }
     public function getProducts()
@@ -82,7 +82,7 @@ class productController extends Controller
             "host_token" => "required|string",
             "product_gen_token" => "required|string",
             "product_file" => "required|string",
-            "file_index" => "required|integer"
+            "file_index" => "required|integer",
         ];
         $message = [
             "required" => "The :attribute is required",
