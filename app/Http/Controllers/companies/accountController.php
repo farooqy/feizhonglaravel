@@ -122,7 +122,7 @@ class accountController extends Controller
             $this
                 ->Status
                 ->setError(["Authentication failed. Could not get company
-			information. Please log in back"]);
+			information. Please log in back", ]);
             $this->forgetAuthenticationCookies();
             return $this
                 ->Status
@@ -200,7 +200,7 @@ class accountController extends Controller
                 ->company_email]])
                 ->get();
         if ($data === null || $data->count() <= 0) {
-            $this->setError(["The company phone and password do not match "]);
+            $this->setError(["The company email and password do not match "]);
             return $this->error;
         } else if (Hash::check($request->company_password, $data[0]->comp_pass)) {
             if ($data[0]->type === null || $data[0]->address === null) {

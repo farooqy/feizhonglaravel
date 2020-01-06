@@ -198,7 +198,7 @@ class accountController extends Controller
     public function getUserData(Request $request)
     {
         $rules = [
-            "platform" => "required|integer|in:1",
+            "platform" => "required|integer|in:1,2",
             "host" => "required|string|in:normal,comp",
         ];
         $isvalid = Validator::make($request->all(), $rules, []);
@@ -207,12 +207,21 @@ class accountController extends Controller
             return $isNotValidRequest;
         }
 
-        if (!$request->cookie("iliua")) {
+        if (!$request->cookie("iliua") && $request->platform === 1) {
             $this->Error->setError(["Authentication error. Please login "]);
             return $this->Error->getError();
+        } else if ($request->platform === 2) {
+            if ($request->user_id == null || $request->user_token === null) {
+                $this->Error->setError(["Authentication error. Provide user id and user token"]);
+                return $this->Error->getError();
+            }
+            $user_id = $request->user_id;
+            $user_token = $request->user_token;
+
+        } else {
+            $user_id = $request->cookie("host_id");
+            $user_token = $request->cookie("host_token");
         }
-        $user_id = $request->cookie("host_id");
-        $user_token = $request->cookie("host_token");
 
         if ($user_id === null || $user_token === null) {
             $this->Error->setError(["Authentication details incomplete. Please login"]);
