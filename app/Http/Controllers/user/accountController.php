@@ -210,7 +210,7 @@ class accountController extends Controller
         if (!$request->cookie("iliua") && $request->platform === 1) {
             $this->Error->setError(["Authentication error. Please login "]);
             return $this->Error->getError();
-        } else if ($request->platform === 2) {
+        } else if ((int)$request->platform === 2) {
             if ($request->user_id == null || $request->user_token === null) {
                 $this->Error->setError(["Authentication error. Provide user id and user token"]);
                 return $this->Error->getError();
@@ -232,7 +232,7 @@ class accountController extends Controller
             ["user_token", $user_token],
         ])->get();
         if ($data === null || $data->count() <= 0) {
-            $this->Error->setError(["The Authentication details is invalid"]);
+            $this->Error->setError(["The Authentication details is invalid " ]);
             return $this->Error->getError();
         }
         $data[0]->num_quotations = $data[0]->numberOfQuotations($data[0]->user_id);
