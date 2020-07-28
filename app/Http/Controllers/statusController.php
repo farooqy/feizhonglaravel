@@ -231,6 +231,7 @@ class statusController extends Controller
         // });
         // $listProducts = array_so
         $status = [];
+        $statusList = [];
         $statusCount = 0;
         foreach ($listProducts as $key => $eachStatus) {
             // return $eachStatus;
@@ -273,6 +274,7 @@ class statusController extends Controller
                     $listProducts[$key]->hasLiked = false;
                 }
             }
+            array_push($status_list, $listProducts[$key]);
             // if ($eachStatus->type === "product") {
             //     $listProducts[$key]->product_files = $eachStatus->Product_Files_By_Token_Id($);
             // } else {
@@ -284,7 +286,7 @@ class statusController extends Controller
         // return json_encode(["isSuccess"=> true, "errorMessage"=> null,
         //     "successMessage"=>"success", "data"=>$statusData]);
         // $this->ApiKey->successFullRequest();
-        $this->Error->setSuccess($listProducts);
+        $this->Error->setSuccess($status_list);
         return $this->Error->getSuccess();
     }
     public function uploadFile(Request $request)
