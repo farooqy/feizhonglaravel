@@ -196,7 +196,7 @@ class statusController extends Controller
         $products = productModel::where('product_isactive', true)->latest()->get();
         // $listProducts = $products->merge($statusData);
         // return $products;
-        $collection = [];
+        $collection = collect();
         foreach ($statusData as $key => $status) {
             $status->type = "status";
             $profile = $status->companydata;
@@ -209,7 +209,7 @@ class statusController extends Controller
             $status->company_data = $profile;
             $status->status__files = $status->Status_Files;
             // $collection->push($status);
-            array_push($collection, $status);
+            // array_push($collection, $status);
         }
         foreach ($products as $key => $product) {
             $product->type = "product";
@@ -223,14 +223,14 @@ class statusController extends Controller
 
             $product->company_data = $profile;
             $product->product_files = $product->Product_Files_By_Token_Id($product->product_gen_token, $profile->comp_id);
-            // $collection->push($product);
-            array_push($collection, $product);
+            $collection->push($product);
+            // array_push($collection, $product);
         }
-        $listProducts = array_reverse($collection, function ($value) {
-            return $value['created_at'];
-            // $listProducts = ksort()
-            // $listProducts = $collection->sortBy('created_at');
-        });
+        // $listProducts = array_reverse($collection, function ($value) {
+        //     return $value['created_at'];
+        // $listProducts = ksort()
+        $listProducts = $collection->sortBy('created_at');
+        // });
         // $listProducts = array_so
         $status = [];
         $statusList = [];
