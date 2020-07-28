@@ -208,7 +208,7 @@ class statusController extends Controller
 
             $status->company_data = $profile;
             $status->status__files = $status->Status_Files;
-            // $collection->push($status);
+            $collection->push($status);
             // array_push($collection, $status);
         }
         foreach ($products as $key => $product) {
@@ -229,7 +229,7 @@ class statusController extends Controller
         // $listProducts = array_reverse($collection, function ($value) {
         //     return $value['created_at'];
         // $listProducts = ksort()
-        $listProducts = $collection->sortBy('created_at');
+        $listProducts = $collection->sortBy('created_at', SORT_REGULAR, true);
         // });
         // $listProducts = array_so
         $status = [];
