@@ -60,7 +60,8 @@ class statusController extends Controller
         $json = json_encode(array(
             'errorMessage' => null,
             'isSuccess' => false,
-            'successMessage' => null));
+            'successMessage' => null
+        ));
         return $json;
     }
     //gets owners statuses
@@ -162,18 +163,15 @@ class statusController extends Controller
                 } else {
                     $status_list[$status_count]["person_profile"] = $comment->personProfile;
                 }
-
             }
             $status_list[$status_count]["files"] = $status->Status_Files;
             $status_list[$status_count]["company_profile"] = $status->companyData;
 
             $status_count += 1;
-
         }
 
         $this->Error->setSuccess($status_list);
         return $this->Error->getSuccess();
-
     }
     public function getStatus(Request $request)
     {
@@ -226,9 +224,12 @@ class statusController extends Controller
             $product->product_files = $product->Product_Files_By_Token_Id($product->product_gen_token, $profile->comp_id);
             $collection->push($product);
         }
-        $listProducts = array_reverse(array_sort($collection, function ($value) {
-            return $value['created_at'];
-        }));
+        // $listProducts = array_reverse($collection, function ($value) {
+        //     return $value['created_at'];
+        // $listProducts = ksort()
+        $listProducts = $collection->sortBy('created_at');
+        // });
+        // $listProducts = array_so
         $status = [];
         $statusCount = 0;
         foreach ($listProducts as $key => $eachStatus) {
@@ -261,10 +262,8 @@ class statusController extends Controller
                     } else {
                         $childcomment->personProfile;
                     }
-
                 }
                 $listProducts[$key]["comments"][$ckey]->comment_replies = $children;
-
             }
             foreach ($likes as $like) {
                 $status["likes"] = ["like" => $like, "details" => $like->personProfile];
@@ -273,7 +272,6 @@ class statusController extends Controller
                 } else {
                     $listProducts[$key]->hasLiked = false;
                 }
-
             }
             // if ($eachStatus->type === "product") {
             //     $listProducts[$key]->product_files = $eachStatus->Product_Files_By_Token_Id($);
@@ -288,7 +286,6 @@ class statusController extends Controller
         // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess($listProducts);
         return $this->Error->getSuccess();
-
     }
     public function uploadFile(Request $request)
     {
@@ -320,8 +317,12 @@ class statusController extends Controller
             return $this->Error->getError();
         }
         //check generated token
-        $isvalid_token = $this->is_valid_generated_token($request->generated_token,
-            $request->host_id, $request->host_token, $request->host_type);
+        $isvalid_token = $this->is_valid_generated_token(
+            $request->generated_token,
+            $request->host_id,
+            $request->host_token,
+            $request->host_type
+        );
         if (!$isvalid_token[0]) {
             return $isvalid_token[1];
         }
@@ -405,8 +406,12 @@ class statusController extends Controller
         // end validation form
 
         // check the token is in the database and not used
-        $isvalid_token = $this->is_valid_generated_token($request->status_generated_token,
-            $request->host_id, $request->host_token, $request->host_type);
+        $isvalid_token = $this->is_valid_generated_token(
+            $request->status_generated_token,
+            $request->host_id,
+            $request->host_token,
+            $request->host_type
+        );
         if (!$isvalid_token[0]) {
             return $isvalid_token[1];
         }
@@ -465,7 +470,6 @@ class statusController extends Controller
         // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess([]);
         return $this->Error->getSuccess();
-
     }
 
     public function is_valid_generated_token($generated_token, $host_id, $host_token, $host_type)
@@ -490,7 +494,6 @@ class statusController extends Controller
         } else {
             return [true, null];
         }
-
     }
 
     public function likeStatus(Request $request)
@@ -617,7 +620,6 @@ class statusController extends Controller
         // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess([]);
         return $this->Error->getSuccess();
-
     }
 
     public function removePost(Request $request)
@@ -668,5 +670,4 @@ class statusController extends Controller
             ["is_expired", false],
         ])->exists();
     }
-
 }
