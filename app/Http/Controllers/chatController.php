@@ -156,7 +156,7 @@ class chatController extends Controller
             $chat_company = $chat->companyChat;
             $chat_user = $chat->userChat;
             $c = $chat->lastMessage;
-            $unread = $chat->unreadMessages->where('message_target_id', $request->host_id);
+            $chats[$ckey]->unreadMessages = $chat->unreadMessages->where('message_target_id', $request->host_id);
             if ($chat->companyReceived !== null && $chat->companySent !== null) {
 
                 $chats[$ckey]->sender = $chat->companySent;
