@@ -12,7 +12,9 @@ use App\customClass\FileUploader;
 use App\models\companies\companydataModel;
 use App\models\normalUsersModel;
 use App\models\chats\chatModel;;
+
 use App\models\chats\chatUserModel;
+
 class chatController extends Controller
 {
     //
@@ -34,7 +36,7 @@ class chatController extends Controller
             "message_target_token" => "required|string",
         ];
 
-        if($isNotValidRequest= $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, [])))
+        if ($isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, [])))
             return $isNotValidRequest;
 
         chatModel::where([
@@ -57,15 +59,14 @@ class chatController extends Controller
             "target_token" => "required|string|min:20",
             "target_type" => "required|in:normal,comp"
         ];
-        if($isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, [])))
-        {
+        if ($isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []))) {
             return $isNotValidRequest;
         }
 
         $isNotValidHost = $this->isNotValidHost($request);
-        if($isNotValidHost)
+        if ($isNotValidHost)
             return $this->Error->getError();
-        if($request->target_type === "comp")
+        if ($request->target_type === "comp")
             $isValidTarget = companydataModel::where([
                 ["comp_id", $request->target_id],
                 ["comp_token", $request->target_token],
@@ -75,8 +76,7 @@ class chatController extends Controller
                 ["user_id", $request->target_id],
                 ["user_token", $request->target_token],
             ])->get();
-        if($isValidTarget === null || $isValidTarget->count() === 0)
-        {
+        if ($isValidTarget === null || $isValidTarget->count() === 0) {
             $this->Error->setError(["Invalid target for chat"]);
             return $this->Error->getError();
         }
@@ -91,20 +91,15 @@ class chatController extends Controller
             ["chat_origin_id", $request->host_id],
             ["chat_origin_token", $request->host_token],
         ])->get();
-        if($chat_id === null || $chat_id->count() === 0)
-        {
+        if ($chat_id === null || $chat_id->count() === 0) {
             $this->Error->setSuccess(["null"]);
             return $this->Error->getSuccess();
-        }
-        else
-        {
+        } else {
             $conversation = chatModel::where([
                 ["chat_id", $chat_id[0]->chat_id]
             ])->get();
             return $conversation;
         }
-
-
     }
     public function getChatConversation(Request $request)
     {
@@ -117,10 +112,10 @@ class chatController extends Controller
         $message = [];
 
         $isNotValidRequest = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []));
-        if($isNotValidRequest)
+        if ($isNotValidRequest)
             return $isNotValidRequest;
         //is valid host
-        if($this->isNotValidHost($request))
+        if ($this->isNotValidHost($request))
             return $this->Error->getError();
 
         $chats = chatUserModel::where([
@@ -132,69 +127,58 @@ class chatController extends Controller
             ["chat_destination_id", $request->host_id],
             ["chat_destination_token", $request->host_token]
         ])->latest()->get();
-        foreach($chats as $ckey => $chat)
-        {
+        foreach ($chats as $ckey => $chat) {
             $conversation = $chat->chats;
-            
         }
         $this->Error->setSuccess($chats);
         return $this->Error->getSuccess();
     }
     public function getHistory(Request $request)
     {
-    	$rules = [
-    		'host_id' => 'required|string',
+        $rules = [
+            'host_id' => 'required|string',
             'host_token' => 'required|string',
-    		'host_type' => 'required|in:comp,normal'
-    	];
+            'host_type' => 'required|in:comp,normal'
+        ];
         $is_not_valid_request = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, []));
-        if($is_not_valid_request)
+        if ($is_not_valid_request)
             return $is_not_valid_request;
-        if($this->isNotValidHost($request))
+        if ($this->isNotValidHost($request))
             return $this->Error->getError();
         $chats = chatUserModel::where([
             ['chat_origin_id', $request->host_id],
             ['chat_origin_token', $request->host_token],
-        ])->
-        orWhere([
+        ])->orWhere([
             ['chat_destination_id', $request->host_id],
             ['chat_destination_token', $request->host_token],
         ])->get();
-        foreach($chats as $ckey => $chat)
-        {
+        foreach ($chats as $ckey => $chat) {
             $chat_company = $chat->companyChat;
             $chat_user = $chat->userChat;
             $c = $chat->lastMessage;
-            $unread = $chat->unreadMessages;
-            if($chat->companyReceived !== null && $chat->companySent !== null)
-            {
+            $unread = $chat->unreadMessages->where('message_target_id', $request->host_id);
+            if ($chat->companyReceived !== null && $chat->companySent !== null) {
 
                 $chats[$ckey]->sender = $chat->companySent;
                 $chats[$ckey]->receiver = $chat->companyReceived;
                 $chats[$ckey]->recieverType = "comp";
                 $chats[$ckey]->senderType = "comp";
                 $chats[$ckey]->executor = 1;
-            }
-            else if($chat->companySent !== null && $chat->companyReceived === null )
-            {
-                
+            } else if ($chat->companySent !== null && $chat->companyReceived === null) {
+
                 $chats[$ckey]->sender = $chat->companySent;
                 $chats[$ckey]->receiver = $chat->userReceived;
                 $chats[$ckey]->recieverType = "normal";
                 $chats[$ckey]->senderType = "comp";
                 $chats[$ckey]->executor = 2;
-            }
-            else if($chat->userSent !== null && $chat->companySent === null && $chat->companyReceived !== null)
-            {
-                
+            } else if ($chat->userSent !== null && $chat->companySent === null && $chat->companyReceived !== null) {
+
                 $chats[$ckey]->sender = $chat->userSent;
                 $chats[$ckey]->receiver = $chat->companyReceived;
                 $chats[$ckey]->recieverType = "comp";
                 $chats[$ckey]->senderType = "normal";
                 $chats[$ckey]->executor = 3;
-            }
-            else
-            {
+            } else {
                 $chats[$ckey]->recieverType = "normal";
                 $chats[$ckey]->senderType = "normal";
                 $chats[$ckey]->executor = 4;
@@ -220,70 +204,56 @@ class chatController extends Controller
             "message_type" => "required|in:text,video,image,document",
             "target_id" => "required|integer",
             "target_token" => "required|string|min:10",
-            "target_type" => "required|in:comp,normal" 
+            "target_type" => "required|in:comp,normal"
         ];
         $message = [
             "in" => "The :attribute given is not valid"
         ];
 
         $is_not_valid_request = $this->customValidator->isNotValidRequest(Validator::make($request->all(), $rules, $message));
-        if($is_not_valid_request)
-        {
+        if ($is_not_valid_request) {
             return $is_not_valid_request;
         }
-        if($request->host_type === $request->target_type && $request->host_id === $request->target_id && $request->host_token === $request->target_type)
-        {
+        if ($request->host_type === $request->target_type && $request->host_id === $request->target_id && $request->host_token === $request->target_type) {
             $this->Error->setError(["Can't send message to self"]);
             return $this->Error->getError();
         }
         //isvalid host
-        if($request->host_type === "comp")
-        {
+        if ($request->host_type === "comp") {
             $hostdata = companydataModel::where('comp_id', $request->host_id)->get();
-            if($hostdata === null || $hostdata->count() <= 0)
-            {
+            if ($hostdata === null || $hostdata->count() <= 0) {
                 $this->Error->setError(['The host id is not valid']);
                 return $this->Error->getError();
             }
-        }    
-        else
-        {
+        } else {
             $hostdata = normalUsersModel::where('user_id', $request->host_id)->get();
-            if($hostdata === null || $hostdata->count() <= 0)
-            {
+            if ($hostdata === null || $hostdata->count() <= 0) {
                 $this->Error->setError(['The host id given is not valid']);
                 return $this->Error->getError();
             }
         }
         //is valid target id
-        if($request->target_type === "comp")
-        {
+        if ($request->target_type === "comp") {
             $targetdata = companydataModel::where('comp_id', $request->target_id)->get();
-            if($targetdata === null || $targetdata->count() <= 0)
-            {
+            if ($targetdata === null || $targetdata->count() <= 0) {
                 $this->Error->setError(['The target id is not valid']);
                 return $this->Error->getError();
             }
-        }    
-        else
-        {
+        } else {
             $targetdata = normalUsersModel::where('user_id', $request->target_id)->get();
-            if($targetdata === null || $targetdata->count() <= 0)
-            {
+            if ($targetdata === null || $targetdata->count() <= 0) {
                 $this->Error->setError(['The target id given is not valid']);
                 return $this->Error->getError();
             }
         }
         //if there is file, handle the file
-        if($request->message_type !== "text")
-        {
+        if ($request->message_type !== "text") {
             $is_uploaded = $this->FileUploader->uplaodJsonFile($request->message);
-            if(!$is_uploaded)
+            if (!$is_uploaded)
                 return $this->FileUploader->getError();
             $request->message = $is_uploaded;
         }
-        try 
-        {
+        try {
             //check if previous chat existed
             $previousChat = chatUserModel::where([
                 ['chat_origin_id', $request->host_id],
@@ -296,9 +266,8 @@ class chatController extends Controller
                 ['chat_destination_id', $request->host_id],
                 ['chat_destination_token', $request->host_token],
             ])->skip(0)->take(1)->get();
-            if($previousChat === null || $previousChat->count() <= 0)
-            {
-                $chat_token = hash('md5', time()).time();//used for geeting chat id
+            if ($previousChat === null || $previousChat->count() <= 0) {
+                $chat_token = hash('md5', time()) . time(); //used for geeting chat id
                 chatUserModel::create([
                     "chat_origin_id" => $request->host_id,
                     "chat_origin_token" => $request->host_token,
@@ -306,18 +275,16 @@ class chatController extends Controller
                     "chat_destination_token" => $request->target_token,
                     "chat_token" => $chat_token,
                 ]);
-                
+
                 $chat_id = chatUserModel::where('chat_token', $chat_token)->get();
-                if($chat_id === null || $chat_id->count() <= 0)
-                {
+                if ($chat_id === null || $chat_id->count() <= 0) {
                     $this->Error->setError(['saved chat id could not be retrieved']);
                     return $this->Error->getError();
                 }
-            }
-            else
+            } else
                 $chat_id = $previousChat;
-            
-                
+
+
             chatModel::create([
                 "chat_id" => $chat_id[0]->chat_id,
                 "message_target_id" => $request->target_id,
@@ -328,43 +295,33 @@ class chatController extends Controller
             ]);
             $this->Error->setSuccess(['success']);
             return $this->Error->getSuccess();
-        } 
-        catch(\Illuminate\Database\QueryException $exception)
-        {
+        } catch (\Illuminate\Database\QueryException $exception) {
             $this->Error->setError([$exception->errorInfo]);
             return $this->Error->getError();
-
-        }
-        catch (Exception $e) 
-        {
-            $this->Error->setError(['Failed to send  message db error',$exception->errorInfo]);
+        } catch (Exception $e) {
+            $this->Error->setError(['Failed to send  message db error', $exception->errorInfo]);
             return $this->Error->getError();
         }
     }
 
     protected function isNotValidHost($request)
     {
-        if($request->host_type === "comp")
-        {
+        if ($request->host_type === "comp") {
             $is_valid_host = companydataModel::where([
                 ['comp_id', $request->host_id],
                 ['comp_token', $request->host_token]
             ])->get();
-        }
-        else
-        {
+        } else {
             $is_valid_host = normalUsersModel::where([
                 ['user_id', $request->host_id],
                 ['user_token', $request->host_token]
             ])->get();
         }
-        if($is_valid_host === null || $is_valid_host->count() <= 0)
-        {
+        if ($is_valid_host === null || $is_valid_host->count() <= 0) {
             $this->Error->setError(['The host id and token do not exist']);
-            
+
             return true;
-        }
-        else 
+        } else
             return false;
     }
 }
