@@ -16,6 +16,7 @@ use App\models\userInterestModel;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Mail;
 
@@ -36,7 +37,6 @@ class accountController extends Controller
         $this->ip_address = \Request::ip();
         $this->requestUrl = url()->current();
         $this->FileUploader = new FileUploader();
-
     }
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
@@ -193,7 +193,6 @@ class accountController extends Controller
             $this->Error->setSuccess([$user]);
             return $this->Error->getSuccess();
         }
-
     }
     public function getUserData(Request $request)
     {
@@ -217,7 +216,6 @@ class accountController extends Controller
             }
             $user_id = $request->user_id;
             $user_token = $request->user_token;
-
         } else {
             $user_id = $request->cookie("host_id");
             $user_token = $request->cookie("host_token");
@@ -232,7 +230,7 @@ class accountController extends Controller
             ["user_token", $user_token],
         ])->get();
         if ($data === null || $data->count() <= 0) {
-            $this->Error->setError(["The Authentication details is invalid " ]);
+            $this->Error->setError(["The Authentication details is invalid "]);
             return $this->Error->getError();
         }
         $data[0]->num_quotations = $data[0]->numberOfQuotations($data[0]->user_id);
@@ -426,7 +424,6 @@ class accountController extends Controller
             $this->Error->setError(["Failed to save the verification code generated"]);
             return $this->Error->getError();
         }
-
     }
 
     public function getUserQuotations(Request $request)
@@ -509,7 +506,6 @@ class accountController extends Controller
             $this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
             return $this->Error->getSuccess();
         }
-
     }
     public function updateLastName($request)
     {
@@ -529,7 +525,6 @@ class accountController extends Controller
             $this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
             return $this->Error->getSuccess();
         }
-
     }
 
     public function updateEmail($request)
@@ -542,8 +537,10 @@ class accountController extends Controller
             $this->Error->setError(["You provided same email "]);
             return $this->Error->getError();
         }
-        $existingEmail = normalUsersModel::where("user_email",
-            $request->updateValue)->exists();
+        $existingEmail = normalUsersModel::where(
+            "user_email",
+            $request->updateValue
+        )->exists();
         if ($existingEmail) {
             $this->Error->setError(["The updated email cannot be used"]);
             return $this->Error->getError();
@@ -556,7 +553,6 @@ class accountController extends Controller
             $this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
             return $this->Error->getSuccess();
         }
-
     }
     public function updatePhone($request)
     {
@@ -568,8 +564,10 @@ class accountController extends Controller
             $this->Error->setError(["You provided same phone number "]);
             return $this->Error->getError();
         }
-        $existingphone = normalUsersModel::where("user_phone",
-            $request->updateValue)->exists();
+        $existingphone = normalUsersModel::where(
+            "user_phone",
+            $request->updateValue
+        )->exists();
         if ($existingphone) {
             $this->Error->setError(["The phone number provided cannot be used"]);
             return $this->Error->getError();
@@ -582,7 +580,6 @@ class accountController extends Controller
             $this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
             return $this->Error->getSuccess();
         }
-
     }
     public function updatePassword($request)
     {
@@ -605,7 +602,6 @@ class accountController extends Controller
             $this->Error->setSuccess(["fieldName" => $request->updateField, "fieldValue" => $request->updateValue]);
             return $this->Error->getSuccess();
         }
-
     }
 
     public function getDataOfUser($userId, $userToken)
@@ -633,12 +629,16 @@ class accountController extends Controller
         if ($isNotValidRequest) {
             return $isNotValidRequest;
         } else if ($request->cookie("is_browser") === null || $_COOKIE["is_browser"] === null) {
-            if ($request->cookie("iliua") === null || $request->cookie("host_id") === null ||
-                $request->cookie("host_token") === null) {
+            if (
+                $request->cookie("iliua") === null || $request->cookie("host_id") === null ||
+                $request->cookie("host_token") === null
+            ) {
                 $this->Error->setError(["Authentication error, user details not set"]);
                 return $this->Error->getError();
-            } else if ($request->cookie("host_id") !== $request->user_id ||
-                $request->cookie("host_token") !== $request->host_token) {
+            } else if (
+                $request->cookie("host_id") !== $request->user_id ||
+                $request->cookie("host_token") !== $request->host_token
+            ) {
                 $this->Error->setError(["Authentication data not valid"]);
                 return $this->Error->getError();
             }
@@ -675,7 +675,6 @@ class accountController extends Controller
             $this->Error->setSuccess([]);
             return $this->Error->getSuccess();
         }
-
     }
     public function updateUserAboutMe(Request $request)
     {
@@ -689,12 +688,16 @@ class accountController extends Controller
         if ($isNotValidRequest) {
             return $isNotValidRequest;
         } else if ($request->cookie("is_browser") === null || $_COOKIE["is_browser"] === null) {
-            if ($request->cookie("iliua") === null || $request->cookie("host_id") === null ||
-                $request->cookie("host_token") === null) {
+            if (
+                $request->cookie("iliua") === null || $request->cookie("host_id") === null ||
+                $request->cookie("host_token") === null
+            ) {
                 $this->Error->setError(["Authentication error, user details not set"]);
                 return $this->Error->getError();
-            } else if ($request->cookie("host_id") !== $request->user_id ||
-                $request->cookie("host_token") !== $request->host_token) {
+            } else if (
+                $request->cookie("host_id") !== $request->user_id ||
+                $request->cookie("host_token") !== $request->host_token
+            ) {
                 $this->Error->setError(["Authentication data not valid"]);
                 return $this->Error->getError();
             }
@@ -767,7 +770,7 @@ class accountController extends Controller
                 if ($skey === 0) {
                     continue;
                 }
-//the first one is the interest category and is saved as the category
+                //the first one is the interest category and is saved as the category
                 $interestExist = userInterestModel::where([
 
                     ["interest_user_id", $request->user_id],
@@ -790,7 +793,6 @@ class accountController extends Controller
         // $this->ApiKey->successFullRequest();
         $this->Error->setSuccess([]);
         return $this->Error->getSuccess();
-
     }
     public function getUserAddress(Request $request)
     {
@@ -830,12 +832,16 @@ class accountController extends Controller
         if ($isNotValidRequest) {
             return $isNotValidRequest;
         } else if ($request->cookie("is_browser") === null || $_COOKIE["is_browser"] === null) {
-            if ($request->cookie("iliua") === null || $request->cookie("host_id") === null ||
-                $request->cookie("host_token") === null) {
+            if (
+                $request->cookie("iliua") === null || $request->cookie("host_id") === null ||
+                $request->cookie("host_token") === null
+            ) {
                 $this->Error->setError(["Authentication error, user details not set"]);
                 return $this->Error->getError();
-            } else if ($request->cookie("host_id") !== $request->user_id ||
-                $request->cookie("host_token") !== $request->host_token) {
+            } else if (
+                $request->cookie("host_id") !== $request->user_id ||
+                $request->cookie("host_token") !== $request->host_token
+            ) {
                 $this->Error->setError(["Authentication data not valid"]);
                 return $this->Error->getError();
             }
@@ -867,7 +873,48 @@ class accountController extends Controller
             $this->Error->setSuccess(["user_profile" => $file_url]);
             return $this->Error->getSuccess();
         }
-
     }
 
+
+    // these are new apis that require api key
+    public function updateUserPassword(Request $request)
+    {
+        $rules = [
+            "user_id" => "required|integer|exists:normal_user,user_id",
+            "user_token" => "required|string|exists:normal_user,user_token",
+            "old_password" => "required|string|max:255",
+            "password" => "required|string|max:255|confirmed",
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $this->Error->setError([$validator->errors()->first()]);
+            return $this->Error->getError();
+        }
+
+        $user = normalUsersModel::where([
+            ["user_id", $request->user_id],
+            ["user_token", $request->user_token],
+        ])->get();
+
+        if ($user == null || $user->count() <= 0) {
+            $this->Error->setError(["Could not verify your account. Failed to change password"]);
+            return $this->Error->getError();
+        }
+        $validated = $validator->validated();
+
+        if (!Hash::check($validated["old_password"], $user->password)) {
+            $this->Error->setError(["The old password is not correct"]);
+            return $this->Error->getError();
+        }
+
+        $new_password = Hash::make($validated["password"]);
+
+        $user->update([
+            "user_password" => $new_password
+        ]);
+
+        $this->Error->setSuccess();
+        return $this->Error->getSuccess();
+    }
 }

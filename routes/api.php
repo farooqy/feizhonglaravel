@@ -113,3 +113,11 @@ Route::post('/statistics/productVisits', 'statisticsController@productSet');
 Route::post('/statistics/getApiKey', 'statisticsController@getApiKey');
 Route::post('/statistics/getApiKey/browser', 'statisticsController@getApiKeyBrowser');
 Route::post('/statistics/generateIdAndToken', 'statisticsController@generateIdAndToken');
+
+
+
+//Atoc 2.0 Apis
+
+Route::middleware('')->group(function () {
+    Route::post('/user/update/password', 'user\accountController@updateUserPassword');
+});
