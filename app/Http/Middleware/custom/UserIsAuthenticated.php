@@ -6,6 +6,7 @@ use App\customClass\Error;
 use App\models\apiKeyModel;
 use Closure;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class UserIsAuthenticated
 {
@@ -20,6 +21,17 @@ class UserIsAuthenticated
     {
         $statusHandler = new Error();
         $apiModel = new apiKeyModel();
+        $rules = [
+            "host_id" => 'required|integer',
+            "host_token" => "required|string|max:255",
+            "host_type" => "required|string|in:normal,guest,comp",
+            "api_key" => "required|string",
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $statusHandler->setError(["missing the required credentials for authentication"]);
+            return $statusHandler->getError();
+        }
         $isAuthenticated = $apiModel->isAuthenticated(
             $request->api_key,
             $request->host_id,
