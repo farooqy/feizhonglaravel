@@ -119,5 +119,6 @@ Route::post('/statistics/generateIdAndToken', 'statisticsController@generateIdAn
 //Atoc 2.0 Apis
 
 Route::middleware('customauth')->group(function () {
-    Route::post('/user/update/password', 'user\accountController@updateUserPassword');
+    Route::post('/v2/user/update/password', 'user\accountController@updateUserPassword');
+    Route::post('/v2/user/update', 'user\accountController@updateUserInfoV2');
 });

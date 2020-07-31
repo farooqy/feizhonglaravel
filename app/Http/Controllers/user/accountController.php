@@ -875,8 +875,13 @@ class accountController extends Controller
         }
     }
 
-
-    // these are new apis that require api key
+    /*********************************************/
+    /*********************************************/
+    // these are new apis that require api key V2
+    /*********************************************/
+    /*********************************************/
+    /*********************************************/
+    /*********************************************/
     public function updateUserPassword(Request $request)
     {
         $rules = [
@@ -917,5 +922,40 @@ class accountController extends Controller
 
         $this->Error->setSuccess();
         return $this->Error->getSuccess();
+    }
+
+
+    public function updateUserInfoV2(Request $request)
+    {
+        $rules = [
+            "updateField" => "required|string|in:userFirstName,userLastName,userPhoneNumber,userEmail,userPassword",
+            "updateValue" => "required|string|min:4",
+            "userToken" => "required|string",
+            "userId" => "required|integer",
+            "api_key" => "required|string",
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $this->Error->setError([$validator->errors()->first()]);
+            return $this->Error->getError();
+        }
+
+        switch ($request->updateField) {
+            case "userFirstName":
+                return $this->updateFirstName($request);
+            case "userLastName":
+                return $this->updateLastName($request);
+            case "userEmail":
+                return $this->updateEmail($request);
+            case "userPhoneNumber":
+                return $this->updatePhone($request);
+            case "userPassword":
+                return $this->updatePassword($request);
+            default:
+                $this->Error->setError(["The update field type is not valid"]);
+                return $this->Error->getError();
+        }
     }
 }
