@@ -14,6 +14,8 @@ class normalUsersModel extends Model
     protected $hidden = ["user_password"];
     protected $fillable = ["user_fname", "user_sname", "user_email", "user_password", "user_phone", "user_token"];
 
+
+    protected $primaryKey = "user_id";
     public function messages($userToken)
     {
         $chatModel = new chatModel;
@@ -38,7 +40,6 @@ class normalUsersModel extends Model
         $chatHistory = (array_merge($sentMessages, $receivedMessages));
         asort($chatHistory);
         return $chatHistory;
-
     }
     public function statusComments()
     {
@@ -61,17 +62,26 @@ class normalUsersModel extends Model
         } else {
             return false;
         }
-
     }
     public function userNeeds()
     {
-        return $this->hasMany('App\models\users\userNeedsModel',
-            'host_id', 'user_id', 'host_token', 'user_token');
+        return $this->hasMany(
+            'App\models\users\userNeedsModel',
+            'host_id',
+            'user_id',
+            'host_token',
+            'user_token'
+        );
     }
     public function userLocation()
     {
-        return $this->hasOne('App\models\userAddressModel',
-            'user_id', 'user_id', 'user_token', 'user_token');
+        return $this->hasOne(
+            'App\models\userAddressModel',
+            'user_id',
+            'user_id',
+            'user_token',
+            'user_token'
+        );
     }
 
     public function searchUsers($keywords)
@@ -87,9 +97,9 @@ class normalUsersModel extends Model
     public function userQuotations()
     {
         return $this->hasMany('App\models\companies\quotationModel', 'user_id', 'user_id');
-	}
-	public function numberOfQuotations($user_id)
-	{
-		return quotationModel::where("user_id", $user_id)->get()->count();
-	}
+    }
+    public function numberOfQuotations($user_id)
+    {
+        return quotationModel::where("user_id", $user_id)->get()->count();
+    }
 }
