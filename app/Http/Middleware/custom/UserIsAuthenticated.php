@@ -26,16 +26,16 @@ class UserIsAuthenticated
             $request->host_token,
             $request->host_type,
         );
-        if ($isAuthenticated) {
-            return $next($request);
+        if (!$isAuthenticated) {
+            $response = Response::json([
+                "errorMessage" => ["Authentication error: You are not logged in"],
+                "isSuccess" => false,
+                "data" => [],
+            ]);
+
+            return $response;
         }
 
-        $response = Response::json([
-            "errorMessage" => ["Authentication error: You are not logged in"],
-            "isSuccess" => false,
-            "data" => [],
-        ]);
-
-        return $response;
+        return $next($request);
     }
 }
