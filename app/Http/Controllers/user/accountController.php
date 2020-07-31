@@ -901,6 +901,7 @@ class accountController extends Controller
             $this->Error->setError(["Could not verify your account. Failed to change password"]);
             return $this->Error->getError();
         }
+        $user = $user[0];
         $validated = $validator->validated();
 
         if (!Hash::check($validated["old_password"], $user->user_password)) {
