@@ -29,8 +29,13 @@ class UserIsAuthenticated
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
-            $statusHandler->setError(["missing the required credentials for authentication"]);
-            return $statusHandler->getError();
+            $response = Response::json([
+                "errorMessage" => ["missing the required credentials for authentication"],
+                "isSuccess" => false,
+                "data" => [],
+            ]);
+
+            return $response;
         }
         $isAuthenticated = $apiModel->isAuthenticated(
             $request->api_key,
