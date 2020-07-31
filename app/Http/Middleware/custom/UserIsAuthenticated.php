@@ -5,7 +5,7 @@ namespace App\Http\Middleware\custom;
 use App\customClass\Error;
 use App\models\apiKeyModel;
 use Closure;
-use Throwable;
+use Illuminate\Support\Facades\Response;
 
 class UserIsAuthenticated
 {
@@ -30,7 +30,12 @@ class UserIsAuthenticated
             return $next($request);
         }
 
-        $statusHandler->setError(["Authentication error: You are not logged in"]);
-        return $statusHandler->getError();
+        $response = Response::json([
+            "errorMessage" => ["Authentication error: You are not logged in"],
+            "isSuccess" => false,
+            "data" => [],
+        ]);
+
+        return $response;
     }
 }
