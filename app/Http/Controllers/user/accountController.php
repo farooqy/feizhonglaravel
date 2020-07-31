@@ -903,7 +903,7 @@ class accountController extends Controller
         }
         $validated = $validator->validated();
 
-        if (!Hash::check($validated["old_password"], $user->password)) {
+        if (!Hash::check($validated["old_password"], $user->user_password)) {
             $this->Error->setError(["The old password is not correct"]);
             return $this->Error->getError();
         }
