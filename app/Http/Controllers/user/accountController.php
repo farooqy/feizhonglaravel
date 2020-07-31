@@ -880,8 +880,8 @@ class accountController extends Controller
     public function updateUserPassword(Request $request)
     {
         $rules = [
-            "user_id" => "required|integer|exists:normal_user,user_id",
-            "user_token" => "required|string|exists:normal_user,user_token",
+            "host_id" => "required|integer|exists:normal_user,user_id",
+            "host_token" => "required|string|exists:normal_user,user_token",
             "old_password" => "required|string|max:255",
             "password" => "required|string|max:255|confirmed",
         ];
@@ -893,8 +893,8 @@ class accountController extends Controller
         }
 
         $user = normalUsersModel::where([
-            ["user_id", $request->user_id],
-            ["user_token", $request->user_token],
+            ["user_id", $request->host_id],
+            ["user_token", $request->host_token],
         ])->get();
 
         if ($user == null || $user->count() <= 0) {
