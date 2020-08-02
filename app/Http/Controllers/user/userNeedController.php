@@ -279,7 +279,7 @@ class userNeedController extends Controller
         $this->FileUploader->setFileDirectory($dir); //path with url
         $this->FileUploader->setFileName($filename);
 
-        $file_url = $this->FileUploader->uplaodJsonFile(base64_decode($request->file_url));
+        $file_url = $this->FileUploader->uplaodJsonFile($request->file_url);
         if ($file_url === false) {
             $this->Status->setError($this->FileUploader->getError());
             return $this->Status->getError();
