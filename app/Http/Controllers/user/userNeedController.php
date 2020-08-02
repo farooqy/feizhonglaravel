@@ -69,7 +69,7 @@ class userNeedController extends Controller
         $has_address = $this->normalUser->hasSetAddress($request->host_id, $request->host_token);
         if (!$has_address) {
             $this->Status->setError(["Please visit your profile page and add your address information
-            before posting a need.", ]);
+            before posting a need.",]);
             return $this->Status->getError();
         }
         $need_token = hash('md5', time());
@@ -95,7 +95,6 @@ class userNeedController extends Controller
         ])->get();
         $this->Status->setSuccess($need);
         return $this->Status->getSuccess();
-
     }
     public function postNeedImages(Request $request)
     {
@@ -139,7 +138,7 @@ class userNeedController extends Controller
             $user_directory = env("APP_ROOT") . $dir;
         }
         $rand = random_bytes(15);
-        $filename = hash('md5', time().$rand) . "_need_.";
+        $filename = hash('md5', time() . $rand) . "_need_.";
 
         $this->FileUploader->setFilePath($user_directory);
         $this->FileUploader->setFileDirectory($dir); //path with url
@@ -165,7 +164,6 @@ class userNeedController extends Controller
             $this->Status->setSuccess(["image_url" => $file_url]);
             return $this->Status->getSuccess();
         }
-
     }
     public function getUserNeeds(Request $request)
     {
@@ -196,8 +194,7 @@ class userNeedController extends Controller
             ['host_id', $request->host_id],
             ['host_token', $request->host_token],
         ])->get();
-        $NeedData = [
-        ];
+        $NeedData = [];
         foreach ($needs as $key => $need) {
             // code...
             $matched_needs = $need->needMatches;
@@ -221,10 +218,86 @@ class userNeedController extends Controller
             $NeedData[$key]["product_type"] = $need->product_type;
             $NeedData[$key]["product_sub_types"] = $need->product_sub_types;
             $NeedData[$key]["product_valid_until"] = $need->product_valid_until;
-
         }
 
         $this->Status->setSuccess($NeedData);
         return $this->Status->getSuccess();
+    }
+
+
+
+    /*************************************************/
+    /*************************************************/
+    // API VERSION TWO
+    /*************************************************/
+    /*************************************************/
+    public function postNeedImagesV2(Request $request)
+    {
+        $rules = [
+            "need_id" => "required|integer",
+            "need_token" => "required|string|max:330",
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "file_url" => "required|string",
+        ];
+
+        $is_valid = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($is_valid);
+        if ($isNotValidRequest) {
+            return $isNotValidRequest;
+        }
+
+        //validate user
+        $user_exist = normalUsersModel::where([
+            ['user_id', $request->host_id],
+            ['user_token', $request->host_token],
+            ['user_status', 'active'],
+        ])->exists();
+        if (!$user_exist) {
+            $this->Status->setError(["The user provided is not active or doesnt exist"]);
+            return $this->Status->getError();
+        }
+
+        $need_exist = userNeedsModel::where([
+            ['id', $request->need_id],
+            ['need_token', $request->need_token],
+        ])->exists();
+        if (!$need_exist) {
+            $this->Status->setError(["The target need doesnt exist "]);
+            return $this->Status->getError();
+        }
+        $dir = "uploads/users/" . $request->user_token . "/needs/";
+        if (env("APP_ENV") === "local") {
+            $user_directory = public_path($dir);
+        } else {
+            $user_directory = env("APP_ROOT") . $dir;
+        }
+        $rand = random_bytes(15);
+        $filename = hash('md5', time() . $rand) . "_need_.";
+
+        $this->FileUploader->setFilePath($user_directory);
+        $this->FileUploader->setFileDirectory($dir); //path with url
+        $this->FileUploader->setFileName($filename);
+
+        $file_url = $this->FileUploader->uplaodJsonFile(base64_decode($request->file_url));
+        if ($file_url === false) {
+            $this->Status->setError($this->FileUploader->getError());
+            return $this->Status->getError();
+        } else {
+            normalUsersModel::where([
+                ["user_id", $request->user_id],
+                ["user_token", $request->user_token],
+            ])->update([
+                "user_profile" => $file_url,
+            ]);
+            needImagesModel::create([
+                "need_id" => $request->need_id,
+                "need_token" => $request->need_token,
+                "file_url" => $file_url,
+                "file_type" => $this->FileUploader->getUploadedExtension()
+            ]);
+            $this->Status->setSuccess(["image_url" => $file_url]);
+            return $this->Status->getSuccess();
+        }
     }
 }
