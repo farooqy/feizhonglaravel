@@ -957,4 +957,39 @@ class accountController extends Controller
                 return $this->Error->getError();
         }
     }
+    public function userLoginV2(Request $request)
+    {
+        $rules = [
+            "user_email" => "required|email",
+            "user_password" => "required|string",
+            "guest_id" => "required|integer", //api key purpose
+            "guest_token" => "required|string", //api key purpose,
+        ];
+        $messages = [
+            "required" => "The :attribute is required",
+        ];
+        // $hashpass = hash('md5', $request->user_password);
+
+        $hashpass = Hash::make($request->user_password);
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            $this->Error->setError([$validator->errors()->first()]);
+            return $this->Error->getError();
+        }
+
+        $data = normalUsersModel::where([
+            ["user_email", "=", $request->user_email],
+        ])->get();
+        if ($data === null || $data->count() <= 0) {
+            $this->Error->setError(["The user email and password do not match "]);
+            return $this->Error->getError();
+        } else if (Hash::check($request->user_password, $data[0]->user_password)) {
+            $this->Error->setSuccess($data);
+
+            return $this->Error->getSuccess();
+        } else {
+            $this->Error->setError(["The user password and email do not match "]);
+            return $this->Error->getError();
+        }
+    }
 }
