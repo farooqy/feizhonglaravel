@@ -126,4 +126,5 @@ Route::middleware('customauth')->group(function () {
     Route::post('/v2/user/needs/post/images', 'user\userNeedController@postNeedImagesV2');
     Route::post('/v2/favorites/doFavorite', 'favoritesController@favoriteCompany');
     Route::post('/v2/favorites/getFavorites', 'favoritesController@getFavorites');
+    Route::post('/v2/favorites/unFavorite', 'favoritesController@removeFavorite');
 });
