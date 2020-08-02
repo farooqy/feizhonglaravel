@@ -121,4 +121,6 @@ Route::post('/statistics/generateIdAndToken', 'statisticsController@generateIdAn
 Route::middleware('customauth')->group(function () {
     Route::post('/v2/user/update/password', 'user\accountController@updateUserPassword');
     Route::post('/v2/user/update', 'user\accountController@updateUserInfoV2');
+    Route::post('/v2/user/needs/post', 'user\userNeedController@postNeed');
+    Route::post('/v2/user/needs/post/images', 'user\userNeedController@postNeedImages');
 });

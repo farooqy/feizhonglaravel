@@ -942,6 +942,7 @@ class accountController extends Controller
             return $this->Error->getError();
         }
 
+
         switch ($request->updateField) {
             case "userFirstName":
                 return $this->updateFirstName($request);
@@ -951,8 +952,6 @@ class accountController extends Controller
                 return $this->updateEmail($request);
             case "userPhoneNumber":
                 return $this->updatePhone($request);
-            case "userPassword":
-                return $this->updatePassword($request);
             default:
                 $this->Error->setError(["The update field type is not valid"]);
                 return $this->Error->getError();
