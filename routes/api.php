@@ -128,4 +128,5 @@ Route::middleware('customauth')->group(function () {
     Route::post('/v2/favorites/getFavorites', 'favoritesController@getFavorites');
     Route::post('/v2/favorites/unFavorite', 'favoritesController@removeFavorite');
     Route::post('/v2/favorites/isMyFavorite', 'favoritesController@isMyFavorite');
+    Route::post('/v2/user/quotations', 'user\accountController@getUserQuotations');
 });
