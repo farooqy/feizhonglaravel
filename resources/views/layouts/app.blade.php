@@ -797,7 +797,7 @@
 								</div>
 								<h4 class="support-item_name ralewaySemiBold blackTxtColor">Email</h4>
 								<div class="support-item_info robotoLight">
-									<a href="mailto:info@appbox.com">atoc@drongo.tech</a>
+									<a href="mailto:info@appbox.com">atoc@drongo.vip</a>
 									<a href="mailto:info@appbox.com">neud@drongo.com</a>
 									<a href="mailto:info@appbox.com">noor@drongo.com</a>
 								</div>

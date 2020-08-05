@@ -102,7 +102,7 @@
                             <hr>
                             <p>We hope you receive great benefits by using our services!</p>
                             <p>This email is sent by system automatically, kindly do not reply to it. For any inquiries,
-                                please contact customer service at <a href="mailto:atoc@drongo.tech"
+                                please contact customer service at <a href="mailto:atoc@drongo.vip"
                                     target="_blank">contact us</a></p>
                             <table border="0" margin="10">
                                 <tr>
@@ -110,7 +110,7 @@
                                         <br>Web Operations Department
                                         <br>AtoC — Africa to China Ltd.
                                         <br>
-                                        <br>For more information: <a href="mailto:info@drongo.tech">info@drongo.tech</a>
+                                        <br>For more information: <a href="mailto:info@drongo.vip">info@drongo.vip</a>
                                         <br><a href="{{env("APP_URL")}}" target="_blank">{{env('APP_URL')}}</a>
                                     </td>
                                 </tr>

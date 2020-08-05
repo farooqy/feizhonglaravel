@@ -327,7 +327,7 @@ class accountController extends Controller
             // $this->ApiKey->successFullRequest();
             $this->setSucces(["comp_token" => $request->company_token, "process" => "final"]);
             $mailer = new completedRegistrationMailer($company_id);
-            Mail::to($company_id[0]->comp_email)->bcc(["noor@drongo.tech", "neud@drongo.tech"])->send($mailer);
+            Mail::to($company_id[0]->comp_email)->bcc(["noor@drongo.vip", "neud@drongo.vip"])->send($mailer);
             return $this->success;
         } catch (\Illuminate\Database\QueryException $exception) {
             $this->setError([$exception->errorInfo]);
@@ -584,7 +584,7 @@ class accountController extends Controller
         $body = "[AtoC] " . $new_code . " is your verification code. This code will expire in 5 minutes.
 				Please do not disclose it for security purposes.";
 
-        Mail::to(["noor@drongo.tech", "neud@drongo.tech"])->send(new \App\Mail\companies\registrationCodeMail($new_code, $request->telephone));
+        Mail::to(["noor@drongo.vip", "neud@drongo.vip"])->send(new \App\Mail\companies\registrationCodeMail($new_code, $request->telephone));
         return $this->twilioSendMessage($request->telephone, $body);
 
     }

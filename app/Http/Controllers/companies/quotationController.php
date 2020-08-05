@@ -112,7 +112,7 @@ class quotationController extends Controller
             "company_name" => $comp_data[0]->comp_name,
             "create_date" => gmdate("M d, Y", time()),
             "due_date" => $request->product_type === "product" ? gmdate("M d, Y", (time() + 2073600)) :
-            $targetProduct[0]->product_valid_until, //24 days
+                $targetProduct[0]->product_valid_until, //24 days
             "company_address" => $companyAddress[0]->comp_addr_one,
             "company_city" => $companyAddress[0]->comp_city,
             "customer_name" => $user_is_valid[0]->user_fname . " " . $user_is_valid[0]->user_sname,
@@ -137,16 +137,13 @@ class quotationController extends Controller
             } else {
                 $pdfpath = public_path($path);
             }
-
         } else {
             $path = 'uploads/user/' . $user_is_valid[0]->user_token . '/quotation/';
             if (env('APP_ENV') === "production") {
                 $pdfpath = env('APP_ROOT') . $path;
-
             } else {
                 $pdfpath = public_path($path);
             }
-
         }
 
         $mpdf = new \Mpdf\Mpdf(['tempDir' => $pdfpath]);
@@ -180,12 +177,11 @@ class quotationController extends Controller
         $comp_mailer = new quotationGeneratedMail($productDetails['company_name'], $filepath);
         $customer_mailer = new quotationGeneratedMail($productDetails['customer_name'], $filepath);
 
-        Mail::to($comp_data[0]['comp_email'])->bcc(["noor@drongo.tech", "neud@drongo.tech"])->send($comp_mailer);
-        Mail::to($productDetails['customer_email'])->bcc(["noor@drongo.tech", "neud@drongo.tech"])->send($customer_mailer);
+        Mail::to($comp_data[0]['comp_email'])->bcc(["noor@drongo.vip", "neud@drongo.vip"])->send($comp_mailer);
+        Mail::to($productDetails['customer_email'])->bcc(["noor@drongo.vip", "neud@drongo.vip"])->send($customer_mailer);
 
         $this->Status->setSuccess(["pdf_file" => $pdfile]);
 
         return $this->Status->getSuccess();
-
     }
 }
