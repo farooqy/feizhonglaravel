@@ -14,6 +14,8 @@
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+
 Route::put('*', 'generalController@notAllowedMethod');
 Route::post('/user/login', 'user\accountController@userLogin');
 Route::post('/user/register', 'user\accountController@register');
@@ -119,14 +121,29 @@ Route::post('/statistics/generateIdAndToken', 'statisticsController@generateIdAn
 //Atoc 2.0 Apis
 
 Route::post('/v2/user/login', 'user\accountController@userLoginV2');
+
 Route::middleware('customauth')->group(function () {
-    Route::post('/v2/user/update/password', 'user\accountController@updateUserPassword');
-    Route::post('/v2/user/update', 'user\accountController@updateUserInfoV2');
-    Route::post('/v2/user/needs/post', 'user\userNeedController@postNeed');
-    Route::post('/v2/user/needs/post/images', 'user\userNeedController@postNeedImagesV2');
-    Route::post('/v2/favorites/doFavorite', 'favoritesController@favoriteCompany');
-    Route::post('/v2/favorites/getFavorites', 'favoritesController@getFavorites');
-    Route::post('/v2/favorites/unFavorite', 'favoritesController@removeFavorite');
-    Route::post('/v2/favorites/isMyFavorite', 'favoritesController@isMyFavorite');
-    Route::post('/v2/user/quotations', 'user\accountController@getUserQuotations');
+
+    Route::prefix('/v2')->group(function () {
+        Route::prefix('/user')->group(function () {
+            Route::post('/update/password', 'user\accountController@updateUserPassword');
+            Route::post('/update', 'user\accountController@updateUserInfoV2');
+            Route::post('/needs/post', 'user\userNeedController@postNeed');
+            Route::post('/needs/post/images', 'user\userNeedController@postNeedImagesV2');
+            Route::post('/quotations', 'user\accountController@getUserQuotations');
+        });
+
+        Route::prefix('/favorites')->group(function () {
+
+            Route::post('/doFavorite', 'favoritesController@favoriteCompany');
+            Route::post('/getFavorites', 'favoritesController@getFavorites');
+            Route::post('/unFavorite', 'favoritesController@removeFavorite');
+            Route::post('/isMyFavorite', 'favoritesController@isMyFavorite');
+        });
+
+        Route::prefix('/preference')->group(function () {
+            Route::post('/set_supplier_location', 'misc\SupplierCountryController@registerHostSupplierLocation');
+            Route::post('/get_supplier_location', 'misc\SupplierCountryController@getSupplierPreferredLocation');
+        });
+    });
 });
