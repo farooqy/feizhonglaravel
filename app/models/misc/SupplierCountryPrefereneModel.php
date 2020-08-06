@@ -21,7 +21,7 @@ class SupplierCountryPrefereneModel extends Model
     public $errorMessage = null;
     public $errorStatus = false;
     public $list_supplier_locations = [
-        'All locations',
+        'All Countries',
         'China',
         'United Arab Emirates',
     ];
