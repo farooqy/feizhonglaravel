@@ -10,7 +10,7 @@ class SupplierCountryPrefereneModel extends Model
     //
     protected $table = 'supplier_country_preference';
 
-    protected $filled = [
+    protected $fillable = [
         'id',
         'host_id',
         'host_token',

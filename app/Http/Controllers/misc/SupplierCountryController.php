@@ -37,8 +37,8 @@ class SupplierCountryController extends Controller
             return $this->StatusHandler->getSuccess();
         }
 
-        $this->StatusHandler->setError($SupplierPreferenceModel->errorMessage);
-        // $this->StatusHandler->setError(['Failed to set your supplier location preference.']);
+        // $this->StatusHandler->setError($SupplierPreferenceModel->errorMessage);
+        $this->StatusHandler->setError(['Failed to set your supplier location preference.']);
         return $this->StatusHandler->getError();
     }
 
