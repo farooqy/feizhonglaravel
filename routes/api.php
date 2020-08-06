@@ -132,6 +132,7 @@ Route::middleware('customauth')->group(function () {
             Route::post('/needs/post/images', 'user\userNeedController@postNeedImagesV2');
             Route::post('/quotations', 'user\accountController@getUserQuotations');
             Route::post('/update/address', 'user\accountController@updateUserAddress');
+            Route::post('/address', 'user\accountController@getUserAddress');
         });
 
         Route::prefix('/favorites')->group(function () {
