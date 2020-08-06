@@ -50,9 +50,9 @@ class SupplierCountryController extends Controller
             ["host_token", $request->host_token],
             ["host_type", $request->host_type]
         ])->get();
-        if ($preferredLocations == null || $preferredLocations->count() <= 0) {
-            $preferredLocations = ["prefered_supplier_location" => 0];
-        }
+        // if ($preferredLocations == null || $preferredLocations->count() <= 0) {
+        //     $preferredLocations = ["prefered_supplier_location" => 0];
+        // }
         $this->StatusHandler->setSuccess($preferredLocations);
         return $this->StatusHandler->getSuccess();
     }
