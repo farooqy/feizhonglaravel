@@ -51,7 +51,7 @@ class SupplierCountryController extends Controller
             ["host_type", $request->host_type == "normal" ? 2 : ($request->host_type == "comp" ? 1 : 3)]
         ])->get();
         if ($preferredLocations == null || $preferredLocations->count() <= 0) {
-            $preferredLocations = ["prefered_supplier_location" => 0];
+            $preferredLocations = [["prefered_supplier_location" => 0]];
         }
         $this->StatusHandler->setSuccess($preferredLocations);
         return $this->StatusHandler->getSuccess();
