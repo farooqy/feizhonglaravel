@@ -45,7 +45,7 @@ class UserIsAuthenticated
         );
         if (!$isAuthenticated) {
             $response = Response::json([
-                "errorMessage" => ["Authentication error: You are not logged in"],
+                "errorMessage" => ["Authentication error: You are not authenticated for this action"],
                 "isSuccess" => false,
                 "data" => [],
             ]);

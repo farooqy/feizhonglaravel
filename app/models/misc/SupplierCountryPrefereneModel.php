@@ -34,20 +34,21 @@ class SupplierCountryPrefereneModel extends Model
                 $updated = $existingPrerence[0]->update([
                     'prefered_supplier_location' => $key == false ? 0 : $key
                 ]);
-                return $updated;
+                return true;
             } else {
-                return $this->create([
+                $pref = $this->create([
                     'host_id' => $host_data->host_id,
                     'host_token' => $host_data->host_token,
                     'host_type' => $host_data->host_type,
                     'prefered_supplier_location' => $host_data->prefered_supplier_location,
 
                 ]);
+                return true;
             }
         } catch (Exception $e) {
             $this->errorStatus = true;
             $this->errorMessage = $e->getMessage();
-            return $this->errorStatus;
+            return false;
         }
     }
 
