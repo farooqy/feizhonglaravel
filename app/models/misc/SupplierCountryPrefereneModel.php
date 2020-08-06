@@ -29,8 +29,9 @@ class SupplierCountryPrefereneModel extends Model
     {
         try {
             $existingPrerence = $this->ExistingPreference($host_data->host_id, $host_data->host_token);
+            $key = array_search($host_data->prefered_supplier_location, $this->list_supplier_locations);
             if ($existingPrerence != null && $existingPrerence->count() >= 1) {
-                $key = array_search($host_data->prefered_supplier_location, $this->list_supplier_locations);
+
                 $updated = $existingPrerence[0]->update([
                     'prefered_supplier_location' => $key == false ? 0 : $key
                 ]);
@@ -40,7 +41,7 @@ class SupplierCountryPrefereneModel extends Model
                     'host_id' => $host_data->host_id,
                     'host_token' => $host_data->host_token,
                     'host_type' => $host_data->host_type,
-                    'prefered_supplier_location' => $host_data->prefered_supplier_location,
+                    'prefered_supplier_location' => $key == false ? 0 : $key,
 
                 ]);
                 return true;
