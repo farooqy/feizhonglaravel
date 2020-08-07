@@ -149,7 +149,7 @@ Route::middleware('customauth')->group(function () {
         });
 
         Route::prefix('/comp')->group(function () {
-            Route::post('/quotation/generate', 'companies\quotationController@generateQuotation');
+            Route::post('/quotation/generate', 'companies\quotationController@generateQuotationV2');
         });
     });
 });
