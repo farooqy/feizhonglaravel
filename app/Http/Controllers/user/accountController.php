@@ -1001,6 +1001,7 @@ class accountController extends Controller
             "city" => "required|string|max:46",
             "country" => "required|string|max:46",
             "postal_code" => "required|string|max:8",
+            "about_me" => 'nullable|string|max:600'
         ];
 
         $isValidUser = Validator::make($request->all(), $rules, []);
@@ -1020,7 +1021,7 @@ class accountController extends Controller
                 "city" => $request->city,
                 "country" => $request->country,
                 "postal_code" => $request->postal_code,
-                "about_user" => '',
+                "about_user" => $request->about_me == null ? '' : $request->about_me,
                 "user_id" => $request->host_id,
                 "user_token" => $request->host_token,
             ]);
@@ -1036,6 +1037,7 @@ class accountController extends Controller
                 "city" => $request->city,
                 "country" => $request->country,
                 "postal_code" => $request->postal_code,
+                "about_user" => $request->about_me == null ? '' : $request->about_me,
             ]);
             $this->Error->setSuccess([]);
             return $this->Error->getSuccess();
