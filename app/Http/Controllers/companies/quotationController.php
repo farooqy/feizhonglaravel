@@ -205,7 +205,7 @@ class quotationController extends Controller
             "demanded_price" => "required|numeric",
             "host_type" => "required|in:normal,comp",
             "product_type" => "required|string|in:product,need",
-            "payment_method" => "required|string|in:Cheque,Wire Transfer,Wechat Pay,AliPay",
+            "payment_method" => "required|string|in:Cheque,Wire Transfer,Wechat Pay,Ali Pay",
         ];
         $validator = Validator::make($request->all(), $rules, []);
         $isnot_valid = $this->customValidator->isNotValidRequest($validator);
