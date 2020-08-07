@@ -201,7 +201,7 @@ class quotationController extends Controller
             "company_token" => "required|string",
             "product_id" => "required|integer",
             "product_token" => "required|string",
-            "demanded_quantity" => "required|integer|min:1",
+            "demanded_quantity" => "required|numeric|min:1",
             "demanded_price" => "required|numeric",
             "host_type" => "required|in:normal,comp",
             "product_type" => "required|string|in:product,need",
