@@ -131,7 +131,7 @@ Route::middleware('customauth')->group(function () {
             Route::post('/needs/post', 'user\userNeedController@postNeed');
             Route::post('/needs/post/images', 'user\userNeedController@postNeedImagesV2');
             Route::post('/quotations', 'user\accountController@getUserQuotations');
-            Route::post('/update/address', 'user\accountController@updateUserAddress');
+            Route::post('/update/address', 'user\accountController@updateUserAddressV2');
             Route::post('/address', 'user\accountController@getUserAddress');
         });
 

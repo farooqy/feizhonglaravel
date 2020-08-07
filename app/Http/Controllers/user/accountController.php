@@ -992,4 +992,53 @@ class accountController extends Controller
             return $this->Error->getError();
         }
     }
+
+    public function updateUserAddressV2(Request $request)
+    {
+        $rules = [
+            "address" => "required|string",
+            "province_state" => "required|string|max:56",
+            "city" => "required|string|max:46",
+            "country" => "required|string|max:46",
+            "postal_code" => "required|string|max:8",
+        ];
+
+        $isValidUser = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($isValidUser);
+        if ($isNotValidRequest) {
+            return $isNotValidRequest;
+        }
+
+        $userAddress = userAddressModel::where([
+            ["user_id", $request->host_id],
+            ["user_token", $request->host_token],
+        ])->get();
+        if ($userAddress->count() <= 0) {
+            userAddressModel::create([
+                "address" => $request->address,
+                "province_state" => $request->province_state,
+                "city" => $request->city,
+                "country" => $request->country,
+                "postal_code" => $request->postal_code,
+                "about_user" => '',
+                "user_id" => $request->host_id,
+                "user_token" => $request->host_token,
+            ]);
+            $this->Error->setSuccess([]);
+            return $this->Error->getSuccess();
+        } else {
+            userAddressModel::where([
+                ["user_id", $request->host_id],
+                ["user_token", $request->host_token],
+            ])->update([
+                "address" => $request->address,
+                "province_state" => $request->province_state,
+                "city" => $request->city,
+                "country" => $request->country,
+                "postal_code" => $request->postal_code,
+            ]);
+            $this->Error->setSuccess([]);
+            return $this->Error->getSuccess();
+        }
+    }
 }
