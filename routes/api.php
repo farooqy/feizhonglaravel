@@ -147,5 +147,9 @@ Route::middleware('customauth')->group(function () {
             Route::post('/set_supplier_location', 'misc\SupplierCountryController@registerHostSupplierLocation');
             Route::post('/get_supplier_location', 'misc\SupplierCountryController@getSupplierPreferredLocation');
         });
+
+        Route::prefix('/comp')->group(function () {
+            Route::post('/quotation/generate', 'companies\quotationController@generateQuotation');
+        });
     });
 });
