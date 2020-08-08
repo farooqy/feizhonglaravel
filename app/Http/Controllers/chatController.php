@@ -268,7 +268,7 @@ class chatController extends Controller
             ])->skip(0)->take(1)->get();
             if ($previousChat === null || $previousChat->count() <= 0) {
                 $chat_token = hash('md5', time()) . time(); //used for geeting chat id
-                chatUserModel::create([
+                $new_chat = chatUserModel::create([
                     "chat_origin_id" => $request->host_id,
                     "chat_origin_token" => $request->host_token,
                     "chat_destination_id" => $request->target_id,
@@ -285,7 +285,7 @@ class chatController extends Controller
                 $chat_id = $previousChat;
 
 
-            chatModel::create([
+            $new_message = chatModel::create([
                 "chat_id" => $chat_id[0]->chat_id,
                 "message_target_id" => $request->target_id,
                 "message_target_token" => $request->target_token,
@@ -293,7 +293,7 @@ class chatController extends Controller
                 "message_type" => $request->message_type,
                 "message_status" => "sent",
             ]);
-            $this->Error->setSuccess(['success']);
+            $this->Error->setSuccess($new_message);
             return $this->Error->getSuccess();
         } catch (\Illuminate\Database\QueryException $exception) {
             $this->Error->setError([$exception->errorInfo]);
