@@ -155,5 +155,12 @@ Route::middleware('customauth')->group(function () {
                 Route::post('/like', 'statusController@likeStatus');
             });
         });
+        Route::prefix('message')->group(function () {
+            Route::post('/send', 'chatController@sendMessage');
+            Route::post('/history', 'chatController@getHistory');
+            Route::post('/chatConversation', 'chatController@getChatConversation');
+            Route::post('/getSpecificChat', 'chatController@getSpecificChat');
+            Route::post('/markasread', 'chatController@MarkMessageStatusRead');
+        });
     });
 });
