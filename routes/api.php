@@ -150,6 +150,10 @@ Route::middleware('customauth')->group(function () {
 
         Route::prefix('/comp')->group(function () {
             Route::post('/quotation/generate', 'companies\quotationController@generateQuotationV2');
+            Route::prefix('/status')->group(function () {
+                Route::post('/comment', 'status\commentController@writeComment');
+                Route::post('/like', 'statusController@likeStatus');
+            });
         });
     });
 });
