@@ -1,5 +1,3 @@
-
-
 var app = new Vue({
     el: "#app",
     methods: {
@@ -166,7 +164,7 @@ var app = new Vue({
             for (i = 0; i < data.length; i++) {
                 var d = data[i];
                 this.trending_list.push({
-                    "company_name":d.comp_name,
+                    "company_name": d.comp_name,
                     "company_id": d.comp_id,
                     "company_logo": d.comp_logo,
                     "company_type": d.comp_type,
@@ -284,6 +282,9 @@ var app = new Vue({
             this.hideLoader();
         },
         prepareProduct() {
+            if (this.requestLoading)
+                return;
+            this.requestLoading = true;
             if (this.Product.product_name === null || Product.product_name === "") {
                 this.showError('Please provide product name');
             } else if (this.Product.product_description === null) {
@@ -318,24 +319,24 @@ var app = new Vue({
                     "host_type": "comp",
                     "product_file": file_src,
                     "product_gen_token": this.Product.generated_token,
-                    "file_index" : i
+                    "file_index": i
                 }
                 console.log('req for product is ', req);
-                if(this.successfullProductFiles.length >= this.Product.product_files.length)
+                if (this.successfullProductFiles.length >= this.Product.product_files.length)
                     return this.setProductFileUrl({}, true);
                 this.ServerRequest.setRequest(req);
                 this.ServerRequest.serverRequest("/api/comp/product/addImage",
                     this.setProductFileUrl, this.showError);
             }
         },
-        setProductFileUrl(data, is_retry=false) {
+        setProductFileUrl(data, is_retry = false) {
             if (data[0] !== undefined)
                 data = data[0];
-            if(is_retry)
-            this.successfullProductFiles.push({
-                "file_url": data.product_file_src,
-                "file_id": data.product_file_id
-            });
+            if (is_retry)
+                this.successfullProductFiles.push({
+                    "file_url": data.product_file_src,
+                    "file_id": data.product_file_id
+                });
             if (this.successfullProductFiles.length ===
                 this.Product.product_files.length) {
                 var req = this.req;
@@ -346,7 +347,7 @@ var app = new Vue({
                 req.product_measure_currency = this.Product.product_currency;
                 req.product_price = this.Product.product_price;
                 this.ServerRequest.setRequest(req);
-                
+
                 this.ServerRequest.serverRequest("/api/comp/product/addProduct",
                     this.setProductInfo, this.showError);
             }
@@ -379,6 +380,7 @@ var app = new Vue({
             this.StatusList.unshift(p);
             this.Product = new Product();
             this.successfullProductFiles = [];
+            this.requestLoading = false;
         },
         prepareProductFile(event) {
             console.log(event);
@@ -407,6 +409,9 @@ var app = new Vue({
             })
         },
         preparePostStaus() {
+            if (this.requestLoading)
+                return;
+            this.requestLoading = true;
             if (this.Status.status_content === null)
                 this.showError("Please say something about your status");
             else if (this.Status.status_files.length <= 0)
@@ -454,6 +459,7 @@ var app = new Vue({
                 this.Status.status_files.length) {
                 this.setStatusInfo(data);
             }
+            this.requestLoading = false;
         },
         setStatusInfo(data) {
             var req = this.req;
@@ -489,80 +495,71 @@ var app = new Vue({
             this.Status = new Status();
             this.successfullStatusFiles = [];
         },
-        viewProductDetails(product_id, product_token)
-        {
-            console.log('view details ',product_id, ' token ',product_token);
+        viewProductDetails(product_id, product_token) {
+            console.log('view details ', product_id, ' token ', product_token);
             var products = this.StatusList;
             var num_products = products.length;
-            var i=0;
-            for(i=0; i<num_products; i++)
-            {
+            var i = 0;
+            for (i = 0; i < num_products; i++) {
                 var p = products[i];
-                if(p.post_type !== "product")
+                if (p.post_type !== "product")
                     continue;
-                else if(p.product_id === product_id && p.generated_token === product_token)
-                {
+                else if (p.product_id === product_id && p.generated_token === product_token) {
                     p.host_type = this.host_type;
                     this.product_modal = {
                         visible: true,
                         data: p,
                         errorModal: {
-                            error_text:null,
+                            error_text: null,
                             visible: false,
                         },
                         successModal: {
-                            success_text :null,
+                            success_text: null,
                             visible: false,
                         }
                     };
                 }
             }
         },
-        viewStatusDetails(status_id, status_generated_token)
-        {
+        viewStatusDetails(status_id, status_generated_token) {
             var statuses = this.StatusList;
             var num_products = statuses.length;
-            var i=0;
-            for(i=0; i<num_products; i++)
-            {
+            var i = 0;
+            for (i = 0; i < num_products; i++) {
                 var p = statuses[i];
-                if(p.post_type !== "status")
+                if (p.post_type !== "status")
                     continue;
-                if(p.status_id === status_id && p.status_generated_token === status_generated_token)
-                {
+                if (p.status_id === status_id && p.status_generated_token === status_generated_token) {
                     p.host_type = this.host_type;
                     this.product_modal = {
                         visible: true,
                         data: p,
                         errorModal: {
-                            error_text:null,
+                            error_text: null,
                             visible: false,
                         },
                         successModal: {
-                            success_text :null,
+                            success_text: null,
                             visible: false,
                         }
                     };
                 }
             }
         },
-        toggleBargainModel(product_id, product_token)
-        {
+        toggleBargainModel(product_id, product_token) {
             this.disMissPostDetailsModal();
             this.BargainModel.product = this.getProductDetails(product_id, product_token);
-            this.BargainModel.product.product_type = "product";//can be need or product
-            if(this.BargainModel.product === null)
-            {
+            this.BargainModel.product.product_type = "product"; //can be need or product
+            if (this.BargainModel.product === null) {
                 this.showErrorModal('Error! Could not get the product details');
             }
             this.BargainModel.visible = true;
         },
-        demandQuotationReady(price, quantity, payment_method, description, prod_id, prod_token, prod_type )
-        {
+        demandQuotationReady(price, quantity, payment_method, description, prod_id, prod_token, prod_type) {
             this.BargainModel.isLoading = true;
             var company = this.getProductDetails(prod_id, prod_token).product_company;
-            var req =  {
-                company_id : company.comp_id,
+            var req = {
+                company_id: company.comp_id,
                 company_token: company.comp_token,
                 user_id: this.req.host_id,
                 user_token: this.req.host_token,
@@ -573,37 +570,33 @@ var app = new Vue({
                 host_type: this.host_type === 0 ? 'comp' : 'normal',
                 description: description,
                 product_type: prod_type,
-                payment_method : payment_method,
+                payment_method: payment_method,
             };
             this.ServerRequest.setRequest(req);
             this.ServerRequest.serverRequest('/api/comp/quotation/generate',
                 this.BargainModel.QuotationRequestSuccess, this.BargainModel.RequestError);
-            
+
 
         },
-        getProductDetails(product_id, product_token)
-        {
-            
+        getProductDetails(product_id, product_token) {
+
             var products = this.StatusList;
             var num_products = products.length;
-            var i=0;
-            for(i=0; i<num_products; i++)
-            {
+            var i = 0;
+            for (i = 0; i < num_products; i++) {
                 var p = products[i];
-                if(p.post_type !== "product")
+                if (p.post_type !== "product")
                     continue;
-                else if(p.product_id === product_id && p.generated_token === product_token)
-                {
+                else if (p.product_id === product_id && p.generated_token === product_token) {
                     return p;
                 }
             }
         },
         userProductNeed() {
-            if(this.needed_product.need_posted && this.needed_product.data !== null)
-            {
+            if (this.needed_product.need_posted && this.needed_product.data !== null) {
                 this.postNeedImage(this.needed_product.data)
                 return;
-            }    
+            }
             if (this.needed_product.prod_name === "" ||
                 this.needed_product.prod_name === null)
                 return this.showError('Please provide product name');
@@ -627,7 +620,7 @@ var app = new Vue({
             if (this.needed_product.prod_valid_until === "" ||
                 this.needed_product.prod_valid_until === null)
                 return this.showError('Please provide product validity date');
-            
+
             this.requestLoading = true;
             var product = this.needed_product;
             product.host_id = this.req.host_id;
@@ -645,23 +638,22 @@ var app = new Vue({
             this.needed_product.need_posted = true;
             this.needed_product.data = data;
             this.postNeedImage(data);
-           
+
         },
-        postNeedImage(data)
-        {
-            
+        postNeedImage(data) {
+
             var images = this.needed_product.need_images;
-            console.log('images before splice ',images.length)
-            if(this.needed_product.uploaded_images !== 0)
+            console.log('images before splice ', images.length)
+            if (this.needed_product.uploaded_images !== 0)
                 images.splice(0, this.needed_product.uploaded_images);
             var num_images = images.length;
-            console.log('images after splice ',images.length)
-            var i=-0;
-            for(i=0; i< num_images; i++) {
+            console.log('images after splice ', images.length)
+            var i = -0;
+            for (i = 0; i < num_images; i++) {
                 var image = images[i];
-                console.log('will post image ',image);
-                var src= image.file_url;
-                var need_image_req= {
+                console.log('will post image ', image);
+                var src = image.file_url;
+                var need_image_req = {
                     need_id: data[0].id,
                     need_token: data[0].need_token,
                     file_url: src,
@@ -669,19 +661,17 @@ var app = new Vue({
                     host_token: this.req.host_token,
                     api_key: this.req.api_key,
                 }
-               
+
                 this.ServerRequest.setRequest(need_image_req);
                 this.ServerRequest.serverRequest('/api/user/needs/post/images',
                     this.userNeedImagesPosted, this.showError);
             };
-            
+
 
         },
-        userNeedImagesPosted(data)
-        {
-            this.needed_product.uploaded_images +=1;
-            if(this.needed_product.uploaded_images === this.needed_product.need_images.length)
-            {
+        userNeedImagesPosted(data) {
+            this.needed_product.uploaded_images += 1;
+            if (this.needed_product.uploaded_images === this.needed_product.need_images.length) {
                 this.needed_product = {
                     prod_name: null,
                     prod_type: null,
@@ -690,26 +680,24 @@ var app = new Vue({
                     prod_quantity: null,
                     prod_measure_unit: null,
                     prod_valid_until: null,
-                    need_images :[],
+                    need_images: [],
                     uploaded_images: 0,
                 };
                 if (data[0])
                     data = data[0];
-    
+
                 alert('You have successfully posted your need.');
                 console.log('user need ', data);
                 this.requestLoading = false;
             }
         },
-        prepareNeedImage(event)
-        {
+        prepareNeedImage(event) {
             console.log(event);
             var input = event.target;
             this.ServerRequest.previewFile(input, this.previewNeedImage,
                 this.showError);
         },
-        previewNeedImage(src)
-        {
+        previewNeedImage(src) {
             this.needed_product.need_images.push({
                 "file_url": src.target.result,
                 "alt": "Status file",
@@ -721,9 +709,9 @@ var app = new Vue({
             var files;
             if (type === "product")
                 files = this.Product.product_files;
-            else if(type === 'status')
+            else if (type === 'status')
                 files = this.Status.status_files;
-            else if(type === 'need')
+            else if (type === 'need')
                 files = this.needed_product.need_images;
             else
                 return;
@@ -754,31 +742,29 @@ var app = new Vue({
             var arg1 = args[0];
             arg1(data);
         },
-        getIpAddress()
-        {
+        getIpAddress() {
             var ipreq = axios.create({
                 baseURL: "https://json.geoiplookup.io/api",
                 responseType: 'json',
                 headers: {
-            		'Accept': 'application/json',
-            		'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': 'http://127.0.0.1:8000',
-                    'Access-Control-Allow-Methods' : 'GET'
+                    'Access-Control-Allow-Methods': 'GET'
                 }
             });
             ipreq.get()
-            .then(function (response) {
-                // handle success
-                this.setIpData(response);
-            })
-            .catch(function (error) {
-                // handle error
-                console.log('failed to get the id ',error);
-            });
+                .then(function(response) {
+                    // handle success
+                    this.setIpData(response);
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log('failed to get the id ', error);
+                });
 
         },
-        setIpData(data)
-        {
+        setIpData(data) {
             this.Weather.City = data.city;
             this.Weather.Country = data.country_name;
             this.Weather.Ip = data.ip;
@@ -787,8 +773,7 @@ var app = new Vue({
             this.Weather.Country_code = data.country_code;
 
         },
-        getLocationData()
-        {
+        getLocationData() {
             // var ip =
             // this.ServerRequest.serverRequest("http://api.ipstack.com/66.154.104.2?access_key=34c44b2b12ea1a34b1e3cdf9d96a4d3c")
         },
@@ -844,44 +829,39 @@ var app = new Vue({
                 this.customtype = false;
             }
         },
-        externalApiErrorHandler(error)
-        {
+        externalApiErrorHandler(error) {
             // this.showError('')
             console.log('Failed to get ip data');
         },
-        getFeaturedCompanies()
-        {
+        getFeaturedCompanies() {
             this.ServerRequest.setRequest({
-                default:1,
+                default: 1,
                 type: 0,
             });
             this.ServerRequest.serverRequest('/api/comp/package/list/featured', this.setFeaturedCompanies,
-            this.showErrorModal);
+                this.showErrorModal);
         },
-        setFeaturedCompanies(data)
-        {
+        setFeaturedCompanies(data) {
             this.featuredCompanies = data["featured"];
             this.Demands.demand_title = data["demand_info"]["active_demands"] + " Active demands ";
             this.Demands.demand_served = data["demand_info"]["served_demands"] + " demands have been successfully served ";
         },
-        disMissPostDetailsModal()
-        {
+        disMissPostDetailsModal() {
             this.product_modal = this.status_modal = {
                 visible: false,
                 data: null,
                 errorModal: {
-                    error_text:null,
+                    error_text: null,
                     visible: false,
                 },
                 successModal: {
-                    success_text :null,
+                    success_text: null,
                     visible: false,
                 }
             };
         },
-        shortenName(name)
-        {
-            if(name.length > 15)
+        shortenName(name) {
+            if (name.length > 15)
                 return name.substr(0, 15);
             return name;
         }
@@ -943,18 +923,18 @@ var app = new Vue({
             prod_measure_unit: null,
             prod_valid_until: null,
             need_images: [],
-            uploaded_images:0,
-            need_posted : false,
+            uploaded_images: 0,
+            need_posted: false,
             data: null,
         },
         Weather: {
             City: 'Nanjing',
             Country: 'China',
-            Country_code:'CN',
+            Country_code: 'CN',
             Latitude: '34.04302978515625',
             Longtitude: '-118.25227355957031',
             Description: 'Clear Sky D',
-            Ip:null,
+            Ip: null,
             Date: null,
 
 
@@ -969,11 +949,11 @@ var app = new Vue({
             visible: false,
             data: null,
             errorModal: {
-                error_text:null,
+                error_text: null,
                 visible: false,
             },
             successModal: {
-                success_text :null,
+                success_text: null,
                 visible: false,
             }
         },
@@ -981,17 +961,17 @@ var app = new Vue({
             visible: false,
             data: null,
             errorModal: {
-                error_text:null,
+                error_text: null,
                 visible: false,
             },
             successModal: {
-                success_text :null,
+                success_text: null,
                 visible: false,
             }
         },
-        BargainModel:  new BargainModel(),
+        BargainModel: new BargainModel(),
         requestLoading: false,
-        featuredCompanies : [],
+        featuredCompanies: [],
 
 
     },

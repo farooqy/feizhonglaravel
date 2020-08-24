@@ -134,7 +134,7 @@
 											</a>
 										</li>
 										<li>
-											<a href="#" @click.prevent="logoutHost">
+											<a href="/logout" >
 												<svg class="olymp-logout-icon">
 													<use xlink:href="/olympus_assets/svg-icons/sprites/icons.svg#olymp-logout-icon"></use>
 												</svg>

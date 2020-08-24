@@ -17,6 +17,7 @@ use App\models\browserDetailsModel;
 use App\models\session\SessionModel;
 use Illuminate\Support\Facades\Crypt;
 use App\customClass\ApiKeyManager;
+use Illuminate\Support\Facades\Cookie;
 
 class statisticsController extends Controller
 {
@@ -354,13 +355,20 @@ class statisticsController extends Controller
             "new_code" => true,
         ]);
 
-        if ($isbrowser)
+        if ($isbrowser) {
+            $this->Error->setSuccess([
+                "host_id" => $id,
+                "host_token" => $token,
+                "host_type" => "guest",
+                "new_code" => true,
+                "cookie" => "set"
+            ]);
             return response($this->Error->getSuccess())
-                ->cookie('host_id', $id, (60 * 24 * 360))
-                ->cookie('host_token', $token, (60 * 24 * 360))
-                ->cookie('host_type', "guest", (60 * 24 * 360))
-                ->cookie('is_browser', true, (60 * 24 * 360));
-        else
+                ->cookie(Cookie('host_id', $id, (60 * 24 * 360), null, null, false, false))
+                ->cookie(Cookie('host_token', $token, (60 * 24 * 360), null, null, false, false))
+                ->cookie(Cookie('host_type', "guest", (60 * 24 * 360), null, null, false, false))
+                ->cookie(Cookie('is_browser', true, (60 * 24 * 360), null, null, false, false));
+        } else
             return response($this->Error->getSuccess());
     }
 }

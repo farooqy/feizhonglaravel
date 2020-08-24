@@ -11,12 +11,12 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function(){
-    //shared routes between comp and user
+Route::group(['middleware' => ['web']], function () {
+  //shared routes between comp and user
   Route::get('/', 'browserController@getIndexPage')->name("homePage");
   Route::get('/register', 'browserController@getRegisterPage')->name("registrationPage");
   Route::get('/login', 'browserController@getLoginPage')->name("loginPage");
-  Route::get('/logout', 'browserController@logout')->name("logoutPage");
+  Route::get('/logout', 'browserController@logoutRedirect')->name("logoutPage");
   Route::get('/profile', 'browserController@profilePage')->name("profilePage");
   Route::get('/profile/edit', 'browserController@editProfilePage')->name("editProfilePage");
   Route::get('/issue', 'browserController@issuePage')->name('issuePage');

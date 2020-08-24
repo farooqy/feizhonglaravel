@@ -141,7 +141,7 @@ var User = function User() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/js/User.js */"./resources/js/User.js");
+module.exports = __webpack_require__(/*! /Users/noorfarooqy/Sites/feizhonglaravel/resources/js/User.js */"./resources/js/User.js");
 
 
 /***/ })

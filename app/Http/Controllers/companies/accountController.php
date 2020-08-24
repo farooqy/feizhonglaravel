@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\companies;
 
 use App\customClass\ApiKeyManager;
@@ -45,7 +46,6 @@ class accountController extends Controller
         $this->ip_address = \Request::ip();
         $this->requestUrl = url()
             ->current();
-
     }
     public function apiHandleSet($user_id, $user_token, $api_key)
     {
@@ -122,7 +122,7 @@ class accountController extends Controller
             $this
                 ->Status
                 ->setError(["Authentication failed. Could not get company
-			information. Please log in back", ]);
+			information. Please log in back",]);
             $this->forgetAuthenticationCookies();
             return $this
                 ->Status
@@ -173,7 +173,6 @@ class accountController extends Controller
         return $this
             ->Status
             ->getSuccess();
-
     }
     public function companyLogin(Request $request)
     {
@@ -182,7 +181,8 @@ class accountController extends Controller
             "company_password" => "required|string",
             "guest_id" => "required|integer",
             "guest_token" => "required|string",
-            "api_key" => "required|string"];
+            "api_key" => "required|string"
+        ];
 
         $messages = ["required" => "The :attribute is required"];
 
@@ -197,8 +197,8 @@ class accountController extends Controller
         }
 
         $data = companydataModel::where([["comp_email", "=", $request
-                ->company_email]])
-                ->get();
+            ->company_email]])
+            ->get();
         if ($data === null || $data->count() <= 0) {
             $this->setError(["The company email and password do not match "]);
             return $this->error;
@@ -255,7 +255,10 @@ class accountController extends Controller
             if ($request->cookie("is_browser")) {
                 $min = 24 * 60 * 360;
                 $response = response($this->success)
-                    ->cookie("host_id", $data[0]->comp_id, $min)->cookie("host_token", $data[0]->comp_token, $min)->cookie("host_type", "comp", $min)->cookie("iliua", true, $min);
+                    ->cookie("host_id", $data[0]->comp_id, $min, null, null, false, false)
+                    ->cookie("host_token", $data[0]->comp_token, $min, null, null, false, false)
+                    ->cookie("host_type", "comp", $min, null, null, false, false)
+                    ->cookie("iliua", true, $min, null, null, false, false);
                 return $response;
             }
             return $this->success;
@@ -263,7 +266,6 @@ class accountController extends Controller
             $this->setError(["The company password and phone do not match "]);
             return $this->error;
         }
-
     }
     public function companyTypeRegistration(Request $request)
     {
@@ -273,7 +275,8 @@ class accountController extends Controller
             "company_description" => "required|string|min:45|max:1200",
             "company_token" => "required|string|max:330",
             "api_key" => "required|string",
-            "company_id" => "required|integer"];
+            "company_id" => "required|integer"
+        ];
         $messages = ["required" => "The :attribute is required", "max:" => "The :attribute exceeds the allowed length", "min" => "The :attribute must be at least 45 characters"];
 
         $valid_request = Validator::make($request->all(), $rules, $messages);
@@ -316,8 +319,7 @@ class accountController extends Controller
             }
         }
 
-        try
-        {
+        try {
 
             companyTypeModel::create(["comp_id" => $company_id[0]->comp_id, "comp_type" => $request->company_type, "comp_subtype" => $request->company_subtype, "comp_description" => $request->company_description, "comp_token" => $request->company_token]);
 
@@ -332,7 +334,6 @@ class accountController extends Controller
         } catch (\Illuminate\Database\QueryException $exception) {
             $this->setError([$exception->errorInfo]);
             return $this->error;
-
         } catch (Exception $exception) {
             $this->setError([$exception->errorInfo]);
             return $this->error;
@@ -346,7 +347,8 @@ class accountController extends Controller
             "company_country" => "required|string|max:45",
             "company_token" => "required|string|max:330",
             "company_id" => "required|integer",
-            "api_key" => "required|string"];
+            "api_key" => "required|string"
+        ];
         $messages = ["required" => "The :attribute is required", "max:" => "The :attribute exceeds the allowed length"];
 
         $valid_request = Validator::make($request->all(), $rules, $messages);
@@ -371,8 +373,7 @@ class accountController extends Controller
             return $this->error;
         }
 
-        try
-        {
+        try {
 
             companyAddressModel::create([
                 "comp_id" => $company_id[0]->comp_id,
@@ -380,7 +381,8 @@ class accountController extends Controller
                 "comp_addr_two" => $request->company_address_two,
                 "comp_city" => $request->company_country,
                 "comp_province" => $request->company_province,
-                "comp_token" => $request->company_token]);
+                "comp_token" => $request->company_token
+            ]);
 
             registrationTrackerModel::where('comp_token', $request->company_token)
                 ->update(["stage" => "address"]);
@@ -390,7 +392,6 @@ class accountController extends Controller
         } catch (\Illuminate\Database\QueryException $exception) {
             $this->setError([$exception->errorInfo]);
             return $this->error;
-
         } catch (Exception $exception) {
             $this->setError([$exception->errorInfo]);
             return $this->error;
@@ -426,15 +427,16 @@ class accountController extends Controller
             $this->setError(["The given company telephone cannot be used for registration"]);
             return $this->error;
         } else if (companydataModel::where('comp_email', $request->comp_email)
-            ->exists()) {
+            ->exists()
+        ) {
             $this->setError(["The given company email cannot be used for registration"]);
             return $this->error;
         }
 
         //isvalid code
         $verification_code = phoneVerificationModel::where([['target_phone', $request
-                ->company_phone]])
-                ->get();
+            ->company_phone]])
+            ->get();
         if ($verification_code === null || $verification_code->count() <= 0) {
             $verification_code = \App\models\companies\compEmailVerificationModel::where([
                 ["verification_code", $request->verification_code],
@@ -453,7 +455,6 @@ class accountController extends Controller
                     $code->delete();
                 }
             }
-
         } else if ($verification_code->count() > 1) {
             //collsion verification code
             $existing = phoneVerificationModel::where('target_phone', $request->company_phone)
@@ -475,8 +476,7 @@ class accountController extends Controller
             $this->setError(['The verification code is not valid ']);
             return $this->error;
         }
-        try
-        {
+        try {
             $comp_token = hash('md5', time());
             $dir = "uploads/comp/" . $comp_token . "/profile/";
             if (env("APP_ENV") === "local") {
@@ -512,11 +512,12 @@ class accountController extends Controller
                 "comp_phone" => $request->company_phone,
                 "comp_token" => $comp_token,
                 "comp_pass" => Hash::make($request->company_password),
-                "comp_logo" => $logo_url]);
+                "comp_logo" => $logo_url
+            ]);
             registrationTrackerModel::create(["comp_token" => $comp_token, "stage" => 'basicinfo']);
             phoneVerificationModel::where([['target_phone', $request->company_phone], ['verification_code', $request
-                    ->verification_code]])
-                    ->update(['is_verified' => true]);
+                ->verification_code]])
+                ->update(['is_verified' => true]);
             $data = companydataModel::where([["comp_phone", $request->company_phone], ["comp_token", $comp_token]])->get();
             $this->setSucces(["comp_token" => $comp_token, "comp_id" => $data[0]->comp_id, "process" => "page2"]);
             // $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->comp_id, $data[0]->comp_token, "comp");
@@ -525,12 +526,10 @@ class accountController extends Controller
         } catch (\Illuminate\Database\QueryException $exception) {
             $this->setError([$exception->errorInfo]);
             return $this->error;
-
         } catch (Exception $exception) {
             $this->setError([$exception->errorInfo]);
             return $this->error;
         }
-
     }
 
     public function sendConfirmationText(Request $request)
@@ -570,8 +569,8 @@ class accountController extends Controller
         }
 
         $codeExist = phoneVerificationModel::where([["target_phone", $request
-                ->telephone]])
-                ->get();
+            ->telephone]])
+            ->get();
 
         if ($codeExist !== null && $codeExist->count() > 0) {
             foreach ($codeExist as $key => $code) {
@@ -586,13 +585,11 @@ class accountController extends Controller
 
         Mail::to(["noor@drongo.vip", "neud@drongo.vip"])->send(new \App\Mail\companies\registrationCodeMail($new_code, $request->telephone));
         return $this->twilioSendMessage($request->telephone, $body);
-
     }
     public function twilioSendMessage($telephone, $body)
     {
         $TwilioClient = new Client(env('TWILIO_SID'), env('TWILIO_AUTH'));
-        try
-        {
+        try {
 
             $TwilioClient
                 ->messages
@@ -733,8 +730,8 @@ class accountController extends Controller
             $this
                 ->Status
                 ->setError($this
-                        ->FileUploader
-                        ->getError());
+                    ->FileUploader
+                    ->getError());
             return false;
         } else {
             return $file_url;
@@ -776,18 +773,15 @@ class accountController extends Controller
                     ->Status
                     ->getError();
             }
-
         } else {
             return $this
                 ->Status
                 ->getError();
         }
-
     }
     public function updateCompName(Request $request)
     {
         return $this->doCheckAndUpdate("comp_name", $request, new companydataModel);
-
     } //done
     public function updateCompProfile(Request $request)
     {
@@ -835,11 +829,13 @@ class accountController extends Controller
             "company_token" => "required|string|max:330|min:20",
             "company_target_change" => "required|string|min:6",
             "company_password" => "required|string",
-            "api_key" => "required|string"];
+            "api_key" => "required|string"
+        ];
         $valid_request = Validator::make($request->all(), $rules, []);
         if ($notValid = $this
             ->custom_validator
-            ->isNotValidRequest($valid_request)) {
+            ->isNotValidRequest($valid_request)
+        ) {
             $this
                 ->Status
                 ->setError(json_decode($notValid)->errorMessage);
@@ -882,8 +878,7 @@ class accountController extends Controller
     }
     protected function updateField($targetField, $request, $model)
     {
-        try
-        {
+        try {
             $current_data = $model::where('comp_token', $request->company_token)
                 ->get();
             if ($current_data == null || $current_data->count() <= 0) {
@@ -930,7 +925,6 @@ class accountController extends Controller
                 ->setError([$exception->errorInfo]);
             return false;
         }
-
     }
 
     public function getMyPosts(Request $request)
@@ -945,8 +939,8 @@ class accountController extends Controller
         }
 
         $statusData = compStatusModel::where([["comp_id", $request->comp_id], ["comp_token", $request
-                ->comp_token]])
-                ->get();
+            ->comp_token]])
+            ->get();
 
         foreach ($statusData as $key => $eachStatus) {
             $status = array(
@@ -971,7 +965,6 @@ class accountController extends Controller
 
             $statusData[$key]["num_comments"] = $comments->count();
             $statusData[$key]["num_likes"] = $likes->count();
-
         }
         $this
             ->Status

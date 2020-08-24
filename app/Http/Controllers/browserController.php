@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\customClass\CustomRequestValidator;
 use App\customClass\Error;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redirect;
 
 class browserController extends Controller
 {
@@ -48,12 +50,20 @@ class browserController extends Controller
     }
     public function logout()
     {
-        \Cookie::queue(\Cookie::forget("iliua"));
-        \Cookie::queue(\Cookie::forget("host_id"));
-        \Cookie::queue(\Cookie::forget("host_token"));
-        \Cookie::queue(\Cookie::forget("host_type"));
+        Cookie::queue(Cookie::forget("iliua"));
+        Cookie::queue(Cookie::forget("host_id"));
+        Cookie::queue(Cookie::forget("host_token"));
+        Cookie::queue(Cookie::forget("host_type"));
         $this->Error->setSuccess(['request' => "logout"]);
         return $this->Error->getSuccess();
+    }
+    public function logoutRedirect()
+    {
+        Cookie::queue(Cookie::forget("iliua"));
+        Cookie::queue(Cookie::forget("host_id"));
+        Cookie::queue(Cookie::forget("host_token"));
+        Cookie::queue(Cookie::forget("host_type"));
+        return Redirect::back();
     }
     public function profilePage()
     {
@@ -93,7 +103,6 @@ class browserController extends Controller
         }
 
         return view("atoclayout.post_page");
-
     }
 
     public function isLoggedIn($type = "comp")
@@ -130,7 +139,6 @@ class browserController extends Controller
         } else {
             return redirect()->route('loginPage');
         }
-
     }
     public function issuePage()
     {

@@ -383,6 +383,9 @@ var app = new Vue({
       this.hideLoader();
     },
     prepareProduct: function prepareProduct() {
+      if (this.requestLoading) return;
+      this.requestLoading = true;
+
       if (this.Product.product_name === null || Product.product_name === "") {
         this.showError('Please provide product name');
       } else if (this.Product.product_description === null) {
@@ -472,6 +475,7 @@ var app = new Vue({
       this.StatusList.unshift(p);
       this.Product = new Product();
       this.successfullProductFiles = [];
+      this.requestLoading = false;
     },
     prepareProductFile: function prepareProductFile(event) {
       console.log(event);
@@ -497,6 +501,8 @@ var app = new Vue({
       });
     },
     preparePostStaus: function preparePostStaus() {
+      if (this.requestLoading) return;
+      this.requestLoading = true;
       if (this.Status.status_content === null) this.showError("Please say something about your status");else if (this.Status.status_files.length <= 0) this.showError("Please upload at least one image/video");else {
         var req = this.req;
         this.ServerRequest.setRequest(req);
@@ -537,6 +543,8 @@ var app = new Vue({
       if (this.successfullStatusFiles.length === this.Status.status_files.length) {
         this.setStatusInfo(data);
       }
+
+      this.requestLoading = false;
     },
     setStatusInfo: function setStatusInfo(data) {
       var req = this.req;
@@ -1007,7 +1015,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/noorfarooqy/Documents/Noor/sites/feizhonglaravel/resources/js/homepage.js */"./resources/js/homepage.js");
+module.exports = __webpack_require__(/*! /Users/noorfarooqy/Sites/feizhonglaravel/resources/js/homepage.js */"./resources/js/homepage.js");
 
 
 /***/ })
