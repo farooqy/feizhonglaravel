@@ -16,6 +16,7 @@ use App\models\companies\compEmailVerificationModel;
 use App\models\companies\phoneVerificationModel;
 use App\models\compStatusModel;
 use App\models\registrationTrackerModel;
+use Carbon\Carbon;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -979,5 +980,95 @@ class accountController extends Controller
         \Cookie::queue(\Cookie::forget("host_id"));
         \Cookie::queue(\Cookie::forget("host_token"));
         \Cookie::queue(\Cookie::forget("host_type"));
+    }
+
+
+    /*********************************************/
+    /*********************************************/
+    // these are new apis that require api key V2
+    /*********************************************/
+    /*********************************************/
+    /*********************************************/
+    /*********************************************/
+    public function getCompanyQuotations(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "host_type" => "required|string|in:comp",
+        ];
+        $is_valid = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->custom_validator->isNotValidRequest($is_valid);
+        if ($isNotValidRequest) {
+            return $isNotValidRequest;
+        }
+
+        $valid_company = companydataModel::where([
+            ["comp_id", $request->host_id],
+            ["comp_token", $request->host_token],
+        ])->get();
+        if ($valid_company === null || $valid_company->count() <= 0) {
+            $this->Status->setError(["The user profile could not be verified to get quotations"]);
+            return $this->Status->getError();
+        }
+        $quotations = $valid_company[0]->companyQuotations;
+
+        $this->Status->setSuccess([$quotations]);
+        return $this->Status->getSuccess();
+    }
+
+    public function getCompanyMatchedNeeds(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer",
+            "host_token" => "required|string",
+            "host_type" => "required|string|in:comp",
+        ];
+        $valid_request = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this
+            ->custom_validator
+            ->isNotValidRequest($valid_request);
+        if ($isNotValidRequest) {
+            return $isNotValidRequest;
+        }
+
+
+        $company = companydataModel::where([
+            ["comp_id", $request->host_id],
+            ["comp_token", $request->host_token]
+        ])->get();
+
+        if ($company == null || $company->count() <= 0) {
+            $this->Status->setError(["Could not get the company.",]);
+            return $this->Status->getError();
+        }
+        $matched_needs = $company[0]->matchedNeeds;
+        $Company = [
+            "comp_id" => $company[0]->comp_id,
+            "comp_token" => $company[0]->comp_token,
+            "comp_email" => $company[0]->comp_email,
+            "comp_phone" => $company[0]->comp_phone,
+            "comp_logo" => $company[0]->comp_logo,
+            "comp_name" => $company[0]->comp_name,
+            "matched_needs" => [],
+            "updated_at" => $company[0]->updated_at,
+        ];
+        // $data[0]->needs= [];
+        foreach ($matched_needs as $key => $match) {
+            // code...
+            $need = $match->needsData;
+            $user_data = $need->needUserData;
+            $user_address = $user_data->userLocation;
+            $need->needImages;
+            $need->product_valid_until = Carbon::createFromFormat('Y-m-d h:i:s', $need->product_valid_until)->format('Y-m-d');
+            $Company["matched_needs"][$key] = $need;
+            // $Company[0]->matched_needs[$key]->product_valid_until = gmdate('Y-m-d', $match->product_valid_until);
+
+            // array_push($data[0]->needs, $need);
+
+        }
+        $this
+            ->Status->setSuccess($Company);
+        return $this->Status->getSuccess();
     }
 }

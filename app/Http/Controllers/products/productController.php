@@ -102,8 +102,12 @@ class productController extends Controller
             return $this->Error->getError();
         }
 
-        $is_valid_token = $this->is_valid_generated_token($request->product_gen_token,
-            $request->host_id, $request->host_token, $request->host_type);
+        $is_valid_token = $this->is_valid_generated_token(
+            $request->product_gen_token,
+            $request->host_id,
+            $request->host_token,
+            $request->host_type
+        );
         if (!$is_valid_token[0]) {
             return $is_valid_token[1];
         }
@@ -152,7 +156,6 @@ class productController extends Controller
             "product_file_src" => $fileUrl,
         ]);
         return $this->Error->getSuccess();
-
     }
 
     public function newProduct(Request $request)
@@ -188,8 +191,12 @@ class productController extends Controller
             return $this->Error->getError();
         }
 
-        $is_valid_token = $this->is_valid_generated_token($request->product_gen_token,
-            $request->host_id, $request->host_token, $request->host_type);
+        $is_valid_token = $this->is_valid_generated_token(
+            $request->product_gen_token,
+            $request->host_id,
+            $request->host_token,
+            $request->host_type
+        );
         if (!$is_valid_token[0]) {
             return $is_valid_token[1];
         }
@@ -220,7 +227,6 @@ class productController extends Controller
 
         $this->Error->setSuccess([$request->product_price]);
         return $this->Error->getSuccess();
-
     }
 
     public function is_valid_generated_token($generated_token, $host_id, $host_token, $host_type)
@@ -242,7 +248,47 @@ class productController extends Controller
         } else {
             return [true, null];
         }
-
     }
 
+
+    //api 2
+    public function getListOfCompanyProductsV2(Request $request)
+    {
+        $rules = [
+            "host_id" => "required|integer|min:0",
+            "host_token" => "required|string|min:25|max:350",
+            "host_type" => "required|string|in:comp,normal,guest",
+            "api_key" => "required|string",
+            "comp_id" => "required|integer|min:0",
+            "comp_token" => "required|string|min:25|max:350",
+
+        ];
+
+        $is_valid_request = Validator::make($request->all(), $rules, []);
+        $isNotValidRequest = $this->customValidator->isNotValidRequest($is_valid_request);
+        if ($isNotValidRequest) {
+            return $isNotValidRequest;
+        }
+
+        //TO DO TRACK USER REQUEST WITH API KEY
+
+        $products = productModel::where([
+            ["product_for_id", $request->comp_id],
+        ])->get();
+        foreach ($products as $key => $p) {
+            $products[$key]->company_data = $p->companydata;
+
+            unset($products[$key]->companydata);
+            // $p->Product_Files()->orderBy('file_index', 'desc')->get();
+            $c = $p->comments;
+            $l = $p->likes;
+            $p->product_files = $p->Product_Files;
+            $p->num_likes = $l != null ? $l->count() : 0;
+            $p->num_comments = $c != null ? $c->count() : 0;
+            $p->type = "product";
+            $products[$key] = $p;
+        }
+        $this->Error->setSuccess($products);
+        return $this->Error->getSuccess();
+    }
 }

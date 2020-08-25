@@ -91,7 +91,7 @@ class statusController extends Controller
         ])->exists();
         if ($is_suspended) {
             $this->Error->setError(["The company is suspended. Cannot view its information"]);
-            return $this->Error->geError();
+            return $this->Error->getError();
         }
         $statusData = compStatusModel::where([
             ['status_status', '=', 'active'],
@@ -100,9 +100,15 @@ class statusController extends Controller
         ])->latest()->get();
         foreach ($statusData as $key => $status) {
             $status->Status_Files;
-            $status->companyData;
-            $status->comments->count();
-            $status->likes->count();
+            $status->companydata = $status->companyData;
+            unset($status->companyData);
+            $comments = $status->comments;
+            foreach ($comments as $key => $comment) {
+                $comment->personProfile;
+            }
+            $status->num_comments = $comments->count();
+            $status->num_likes = $status->likes->count();
+            $status->type = "status";
         }
         $this->Error->setSuccess($statusData);
         return $this->Error->getSuccess();

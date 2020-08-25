@@ -60,7 +60,7 @@ Route::post('/comp/status/deleteComment', 'status\commentController@deleteCommen
 Route::post('/comp/status/unlikeStatus', 'statusController@unlikeStatus');
 
 Route::post('/comp/products', 'products\productController@getProducts');
-Route::post('/comp/products/list', 'products\productController@getListOfCompanyProducts');
+Route::post('/comp/products/list', 'products\productController@getListOfCompanyProductsV2');
 Route::post('/comp/product/addProduct', 'products\productController@newProduct');
 Route::post('/comp/product/addImage', 'products\productController@addProductImage');
 Route::post('/comp/product/genToken', 'Status_TokenGeneratorModelController@generate_Token');
@@ -149,7 +149,9 @@ Route::middleware('customauth')->group(function () {
         });
 
         Route::prefix('/comp')->group(function () {
+            Route::post('/quotations', 'companies\accountController@getCompanyQuotations');
             Route::post('/quotation/generate', 'companies\quotationController@generateQuotationV2');
+            Route::post('/needs', 'companies\accountController@getCompanyMatchedNeeds');
             Route::prefix('/status')->group(function () {
                 Route::post('/comment', 'status\commentController@writeComment');
                 Route::post('/like', 'statusController@likeStatus');

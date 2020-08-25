@@ -9,19 +9,31 @@ class companydataModel extends Model
     //
     protected $table = "companydata";
     protected $primaryKey = "comp_id";
-    public $fillable = ["comp_name", "comp_logo",
-        "comp_email", "comp_phone", "comp_pass", "comp_token"];
+    public $fillable = [
+        "comp_name", "comp_logo",
+        "comp_email", "comp_phone", "comp_pass", "comp_token"
+    ];
     public $hidden = ["comp_pass"];
 
     public function verificationData()
     {
-        return $this->hasOne('App\models\companies\verifiedCompaniesModel',
-            'comp_id', 'comp_id', 'comp_token', 'comp_token');
+        return $this->hasOne(
+            'App\models\companies\verifiedCompaniesModel',
+            'comp_id',
+            'comp_id',
+            'comp_token',
+            'comp_token'
+        );
     }
     public function matchedNeeds()
     {
-        return $this->hasMany('App\models\companies\matchedNeedsModel',
-            'matched_comp_id', 'comp_id', 'matched_comp_token', 'comp_token');
+        return $this->hasMany(
+            'App\models\companies\matchedNeedsModel',
+            'matched_comp_id',
+            'comp_id',
+            'matched_comp_token',
+            'comp_token'
+        );
     }
     public function address()
     {
@@ -72,7 +84,6 @@ class companydataModel extends Model
         } else {
             return false;
         }
-
     }
     public function searchCompanies($keywords)
     {
@@ -83,17 +94,17 @@ class companydataModel extends Model
         ])->whereHas("type", function ($q) use ($keywords) {
             $q->where("comp_description", "LIKE", "%" . $keywords . "%");
         })
-        // ->orWhere("type", function($q) use($keywords){
-        //     $q->where("comp_description" , "LIKE" , "%".$keywords."%");
-        // })
+            // ->orWhere("type", function($q) use($keywords){
+            //     $q->where("comp_description" , "LIKE" , "%".$keywords."%");
+            // })
 
-        // ->orWhere("address", function($q) use($keywords){
-        //     $q->where("comp_addr_one", "LIKE" , "%".$keywords."%")->orWhere([
-        //         ["comp_addr_two", "LIKE" , "%".$keywords."%"],
-        //         ["comp_city", "LIKE" , "%".$keywords."%"],
-        //         ["comp_province", "LIKE" , "%".$keywords."%"],
-        //     ]);
-        // })
+            // ->orWhere("address", function($q) use($keywords){
+            //     $q->where("comp_addr_one", "LIKE" , "%".$keywords."%")->orWhere([
+            //         ["comp_addr_two", "LIKE" , "%".$keywords."%"],
+            //         ["comp_city", "LIKE" , "%".$keywords."%"],
+            //         ["comp_province", "LIKE" , "%".$keywords."%"],
+            //     ]);
+            // })
             ->get();
         return $items;
 
@@ -106,14 +117,23 @@ class companydataModel extends Model
 
     public function freePackagePlan()
     {
-        return $this->hasOne('App\models\plans\freePackagePlanModel',
-            'comp_id', 'comp_id', 'comp_token', 'comp_token');
-
+        return $this->hasOne(
+            'App\models\plans\freePackagePlanModel',
+            'comp_id',
+            'comp_id',
+            'comp_token',
+            'comp_token'
+        );
     }
     public function companySuspensions()
     {
-        return $this->hasMany('App\models\companies\suspendedCompaniesModel',
-            'comp_id', 'comp_id', 'comp_token', 'comp_token');
+        return $this->hasMany(
+            'App\models\companies\suspendedCompaniesModel',
+            'comp_id',
+            'comp_id',
+            'comp_token',
+            'comp_token'
+        );
     }
     public function isSuspended($comp_id)
     {
@@ -135,5 +155,10 @@ class companydataModel extends Model
             ["comp_id", $comp_id],
             ["comp_token", $comp_token],
         ])->exists();
+    }
+
+    public function companyQuotations()
+    {
+        return $this->hasMany(quotationModel::class, "comp_id", "comp_id");
     }
 }
