@@ -13,6 +13,7 @@ use App\models\emailVerificationModel;
 use App\models\normalUsersModel;
 use App\models\userAddressModel;
 use App\models\userInterestModel;
+use App\Notifications\customers\NewCustomerRegistrationNotification;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -330,6 +331,7 @@ class accountController extends Controller
 
         if ($normalUsersModel->save()) {
             $data = normalUsersModel::where("user_email", $request->user_email)->get();
+            $data[0]->notify(new NewCustomerRegistrationNotification($data[0]));
             $this->ApiKey->updateKeys($request->guest_id, $request->guest_token, $data[0]->user_id, $data[0]->user_token, "normal");
             // $this->ApiKey->successFullRequest();
             $min = 24 * 60 * 360;
@@ -344,7 +346,12 @@ class accountController extends Controller
                 return $response;
             }
 
-            return $this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal");
+
+
+
+            $this->Error->setSuccess($data);
+            return $this->Error->getSuccess();
+            // return $this->sendConfirmationEmail($request->user_email, $data[0]->user_id, $data[0]->user_token, "normal");
             // $this->Error->setSuccess($data[0]);
             // return $this->Error->getSuccess();
         } else {
@@ -396,7 +403,8 @@ class accountController extends Controller
         ])->latest()->get();
         if ($hasCode !== null && $hasCode->count() > 0) {
             if (!$hasCode[0]->is_expired) {
-                Mail::to($userEmail)->send(new userVerificationMail($hasCode[0]->verification_code, $isValidUser[0]->user_fname));
+                $isValidUser[0]->notify(new NewCustomerRegistrationNotification($isValidUser[0]));
+                // Mail::to($userEmail)->send(new userVerificationMail($hasCode[0]->verification_code, $isValidUser[0]->user_fname));
                 // $this->ApiKey->successFullRequest();
                 $this->Error->setSuccess([$isValidUser]);
                 return $this->Error->getSuccess();

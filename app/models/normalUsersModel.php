@@ -5,10 +5,12 @@ namespace App\models;
 use App\models\chatModel;
 use App\models\companies\quotationModel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class normalUsersModel extends Model
 {
     //
+    use Notifiable;
 
     protected $table = "normal_user";
     protected $hidden = ["user_password"];
@@ -101,5 +103,14 @@ class normalUsersModel extends Model
     public function numberOfQuotations($user_id)
     {
         return quotationModel::where("user_id", $user_id)->get()->count();
+    }
+
+    public function routeNotificationForMail($notification)
+    {
+        // Return email address only...
+        return $this->user_email;
+
+        // Return name and email address...
+        // return [$this->email_address => $this->name];
     }
 }
