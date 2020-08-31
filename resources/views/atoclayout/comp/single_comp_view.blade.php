@@ -4,5 +4,8 @@
 @include('atoclayout.comp.comp_view')
 @endsection
 @section("vuescript")
-<script src="/js/singlecompview.js" type="text/javascript" ></script>
+@php
+    $hash = hash('md5', public_path('js/singlecompview.js'));
+@endphp
+<script src={{"/js/singlecompview.js?".$hash}} type="text/javascript" ></script>
 @endsection

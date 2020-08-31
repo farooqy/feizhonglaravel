@@ -66,10 +66,6 @@ module.exports = {
         return {
             'postlist': 1,
             'version': 2,
-            // in_comment_text: this.comment_text,
-            // post_id: this.product_id === undefined ? this.status_id : this.product_id,
-            // post_token: this.product_token === undefined ? this.status_generated_token : this.product_token,
-
         }
     },
     props: [

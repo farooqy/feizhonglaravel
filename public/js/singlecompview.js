@@ -1979,10 +1979,7 @@ module.exports = {
   data: function data() {
     return {
       'postlist': 1,
-      'version': 2 // in_comment_text: this.comment_text,
-      // post_id: this.product_id === undefined ? this.status_id : this.product_id,
-      // post_token: this.product_token === undefined ? this.status_generated_token : this.product_token,
-
+      'version': 2
     };
   },
   props: ["generated_token", "product_currency", "product_description", "product_files", "product_token", "product_id", "product_name", "product_price", "product_unit", "product_company", "created_at"],
@@ -52720,7 +52717,7 @@ var app = new Vue({
         p.product_price = d.product_price;
         p.product_currency = d.product_measure_currency;
         p.product_unit = d.product_measure_unit;
-        p.product_company = d.companydata;
+        p.product_company = d.company_data;
         p.created_at = d.created_at;
         p.post_type = "product"; // this.productList.push(p)
         //combine product and status
@@ -52771,8 +52768,8 @@ var app = new Vue({
           "status_image": files[0].file_url,
           "status_time": data[i].created_at,
           "status_files": files,
-          "uploaded_by_name": data[i].company_data.comp_name,
-          "uploaded_by_picture": data[i].company_data.comp_logo
+          "uploaded_by_name": data[i].companydata.comp_name,
+          "uploaded_by_picture": data[i].companydata.comp_logo
         });
       }
     },
@@ -52952,8 +52949,14 @@ var app = new Vue({
       this.errorModal = false;
     },
     shortenName: function shortenName(name) {
-      if (name.length > 15) return name.substr(0, 15);
+      if (name != null && name.length > 15) return name.substr(0, 15);
       return name;
+    },
+    viewCompanyData: function viewCompanyData(index) {
+      this.menu_view.comp_stat = index === 4;
+      this.menu_view.comp_address = index === 1;
+      this.menu_view.comp_posts = index === 3;
+      this.menu_view.comp_products = index === 2;
     }
   },
   components: {
@@ -52995,7 +52998,13 @@ var app = new Vue({
       address_tab: false
     },
     Product: new _Product_js__WEBPACK_IMPORTED_MODULE_14__["default"](),
-    productList: []
+    productList: [],
+    menu_view: {
+      comp_stat: false,
+      comp_address: true,
+      comp_posts: false,
+      comp_products: false
+    }
   }
 });
 
