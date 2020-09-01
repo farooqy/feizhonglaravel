@@ -204,4 +204,9 @@ class browserController extends Controller
 
         return redirect()->route('loginPage');
     }
+
+    public function termsConditionsPage()
+    {
+        return view('tc');
+    }
 }

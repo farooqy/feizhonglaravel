@@ -747,6 +747,10 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
 module.exports = {
   data: function data() {
     return {
@@ -2226,8 +2230,8 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._l(_vm.in_comments, function(comment, key) {
-            return _c("ul", { key: key, staticClass: "comments-list" }, [
+          _vm._l(_vm.in_comments, function(comment, ckey) {
+            return _c("ul", { key: ckey, staticClass: "comments-list" }, [
               _c(
                 "li",
                 {
@@ -2330,11 +2334,11 @@ var render = function() {
                   _c(
                     "ul",
                     { staticClass: "children" },
-                    _vm._l(comment.comment_replies, function(reply, key) {
+                    _vm._l(comment.comment_replies, function(reply, rkey) {
                       return _c(
                         "li",
                         {
-                          key: key,
+                          key: rkey,
                           staticClass: "comment-item",
                           staticStyle: { "background-color": "aliceblue" }
                         },
@@ -2629,11 +2633,11 @@ var render = function() {
           _c(
             "div",
             { staticClass: "post-block-photo js-zoom-gallery" },
-            _vm._l(_vm.getStatusFiles(), function(file, key) {
+            _vm._l(_vm.getStatusFiles(), function(file, fkey) {
               return _c(
                 "a",
                 {
-                  key: key,
+                  key: fkey,
                   staticClass: "half-width",
                   class: _vm.addClassMorePhotos(file.file_url),
                   attrs: { href: file.file_url },
@@ -2707,8 +2711,8 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._l(_vm.in_comments, function(comment, key) {
-            return _c("ul", { key: key, staticClass: "comments-list" }, [
+          _vm._l(_vm.in_comments, function(comment, cokey) {
+            return _c("ul", { key: cokey, staticClass: "comments-list" }, [
               _c(
                 "li",
                 {
@@ -2810,10 +2814,10 @@ var render = function() {
                   _c(
                     "ul",
                     { staticClass: "children" },
-                    _vm._l(comment.comment_replies, function(reply, key) {
+                    _vm._l(comment.comment_replies, function(reply, rekey) {
                       return _c(
                         "li",
-                        { key: key, staticClass: "comment-item" },
+                        { key: rekey, staticClass: "comment-item" },
                         [
                           _c(
                             "div",

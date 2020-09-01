@@ -188,7 +188,7 @@ col-md-6 col-sm-12 col-12">
         <!-- W-Friend-Pages-Added -->
 
         <ul class="widget w-friend-pages-added notification-list friend-requests">
-            <trendingcompanylist v-for="(comp, key) in trending_list" v-bind="comp">
+            <trendingcompanylist v-for="(comp, cokey) in trending_list" v-bind="comp" :key="cokey">
             </trendingcompanylist>
         </ul>
 
@@ -910,7 +910,7 @@ col-md-6 col-sm-12 col-12">
         <!-- W-Action -->
 
         <ul class="widget w-friend-pages-added notification-list friend-requests">
-            <trendingcompanylist v-for="comp in trending_list" v-bind="comp">
+            <trendingcompanylist v-for="(comp,tkey) in trending_list" v-bind="comp" :key="tkey">
             </trendingcompanylist>
 
         </ul>

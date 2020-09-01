@@ -26,6 +26,7 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="/atoc_assets/images/favicon.png">
 
+	@yield('links')
 </head>
 
 <body>
@@ -150,7 +151,7 @@
 
 									<ul>
 										<li>
-											<a href="https://atoc.drongo.tech">
+											<a href="/tcs">
 												<span>Terms and Conditions</span>
 											</a>
 										</li>

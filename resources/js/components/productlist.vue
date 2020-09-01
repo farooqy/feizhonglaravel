@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <ul class="comments-list" v-for="(comment,key) in in_comments" v-bind:key="key">
+    <ul class="comments-list" v-for="(comment,ckey) in in_comments" v-bind:key="ckey">
       <li class="comment-item" :class="hasChildren(comment)" style="background-color: aliceblue;">
         <div class="post__author author vcard inline-items">
           <img :src="getCommentProfile(comment)" alt="author" />
@@ -91,9 +91,9 @@
         <ul class="children">
           <li
             class="comment-item"
-            v-for="(reply,key) in comment.comment_replies"
+            v-for="(reply,rkey) in comment.comment_replies"
             style="background-color: aliceblue;"
-            v-bind:key="key"
+            v-bind:key="rkey"
           >
             <div class="post__author author vcard inline-items">
               <img :src="getCommentProfile(reply)" alt="author" />
@@ -213,11 +213,11 @@
 
     <div class="post-block-photo js-zoom-gallery">
       <a
-        v-for="(file,key) in getStatusFiles()"
+        v-for="(file,fkey) in getStatusFiles()"
         :href="file.file_url"
         class="half-width"
         :class="addClassMorePhotos(file.file_url)"
-        v-bind:key="key"
+        v-bind:key="fkey"
         @click.prevent="viewStatus()"
       >
         <img :src="file.file_url" alt="photo" style="border:thin solid gray;" />
@@ -242,7 +242,7 @@
       </div>
     </div>
 
-    <ul class="comments-list" v-for="(comment,key) in in_comments" v-bind:key="key">
+    <ul class="comments-list" v-for="(comment,cokey) in in_comments" v-bind:key="cokey">
       <li class="comment-item" :class="hasChildren(comment)">
         <div class="post__author author vcard inline-items">
           <img :src="getCommentProfile(comment)" alt="author" />
@@ -280,7 +280,11 @@
         </a>
         <!-- comment children comments -->
         <ul class="children">
-          <li class="comment-item" v-for="(reply,key) in comment.comment_replies" v-bind:key="key">
+          <li
+            class="comment-item"
+            v-for="(reply,rekey) in comment.comment_replies"
+            v-bind:key="rekey"
+          >
             <div class="post__author author vcard inline-items">
               <img :src="getCommentProfile(reply)" alt="author" />
 

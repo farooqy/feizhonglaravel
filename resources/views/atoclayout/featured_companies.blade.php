@@ -11,14 +11,14 @@
 
             <div id="topCompaniesCarousel" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                  <li data-target="#topCompaniesCarousel" :data-slide-to="ckey" :class="{'active': ckey ===0}"
-                  v-for="(comp, ckey) in featuredCompanies"></li>
-                  <li data-target="#topCompaniesCarousel" :data-slide-to="ckey+1"></li>
-                  <li data-target="#topCompaniesCarousel" :data-slide-to="ckey+2"></li>
+                  <li data-target="#topCompaniesCarousel" v-for="(comp, featkey) in featuredCompanies"
+                   :data-slide-to="featkey" :class="{'active': featkey === 0}" :key="featkey"></li>
+                  <li data-target="#topCompaniesCarousel" :data-slide-to="featuredCompanies.length"></li>
+                  <li data-target="#topCompaniesCarousel" :data-slide-to="featuredCompanies.length+1"></li>
                 </ol>
                 <div class="carousel-inner">
-                  <div class="carousel-item " v-for="(comp, ckey) in featuredCompanies" :key="ckey"
-                   @click.prevent="" :class="{'active': ckey === 0}">
+                  <div class="carousel-item " v-for="(comp, cakey) in featuredCompanies" :key="cakey"
+                   @click.prevent="" :class="{'active': cakey === 0}">
                     <img class="d-block w-100" :src="comp.plan_uploads.file_url" :alt="comp.comp_data.comp_name">
                   </div>
                   <div class="carousel-item">

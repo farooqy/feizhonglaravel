@@ -23,6 +23,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/chat/messages', 'browserController@messagesPage')->name('messagesPage');
   Route::get('/notifications', 'browserController@messagesPage')->name('messagesPage');
 
+  Route::get('/tc', 'browserController@termsConditionsPage');
 
   // User routes
   Route::get('/user/needs', 'browserController@userNeedsPage')->name('userNeedsPage');
